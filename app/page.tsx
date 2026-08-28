@@ -13,13 +13,14 @@ const challenges: { target: Region; clue: string }[] = [
   { target: "Sul", clue: "É a região que fica mais ao sul do nosso mapa." },
 ];
 
-const phases = [
-  { number: "FASE 1", title: "ONDE ESTOU?", icon: "📍", color: "green", open: true },
-  { number: "FASE 2", title: "BÚSSOLA DO BRASIL", icon: "🧭", color: "blue", open: false },
-  { number: "FASE 3", title: "CONHECENDO O BRASIL", icon: "🏞️", color: "forest", open: false },
-  { number: "FASE 4", title: "DESAFIO DAS REGIÕES", icon: "🗺️", color: "purple", open: false },
-  { number: "FASE BÔNUS", title: "GRANDE EXPEDIÇÃO", icon: "🏆", color: "gold", open: false },
-];
+const journeyLevels = [
+  { id: "brasil", title: "Conhecendo o Brasil", image: "/fase-inicial-v3.png", phases: 5 },
+  { id: "norte", title: "Região Norte", image: "/fase-norte-v3.png", phases: 6 },
+  { id: "nordeste", title: "Região Nordeste", image: "/fase-nordeste-v3.png", phases: 6 },
+  { id: "centro-oeste", title: "Região Centro-Oeste", image: "/fase-centro-oeste-v3.png", phases: 6 },
+  { id: "sudeste", title: "Região Sudeste", image: "/fase-sudeste-v3.png", phases: 6 },
+  { id: "sul", title: "Região Sul", image: "/fase-sul-v3.png", phases: 6 },
+] as const;
 
 const avatars = [
   { id: "sol", image: "/avatar-sol-v1.png", name: "Sol", description: "Menino explorador" },
@@ -73,19 +74,21 @@ export default function Home() {
   const [firstTryWins, setFirstTryWins] = useState(0);
   const [highestScore, setHighestScore] = useState(0);
   const [completedPhase, setCompletedPhase] = useState(false);
+  const [unlockedLevel, setUnlockedLevel] = useState(0);
+  const [journeyNotice, setJourneyNotice] = useState<string | null>(null);
   const challenge = challenges[challengeIndex];
   const instruction = useMemo(() => `Encontre a Região ${challenge.target} no mapa. ${challenge.clue}`, [challenge]);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("pegadas-progress");
-    if (saved) try { const data = JSON.parse(saved); setScore(data.score || 0); setChallengeIndex(Math.min(data.challengeIndex || 0, 4)); setCompletedChallenges(data.completedChallenges || 0); setFirstTryWins(data.firstTryWins || 0); setHighestScore(data.highestScore || data.score || 0); setCompletedPhase(Boolean(data.completedPhase)); } catch { /* ignora progresso inválido */ }
+    if (saved) try { const data = JSON.parse(saved); setScore(data.score || 0); setChallengeIndex(Math.min(data.challengeIndex || 0, 4)); setCompletedChallenges(data.completedChallenges || 0); setFirstTryWins(data.firstTryWins || 0); setHighestScore(data.highestScore || data.score || 0); setCompletedPhase(Boolean(data.completedPhase)); setUnlockedLevel(Math.min(5, Math.max(data.unlockedLevel || 0, data.completedPhase ? 1 : 0))); } catch { /* ignora progresso inválido */ }
     setAvatarId(window.localStorage.getItem("pegadas-avatar"));
     const savedAudio = window.localStorage.getItem("pegadas-audio");
     if (savedAudio) try { const audio = JSON.parse(savedAudio); setMusic(audio.music ?? true); setEffects(audio.effects ?? true); setSound(audio.narration ?? true); setVolume(audio.volume ?? 75); } catch { /* mantém as configurações padrão */ }
     const savedAccessibility = window.localStorage.getItem("pegadas-accessibility");
     if (savedAccessibility) try { const accessibility = JSON.parse(savedAccessibility); setHighContrast(accessibility.highContrast ?? false); setLargeText(accessibility.largeText ?? false); setButtonHighlight(accessibility.buttonHighlight ?? false); } catch { /* mantém as configurações padrão */ }
   }, []);
-  useEffect(() => { window.localStorage.setItem("pegadas-progress", JSON.stringify({ score, challengeIndex, completedChallenges, firstTryWins, highestScore, completedPhase })); }, [score, challengeIndex, completedChallenges, firstTryWins, highestScore, completedPhase]);
+  useEffect(() => { window.localStorage.setItem("pegadas-progress", JSON.stringify({ score, challengeIndex, completedChallenges, firstTryWins, highestScore, completedPhase, unlockedLevel })); }, [score, challengeIndex, completedChallenges, firstTryWins, highestScore, completedPhase, unlockedLevel]);
   useEffect(() => { window.localStorage.setItem("pegadas-audio", JSON.stringify({ music, effects, narration: sound, volume })); window.localStorage.setItem("pegadas-volume", String(volume)); }, [music, effects, sound, volume]);
   useEffect(() => { window.localStorage.setItem("pegadas-accessibility", JSON.stringify({ highContrast, largeText, buttonHighlight })); }, [highContrast, largeText, buttonHighlight]);
 
@@ -126,7 +129,7 @@ export default function Home() {
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
       setCompletedChallenges((value) => Math.max(value, challengeIndex + 1));
       if (attempts === 0) setFirstTryWins((value) => value + 1);
-      if (challengeIndex === challenges.length - 1) setCompletedPhase(true);
+      if (challengeIndex === challenges.length - 1) { setCompletedPhase(true); setUnlockedLevel((value) => Math.max(value, 1)); }
       setFeedback(challengeIndex === challenges.length - 1 ? "finished" : "correct");
       if (sound) speak("Muito bem! Você encontrou a região correta!");
     } else {
@@ -136,6 +139,11 @@ export default function Home() {
   }
   function nextChallenge() { setChallengeIndex((value) => value + 1); setFeedback("idle"); setAttempts(0); }
   function restart() { setChallengeIndex(0); setScore(0); setFeedback("idle"); setAttempts(0); }
+  function openJourneyLevel(index: number) {
+    setJourneyNotice(null);
+    if (index === 0) { setScreen("game"); return; }
+    setJourneyNotice(`${journeyLevels[index].title} desbloqueada! As aventuras desta região serão adicionadas na próxima etapa.`);
+  }
 
   return <main className={`${highContrast ? "high-contrast" : ""} ${largeText ? "large-text" : ""} ${buttonHighlight ? "button-highlight" : ""}`}><div className="game-shell">
     {screen === "menu" && <section className="screen menu-screen" aria-label="Menu principal">
@@ -144,7 +152,27 @@ export default function Home() {
       </nav><div className="menu-content"><Macaw message={<><strong>Olá, explorador!</strong><span>{selectedAvatar ? `${selectedAvatar.name}, pronto para conhecer o Brasil?` : "Escolha seu avatar para começar!"}</span></>} /><Logo /><div className="start-area"><button className={`start-button ${!selectedAvatar ? "start-locked" : ""}`} onClick={startAdventure} aria-disabled={!selectedAvatar}>INICIAR<br />AVENTURA <span aria-hidden="true"></span></button>{!selectedAvatar && <small className="avatar-required">🔒 Escolha um avatar primeiro</small>}</div></div><div className="footprints" aria-hidden="true"></div>
     </section>}
 
-    {screen === "journey" && <section className="screen journey-screen"><header className="screen-header"><button className="round-control" onClick={() => setScreen("menu")} aria-label="Voltar ao menu">←<small>Voltar</small></button><div><h1>SUA JORNADA PELO BRASIL</h1><p>Aprenda, explore e avance por novas aventuras!</p></div><button className="round-control blue" onClick={() => setSound(!sound)} aria-pressed={sound}>{sound ? "🔊" : "🔇"}<small>Som</small></button></header><div className="journey-content"><Macaw message={<strong>Vamos começar?</strong>} /><div className="phase-track">{phases.map((phase, index) => <button key={phase.title} className={`phase-card ${phase.color} ${!phase.open ? "locked" : ""}`} disabled={!phase.open} onClick={() => setScreen("game")} aria-label={`${phase.number}, ${phase.title}${phase.open ? ", disponível" : ", bloqueada"}`}><span className="phase-icon">{phase.icon}</span><small>{phase.number}</small><strong>{phase.title}</strong><span className="phase-art">{index === 0 ? "🇧🇷" : phase.icon}</span><b>5 DESAFIOS</b><i>{phase.open ? "⭐" : "🔒"}</i></button>)}</div></div><p className="journey-tip">🌿 Complete cada fase para liberar a próxima! 🌿</p></section>}
+    {screen === "journey" && <section className="screen journey-screen journey-map" aria-label="Escolha sua aventura">
+      <button className="journey-art-button journey-back" onClick={() => setScreen("menu")} aria-label="Voltar ao menu"><img src="/fases-voltar-v1.png" alt="" /></button>
+      <header className="journey-heading">
+        <h1><span aria-hidden="true">◆</span> ESCOLHA SUA AVENTURA <span aria-hidden="true">◆</span></h1>
+        <p>Aprenda, explore e descubra o Brasil passo a passo!</p>
+      </header>
+      <button className={`journey-art-button journey-sound ${!sound ? "muted" : ""}`} onClick={() => setSound(!sound)} aria-label={sound ? "Desligar som" : "Ligar som"} aria-pressed={sound}><img src="/fases-som-v1.png" alt="" /></button>
+      <img className="journey-mascot-art" src="/fases-mascote-v2.png" alt="Arara Ari convidando você para explorar o Brasil" />
+      <div className="journey-levels">
+        {journeyLevels.map((level, index) => {
+          const unlocked = index <= unlockedLevel;
+          const completed = index < unlockedLevel || (index === 0 && completedPhase);
+          return <button key={level.id} className={`journey-level ${unlocked ? "unlocked" : "locked"} ${completed ? "completed" : ""}`} disabled={!unlocked} onClick={() => openJourneyLevel(index)} aria-label={`${level.title}, ${level.phases} fases, ${completed ? "concluída" : unlocked ? "disponível" : "bloqueada"}`}>
+            <img src={level.image} alt="" />
+            <span className="journey-level-state" aria-hidden="true">{!unlocked ? "🔒" : completed ? "★" : "▶"}</span>
+          </button>;
+        })}
+      </div>
+      {journeyNotice && <div className="journey-notice" role="status">{journeyNotice}<button onClick={() => setJourneyNotice(null)} aria-label="Fechar aviso">×</button></div>}
+      <p className="journey-footer"><span aria-hidden="true">●</span> Complete as fases na ordem para desbloquear novas regiões! <span aria-hidden="true">●</span></p>
+    </section>}
 
     {screen === "game" && <section className="screen play-screen"><header className="play-header"><Logo compact /><h1>FASE 1 — ONDE ESTOU?</h1><div className="score">⭐ Pontos: {score}</div><button onClick={() => setScreen("journey")} aria-label="Voltar à jornada">←<small>Voltar</small></button><button onClick={() => setModal("help")} aria-label="Pausar jogo">Ⅱ<small>Pausar</small></button></header><div className="play-content"><Macaw message={<><strong>Olá, explorador!</strong><span>Encontre a Região {challenge.target} no mapa.</span></>} /><div className="map-area" aria-label="Mapa interativo das regiões do Brasil"><button className="region north" onClick={() => chooseRegion("Norte")}>NORTE</button><button className="region northeast" onClick={() => chooseRegion("Nordeste")}>NORDESTE</button><button className="region midwest" onClick={() => chooseRegion("Centro-Oeste")}>CENTRO-OESTE</button><button className="region southeast" onClick={() => chooseRegion("Sudeste")}>SUDESTE</button><button className="region south" onClick={() => chooseRegion("Sul")}>SUL</button></div><aside className="mission-card"><span className="counter">Desafio {challengeIndex + 1} de 5</span><div className="pin">📍</div><strong>Toque na região correta.</strong><p>{challenge.clue}</p><button className="listen" onClick={() => speak(instruction)}>🔊 OUVIR INSTRUÇÃO</button></aside></div><div className="progress" aria-label={`Progresso: desafio ${challengeIndex + 1} de 5`}>{challenges.map((_, index) => <span key={index} className={index <= challengeIndex ? "active" : ""}>{index + 1}</span>)}</div>
       {feedback !== "idle" && <div className={`feedback ${feedback}`} role="dialog" aria-live="assertive">{feedback === "wrong" && <><span>🧭</span><h2>Quase lá!</h2><p>Observe a dica e tente novamente. Errar também faz parte da aventura!</p><button onClick={() => setFeedback("idle")}>TENTAR NOVAMENTE</button></>}{feedback === "correct" && <><span>⭐</span><h2>Muito bem!</h2><p>Você encontrou a Região {challenge.target}!</p><button onClick={nextChallenge}>PRÓXIMO DESAFIO</button></>}{feedback === "finished" && <><span>🏆</span><h2>Fase concluída!</h2><p>Você explorou todas as regiões!</p><button onClick={() => setScreen("journey")}>VOLTAR À JORNADA</button><button className="secondary" onClick={restart}>JOGAR NOVAMENTE</button></>}</div>}

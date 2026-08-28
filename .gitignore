@@ -45,3 +45,4 @@ yarn-error.log*
 /.sites-build-*.tar.gz
 /.sites-package-*/
 /.sites-publish-*/
+/.preview-temp/
