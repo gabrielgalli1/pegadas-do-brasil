@@ -163,3 +163,160 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
   .journey-footer{position:relative;left:auto;bottom:auto;transform:none;max-width:94%;width:max-content;margin:25px auto 0}
 }
 @media(max-width:520px){.journey-heading{top:25px}.journey-heading h1 span{display:none}.journey-map{padding-top:105px}.journey-level>img{max-width:235px}}
+
+/* Base reutilizável dos desafios do Nível Inicial */
+.game-shell:has(.challenge-screen){border:0;border-radius:0;background:transparent;box-shadow:none}
+.game-shell:has(.challenge-screen):before,.game-shell:has(.challenge-screen):after{display:none}
+.challenge-screen{background:#eaffcf url('/desafios-fundo-v1.png') center/100% 100% no-repeat!important;overflow:hidden;font-family:"Arial Rounded MT Bold","Trebuchet MS",Arial,sans-serif}
+.challenge-screen:after{display:none}
+.challenge-header{position:absolute;z-index:6;left:2.2%;right:2.2%;top:2.5%;height:14%;display:flex;align-items:flex-start;justify-content:space-between}
+.challenge-control{justify-self:center;width:clamp(58px,6vw,92px);aspect-ratio:1;border:0;outline:0;background:transparent;padding:0;box-shadow:none;display:grid;place-items:center}.challenge-control img{display:block;width:100%;height:100%;object-fit:contain}
+.challenge-control.sound{background:transparent}
+.challenge-control.muted{filter:grayscale(1);opacity:.65}
+.challenge-level{position:absolute;left:50%;top:10%;transform:translateX(-50%);width:54%;text-align:center;line-height:1}
+.challenge-level small{display:block;width:max-content;margin:0 auto 5px;padding:7px 24px;border-radius:22px;background:#4dab24;color:#fff;font-size:clamp(13px,1.25vw,20px);font-weight:1000}
+.challenge-level strong{display:block;color:#082e5b;font-size:clamp(23px,2.7vw,43px);font-weight:1000;text-shadow:-2px -2px 0 #fff,2px -2px 0 #fff,-2px 2px 0 #fff,2px 2px 0 #fff}
+.challenge-status{position:absolute;z-index:8;right:8.5%;top:96%;width:19%;background:linear-gradient(180deg,#0d477e,#082e5b);border:4px solid #fff;outline:3px solid #158ac7;border-radius:18px;padding:7px 10px 8px;text-align:center;color:#fff;box-shadow:0 6px 0 #07204788,0 9px 16px #082e5b33}
+.challenge-status:before{content:"";position:absolute;left:50%;top:-9px;width:36%;height:8px;transform:translateX(-50%);border-radius:8px 8px 0 0;background:#ffc928;border:2px solid #fff;border-bottom:0}
+.challenge-status b{display:block;font-size:clamp(12px,1.25vw,20px)}
+.challenge-status div{display:flex;justify-content:center;gap:5px;margin-top:3px}
+.challenge-status span{color:#b8c2cc;font-size:clamp(16px,1.8vw,29px);line-height:1;text-shadow:0 2px 0 #071f3a}
+.challenge-status span.active{color:#ffc928;text-shadow:0 2px 0 #a35e00}
+.silhouette-challenge{position:absolute;inset:17.5% 4% 3%;display:grid;grid-template-columns:1fr;grid-template-rows:auto 1fr auto;align-items:center}
+.challenge-title{grid-column:1/-1;text-align:center;margin-bottom:1%}
+.challenge-title h1{margin:0;color:#082e5b;font-size:clamp(31px,3.4vw,55px);font-weight:1000;line-height:1;text-shadow:-3px -3px 0 #fff,3px -3px 0 #fff,-3px 3px 0 #fff,3px 3px 0 #fff}
+.challenge-title p{display:inline-block;margin:8px 0 0;padding:8px 28px;border-radius:20px;background:#fff9d7dd;color:#082e5b;font-size:clamp(17px,1.8vw,29px);font-weight:900;box-shadow:0 3px 0 #e1b72b66}
+.challenge-mascot{position:absolute;left:0;bottom:15%;width:18%;max-height:50%;object-fit:contain;filter:drop-shadow(0 8px 2px #174b2944);transform:scaleX(-1)}
+.silhouette-guide{position:absolute;z-index:3;left:1%;top:40%;bottom:auto;width:17%;display:flex;flex-direction:column;align-items:center;gap:8px}
+.silhouette-guide .challenge-mascot{position:static;width:106%;max-height:232px;object-fit:contain;transform:none}
+.silhouette-tip{position:relative;width:122%;padding:10px 8px;border:4px solid #2f8125;border-radius:22px;background:#fffdf4;color:#176b22;text-align:center;font-size:clamp(11px,1vw,17px);font-weight:1000;line-height:1.12;box-shadow:0 5px 0 #1f5f2444}
+.silhouette-tip:after{content:"";position:absolute;left:48%;bottom:-18px;border:10px solid transparent;border-top-color:#2f8125}
+.country-grid{grid-column:1;grid-row:2;width:67%;height:91%;justify-self:center;align-self:end;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:3.8% 3.2%;min-height:0}
+.country-card{position:relative;min-width:0;min-height:0;border:5px solid #082e5b;border-radius:28px;background:linear-gradient(180deg,#fffef8,#f5f4e8);box-shadow:0 6px 0 #0a6b9c55;overflow:hidden;transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
+.country-card:hover,.country-card:focus-visible{transform:translateY(-5px) scale(1.015);filter:brightness(1.04);box-shadow:0 10px 0 #0a6b9c66,0 0 0 6px #ffcb2b}
+.country-letter{position:absolute;z-index:2;left:12px;top:10px;width:clamp(42px,4vw,64px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:#0b3970;color:#fff;border:4px solid #ffc72b;font-size:clamp(24px,2.6vw,42px);font-weight:1000}
+.country-shape{position:absolute;left:18%;right:8%;top:9%;bottom:7%;width:74%;height:84%;display:block;object-fit:contain;object-position:center;filter:drop-shadow(0 5px 0 #061c3522)}
+.challenge-listen{grid-column:1/-1;justify-self:center;margin-top:1.2%;padding:11px 24px;border:4px solid #fff;outline:3px solid #075d98;border-radius:22px;background:linear-gradient(#2cb9f7,#0785cf);color:#fff;font-size:clamp(14px,1.35vw,21px);font-weight:1000;text-shadow:0 2px 0 #07598d;box-shadow:0 5px 0 #07598d}
+.continent-challenge{position:absolute;inset:17.5% 5% 3%;display:grid;grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr) auto auto;align-items:center}
+.continent-challenge .challenge-title{grid-column:1;width:70%;justify-self:center}
+.continent-guide{position:absolute;z-index:2;left:0;top:31%;bottom:6%;width:20%;height:auto;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:10px}.continent-mascot{width:88%;max-height:70%;object-fit:contain;filter:drop-shadow(0 8px 2px #174b2944);transform:none}
+.mascot-tip{position:relative;left:auto;right:auto;top:auto;width:100%;padding:12px 10px;border:4px solid #2f8125;border-radius:24px;background:#fffdf4;color:#176b22;text-align:center;font-size:clamp(13px,1.2vw,19px);font-weight:1000;line-height:1.15;box-shadow:0 5px 0 #1f5f2444}.mascot-tip:after{content:"";position:absolute;left:48%;bottom:-18px;border:10px solid transparent;border-top-color:#2f8125}
+.world-map-card{grid-column:1;grid-row:2;width:58%;height:auto;aspect-ratio:2/1;min-height:0;justify-self:center;align-self:center;padding:9px;border:5px solid #0b4074;border-radius:28px;background:linear-gradient(#fffde8,#e9f9dd);box-shadow:0 7px 0 #0a6b9c55;display:flex;align-items:center;justify-content:center;overflow:hidden}.world-map{display:block;width:100%;height:100%;object-fit:cover;object-position:center;border-radius:17px;background:#a8e7f4}
+.continent-options{grid-column:1;grid-row:3;width:58%;justify-self:center;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2%;margin-top:1.4%}
+.continent-option{min-height:62px;padding:8px 10px;border:4px solid #fff;outline:3px solid #0a5d95;border-radius:18px;color:#fff;font-size:clamp(14px,1.45vw,23px);font-weight:1000;line-height:1.05;text-shadow:0 2px 0 #083b60;box-shadow:0 5px 0 #083b6055;transition:transform .16s ease,filter .16s ease}
+.continent-option:hover,.continent-option:focus-visible{transform:translateY(-4px);filter:brightness(1.08);box-shadow:0 8px 0 #083b6066,0 0 0 5px #ffcc2b}
+.continent-option.option-1{background:linear-gradient(#49c864,#158b3d)}.continent-option.option-2{background:linear-gradient(#3caef4,#147bc3)}.continent-option.option-3{background:linear-gradient(#b86fdc,#7040a5)}.continent-option.option-4{background:linear-gradient(#ffb83e,#ec7e17)}
+.continent-challenge .challenge-listen{grid-column:1/-1;grid-row:4}
+.ocean-challenge{position:absolute;inset:17.5% 4% 3%;display:grid;grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr) auto;align-items:center}
+.ocean-challenge .challenge-title{grid-column:1;width:72%;justify-self:center}
+.ocean-stage{grid-column:1;grid-row:2;width:78%;height:94%;min-height:0;justify-self:center;display:grid;grid-template-columns:minmax(0,46%) minmax(0,54%);gap:2%;align-items:stretch}
+.ocean-map-card{position:relative;min-width:0;min-height:0;border:5px solid #fff;outline:4px solid #0b568f;border-radius:30px;background:#dff8ff;box-shadow:0 7px 0 #0a6b9c55;overflow:visible}
+.ocean-map{display:block;width:100%;height:100%;object-fit:cover;border-radius:21px}
+.ocean-guide{position:absolute;z-index:3;left:-36%;bottom:-5%;width:46%;display:flex;flex-direction:column;align-items:center;gap:6px}.ocean-guide img{display:block;width:100%;max-height:200px;object-fit:contain;transform:none;filter:drop-shadow(0 7px 2px #174b2944)}
+.ocean-tip{position:relative;width:150%;margin-left:34%;padding:11px 10px;border:4px solid #2f8125;border-radius:21px;background:#fffdf4;color:#176b22;text-align:center;font-size:clamp(13px,1.15vw,19px);font-weight:1000;line-height:1.1;box-shadow:0 4px 0 #1f5f2444}.ocean-tip:after{content:"";position:absolute;left:23%;bottom:-16px;border:9px solid transparent;border-top-color:#2f8125}
+.ocean-panel{min-width:0;min-height:0;display:grid;grid-template-rows:auto 1fr;gap:4%;padding:2%}
+.ocean-panel h2{margin:0;padding:10px 18px;border:4px solid #fff;outline:3px solid #0b568f;border-radius:22px;background:linear-gradient(#125ba0,#07366c);color:#fff;text-align:center;font-size:clamp(20px,2.1vw,34px);font-weight:1000;text-shadow:0 3px 0 #04264b;box-shadow:0 5px 0 #07366c55}
+.ocean-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:5% 4%;min-height:0}
+.ocean-option{min-width:0;min-height:0;padding:8px 12px;border:4px solid #fff;outline:3px solid #0a5d95;border-radius:22px;display:flex;align-items:center;justify-content:flex-start;gap:9px;color:#082e5b;font-size:clamp(15px,1.5vw,24px);font-weight:1000;line-height:1.05;text-align:left;box-shadow:0 6px 0 #083b6055;transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
+.ocean-option:hover,.ocean-option:focus-visible{transform:translateY(-4px);filter:brightness(1.05);box-shadow:0 9px 0 #083b6066,0 0 0 5px #ffcc2b}
+.ocean-option span{flex:0 0 auto;width:clamp(52px,4.8vw,74px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:#fff;border:3px solid #69c5ef;font-size:clamp(27px,3vw,45px);box-shadow:0 3px 0 #0a6b9c44}.ocean-option span img{display:block;width:84%;height:84%;object-fit:contain}
+.ocean-option-1{background:linear-gradient(#d9f6ff,#8fdcf6)}.ocean-option-2{background:linear-gradient(#ebffd8,#b9e88e)}.ocean-option-3{background:linear-gradient(#fff2c4,#ffd27b)}.ocean-option-4{background:linear-gradient(#f2e4ff,#c9a8ed)}
+.ocean-challenge .challenge-listen{grid-column:1;grid-row:3}
+.states-challenge{position:absolute;inset:17.5% 4% 3%;display:grid;grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr) auto auto;align-items:center}
+.states-challenge .challenge-title{grid-column:1;width:72%;justify-self:center}
+.states-guide{position:absolute;z-index:3;left:0;bottom:12%;width:20%;display:flex;flex-direction:column;align-items:center;gap:7px}
+.states-guide img{display:block;width:92%;max-height:190px;object-fit:contain;filter:drop-shadow(0 7px 2px #174b2944);transform:scaleX(-1)}
+.states-tip{position:relative;width:118%;padding:11px 12px;border:4px solid #2f8125;border-radius:22px;background:#fffdf4;color:#176b22;text-align:center;font-size:clamp(12px,1.05vw,17px);font-weight:900;line-height:1.12;box-shadow:0 5px 0 #1f5f2444}
+.states-tip:after{content:"";position:absolute;left:48%;bottom:-17px;border:9px solid transparent;border-top-color:#2f8125}
+.states-map-card{grid-column:1;grid-row:2;width:48%;height:96%;min-height:0;justify-self:center;display:flex;align-items:center;justify-content:center}
+.states-map{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 7px 2px #174b2944)}
+.state-count-options{grid-column:1;grid-row:3;width:58%;justify-self:center;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2%;margin-top:.5%}
+.state-count-option{min-height:70px;padding:8px 10px;border:4px solid #fff;outline:3px solid #0a5d95;border-radius:20px;background:linear-gradient(#fffbd4,#ffe58c);color:#082e5b;font-size:clamp(28px,3.2vw,50px);font-weight:1000;line-height:1;box-shadow:0 6px 0 #083b6055;transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
+.state-count-option:hover,.state-count-option:focus-visible{transform:translateY(-5px) scale(1.025);filter:brightness(1.04);box-shadow:0 9px 0 #083b6066,0 0 0 5px #ffcc2b}
+.states-challenge .challenge-listen{grid-column:1;grid-row:4}
+/* Ajustes aprovados do Desafio 4 */
+.states-guide{left:1%;bottom:24%;width:23%}
+.states-guide img{width:100%;max-height:235px}
+.states-challenge .challenge-title h1{font-size:clamp(28px,3vw,48px)}
+.states-challenge .challenge-title p{padding:7px 24px;font-size:clamp(16px,1.65vw,26px)}
+.states-map-card{width:54%;height:105%;transform:none}
+.states-map{background:transparent;mix-blend-mode:normal;filter:drop-shadow(0 7px 2px #174b2944)}
+.state-count-options{width:55%}
+.state-count-option{min-height:62px;font-size:clamp(26px,2.9vw,46px)}
+/* Mais destaque para o mapa, sem reposicionar os elementos ao redor */
+.states-challenge .challenge-title h1{font-size:clamp(27px,2.8vw,45px)}
+.states-challenge .challenge-title p{margin-top:6px;padding:6px 22px;font-size:clamp(15px,1.55vw,24px)}
+.states-map-card{width:61%;height:119%;transform:translateY(-3%)}
+.state-count-options{width:54%;margin-top:0}
+.state-count-option{min-height:55px;padding:5px 9px;font-size:clamp(24px,2.7vw,43px)}
+.states-challenge .challenge-listen{margin-top:.5%;padding:8px 22px}
+/* Evita que o mapa ampliado invada o enunciado */
+.states-map-card{width:58%;height:111%;transform:translateY(4%)}
+/* Desafio 4 sem cabe�alho geral: mais espa�o e alternativas sempre clic�veis */
+.states-challenge{inset:8% 4% 3%}
+.states-challenge .challenge-title{width:62%;margin-bottom:0}
+.states-challenge .challenge-title h1{font-size:clamp(29px,3.05vw,49px)}
+.states-challenge .challenge-title p{margin-top:7px}
+.states-map-card{width:61%;height:114%;transform:none;pointer-events:none}
+.states-map{pointer-events:none}
+.state-count-options{position:relative;z-index:12}
+.state-count-option{position:relative;z-index:13;pointer-events:auto}
+.states-challenge .challenge-listen{position:relative;z-index:12}
+.landscape-challenge{position:absolute;inset:17.5% 4% 3%;display:grid;grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr) auto;align-items:center}
+.landscape-challenge .challenge-title{grid-column:1;width:72%;justify-self:center}
+.landscape-guide{position:absolute;z-index:3;left:0;bottom:13%;width:20%;display:flex;flex-direction:column;align-items:center;gap:7px}
+.landscape-guide img{display:block;width:94%;max-height:205px;object-fit:contain;filter:drop-shadow(0 7px 2px #174b2944);transform:scaleX(-1)}
+.landscape-tip{position:relative;width:125%;padding:11px 12px;border:4px solid #2f8125;border-radius:22px;background:#fffdf4;color:#176b22;text-align:center;font-size:clamp(12px,1.05vw,17px);font-weight:900;line-height:1.12;box-shadow:0 5px 0 #1f5f2444}
+.landscape-tip:after{content:"";position:absolute;left:48%;bottom:-17px;border:9px solid transparent;border-top-color:#2f8125}
+.landscape-options{grid-column:1;grid-row:2;width:66%;height:94%;min-height:0;justify-self:center;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:4% 3%}
+.landscape-option{min-width:0;min-height:0;padding:0;border:4px solid #fff;outline:3px solid #0a5d95;border-radius:24px;background:#fff9df;overflow:hidden;display:grid;grid-template-rows:minmax(0,1fr) auto;color:#082e5b;box-shadow:0 6px 0 #083b6055;transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
+.landscape-option:hover,.landscape-option:focus-visible{transform:translateY(-4px) scale(1.012);filter:brightness(1.04);box-shadow:0 9px 0 #083b6066,0 0 0 5px #ffcc2b}
+.landscape-option img{display:block;width:100%;height:100%;min-height:0;object-fit:cover}
+.landscape-option strong{display:block;padding:8px 10px;font-size:clamp(15px,1.45vw,23px);font-weight:1000;line-height:1.05;background:linear-gradient(#fffbd4,#ffe58c)}
+.landscape-option-1 strong{background:linear-gradient(#dfffd2,#a8e984)}.landscape-option-2 strong{background:linear-gradient(#fff0bd,#ffd174)}.landscape-option-3 strong{background:linear-gradient(#e4f4ff,#acd8f4)}.landscape-option-4 strong{background:linear-gradient(#ffe2bb,#f4b86b)}
+.landscape-challenge .challenge-listen{grid-column:1;grid-row:3}
+/* Aproveita o espaço liberado pela remoção do cabeçalho geral */
+.silhouette-challenge{inset:10.5% 4% 3%}
+.silhouette-challenge .challenge-listen{transform:translateY(-13px);margin-top:2%}
+.continent-challenge{inset:10.5% 5% 3%}
+.continent-guide{left:-1%;width:23%}
+.continent-mascot{width:100%;max-height:76%}
+.continent-challenge .challenge-listen{transform:translateY(-13px);margin-top:2%}
+.ocean-challenge{inset:10.5% 4% 3%}
+.ocean-guide{left:-42%;bottom:5%;width:55%}
+.ocean-guide img{max-height:240px}
+.ocean-tip{width:124%;margin-left:42%;box-sizing:border-box;padding:10px 8px}
+.ocean-challenge .challenge-listen{transform:translateY(-13px);margin-top:2%}
+.states-challenge{inset:4% 4% 3%}
+.states-guide img{transform:none}
+.state-count-option{min-height:52px}
+.state-count-option:nth-child(1){background:linear-gradient(#d9f6ff,#8fdcf6)}
+.state-count-option:nth-child(2){background:linear-gradient(#ebffd8,#b9e88e)}
+.state-count-option:nth-child(3){background:linear-gradient(#fff2c4,#ffd27b)}
+.state-count-option:nth-child(4){background:linear-gradient(#f2e4ff,#c9a8ed)}
+.states-challenge .challenge-listen{transform:translateY(-13px);margin-top:2%}
+.landscape-challenge{inset:10.5% 4% 3%}
+.landscape-guide img{transform:none}
+.challenge-screen:has(.landscape-challenge) .challenge-status{right:3.5%}
+.landscape-challenge .challenge-listen{transform:translateY(-13px);margin-top:2%}
+.legacy-challenge{position:absolute;inset:17% 0 4%;height:auto}
+.high-contrast .challenge-screen{background:#fff!important}.high-contrast .country-card{background:#fff;border-color:#000}.high-contrast .country-shape{filter:contrast(1.8)}
+
+@media(max-width:900px){
+  .challenge-screen{min-height:100vh;background-size:cover!important;overflow:auto;padding:150px 18px 35px}
+  .challenge-header{position:absolute;left:10px;right:10px;top:12px;height:120px}
+  .challenge-level{width:48%}.challenge-status{position:absolute;right:82px;top:0;width:150px}
+  .challenge-level strong{font-size:clamp(20px,4.6vw,34px)}
+  .challenge-status{padding:7px}.challenge-status span{font-size:22px}
+  .silhouette-challenge,.continent-challenge,.ocean-challenge,.states-challenge,.landscape-challenge{position:relative;inset:auto;display:grid;grid-template-columns:1fr;grid-template-rows:auto auto auto auto auto;gap:16px}
+  .challenge-title,.country-grid,.challenge-listen{grid-column:1}
+  .challenge-title{grid-row:1}.silhouette-guide{position:relative;left:auto;bottom:auto;grid-row:2;width:170px;justify-self:center}.silhouette-guide .challenge-mascot{width:160px;height:150px}.silhouette-tip{width:190px}.country-grid{grid-row:3;width:100%;min-height:520px}.challenge-listen{grid-row:4}
+  .continent-challenge .challenge-title,.world-map-card,.continent-options,.continent-challenge .challenge-listen{grid-column:1}.continent-guide{position:relative;left:auto;top:auto;bottom:auto;grid-row:2;width:170px;height:190px;justify-self:center}.continent-mascot{width:145px}.world-map-card{grid-row:3;width:100%;height:auto}.world-map{height:auto}.continent-options{grid-row:4;width:100%;grid-template-columns:repeat(2,1fr)}.continent-challenge .challenge-listen{grid-row:5}
+  .ocean-challenge .challenge-title,.ocean-stage,.ocean-challenge .challenge-listen{grid-column:1}.ocean-stage{grid-row:2;width:100%;height:auto;grid-template-columns:1fr;gap:20px}.ocean-map-card{min-height:360px}.ocean-guide{position:relative;left:auto;bottom:auto;width:150px;margin:12px auto -8px}.ocean-tip{width:170px;margin-left:0}.ocean-panel{min-height:350px}.ocean-challenge .challenge-listen{grid-row:3}
+  .states-challenge .challenge-title,.states-map-card,.state-count-options,.states-challenge .challenge-listen{grid-column:1}.states-guide{position:relative;left:auto;bottom:auto;grid-row:2;width:180px;justify-self:center}.states-map-card{grid-row:3;width:100%;height:460px}.state-count-options{grid-row:4;width:100%;grid-template-columns:repeat(2,1fr)}.states-challenge .challenge-listen{grid-row:5}
+  .landscape-challenge .challenge-title,.landscape-options,.landscape-challenge .challenge-listen{grid-column:1}.landscape-guide{position:relative;left:auto;bottom:auto;grid-row:2;width:180px;justify-self:center}.landscape-options{grid-row:3;width:100%;height:auto;grid-template-rows:repeat(2,230px)}.landscape-challenge .challenge-listen{grid-row:4}
+  .legacy-challenge{position:relative;inset:auto;height:auto}
+}
+@media(max-width:560px){
+  .challenge-screen{padding-top:165px}.challenge-control{width:48px;border-width:3px;outline-width:2px}.challenge-level{width:48%;top:3px}.challenge-level small{padding:5px 10px}.challenge-level strong{font-size:18px}.challenge-status{right:62px;width:96px}.challenge-status b{font-size:10px}.challenge-status span{font-size:15px}.country-grid{width:100%;grid-template-columns:1fr;grid-template-rows:repeat(4,190px);min-height:auto}.challenge-title h1{font-size:30px}.challenge-title p{font-size:17px}.country-shape{left:17%;right:5%;top:8%;bottom:5%;width:78%;height:87%}
+}
