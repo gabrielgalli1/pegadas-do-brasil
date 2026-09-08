@@ -328,7 +328,7 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .north-challenge-screen:after{display:none}
 .north-challenge-header{position:absolute;z-index:5;inset:2.5% 2.5% auto;height:18%}
 .north-round-control{position:absolute;left:0;top:0;width:clamp(60px,6vw,92px);aspect-ratio:1;padding:0;background:transparent}.north-round-control img{width:100%;height:100%;object-fit:contain}.north-round-control.muted{filter:grayscale(1);opacity:.65}.north-sound{left:auto;right:0}
-.north-heading{position:absolute;left:17%;top:0;width:56%;text-align:center;padding:.75% 2.5% 1%;border:3px solid #3f812a;outline:3px solid #fff;border-radius:24px;background:linear-gradient(180deg,#fffef2 0%,#f2ffdd 100%);box-shadow:0 6px 0 #235f2b66,0 10px 22px #082e5b24}.north-heading h1{margin:0;color:#082e5b;font-size:clamp(26px,2.75vw,45px);line-height:1;letter-spacing:.02em;text-transform:uppercase;text-shadow:0 2px 0 #fff,0 3px 0 #b8d9a1}.north-heading p{display:inline-block;max-width:95%;margin:7px auto 0;padding:4px 16px;border:1px solid #a7ce7b;border-radius:999px;background:linear-gradient(180deg,#edfbdc,#dff3c7);color:#174f32;font-size:clamp(15px,1.45vw,23px);font-weight:900;line-height:1.2;box-shadow:inset 0 1px 0 #fff}
+.north-heading{position:absolute;left:17%;top:0;width:56%;text-align:center;padding:.75% 2.5% 1%;border:3px solid #3f812a;outline:3px solid #fff;border-radius:24px;background:linear-gradient(180deg,#fffef2 0%,#f2ffdd 100%);box-shadow:0 6px 0 #235f2b66,0 10px 22px #082e5b24}.north-heading h1{margin:0;color:#082e5b;font-size:clamp(24px,2.2vw,34px);line-height:1.1;letter-spacing:.02em;text-transform:uppercase;text-shadow:0 2px 0 #fff,0 3px 0 #b8d9a1}.north-heading p{display:inline-block;max-width:95%;margin:7px auto 0;padding:4px 16px;border:1px solid #a7ce7b;border-radius:999px;background:linear-gradient(180deg,#edfbdc,#dff3c7);color:#174f32;font-size:clamp(15px,1.45vw,23px);font-weight:900;line-height:1.2;box-shadow:inset 0 1px 0 #fff}
 .north-status{position:absolute;right:7.5%;top:42%;width:19%;padding:9px 8px;border:4px solid #fff;outline:3px solid #57952e;border-radius:18px;background:linear-gradient(#0d477e,#082e5b);color:#fff;text-align:center;box-shadow:0 6px 0 #07204788}.north-status b{display:block;font-size:clamp(12px,1.15vw,18px)}.north-status div{display:flex;justify-content:center;gap:3px}.north-status span{font-size:clamp(17px,1.7vw,27px);color:#fff;text-shadow:0 2px #777}.north-status span.active{color:#ffc928;text-shadow:0 2px #a35e00}
 .north-guide{position:absolute;z-index:4;left:5%;top:38%;width:23%;display:flex;justify-content:center;pointer-events:none}.north-tip{position:relative;width:100%;padding:12px 10px;border:3px solid #41872a;border-radius:24px;background:#fffdf1;color:#082e5b;text-align:center;font-size:clamp(14px,1.15vw,18px);font-weight:1000;line-height:1.25;box-shadow:0 5px 0 #1f5f2444}.north-tip:after{content:"";position:absolute;left:70%;bottom:-12px;width:18px;height:18px;background:#fffdf1;border-right:3px solid #41872a;border-bottom:3px solid #41872a;transform:rotate(45deg)}
 .north-map-card{position:absolute;z-index:2;left:30%;top:22%;width:49%;height:54%;padding:0;border:5px solid #4b8a24;outline:3px solid #fff;border-radius:32px;background:linear-gradient(145deg,#fffef3f5,#edf9dff2);box-shadow:0 8px 0 #163f3466,0 12px 24px #082e5b30;overflow:hidden}
@@ -358,7 +358,7 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .north-count-screen .north-listen{left:54.5%;bottom:5.5%}
 @media(max-width:900px){.north-count-screen .north-heading{left:15%;width:70%}.north-count-screen .north-heading h1{font-size:24px}.north-count-screen .north-status{top:110px;right:5%;width:150px;margin:0}.north-count-screen{padding-top:210px}.north-count-screen .north-count-card{height:clamp(240px,65vw,430px)}.north-count-options{position:relative;left:auto;top:auto;width:min(620px,95%);height:auto;margin:24px auto;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.north-count-options button{min-height:52px}.north-count-screen .north-listen{left:auto;bottom:auto;margin:28px auto 12px}}
 /* Desafio 3: mantém o fundo com o boto e o alinhamento do desafio 2. */
-.north-largest-screen .north-heading h1{font-size:clamp(22px,2.05vw,34px);line-height:1.1}
+.north-largest-screen .north-heading h1{font-size:clamp(24px,2.2vw,34px);line-height:1.1}
 .north-largest-screen .north-heading p{font-size:clamp(14px,1.25vw,20px);line-height:1.2}
 .north-largest-options button{font-size:clamp(16px,1.55vw,25px);line-height:1.15;padding:6px;color:#fff;text-shadow:0 1px 2px #082e5b}
 .north-largest-options button.north-state-amazonas{background:linear-gradient(#44ab52,#238032)}
@@ -367,7 +367,7 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .north-largest-options button.north-state-minas-gerais{background:linear-gradient(#a678cc,#7949a2)}
 @media(max-width:900px){.north-largest-screen .north-heading h1{font-size:clamp(18px,3.8vw,24px)}.north-largest-screen .north-heading p{font-size:14px}.north-largest-options{grid-template-columns:repeat(2,minmax(0,1fr))}.north-largest-options button{font-size:18px}}
 /* Desafio 4: cards independentes sobre o mesmo fundo com o boto integrado. */
-.north-habitat-screen .north-heading h1{font-size:clamp(22px,2.3vw,38px);line-height:1.1}
+.north-habitat-screen .north-heading h1{font-size:clamp(24px,2.2vw,34px);line-height:1.1}
 .north-habitat-screen .north-heading p{font-size:clamp(14px,1.25vw,20px);line-height:1.2}
 .north-habitat-options{position:absolute;z-index:3;left:30%;top:22%;width:49%;height:60%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:16px}
 .north-habitat-card{display:grid;grid-template-rows:minmax(0,1fr) auto;min-width:0;min-height:0;padding:0;overflow:hidden;border:3px solid #fff;outline:2px solid #41872a;border-radius:22px;background:#fffdf1;box-shadow:0 5px 0 #163f3466;color:#082e5b}
@@ -379,14 +379,14 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .north-habitat-card:hover:not(:disabled){filter:brightness(1.06)}
 .north-habitat-card:focus-visible{outline:5px solid #082e5b;outline-offset:4px}
 /* Desafio 5: reutiliza fundo, boto, balão e cards de imagem do desafio 4. */
-.north-plant-screen .north-heading h1{font-size:clamp(20px,2.05vw,34px);line-height:1.1}
+.north-plant-screen .north-heading h1{font-size:clamp(24px,2.2vw,34px);line-height:1.1}
 .north-plant-girassol strong{background:linear-gradient(#fff4b5,#ffd071)}
 .north-plant-cacto strong{background:linear-gradient(#e0f8ff,#99d9f3)}
 .north-plant-roseira strong{background:linear-gradient(#f2deff,#c6a3e9)}
 @media(max-width:900px){.north-habitat-screen .north-heading h1{font-size:clamp(20px,4vw,26px)}.north-habitat-options{position:relative;left:auto;top:auto;width:min(620px,95%);height:auto;margin:24px auto;grid-template-rows:auto;gap:14px}.north-habitat-card{aspect-ratio:1.1}.north-habitat-card strong{font-size:16px}.north-habitat-screen .north-listen{margin-top:30px}}
 
 /* Desafio 6: quebra-cabeça geográfico sobre o mesmo fundo com boto integrado. */
-.north-puzzle-screen .north-heading h1{font-size:clamp(20px,2vw,33px);line-height:1.1}
+.north-puzzle-screen .north-heading h1{font-size:clamp(24px,2.2vw,34px);line-height:1.1}
 .north-puzzle-screen .north-heading p{font-size:clamp(14px,1.25vw,20px);line-height:1.2}
 .north-puzzle-board{height:42%;padding:10px}
 .north-puzzle-map{display:block;width:100%;height:100%;overflow:visible}
