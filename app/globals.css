@@ -425,3 +425,66 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 }
 @media(max-width:560px){.north-puzzle-pieces{grid-template-columns:repeat(2,minmax(0,1fr))}.north-puzzle-label{font-size:18px}}
 @media(prefers-reduced-motion:reduce){.north-puzzle-hole{transition:none}}
+
+/* Créditos da equipe: acesso discreto no menu e painel com a identidade do jogo. */
+.menu-credits-button{position:absolute;z-index:8;right:2.5%;bottom:2.8%;min-height:46px;padding:8px 18px;border:3px solid #fff;outline:3px solid #07558f;border-radius:20px;background:linear-gradient(180deg,#20adf1,#087fc7);color:#fff;font-size:clamp(14px,1.25vw,20px);letter-spacing:.4px;text-shadow:0 2px #07528a;box-shadow:0 5px 0 #064d82,0 8px 14px #082c5940}
+.menu-credits-button span{display:inline!important;width:auto!important;aspect-ratio:auto!important;margin-right:5px;border:0!important;background:transparent!important;box-shadow:none!important;color:#ffd229;font-size:1.05em!important}
+.menu-credits-button:hover,.menu-credits-button:focus-visible{transform:translateY(-2px);filter:brightness(1.08)}
+.credits-modal{width:min(820px,94%)!important;max-height:94%;overflow:auto;padding:28px 34px 24px!important;border-color:#07558f!important;background:linear-gradient(180deg,#fffef3 0%,#efffda 100%)!important;box-shadow:inset 0 0 0 5px #8ccc55,0 16px 35px #001b3c70}
+.credits-heading{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:18px;color:#0b3868}
+.credits-heading>span{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#0b68a5;color:#ffd32a;font-size:28px;border:3px solid #fff;box-shadow:0 0 0 3px #f2a900}
+.credits-heading h2{margin:0!important;font-size:clamp(32px,3.2vw,48px)!important;line-height:1;color:#082c59;text-shadow:0 2px #fff}
+.credits-heading p{margin:5px 0 0!important;color:#397b28;font-weight:900;font-size:clamp(15px,1.4vw,20px)!important}
+.credits-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.credits-grid article{min-height:94px;padding:14px 12px;border:3px solid #69aa3f;border-radius:20px;background:#fffdf3;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 0 #2f7227}
+.credits-grid small{color:#2d811d;font-size:13px;font-weight:900;letter-spacing:.5px}
+.credits-grid strong,.credits-grid a{display:block;margin-top:5px;color:#082c59;font-size:clamp(17px,1.45vw,22px);font-weight:900;line-height:1.25}
+.credits-grid a{text-decoration-color:#159ee7;text-underline-offset:3px}.credits-grid a:hover,.credits-grid a:focus-visible{color:#006cb3}
+.credits-developers{grid-column:span 2;display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:4px 12px}.credits-developers small{grid-column:1/-1}.credits-developers strong{font-size:clamp(16px,1.25vw,20px)}
+.credits-advisor{border-color:#f0a412!important;box-shadow:0 4px 0 #b96b00!important;background:#fff5c8!important}.credits-advisor small{color:#a45b00}
+.credits-thanks{margin:16px 0 12px!important;color:#2d811d;font-weight:900}.credits-back{min-height:46px;padding:9px 24px;border:3px solid #fff;outline:3px solid #07558f;border-radius:18px;background:linear-gradient(#20adf1,#087fc7);color:#fff;font-size:17px;text-shadow:0 2px #07528a;box-shadow:0 4px 0 #064d82}
+@media(max-width:700px){.menu-credits-button{right:16px;bottom:16px;font-size:13px;padding:7px 12px}.credits-modal{padding:24px 14px 18px!important}.credits-heading>span{display:none}.credits-grid{grid-template-columns:1fr}.credits-developers{grid-column:auto;grid-template-columns:1fr!important}.credits-developers small{grid-column:auto}.credits-grid article{min-height:78px}.credits-heading h2{font-size:32px!important}}
+
+/* Mini cards fotográficos aprovados para a equipe. */
+.menu-credits-button{left:2.8%;right:auto;bottom:6.5%}
+.credits-modal{width:min(980px,95%)!important;padding:22px 30px 20px!important}
+.credits-heading{margin-bottom:12px}
+.credits-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.credits-grid article{min-height:142px;padding:9px 8px 10px;justify-content:flex-start}
+.credits-grid article>img{display:block;width:72px;height:72px;margin:0 auto 6px;border-radius:50%;object-fit:cover;object-position:center 30%;border:4px solid #fff;outline:3px solid #69aa3f;box-shadow:0 3px 6px #082c5938}
+.credits-grid small{font-size:12px;line-height:1.1;min-height:14px}
+.credits-grid strong{margin-top:3px;font-size:clamp(14px,1.12vw,18px);line-height:1.12}
+.credits-advisor{grid-column:auto!important}.credits-advisor>img{outline-color:#f0a412!important}
+.credits-thanks{margin:10px 0 9px!important;font-size:16px!important}
+.credits-back{min-height:42px;padding:7px 22px}
+@media(max-width:700px){.menu-credits-button{left:16px;right:auto;bottom:28px}.credits-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.credits-grid article{min-height:132px}.credits-grid article>img{width:62px;height:62px}.credits-advisor{grid-column:1/-1!important}.credits-thanks{font-size:14px!important}}
+
+/* Funções diferenciadas por cor e retratos maiores para melhor nitidez. */
+.credits-grid article{--role-color:#418f2a;--role-shadow:#24651a;--role-bg:#f3ffe8;border-color:var(--role-color)!important;background:var(--role-bg)!important;box-shadow:0 4px 0 var(--role-shadow)!important}
+.credits-grid article>img{width:88px;height:88px;outline-color:var(--role-color)!important;border-width:3px;image-rendering:auto;backface-visibility:hidden;transform:translateZ(0)}
+.credits-grid article>small{display:inline-flex;align-items:center;justify-content:center;min-height:24px;padding:4px 9px;border-radius:12px;background:var(--role-color);color:#fff!important;font-size:12px;line-height:1;text-shadow:0 1px var(--role-shadow)}
+.credits-grid article>strong{margin-top:5px;color:#082c59!important}
+.credits-sm{--role-color:#168bd1!important;--role-shadow:#075d96!important;--role-bg:#e7f7ff!important}
+.credits-po{--role-color:#8052b3!important;--role-shadow:#56347e!important;--role-bg:#f4eaff!important}
+.credits-qa{--role-color:#ec8a18!important;--role-shadow:#a95800!important;--role-bg:#fff3d8!important}
+.credits-dev{--role-color:#3b982e!important;--role-shadow:#23691d!important;--role-bg:#edffe5!important}
+.credits-advisor{--role-color:#d69a00!important;--role-shadow:#966000!important;--role-bg:#fff4c4!important}
+@media(max-width:700px){.credits-grid article>img{width:74px;height:74px}.credits-grid article>small{font-size:11px;padding:4px 7px}}
+
+/* Créditos organizados em três blocos visuais por responsabilidade. */
+.credits-modal{width:min(1080px,96%)!important;max-height:96%;padding:16px 24px 14px!important}
+.credits-heading{margin-bottom:8px}.credits-heading h2{font-size:clamp(28px,2.7vw,42px)!important}.credits-heading p{margin-top:2px!important}
+.credits-sections{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"management development" "orientation orientation";gap:10px 14px}
+.credits-group{border:3px solid #b7dc91;border-radius:20px;padding:7px 9px 10px;background:#ffffff90}
+.credits-group h3{display:table;margin:-19px auto 7px;padding:4px 18px;border-radius:15px;border:3px solid #fff;color:#fff;font-size:14px;letter-spacing:.6px;text-shadow:0 1px #173458;box-shadow:0 3px 0 #17345855}
+.credits-management{grid-area:management;border-color:#6da9d3;background:#eef8ff}.credits-management h3{background:linear-gradient(180deg,#258fce,#086ca8)}
+.credits-development{grid-area:development;border-color:#78b967;background:#f1ffe9}.credits-development h3{background:linear-gradient(180deg,#55aa3c,#287c23)}
+.credits-orientation{grid-area:orientation;width:38%;min-width:250px;justify-self:center;border-color:#e6b33a;background:#fff8d9}.credits-orientation h3{background:linear-gradient(180deg,#efb51d,#b77700)}
+.credits-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.credits-row article{min-height:116px;padding:7px 6px 8px}
+.credits-row article>img{width:64px;height:64px;margin-bottom:5px}
+.credits-row article>small{min-height:20px;padding:3px 6px;font-size:10px}
+.credits-row article>strong{font-size:14px;line-height:1.08}
+.credits-orientation .credits-row{grid-template-columns:1fr}.credits-orientation .credits-row article{display:grid;grid-template-columns:72px 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:left;min-height:92px}.credits-orientation .credits-row img{grid-row:1/3;width:68px;height:68px;margin:0}.credits-orientation .credits-row small{justify-self:start}.credits-orientation .credits-row strong{align-self:start}
+.credits-thanks{margin:6px 0!important}.credits-back{min-height:38px;padding:5px 20px;font-size:15px}
+@media(max-width:700px){.credits-sections{grid-template-columns:1fr;grid-template-areas:"management" "development" "orientation";gap:22px}.credits-group{padding:9px}.credits-row article>img{width:58px;height:58px}.credits-orientation{width:100%;min-width:0}.credits-modal{padding:20px 12px 14px!important}.credits-group h3{font-size:12px}.credits-thanks{margin-top:10px!important}}
