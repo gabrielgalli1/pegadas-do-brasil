@@ -362,7 +362,7 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .north-largest-screen .north-heading p{font-size:clamp(14px,1.25vw,20px);line-height:1.2}
 .north-largest-options button{font-size:clamp(16px,1.55vw,25px);line-height:1.15;padding:6px;color:#fff;text-shadow:0 1px 2px #082e5b}
 .north-largest-options button.north-state-amazonas{background:linear-gradient(#44ab52,#238032)}
-.north-largest-options button.north-state-para{background:linear-gradient(#f5a643,#dc781b);color:#082e5b;text-shadow:none}
+.north-largest-options button.north-state-para{background:linear-gradient(#f5a643,#dc781b);color:#fff;text-shadow:0 1px 2px #082e5b}
 .north-largest-options button.north-state-mato-grosso{background:linear-gradient(#3497d7,#176ea9)}
 .north-largest-options button.north-state-minas-gerais{background:linear-gradient(#a678cc,#7949a2)}
 @media(max-width:900px){.north-largest-screen .north-heading h1{font-size:clamp(18px,3.8vw,24px)}.north-largest-screen .north-heading p{font-size:14px}.north-largest-options{grid-template-columns:repeat(2,minmax(0,1fr))}.north-largest-options button{font-size:18px}}
