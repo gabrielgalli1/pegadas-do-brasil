@@ -488,3 +488,16 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .credits-orientation .credits-row{grid-template-columns:1fr}.credits-orientation .credits-row article{display:grid;grid-template-columns:72px 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:left;min-height:92px}.credits-orientation .credits-row img{grid-row:1/3;width:68px;height:68px;margin:0}.credits-orientation .credits-row small{justify-self:start}.credits-orientation .credits-row strong{align-self:start}
 .credits-thanks{margin:6px 0!important}.credits-back{min-height:38px;padding:5px 20px;font-size:15px}
 @media(max-width:700px){.credits-sections{grid-template-columns:1fr;grid-template-areas:"management" "development" "orientation";gap:22px}.credits-group{padding:9px}.credits-row article>img{width:58px;height:58px}.credits-orientation{width:100%;min-width:0}.credits-modal{padding:20px 12px 14px!important}.credits-group h3{font-size:12px}.credits-thanks{margin-top:10px!important}}
+
+/* Telas iniciais da Região Nordeste incorporadas do trabalho do Victor. */
+.game-shell:has(.northeast-challenge-screen){border:0;border-radius:0;background:transparent;box-shadow:none}
+.game-shell:has(.northeast-challenge-screen):before,.game-shell:has(.northeast-challenge-screen):after{display:none}
+.northeast-challenge-screen{background:linear-gradient(145deg,#fff3b1 0%,#ffd879 48%,#f6aa51 100%)!important}
+.northeast-challenge-screen .north-heading{border-color:#c96b25;background:#fffced}
+.northeast-challenge-screen .north-map-card{border-color:#c96b25}
+.northeast-options{position:absolute;z-index:3;left:30%;top:38%;width:49%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.northeast-options button{min-height:115px;padding:14px;border:5px solid #fff;outline:3px solid #c96b25;border-radius:26px;background:linear-gradient(#fff8d8,#ffe17e);box-shadow:0 7px 0 #aa542a;color:#082e5b;font-size:clamp(20px,2vw,34px);font-weight:900}
+.northeast-options button:hover:not(:disabled),.northeast-options button:focus-visible{transform:translateY(-3px);filter:brightness(1.06)}
+.northeast-options button:disabled{opacity:.62}
+@media(max-width:900px){.northeast-options{position:relative;left:auto;top:auto;width:min(620px,95%);margin:24px auto}.northeast-challenge-screen .north-status{margin-top:28px}}
+@media(max-width:560px){.northeast-options{grid-template-columns:1fr;gap:14px}.northeast-options button{min-height:72px;font-size:21px}}
