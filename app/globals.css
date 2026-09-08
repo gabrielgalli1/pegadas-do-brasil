@@ -349,18 +349,14 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .north-count-screen .north-count-card{height:50%}
 .north-count-map{position:absolute;inset:14px;display:block;width:calc(100% - 28px);height:calc(100% - 28px);object-fit:contain;object-position:center}
 .north-count-options{position:absolute;left:30%;width:49%;top:76%;height:8%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;z-index:3}
-.north-count-options button{min-height:44px;border:3px solid #fff;outline:2px solid #287638;border-radius:18px;background:linear-gradient(#d4f5ff,#88d8f2);color:#082e5b;font-size:clamp(26px,2.6vw,42px);line-height:1;font-weight:900;box-shadow:0 4px 0 #164d5366;animation:northAnswerBounce 1.8s ease-in-out infinite}
+.north-count-options button{min-height:44px;border:3px solid #fff;outline:2px solid #287638;border-radius:18px;background:linear-gradient(#d4f5ff,#88d8f2);color:#082e5b;font-size:clamp(26px,2.6vw,42px);line-height:1;font-weight:900;box-shadow:0 4px 0 #164d5366;transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
 .north-count-options button:nth-child(2){background:linear-gradient(#ebffce,#b1df7d)}
 .north-count-options button:nth-child(3){background:linear-gradient(#fff6b8,#ffd266)}
 .north-count-options button:nth-child(4){background:linear-gradient(#f4dfff,#c5a0e9)}
-.north-count-options button:nth-child(2){animation-delay:.14s}.north-count-options button:nth-child(3){animation-delay:.28s}.north-count-options button:nth-child(4){animation-delay:.42s}
-.north-count-options button:disabled{animation:none}
-@keyframes northAnswerBounce{0%,68%,100%{transform:translateY(0)}78%{transform:translateY(-8px)}88%{transform:translateY(0)}94%{transform:translateY(-3px)}}
-.north-count-options button:hover:not(:disabled){filter:brightness(1.08)}
+.north-count-options button:hover:not(:disabled),.north-count-options button:focus-visible:not(:disabled){transform:translateY(-6px);filter:brightness(1.08);box-shadow:0 9px 0 #164d5366}
 .north-count-options button:focus-visible{outline:5px solid #082e5b;outline-offset:4px}
 .north-count-screen .north-listen{left:54.5%;bottom:5.5%}
 @media(max-width:900px){.north-count-screen .north-heading{left:15%;width:70%}.north-count-screen .north-heading h1{font-size:24px}.north-count-screen .north-status{top:110px;right:5%;width:150px;margin:0}.north-count-screen{padding-top:210px}.north-count-screen .north-count-card{height:clamp(240px,65vw,430px)}.north-count-options{position:relative;left:auto;top:auto;width:min(620px,95%);height:auto;margin:24px auto;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.north-count-options button{min-height:52px}.north-count-screen .north-listen{left:auto;bottom:auto;margin:28px auto 12px}}
-@media(prefers-reduced-motion:reduce){.north-count-options button{animation:none}}
 /* Desafio 3: mantém o fundo com o boto e o alinhamento do desafio 2. */
 .north-largest-screen .north-heading h1{font-size:clamp(22px,2.05vw,34px);line-height:1.1}
 .north-largest-screen .north-heading p{font-size:clamp(14px,1.25vw,20px);line-height:1.2}
