@@ -496,12 +496,395 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 /* Telas iniciais da Região Nordeste incorporadas do trabalho do Victor. */
 .game-shell:has(.northeast-challenge-screen){border:0;border-radius:0;background:transparent;box-shadow:none}
 .game-shell:has(.northeast-challenge-screen):before,.game-shell:has(.northeast-challenge-screen):after{display:none}
-.northeast-challenge-screen{background:linear-gradient(145deg,#fff3b1 0%,#ffd879 48%,#f6aa51 100%)!important}
+.northeast-challenge-screen{background:#d9f0c6 url('/regiao-nordeste-fundo-com-tatu-v2.png') center/100% 100% no-repeat!important}
 .northeast-challenge-screen .north-heading{border-color:#c96b25;background:#fffced}
 .northeast-challenge-screen .north-map-card{border-color:#c96b25}
+.northeast-challenge-screen .north-tip{border-color:#c96b25;box-shadow:0 5px 0 #9a4d2144}
+.northeast-challenge-screen .north-tip:after{border-color:#c96b25}
+.northeast-map-card{overflow:visible!important;background:linear-gradient(145deg,#fffef3f2,#fff6d9ed)!important}
+.northeast-map{right:21%;width:calc(79% - 28px);max-width:calc(79% - 28px)}
+.northeast-map .north-region{transition:transform .18s,filter .18s,opacity .18s}
+.northeast-map .north-region:not(.flag-ready){cursor:default}
+.northeast-map .north-region.flag-ready{cursor:crosshair;filter:drop-shadow(0 2px 1px #173b4f44)}
+.northeast-map .north-region.flag-ready:hover,.northeast-map .north-region.flag-ready:focus-visible{transform:translateY(-3px);filter:brightness(1.1) drop-shadow(0 5px 2px #173b4f55);outline:none}
+.northeast-flag{position:absolute;right:3%;bottom:7%;z-index:4;width:19%;aspect-ratio:1;border:5px solid #fff;outline:4px solid #168fd3;border-radius:50%;display:grid;place-items:center;align-content:center;gap:2px;background:linear-gradient(145deg,#e9fbff,#91dcff);color:#082e5b;box-shadow:0 7px 0 #075c94,0 10px 18px #082e5b3d;cursor:grab;touch-action:none}
+.northeast-flag span{color:#147bd1;font-size:clamp(46px,5vw,78px);line-height:.85;text-shadow:0 3px 0 #fff,0 5px 2px #082e5b44}
+.northeast-flag strong{font-size:clamp(10px,1.05vw,16px);line-height:1.05}
+.northeast-flag:hover:not(:disabled),.northeast-flag:focus-visible,.northeast-flag.selected{transform:translateY(-4px) scale(1.04);outline-color:#ffd029;box-shadow:0 8px 0 #075c94,0 0 0 8px #fff8cfaa}
+.northeast-flag:active{cursor:grabbing}
+.northeast-flag:disabled{opacity:.62;cursor:default}
 .northeast-options{position:absolute;z-index:3;left:30%;top:38%;width:49%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
 .northeast-options button{min-height:115px;padding:14px;border:5px solid #fff;outline:3px solid #c96b25;border-radius:26px;background:linear-gradient(#fff8d8,#ffe17e);box-shadow:0 7px 0 #aa542a;color:#082e5b;font-size:clamp(20px,2vw,34px);font-weight:900}
 .northeast-options button:hover:not(:disabled),.northeast-options button:focus-visible{transform:translateY(-3px);filter:brightness(1.06)}
 .northeast-options button:disabled{opacity:.62}
-@media(max-width:900px){.northeast-options{position:relative;left:auto;top:auto;width:min(620px,95%);margin:24px auto}.northeast-challenge-screen .north-status{margin-top:28px}}
+@media(max-width:900px){.northeast-options{position:relative;left:auto;top:auto;width:min(620px,95%);margin:24px auto}.northeast-challenge-screen .north-status{margin-top:28px}.northeast-challenge-screen{background-size:cover!important}.northeast-map-card{overflow:hidden!important}.northeast-map{right:22%;width:calc(78% - 28px);max-width:calc(78% - 28px)}.northeast-flag{right:3%;bottom:8%;width:20%}}
 @media(max-width:560px){.northeast-options{grid-template-columns:1fr;gap:14px}.northeast-options button{min-height:72px;font-size:21px}}
+
+/* Ajustes da prévia do desafio 1 da Região Nordeste. */
+.northeast-challenge-screen{background-size:contain!important;background-color:#d8efc0!important}
+.northeast-challenge-screen .north-heading{left:30%;top:0;width:49%}
+.northeast-challenge-screen .north-guide{left:4%;top:24%;width:24%}
+.northeast-challenge-screen .north-tip{padding:14px 12px}
+.northeast-map-card{overflow:hidden!important}
+.northeast-map{inset:14px!important;width:calc(100% - 28px)!important;max-width:calc(100% - 28px)!important}
+.northeast-map .north-region{cursor:pointer!important}
+.northeast-map .north-region:hover,.northeast-map .north-region:focus-visible{transform:translateY(-3px);filter:brightness(1.1) drop-shadow(0 5px 2px #173b4f55);outline:none}
+@media(max-width:900px){.northeast-challenge-screen{background-size:contain!important}.northeast-challenge-screen .north-heading{left:15%;width:70%}.northeast-challenge-screen .north-guide{left:auto;top:auto;width:230px}.northeast-map{inset:14px!important;width:calc(100% - 28px)!important;max-width:calc(100% - 28px)!important}}
+
+/* Refinamento da composição do desafio 1 da Região Nordeste. */
+.northeast-challenge-screen{background-image:url('/regiao-nordeste-fundo-com-tatu-v3.png')!important;background-position:center!important;background-size:100% 100%!important}
+.northeast-challenge-screen .north-heading{left:30%;top:3%;width:49%}
+.northeast-challenge-screen .north-status{right:2%;top:3%;width:16%}
+.northeast-challenge-screen .north-guide{left:3.5%;top:27%;width:23%}
+.northeast-challenge-screen .northeast-map-card{left:30%;top:24%;width:49%;height:52%}
+.northeast-challenge-screen .north-map-instruction{left:30%;top:78%;width:49%}
+@media(max-width:900px){.northeast-challenge-screen{background-size:cover!important}.northeast-challenge-screen .north-heading{left:14%;top:1%;width:68%}.northeast-challenge-screen .north-status{right:2%;top:105px;width:150px}.northeast-challenge-screen .north-guide{left:auto;top:auto;width:230px}.northeast-challenge-screen .northeast-map-card,.northeast-challenge-screen .north-map-instruction{position:relative;left:auto;top:auto;width:min(620px,95%)}}
+
+/* Ajuste fino de moldura e alinhamento do desafio 1 do Nordeste. */
+.game-shell:has(.northeast-challenge-screen){border:8px solid var(--navy);border-radius:30px;box-shadow:0 20px 55px #00152c88}
+.northeast-challenge-screen .north-guide{left:3.5%;top:33%;width:23%}
+.northeast-challenge-screen .north-status{right:1%;top:80%;width:17%}
+.northeast-challenge-screen .north-listen{left:54.5%}
+@media(max-width:900px){.game-shell:has(.northeast-challenge-screen){border-width:5px;border-radius:0}.northeast-challenge-screen .north-guide{left:auto;top:auto;width:230px}.northeast-challenge-screen .north-status{right:2%;top:112px;width:150px}.northeast-challenge-screen .north-listen{left:auto}}
+
+/* Desafio 2: descoberta dos nove estados da Região Nordeste. */
+.northeast-state-screen .north-heading{left:18%;width:60%}
+.northeast-state-screen .north-guide{left:5%;top:24%;width:22%}
+.northeast-state-screen .north-status{right:1%;top:80%;width:17%}
+.northeast-discovery-card{position:absolute;z-index:2;left:28%;top:22%;width:53%;height:60%;padding:10px 16px 64px;border:5px solid #c96b25;outline:3px solid #fff;border-radius:32px;background:linear-gradient(145deg,#fffef3f2,#fff6d9ed);box-shadow:0 8px 0 #163f3466,0 12px 24px #082e5b30}
+.northeast-states-map{display:block;width:100%;height:100%;filter:drop-shadow(0 4px 3px #173b4f44)}
+.northeast-states-map g{cursor:pointer;outline:none}
+.northeast-states-map path{fill:#f3eee1;stroke:#8d8b83;stroke-width:3;stroke-dasharray:7 5;transition:fill .2s,filter .2s,transform .2s;transform-origin:center}
+.northeast-states-map g:hover path,.northeast-states-map g:focus-visible path{fill:#fff7ca;filter:brightness(1.05);transform:translateY(-2px)}
+.northeast-states-map g.revealed path{fill:var(--state-color);stroke:#fff;stroke-dasharray:none}
+.northeast-states-map text{pointer-events:none;text-anchor:middle;dominant-baseline:middle;fill:#082e5b;font-size:17px;font-weight:1000;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+.northeast-states-map .state-check{fill:#16862e;font-size:24px;stroke-width:5px}
+.northeast-discovery-progress{position:absolute;left:8%;right:8%;bottom:12px;padding:7px 12px;border:2px solid #d3aa5b;border-radius:18px;background:#fffced;text-align:center;color:#082e5b}
+.northeast-discovery-progress strong{display:block;font-size:clamp(13px,1.15vw,18px);margin-bottom:5px}
+.northeast-discovery-progress div{display:flex;justify-content:center;gap:9px}
+.northeast-discovery-progress span{width:19px;height:19px;border-radius:50%;background:#e4e0d5;border:2px solid #aaa49b;box-shadow:inset 0 2px 2px #7774}
+.northeast-discovery-progress span.found{background:#55b72e;border-color:#277e1c}
+.northeast-state-screen .north-listen{left:54.5%;bottom:3.2%}
+@media(max-width:900px){.northeast-state-screen .north-heading{left:14%;width:68%}.northeast-discovery-card{position:relative;left:auto;top:auto;width:min(620px,95%);height:560px;margin:18px auto}.northeast-state-screen .north-guide{left:auto;top:auto;width:230px}.northeast-state-screen .north-listen{left:auto;bottom:auto}}
+
+/* Correção de alinhamento do desafio 2 com o card principal e o mascote. */
+.northeast-state-screen .north-heading{left:28%;top:3%;width:53%}
+.northeast-state-screen .north-guide{left:4.5%;top:32%;width:22%}
+@media(max-width:900px){.northeast-state-screen .north-heading{left:14%;top:1%;width:68%}.northeast-state-screen .north-guide{left:auto;top:auto;width:230px}}
+
+/* Ajuste de escala do mapa e posição do progresso no desafio 2. */
+.northeast-state-screen .north-status{right:-.35%}
+.northeast-state-screen .northeast-discovery-card{overflow:hidden}
+.northeast-state-screen .northeast-states-map{transform:scale(1.16) translateY(-1.5%);transform-origin:center 45%}
+@media(max-width:900px){.northeast-state-screen .north-status{right:1%}.northeast-state-screen .northeast-states-map{transform:scale(1.08);transform-origin:center 45%}}
+
+/* Desafio 3: clima do Sertão. */
+.northeast-climate-screen .north-heading{left:28%;top:3%;width:53%}
+.northeast-climate-screen .north-guide{left:4.5%;top:31%;width:22%}
+.northeast-climate-screen .north-status{right:-.35%;top:80%;width:17%}
+.northeast-climate-card{position:absolute;z-index:2;left:28%;top:22%;width:53%;height:61%;padding:12px 18px 16px;border:5px solid #c96b25;outline:3px solid #fff;border-radius:32px;background:linear-gradient(145deg,#fffef3f2,#fff6d9ed);box-shadow:0 8px 0 #163f3466,0 12px 24px #082e5b30;overflow:hidden}
+.northeast-climate-landscape{height:34%;position:relative;overflow:hidden;border:3px solid #d18b31;border-radius:20px;background:linear-gradient(#46bdf5 0 48%,#f6cf66 49% 67%,#c88836 68%);box-shadow:inset 0 -12px 18px #7a431d33}
+.northeast-climate-landscape:before,.northeast-climate-landscape:after{content:"";position:absolute;bottom:20%;width:55%;height:42%;background:#d99b43;clip-path:polygon(0 100%,22% 30%,40% 72%,63% 10%,100% 100%)}
+.northeast-climate-landscape:before{left:0}.northeast-climate-landscape:after{right:-8%;filter:brightness(.86)}
+.northeast-climate-landscape span{position:absolute;right:12%;top:8%;font-size:44px}.northeast-climate-landscape i,.northeast-climate-landscape b{position:absolute;z-index:2;bottom:4%;font-size:48px;font-style:normal}.northeast-climate-landscape i{left:11%}.northeast-climate-landscape b{right:20%}.northeast-climate-landscape em{display:none}
+.climate-columns{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:9px}
+.climate-columns section h2{width:58%;margin:0 auto 4px;padding:3px;border-radius:999px;background:#ffd33d;color:#563a00;text-align:center;font-size:clamp(12px,1.05vw,17px)}
+.climate-answer-slot{height:43px;display:grid;place-items:center;margin-bottom:7px;border:2px dashed #c4aa78;border-radius:12px;background:#fffbed;color:#b49e78;font-size:clamp(18px,2vw,30px);font-weight:1000}
+.climate-options{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.climate-options button{min-height:82px;padding:6px;border:3px solid #fff;outline:2px solid #2e9566;border-radius:14px;background:#fffef2;color:#082e5b;font-size:clamp(11px,.95vw,15px);line-height:1;font-weight:1000;box-shadow:0 4px 0 #246e4b}
+.climate-options button span{display:block;font-size:clamp(28px,3vw,46px);margin-bottom:3px}.climate-options button:hover:not(:disabled),.climate-options button:focus-visible,.climate-options button.selected{transform:translateY(-2px);background:#fff1a8;outline-color:#f3a316}
+.northeast-climate-screen .north-listen{left:54.5%;bottom:3.2%}
+@media(max-width:900px){.northeast-climate-screen .north-heading{left:14%;top:1%;width:68%}.northeast-climate-screen .north-guide{left:auto;top:auto;width:230px}.northeast-climate-card{position:relative;left:auto;top:auto;width:min(620px,95%);height:auto;min-height:560px;margin:18px auto}.northeast-climate-screen .north-listen{left:auto;bottom:auto}.climate-columns{grid-template-columns:1fr}}
+
+/* Imagens ilustradas do desafio 3. */
+.northeast-climate-landscape{height:38%;background:#f3c36b}
+.northeast-climate-landscape:before,.northeast-climate-landscape:after,.northeast-climate-landscape>span,.northeast-climate-landscape>i,.northeast-climate-landscape>b{display:none}
+.northeast-climate-landscape img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 56%}
+.climate-columns{margin-top:8px}
+.climate-answer-slot{height:39px;margin-bottom:6px}
+.climate-options button{min-height:105px;padding:5px 6px 7px;overflow:hidden}
+.climate-options button img{display:block;width:68px;height:68px;margin:0 auto 3px;border-radius:13px;object-fit:cover;object-position:center}
+@media(max-width:1200px){.climate-options button{min-height:92px}.climate-options button img{width:56px;height:56px}}
+@media(max-width:900px){.northeast-climate-landscape{height:190px}.climate-options button img{width:72px;height:72px}}
+
+/* Proporções finais e ícones transparentes do desafio 3. */
+.northeast-climate-landscape{height:42%}
+.climate-columns section h2{font-weight:1000;letter-spacing:.025em}
+.climate-options button{min-height:112px;padding:4px 6px 7px}
+.climate-options button img{width:82px;height:76px;border-radius:0;object-fit:contain;background:transparent}
+@media(max-width:1200px){.northeast-climate-landscape{height:40%}.climate-options button{min-height:100px}.climate-options button img{width:70px;height:64px}}
+@media(max-width:900px){.northeast-climate-landscape{height:210px}.climate-options button img{width:86px;height:80px}}
+
+/* Distribuição vertical proporcional do painel climático. */
+.northeast-climate-card{display:flex;flex-direction:column}
+.northeast-climate-landscape{flex:0 0 46%;height:auto}
+.northeast-climate-card .climate-columns{flex:1;min-height:0;align-items:stretch}
+.northeast-climate-card .climate-columns>section{display:flex;min-height:0;flex-direction:column}
+.northeast-climate-card .climate-options{flex:1;min-height:0}
+.northeast-climate-card .climate-options button{height:100%;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.northeast-climate-card .climate-options button img{flex:0 1 82px;min-height:0}
+@media(max-width:1200px){.northeast-climate-landscape{flex-basis:44%;height:auto}.northeast-climate-card .climate-options button{min-height:0}}
+@media(max-width:900px){.northeast-climate-card{display:block}.northeast-climate-landscape{height:230px}.northeast-climate-card .climate-options button{min-height:110px}}
+
+/* Desafio 4: busca do tatu-bola com lupa móvel na Caatinga. */
+.northeast-animal-screen .north-heading{left:28%;top:3%;width:53%}.northeast-animal-screen .north-guide{left:4.5%;top:28%;width:22%}.northeast-animal-screen .north-status{right:-.35%;top:80%;width:17%}
+.northeast-animal-card{position:absolute;z-index:2;left:28%;top:22%;width:53%;height:61%;padding:12px 14px 62px;border:5px solid #c96b25;outline:3px solid #fff;border-radius:32px;background:linear-gradient(145deg,#fffef3f2,#fff6d9ed);box-shadow:0 8px 0 #163f3466,0 12px 24px #082e5b30}
+.animal-search-scene{--lens-x:51%;--lens-y:48%;position:relative;width:100%;height:100%;overflow:hidden;border:4px solid #d18b31;border-radius:22px;background:#cf9b43;cursor:crosshair;touch-action:none}.animal-search-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none}
+.hidden-animal{position:absolute;z-index:2;height:auto;object-fit:contain;filter:drop-shadow(0 3px 2px #38200c88);pointer-events:none}.animal-bird{left:45%;top:14%;width:8.5%;transform:rotate(-5deg)}.animal-iguana{left:10%;bottom:8%;width:14%}.animal-armadillo{right:7%;bottom:7%;width:14%}
+.animal-hotspot{position:absolute;z-index:4;border:0;background:transparent;cursor:pointer}.hotspot-bird{left:43%;top:10%;width:13%;height:25%}.hotspot-iguana{left:7%;bottom:3%;width:20%;height:31%}.hotspot-armadillo{right:4%;bottom:2%;width:20%;height:31%}.animal-hotspot:focus-visible{outline:5px solid #ffd329;outline-offset:2px;border-radius:50%}
+.animal-dimmer{position:absolute;inset:0;z-index:3;background:#06252d72;pointer-events:none;-webkit-mask-image:radial-gradient(circle 78px at var(--lens-x) var(--lens-y),transparent 0 69px,#000 78px);mask-image:radial-gradient(circle 78px at var(--lens-x) var(--lens-y),transparent 0 69px,#000 78px)}
+.animal-lens{position:absolute;z-index:5;left:var(--lens-x);top:var(--lens-y);width:150px;height:150px;border:6px solid #fff;outline:5px solid #168fd3;border-radius:50%;box-shadow:inset 0 0 18px #ffffffb8,0 5px 12px #082e5b88;transform:translate(-50%,-50%);pointer-events:none}.animal-lens:after{content:"";position:absolute;right:-39px;bottom:-30px;width:62px;height:18px;border:4px solid #fff;border-radius:10px;background:#168fd3;box-shadow:0 3px 4px #082e5b66;transform:rotate(45deg);transform-origin:left center}
+.animal-search-scene.show-hint .animal-armadillo{animation:animalHintPulse .75s ease-in-out 3}.animal-hint{position:absolute;left:5%;bottom:11px;min-height:42px;padding:7px 16px;border:3px solid #fff;outline:2px solid #a36a00;border-radius:18px;background:linear-gradient(#ffe95b,#f2a900);color:#382400;font-size:clamp(12px,1.05vw,17px);font-weight:1000;box-shadow:0 4px 0 #9f6500}.animal-hint:hover:not(:disabled),.animal-hint:focus-visible{transform:translateY(-2px);filter:brightness(1.05)}
+.northeast-animal-screen .north-listen{left:62%;bottom:3.2%}@keyframes animalHintPulse{50%{transform:scale(1.18);filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 10px #ffd329)}}
+@media(max-width:900px){.northeast-animal-screen .north-heading{left:14%;top:1%;width:68%}.northeast-animal-screen .north-guide{left:auto;top:auto;width:230px}.northeast-animal-card{position:relative;left:auto;top:auto;width:min(620px,95%);height:540px;margin:18px auto}.northeast-animal-screen .north-listen{left:auto;bottom:auto}.animal-lens{width:130px;height:130px}.animal-dimmer{-webkit-mask-image:radial-gradient(circle 68px at var(--lens-x) var(--lens-y),transparent 0 60px,#000 68px);mask-image:radial-gradient(circle 68px at var(--lens-x) var(--lens-y),transparent 0 60px,#000 68px)}}@media(prefers-reduced-motion:reduce){.animal-search-scene.show-hint .animal-armadillo{animation:none;filter:drop-shadow(0 0 10px #ffd329)}}
+
+
+/* Refinamento do desafio 4: mais fauna, maior contraste e controles alinhados. */
+.northeast-animal-screen .north-guide{top:35%}
+.animal-dimmer{background:#031a229c}
+.animal-armadillo{right:8.5%;bottom:9%;width:10.5%;opacity:.78;filter:brightness(.78) saturate(.82) drop-shadow(0 2px 2px #38200c66)}
+.hotspot-armadillo{right:6%;bottom:5%;width:16%;height:26%}
+.animal-prea{left:30%;bottom:7%;width:10%;opacity:.88}
+.hotspot-prea{left:27%;bottom:3%;width:16%;height:27%}
+.animal-carcara{right:25%;top:6%;width:8.5%;opacity:.88}
+.hotspot-carcara{right:22%;top:3%;width:14%;height:31%}
+.animal-hint{left:10%;bottom:-69px;min-width:210px}
+.northeast-animal-screen .north-listen{left:61%;bottom:3.2%;min-width:210px}
+@media(max-width:1200px){.animal-hint{bottom:-62px;min-width:180px}.northeast-animal-screen .north-listen{min-width:180px}}
+@media(max-width:900px){.northeast-animal-screen .north-guide{top:auto}.animal-hint{position:relative;left:auto;bottom:auto;display:block;width:max-content;margin:12px auto 0}.northeast-animal-screen .north-listen{min-width:0}}
+
+/* Desafio 5: álbum interativo da diversidade de paisagens do Nordeste. */
+.northeast-landscape-screen .north-heading{left:28%;top:2.5%;width:53%}
+.northeast-landscape-screen .north-heading h1{font-size:clamp(22px,2vw,31px)}
+.northeast-landscape-screen .north-guide{left:4.2%;top:31%;width:22%}
+.northeast-landscape-screen .north-status{right:-.35%;top:80%;width:17%}
+.northeast-landscape-card{position:absolute;z-index:2;left:28%;top:20%;width:53%;height:64%;padding:12px 14px;border:5px solid #c96b25;outline:3px solid #fff;border-radius:32px;background:linear-gradient(145deg,#fffef3f5,#fff6d9f0);box-shadow:0 8px 0 #163f3466,0 12px 24px #082e5b30;display:grid;grid-template-rows:minmax(0,1.35fr) auto minmax(0,1fr);gap:8px;overflow:hidden}
+.landscape-album,.landscape-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;min-height:0}
+.landscape-album button{position:relative;min-width:0;min-height:0;padding:0 0 30px;overflow:hidden;border:3px dashed #77a7b8;border-radius:16px;background:#e9f4ec;color:#7f987f;box-shadow:inset 0 2px 8px #35576822}
+.landscape-album button:not(:disabled):hover,.landscape-album button:not(:disabled):focus-visible{background:#fff5ae;border-color:#e29416;transform:translateY(-2px)}
+.landscape-album button>span{display:grid;height:100%;place-items:center;font-size:clamp(28px,4vw,58px);font-weight:1000;color:#86a7ad}
+.landscape-album button>strong{position:absolute;left:0;right:0;bottom:0;display:grid;place-items:center;height:30px;background:#0b76b8;color:#fff;font-size:clamp(10px,.95vw,15px);letter-spacing:.03em;text-shadow:0 1px #06436d}
+.landscape-album button.filled{border-style:solid;border-color:#fff;outline:2px solid #3b9237;background:#fff}
+.landscape-album button.filled img{display:block;width:100%;height:100%;object-fit:cover}
+.landscape-album-instruction{margin:0;padding:4px 8px;border-radius:12px;background:#fff4bd;color:#694600;text-align:center;font-size:clamp(11px,1vw,15px);font-weight:900}
+.landscape-cards button{position:relative;min-width:0;min-height:0;padding:0;overflow:hidden;border:3px solid #fff;outline:2px solid #2d9565;border-radius:14px;background:#fff;box-shadow:0 4px 0 #246e4b;transition:transform .16s,filter .16s}
+.landscape-cards button img{display:block;width:100%;height:100%;object-fit:cover}
+.landscape-cards button span{position:absolute;left:7px;right:7px;bottom:5px;padding:3px;border-radius:9px;background:#083a69d9;color:#fff;font-size:clamp(9px,.8vw,13px);font-weight:1000}
+.landscape-cards button:hover:not(:disabled),.landscape-cards button:focus-visible,.landscape-cards button.selected{transform:translateY(-3px);outline:4px solid #ffd12a;filter:brightness(1.08)}
+.landscape-cards button.selected span{background:#e18c00}
+.landscape-cards button:disabled{opacity:.22}
+.northeast-landscape-screen .north-listen{left:54.5%;bottom:2.2%}
+@media(max-width:900px){.northeast-landscape-screen .north-heading{left:14%;top:1%;width:68%}.northeast-landscape-screen .north-guide{left:auto;top:auto;width:230px}.northeast-landscape-card{position:relative;left:auto;top:auto;width:min(720px,96%);height:570px;margin:18px auto}.northeast-landscape-screen .north-listen{left:auto;bottom:auto}}
+@media(max-width:600px){.landscape-album,.landscape-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.northeast-landscape-card{height:760px}}
+
+
+/* Ajuste de leitura do desafio 5: paisagens completas e instrução destacada. */
+.northeast-landscape-screen .north-heading{left:25%;width:58%}
+.northeast-landscape-card{left:25%;top:18%;width:58%;height:68%;grid-template-rows:minmax(0,1.25fr) auto minmax(0,1fr);gap:10px;padding:13px 15px}
+.landscape-album,.landscape-cards{gap:11px}
+.landscape-album button{padding-bottom:32px;background:#dceee8}
+.landscape-album button>strong{height:32px;font-size:clamp(11px,1vw,16px)}
+.landscape-album button.filled img,.landscape-cards button img{object-fit:contain;object-position:center;background:linear-gradient(145deg,#d9f1ef,#fff8d9)}
+.landscape-album-instruction{padding:7px 12px;border:2px solid #e6b62c;background:#fff1a6;font-size:clamp(14px,1.25vw,19px);line-height:1.15;font-weight:1000;box-shadow:0 3px 0 #bd841f55}
+.landscape-cards button{background:linear-gradient(145deg,#d9f1ef,#fff8d9)}
+.landscape-cards button span{bottom:4px;font-size:clamp(10px,.9vw,14px)}
+.northeast-landscape-screen .north-listen{bottom:1.1%}
+@media(max-width:1200px){.northeast-landscape-card{top:18%;height:67%}.landscape-album-instruction{font-size:14px;padding:6px 9px}}
+@media(max-width:900px){.northeast-landscape-screen .north-heading{left:14%;width:68%}.northeast-landscape-card{position:relative;left:auto;top:auto;width:min(760px,97%);height:620px}}
+
+
+/* Artes verticais definitivas do álbum de paisagens. */
+.northeast-landscape-card{top:17%;height:70%;grid-template-rows:minmax(0,1.45fr) auto minmax(0,1.15fr)}
+.landscape-album button.filled img,.landscape-cards button img{object-fit:cover;object-position:center;background:#dceee8}
+.landscape-album button,.landscape-cards button{aspect-ratio:auto}
+.landscape-cards button img{position:absolute;inset:0;width:100%;height:100%}
+.landscape-cards button span{z-index:2}
+.northeast-landscape-screen .north-listen{bottom:.5%}
+@media(max-width:1200px){.northeast-landscape-card{top:17%;height:69%}}
+
+/* Desafio 6: montagem interativa do arraiá nordestino. */
+.northeast-arraia-screen .north-heading{left:27%;top:2.5%;width:55%}
+.northeast-arraia-screen .north-heading h1{font-size:clamp(21px,1.9vw,30px)}
+.northeast-arraia-screen .north-guide{left:4%;top:32%;width:22%}
+.northeast-arraia-screen .north-status{right:-.35%;top:80%;width:17%}
+.northeast-arraia-card{position:absolute;z-index:2;left:27%;top:20%;width:55%;height:65%;padding:11px 13px 12px;border:5px solid #c96b25;outline:3px solid #fff;border-radius:32px;background:linear-gradient(145deg,#fffef3f5,#fff0caf2);box-shadow:0 8px 0 #163f3466,0 12px 24px #082e5b30;display:grid;grid-template-rows:minmax(0,1.65fr) auto minmax(0,.85fr);gap:7px;overflow:hidden}
+.arraia-scene{position:relative;min-height:0;overflow:hidden;border:3px solid #d18b31;border-radius:19px;background:#e9a054}
+.arraia-scene>img:first-child{display:block;width:100%;height:100%;object-fit:cover;object-position:center 56%}
+.arraia-added{position:absolute;z-index:2;animation:arraiaAppear .45s ease-out both}
+.added-flags{left:5%;right:5%;top:3%;font-size:clamp(20px,2.1vw,34px);letter-spacing:.28em;text-align:center;filter:drop-shadow(0 2px 1px #482000)}
+.arraia-scene img.arraia-added{height:auto;object-fit:contain;border-radius:15px;mix-blend-mode:screen}
+.added-accordion{left:43%;bottom:13%;width:14%}.added-corn{right:4%;bottom:2%;width:12%}.added-frevo{left:5%;bottom:2%;width:12%;transform:rotate(-10deg)}
+.arraia-progress{display:flex;align-items:center;justify-content:center;gap:12px;padding:4px 9px;border:2px solid #e6b62c;border-radius:12px;background:#fff1a6;color:#694600;font-size:clamp(11px,1vw,15px)}
+.arraia-progress div{display:flex;gap:4px}.arraia-progress span{color:#d5cbb1;font-size:18px;text-shadow:0 1px #785900}.arraia-progress span.ready{color:#f2a700}
+.arraia-options{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;min-height:0}
+.arraia-options button{display:grid;grid-template-rows:minmax(0,1fr) auto;min-width:0;min-height:0;padding:0;overflow:hidden;border:3px solid #fff;outline:2px solid #287e4c;border-radius:13px;background:#fff7d8;box-shadow:0 3px 0 #1e6540;color:#082e5b}
+.arraia-options button img{display:block;width:100%;height:100%;min-height:0;object-fit:cover}
+.arraia-options button strong{padding:4px 2px;background:#e9ffd5;font-size:clamp(8px,.68vw,11px);line-height:1}
+.arraia-options button:hover:not(:disabled),.arraia-options button:focus-visible{transform:translateY(-3px);outline:4px solid #ffd12a;filter:brightness(1.08)}
+.arraia-options button:disabled{opacity:.25}
+.northeast-arraia-screen .north-listen{left:54.5%;bottom:1%}
+@keyframes arraiaAppear{from{opacity:0;scale:.35}to{opacity:1;scale:1}}
+@media(max-width:900px){.northeast-arraia-screen .north-heading{left:14%;top:1%;width:68%}.northeast-arraia-screen .north-guide{left:auto;top:auto;width:230px}.northeast-arraia-card{position:relative;left:auto;top:auto;width:min(760px,97%);height:650px;margin:18px auto}.northeast-arraia-screen .north-listen{left:auto;bottom:auto}.arraia-options{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){.arraia-added{animation:none}}
+
+
+/* Desafio 6 em formato de quebra-cabeça de silhuetas. */
+.arraia-scene{isolation:isolate}
+.arraia-slot{position:absolute;z-index:3;padding:0;border:2px dashed #ffe88a;border-radius:16px;background:#071a2c70;cursor:pointer;filter:drop-shadow(0 3px 3px #0008)}
+.arraia-slot img{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;filter:brightness(0);opacity:.72}
+.arraia-slot:hover:not(:disabled),.arraia-slot:focus-visible{outline:4px solid #ffd12a;background:#fff5a755;transform:scale(1.05)}
+.arraia-slot.placed{border-color:transparent;background:transparent;filter:none;animation:arraiaAppear .45s ease-out both}
+.arraia-slot.placed img{filter:none;opacity:1}
+.slot-bandeirinhas{left:16%;right:16%;top:1%;height:23%}
+.slot-sanfona{left:45%;top:43%;width:12%;height:34%}
+.slot-milho{right:3%;bottom:2%;width:11%;height:32%}
+.slot-frevo{left:3%;bottom:2%;width:11%;height:34%;transform:rotate(-8deg)}
+.arraia-options button img{object-fit:contain;background:linear-gradient(145deg,#60351d,#172e31)}
+.arraia-options button.selected{outline:4px solid #ffd12a;transform:translateY(-3px);background:#fff0a5}
+.arraia-options button.selected strong{background:#ffd74c;color:#553500}
+@media(max-width:900px){.slot-bandeirinhas{left:10%;right:10%}.slot-sanfona{width:15%}.slot-milho,.slot-frevo{width:14%}}
+
+/* Arraste real das peças do quebra-cabeça cultural. */
+.arraia-options button{touch-action:none;user-select:none;cursor:grab}
+.arraia-options button:active{cursor:grabbing}
+.arraia-options button.dragging{opacity:.28;transform:scale(.94)}
+.arraia-slot:not(.placed){background:#07142196;border:3px dashed #ffe77c;box-shadow:inset 0 0 14px #0008,0 0 0 2px #fff8}
+.arraia-slot:not(.placed) img{filter:brightness(0) drop-shadow(0 0 3px #fff);opacity:.8}
+.arraia-drag-ghost{position:fixed;z-index:120;width:112px;height:92px;padding:5px;border:4px solid #fff;outline:3px solid #ffd12a;border-radius:18px;background:#163b47d9;box-shadow:0 9px 18px #0008;transform:translate(-50%,-50%) scale(1.06);pointer-events:none}
+.arraia-drag-ghost img{display:block;width:100%;height:100%;object-fit:contain}
+@media(max-width:900px){.arraia-drag-ghost{width:92px;height:78px}}
+
+/* A sombra faz parte visualmente da cena, sem caixa ao redor. */
+.arraia-slot,.arraia-slot:not(.placed){border:0;background:transparent;box-shadow:none;outline:none}
+.arraia-slot:not(.placed) img{filter:brightness(0) drop-shadow(0 2px 3px #fff9);opacity:.76}
+.arraia-slot:not(.placed):hover,.arraia-slot:not(.placed):focus-visible{border:0;background:#ffe65a24;outline:3px dashed #ffe45c;border-radius:50%;filter:drop-shadow(0 0 7px #fff)}
+
+/* Cena v3: as silhuetas já estão pintadas na ilustração. */
+.arraia-scene>img:first-child{object-position:center center}
+.slot-bandeirinhas{left:20%;right:20%;top:5%;height:22%}
+.slot-sanfona{left:45%;top:34%;width:13%;height:27%}
+.slot-milho{right:4%;top:49%;bottom:auto;width:12%;height:29%}
+.slot-frevo{left:4%;top:28%;bottom:auto;width:15%;height:31%;transform:none}
+.arraia-slot:not(.placed) img{display:none!important}
+.arraia-slot:not(.placed):hover,.arraia-slot:not(.placed):focus-visible{background:#ffe65a2e;outline:3px dashed #ffe45c;border-radius:18px}
+.arraia-slot.drop-ready{background:#fff06a4a!important;outline:5px solid #ffe037!important;border-radius:18px;filter:drop-shadow(0 0 9px #fff)}
+.arraia-slot.placed img{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;filter:none!important;opacity:1!important}
+.arraia-options button img{background:linear-gradient(145deg,#fff8dc,#dff5df)}
+
+/* Ajuste final do quebra-cabeça: cena proporcional e encaixes invisíveis. */
+.northeast-arraia-card{top:18%;height:72%;padding:8px;grid-template-rows:minmax(0,1fr) auto 96px;gap:5px}
+.arraia-scene{width:100%;height:100%;border-width:3px;border-radius:18px}
+.arraia-scene>img:first-child{width:100%;height:100%;object-fit:fill;object-position:center}
+.arraia-slot,.arraia-slot:not(.placed),.arraia-slot:not(.placed):hover,.arraia-slot:not(.placed):focus-visible{border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;filter:none!important;border-radius:0!important}
+.arraia-slot.drop-ready{background:#ffe85a30!important;outline:0!important;box-shadow:inset 0 0 0 4px #ffe34a!important;border-radius:12px!important;filter:none!important}
+.slot-bandeirinhas{left:20%;right:20%;top:4%;height:23%}
+.slot-sanfona{left:45.2%;top:34%;width:13.2%;height:28%}
+.slot-milho{right:3.2%;top:48%;width:13%;height:30%}
+.slot-frevo{left:3.4%;top:27%;width:15.5%;height:33%}
+.arraia-options{gap:6px}
+.arraia-options button{height:96px}
+.arraia-options button img{pointer-events:none}
+.northeast-arraia-screen .north-listen{bottom:.5%}
+.arraia-slot.placed img{object-fit:fill!important}
+
+/* Posições medidas na arte 1672 x 941; peças v3 usam o mesmo molde das sombras. */
+.slot-bandeirinhas{left:25.60%;right:auto;top:7.76%;width:47.37%;height:16.05%}
+.slot-frevo{left:4.55%;top:28.27%;width:14.47%;height:19.87%}
+.slot-sanfona{left:44.86%;top:42.61%;width:9.03%;height:10.63%}
+.slot-milho{left:85.29%;right:auto;top:53.13%;width:10.29%;height:15.09%}
+
+/* Refinos aprovados do desafio 6. */
+.arraia-options button img{background:#fffaf0!important}
+.northeast-arraia-screen .north-listen{bottom:2.4%}
+.northeast-arraia-screen .north-status{right:-1.15%}
+
+/* Refinamento do cabeçalho exclusivo do Desafio 1 do Nordeste. */
+.northeast-challenge-screen:not(.north-count-screen) .north-heading{top:4.4%;padding:.9% 2.5% 1.05%}
+.northeast-challenge-screen:not(.north-count-screen) .north-heading h1{font-size:clamp(26px,2.35vw,36px);line-height:1.08}
+.northeast-challenge-screen:not(.north-count-screen) .north-heading p{margin-top:6px}
+
+/* Ajuste perceptível do cabeçalho do Desafio 1. */
+.northeast-challenge-screen:not(.north-count-screen) .north-heading{left:29%;top:5.8%;width:51%;padding:1.15% 2.5% 1.1%}
+.northeast-challenge-screen:not(.north-count-screen) .north-heading h1{font-size:clamp(29px,2.55vw,39px);line-height:1.05}
+.northeast-challenge-screen:not(.north-count-screen) .north-heading p{margin-top:7px;font-size:clamp(16px,1.5vw,23px)}
+
+/* Refinamento do Desafio 2: mapa integral, fala e controles. */
+.northeast-state-screen .north-guide{top:35%}
+.northeast-state-screen .northeast-discovery-card{top:21%;height:64%;padding-bottom:68px}
+.northeast-state-screen .northeast-states-map{transform:scale(1.06) translateY(-5%);transform-origin:center 45%}
+.northeast-state-screen .north-listen{bottom:5%}
+
+/* Ajuste fino do progresso do Desafio 2. */
+.northeast-state-screen .north-status{right:-1.15%}
+
+
+/* Ajuste fino do botão de instruções do Desafio 3. */
+.northeast-climate-screen .north-listen{left:54.5%;bottom:5%}
+
+
+/* Refinamento visual e alinhamento do Desafio 4. */
+.northeast-animal-screen .north-status{right:-1.15%}
+.animal-bird{left:48%;top:28%;width:6.2%;transform:rotate(-7deg);opacity:.82;filter:brightness(.82) saturate(.78) drop-shadow(0 2px 2px #38200c55)}
+.hotspot-bird{left:45%;top:23%;width:12%;height:22%}
+.animal-carcara{right:26%;top:17%;width:6.7%;opacity:.84;filter:brightness(.88) saturate(.82) drop-shadow(0 2px 2px #38200c55)}
+.hotspot-carcara{right:23%;top:12%;width:13%;height:24%}
+.animal-iguana{left:11%;bottom:9%;width:11%;opacity:.8;filter:brightness(.78) saturate(.76) drop-shadow(0 2px 2px #38200c55)}
+.hotspot-iguana{left:8%;bottom:4%;width:17%;height:27%}
+.animal-prea{left:32%;bottom:10%;width:7.5%;opacity:.7;filter:brightness(.75) saturate(.72) drop-shadow(0 2px 2px #38200c55)}
+.hotspot-prea{left:29%;bottom:5%;width:14%;height:23%}
+.animal-armadillo{right:11.5%;bottom:12%;width:6.8%;opacity:.52;filter:brightness(.62) saturate(.62) drop-shadow(0 1px 1px #38200c44)}
+.hotspot-armadillo{right:8%;bottom:7%;width:14%;height:23%}
+.animal-hint{left:5%;bottom:-100px;width:220px;min-width:220px;height:44px;min-height:44px;padding:6px 12px}
+.northeast-animal-screen .north-listen{left:62%;bottom:3.2%;width:220px;min-width:220px;height:44px;min-height:44px}
+
+.animal-hint{bottom:-83px}
+
+
+/* Correção de visibilidade e alinhamento dos controles do Desafio 4. */
+.animal-armadillo{right:11%;bottom:11.5%;width:7.6%;opacity:.72;filter:brightness(.74) saturate(.72) drop-shadow(0 2px 2px #38200c66)}
+.hotspot-armadillo{right:7.5%;bottom:6%;width:15%;height:24%}
+.animal-hint{left:3%;bottom:-124px;width:260px;min-width:260px;height:46px;min-height:46px;padding:6px 10px;font-size:clamp(11px,.92vw,14px);line-height:1;white-space:nowrap}
+.northeast-animal-screen .north-listen{left:62%;bottom:2.7%;width:260px;min-width:260px;height:46px;min-height:46px;padding:6px 10px;font-size:clamp(11px,.92vw,14px);line-height:1;white-space:nowrap}
+
+/* Controles compartilhados, aves em voo e tatu inteiro no Desafio 4. */
+.animal-controls{position:absolute;z-index:7;left:31%;bottom:2.6%;width:47%;height:48px;display:flex;align-items:stretch;justify-content:center;gap:16px}
+.animal-controls .animal-hint,.animal-controls .animal-listen{position:static!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:none!important;flex:1 1 0;width:0!important;min-width:0!important;height:48px!important;min-height:48px!important;margin:0!important;padding:7px 12px!important;font-size:clamp(12px,1vw,15px)!important;line-height:1!important;white-space:nowrap}
+.animal-bird,.hotspot-bird{display:none}
+.animal-carcara-left{left:27%;right:auto;top:16%;width:11%;opacity:.9;transform:rotate(-8deg);filter:brightness(.82) saturate(.8) drop-shadow(0 3px 2px #38200c66)}
+.animal-carcara-right{left:auto;right:19%;top:10%;width:10.5%;opacity:.88;transform:scaleX(-1) rotate(-5deg);filter:brightness(.8) saturate(.78) drop-shadow(0 3px 2px #38200c66)}
+.hotspot-carcara-left{left:23%;right:auto;top:11%;width:18%;height:24%}
+.hotspot-carcara-right{left:auto;right:15%;top:5%;width:18%;height:25%}
+.animal-armadillo{right:9%;bottom:8.5%;width:10%;opacity:.84;filter:brightness(.82) saturate(.76) drop-shadow(0 2px 2px #38200c66)}
+.hotspot-armadillo{right:6%;bottom:5%;width:16%;height:25%}
+@media(max-width:900px){.animal-controls{position:relative;left:auto;bottom:auto;width:min(620px,95%);height:auto;margin:12px auto;flex-wrap:wrap}.animal-controls .animal-hint,.animal-controls .animal-listen{flex:1 1 220px;width:auto!important}}
+
+/* Garantia final: controles independentes e três aves visíveis. */
+.animal-controls{display:contents}
+.northeast-animal-screen .animal-controls .animal-hint,.northeast-animal-screen .animal-controls .animal-listen{position:absolute!important;z-index:8;bottom:4.2%!important;width:20%!important;min-width:210px!important;max-width:260px!important;height:48px!important;min-height:48px!important;display:flex!important;align-items:center!important;justify-content:center!important;margin:0!important;padding:8px 12px!important;white-space:nowrap!important;font-size:clamp(12px,1vw,15px)!important;line-height:1!important;transform:none!important}
+.northeast-animal-screen .animal-controls .animal-hint{left:31%!important}
+.northeast-animal-screen .animal-controls .animal-listen{left:56%!important}
+.animal-carcara-far-left{display:block!important;left:7%;right:auto;top:8%;width:11%;opacity:.96;transform:rotate(8deg);filter:brightness(1.03) saturate(.9) drop-shadow(0 3px 2px #38200c66)}
+.hotspot-carcara-far-left{display:block!important;left:4%;right:auto;top:3%;width:17%;height:24%}
+.animal-carcara-left{left:31%;top:19%;width:10%;opacity:.96;filter:brightness(1.02) saturate(.88) drop-shadow(0 3px 2px #38200c66)}
+.animal-carcara-right{right:17%;top:10%;width:10.5%;opacity:.96;filter:brightness(1.02) saturate(.88) drop-shadow(0 3px 2px #38200c66)}
+.animal-armadillo{right:8.5%;bottom:7.5%;width:11%;opacity:.96;filter:brightness(.94) saturate(.88) drop-shadow(0 2px 2px #38200c77)}
+.hotspot-armadillo{right:5%;bottom:4%;width:17%;height:27%}
+
+/* Ajuste fino do Desafio 4: cabeçalho mais próximo e controles elevados. */
+.northeast-animal-screen .north-heading{top:4.2%}
+.northeast-animal-screen .animal-controls .animal-hint,.northeast-animal-screen .animal-controls .animal-listen{bottom:5.8%!important}
+
+/* Refinamento exclusivo do Desafio 5. */
+.northeast-landscape-screen .northeast-landscape-card{left:27%;width:56%}
+.northeast-landscape-screen .north-status{right:-1.15%}
+.northeast-landscape-screen .north-listen{bottom:3.8%}
+
+/* Alinhamento final do cabeçalho e progresso do Desafio 5. */
+.northeast-landscape-screen .north-heading{left:27%;width:56%}
+.northeast-landscape-screen .north-status{right:-2.5%}
+
+/* Ajuste final do progresso do Desafio 6. */
+.northeast-arraia-screen .north-status{right:-2.5%}
+
+/* Recuo leve do progresso do Desafio 6. */
+.northeast-arraia-screen .north-status{right:-1.8%}
