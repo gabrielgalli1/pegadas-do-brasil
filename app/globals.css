@@ -888,3 +888,17 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 
 /* Recuo leve do progresso do Desafio 6. */
 .northeast-arraia-screen .north-status{right:-1.8%}
+
+
+/* Correções do relatório de QA: bloqueio de fundo e layouts estreitos. */
+.screen:has(> .feedback)>*:not(.feedback){pointer-events:none}
+@media(max-width:900px){
+  .northeast-challenge-screen .northeast-map-card{height:430px!important;min-height:430px!important}
+  .northeast-arraia-screen .northeast-arraia-card{height:auto;min-height:720px;grid-template-rows:minmax(300px,1fr) auto auto;overflow:visible}
+  .northeast-arraia-screen .arraia-options{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:110px}
+  .northeast-arraia-screen .arraia-options button{height:110px}
+  .northeast-arraia-screen .north-listen{bottom:auto!important;margin:28px auto 40px!important}
+}
+@media(max-width:560px){
+  .northeast-challenge-screen .northeast-map-card{height:360px!important;min-height:360px!important}
+}
