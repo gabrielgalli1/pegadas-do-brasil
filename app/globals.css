@@ -902,3 +902,21 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 @media(max-width:560px){
   .northeast-challenge-screen .northeast-map-card{height:360px!important;min-height:360px!important}
 }
+
+/* Identidade institucional — Cruzeiro do Sul */
+.menu-institution{position:absolute;z-index:8;right:2.8%;bottom:5.4%;display:flex;align-items:center;gap:9px;min-height:55px;padding:6px 14px 6px 7px;border:3px solid #fff;outline:3px solid #07558f;border-radius:20px;background:linear-gradient(180deg,#0d477b,#052f5c);color:#fff;box-shadow:0 5px 0 #032442,0 8px 14px #082c5940;text-align:left}
+.menu-institution img{width:43px;height:43px;object-fit:contain;border-radius:12px;background:#073665;padding:4px;box-shadow:inset 0 0 0 2px #f7b719}
+.menu-institution span{display:flex!important;flex-direction:column;width:auto!important;aspect-ratio:auto!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+.menu-institution small{font-size:9px;line-height:1.1;letter-spacing:.7px;color:#cbeaff;font-weight:800}
+.menu-institution strong{font-size:14px;line-height:1.1;color:#fff;letter-spacing:.35px}
+.credits-institution{width:max-content;max-width:100%;margin:9px auto 5px;display:flex;align-items:center;justify-content:center;gap:10px;padding:6px 17px 6px 7px;border:3px solid #f0b41c;border-radius:18px;background:linear-gradient(180deg,#0d477b,#052f5c);color:#fff;box-shadow:0 4px 0 #07305a}
+.credits-institution img{width:44px;height:44px;object-fit:contain;border-radius:11px;background:#073665;padding:4px}
+.credits-institution div{display:flex;flex-direction:column;text-align:left}.credits-institution small{font-size:10px;letter-spacing:.9px;color:#caeaff;font-weight:900}.credits-institution strong{font-size:17px;letter-spacing:.45px}
+@media(max-width:700px){.menu-institution{right:14px;bottom:27px;min-height:48px;padding:5px 9px 5px 5px}.menu-institution img{width:36px;height:36px}.menu-institution small{font-size:7px}.menu-institution strong{font-size:11px}.credits-institution{margin-top:10px}.credits-institution img{width:38px;height:38px}}
+
+/* Pontuação com a estrela institucional */
+.game-score{position:absolute;z-index:9;left:10.5%;top:3.2%;width:158px;height:66px;display:grid;grid-template-columns:54px 1fr;align-items:center;gap:5px;padding:5px 12px 5px 6px;border:4px solid #fff;outline:3px solid #e5a900;border-radius:22px;background:linear-gradient(180deg,#0d5790,#073563);color:#fff;box-shadow:0 5px 0 #052746,0 8px 14px #082c5945;text-align:center}
+.game-score img{width:50px;height:50px;object-fit:cover;border-radius:14px;display:block}
+.game-score span{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0}.game-score small{font-size:12px;line-height:1;color:#ccecff;font-weight:1000;letter-spacing:.8px}.game-score strong{font-size:27px;line-height:1.05;color:#ffd12a;text-shadow:0 2px #8b5700;font-variant-numeric:tabular-nums}
+@media(max-width:900px){.game-score{left:18px;top:92px;width:128px;height:55px;grid-template-columns:42px 1fr;padding:4px 8px 4px 5px;border-width:3px;border-radius:18px}.game-score img{width:40px;height:40px;border-radius:11px}.game-score small{font-size:9px}.game-score strong{font-size:22px}}
+@media(max-width:560px){.game-score{transform:scale(.9);transform-origin:left top}}

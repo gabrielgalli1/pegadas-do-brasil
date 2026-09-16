@@ -2,10 +2,11 @@
 
 import { useRef, useState } from "react";
 import regionsMap from "./brasil-cinco-regioes.json";
+import ScoreBadge from "./ScoreBadge";
 
 type Feedback = "idle" | "correct" | "wrong" | "finished";
 type Challenge = { title: string; question: string; tip: string; correct: string; options?: readonly (string | number)[]; answer?: string | number };
-type Props = { challenge: number; feedback: Feedback; sound: boolean; onAnswer: (correct: boolean) => void; onNext: () => void; onRetry: () => void; onBack: () => void; onToggleSound: () => void; onListen: (text: string) => void };
+type Props = { challenge: number; score: number; feedback: Feedback; sound: boolean; onAnswer: (correct: boolean) => void; onNext: () => void; onRetry: () => void; onBack: () => void; onToggleSound: () => void; onListen: (text: string) => void };
 type NortheastState = { id: string; name: string; short: string; path: string; label: [number, number]; color: string };
 type LandscapeId = "litoral" | "manguezal" | "serra" | "caatinga";
 type ArraiaId = "bandeirinhas" | "sanfona" | "milho" | "frevo" | "chimarrao" | "neve";
@@ -33,11 +34,11 @@ const northeastStateChecks: Record<string, [number, number]> = {
   { id: "serra", name: "SERRA", image: "/paisagem-nordeste-serra-v2.png" },
   { id: "caatinga", name: "CAATINGA", image: "/paisagem-nordeste-caatinga-v2.png" },
 ];
-const arraiaItems: readonly { id: ArraiaId; name: string; image: string; optionImage?: string; correct: boolean }[] = [
+const arraiaItems: readonly { id: ArraiaId; name: string; image: string; optionImage?: string; placedImage?: string; correct: boolean }[] = [
   { id: "bandeirinhas", name: "BANDEIRINHAS", image: "/arraia-bandeirinhas-v3.png", optionImage: "/arraia-bandeirinhas-v2.png", correct: true },
-  { id: "sanfona", name: "SANFONA", image: "/arraia-sanfona-v4.png", optionImage: "/arraia-sanfona-v2.png", correct: true },
-  { id: "milho", name: "MILHO", image: "/arraia-milho-v4.png", optionImage: "/arraia-milho-v2.png", correct: true },
-  { id: "frevo", name: "FREVO", image: "/arraia-frevo-v4.png", optionImage: "/arraia-frevo-v2.png", correct: true },
+  { id: "sanfona", name: "SANFONA", image: "/arraia-sanfona-v4.png", optionImage: "/arraia-sanfona-v2.png", placedImage: "/arraia-sanfona-v2.png", correct: true },
+  { id: "milho", name: "MILHO", image: "/arraia-milho-v4.png", optionImage: "/arraia-milho-v2.png", placedImage: "/arraia-milho-v2.png", correct: true },
+  { id: "frevo", name: "FREVO", image: "/arraia-frevo-v4.png", optionImage: "/arraia-frevo-v2.png", placedImage: "/arraia-frevo-v2.png", correct: true },
   { id: "chimarrao", name: "CHIMARRÃO", image: "/arraia-chimarrao-v2.png", correct: false },
   { id: "neve", name: "BONECO DE NEVE", image: "/arraia-boneco-neve-v2.png", correct: false },
 ];
@@ -50,7 +51,7 @@ const challenges: readonly Challenge[] = [
   { title: "COMPLETE A FESTA NORDESTINA", question: "Arraste as peças até as silhuetas da imagem.", tip: "Arraste cada figura até a sombra com o mesmo formato.\nVamos completar a festa!", correct: "Muito bem! A cultura nordestina tem festas, músicas, danças e sabores muito especiais!" },
 ] as const;
 
-export default function NortheastLevel({ challenge, feedback, sound, onAnswer, onNext, onRetry, onBack, onToggleSound, onListen }: Props) {
+export default function NortheastLevel({ challenge, score, feedback, sound, onAnswer, onNext, onRetry, onBack, onToggleSound, onListen }: Props) {
   const current = challenges[challenge - 1];
   const isMap = challenge === 1;
   const isStateDiscovery = challenge === 2;
@@ -174,6 +175,7 @@ export default function NortheastLevel({ challenge, feedback, sound, onAnswer, o
     onRetry();
   }
   return <section className={`screen north-challenge-screen northeast-challenge-screen ${isMap ? "" : "north-count-screen"} ${isStateDiscovery ? "northeast-state-screen" : ""} ${isClimate ? "northeast-climate-screen" : ""} ${isAnimalSearch ? "northeast-animal-screen" : ""} ${isLandscapeAlbum ? "northeast-landscape-screen" : ""} ${isArraia ? "northeast-arraia-screen" : ""}`} aria-label={`Desafio ${challenge} da Região Nordeste`}>
+    <ScoreBadge score={score} />
     <header className="north-challenge-header">
       <button className="north-round-control" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.png" alt="" /></button>
       <div className="north-heading"><h1>{current.title}</h1><p>{current.question}</p></div>
@@ -223,7 +225,7 @@ export default function NortheastLevel({ challenge, feedback, sound, onAnswer, o
       <div className="landscape-cards" aria-label="Paisagens embaralhadas para colocar no álbum">{[northeastLandscapes[2], northeastLandscapes[0], northeastLandscapes[3], northeastLandscapes[1]].map((landscape) => <button key={landscape.id} className={selectedLandscape === landscape.id ? "selected" : ""} disabled={!canAnswer || placedLandscapes.includes(landscape.id)} onClick={() => setSelectedLandscape(landscape.id)} aria-label={"Selecionar paisagem " + landscape.name}><img src={landscape.image} alt="" /><span>ESCOLHER</span></button>)}</div>
     </div> : isArraia ? <div className="northeast-arraia-card">
       <div className="arraia-scene"><img src="/arraia-quebra-cabeca-silhuetas-v3.png" alt="Festa nordestina com pessoas dançando na praça" />
-        {arraiaItems.filter((item) => item.correct).map((item) => { const placed = arraiaChoices.includes(item.id); return <button key={item.id} className={"arraia-slot slot-" + item.id + (placed ? " placed" : "") + (arraiaOverSlot === item.id ? " drop-ready" : "")} data-arraia-slot={item.id} disabled={!canAnswer || placed} aria-label={(placed ? "Peça encaixada: " : "Silhueta para encaixar: ") + item.name}><img src={item.image} alt="" /></button>; })}
+        {arraiaItems.filter((item) => item.correct).map((item) => { const placed = arraiaChoices.includes(item.id); return <button key={item.id} className={"arraia-slot slot-" + item.id + (placed ? " placed" : "") + (arraiaOverSlot === item.id ? " drop-ready" : "")} data-arraia-slot={item.id} disabled={!canAnswer || placed} aria-label={(placed ? "Peça encaixada: " : "Silhueta para encaixar: ") + item.name}><img src={placed ? (item.placedImage ?? item.image) : item.image} alt="" /></button>; })}
       </div>
       <div className="arraia-progress"><strong>{arraiaChoices.length} DE 4 ELEMENTOS ESCOLHIDOS</strong><div>{Array.from({ length: 4 }, (_, index) => <span key={index} className={index < arraiaChoices.length ? "ready" : ""}>★</span>)}</div></div>
       <div className="arraia-options" aria-label="Peças embaralhadas do quebra-cabeça">{[arraiaItems[4], arraiaItems[1], arraiaItems[5], arraiaItems[2], arraiaItems[3], arraiaItems[0]].map((item) => <button key={item.id} className={arraiaGhost?.id === item.id ? "dragging" : ""} disabled={!canAnswer || arraiaChoices.includes(item.id)} onClick={(event) => { if (arraiaSuppressClick.current && event.detail !== 0) arraiaSuppressClick.current = false; }} onPointerDown={(event) => beginArraiaDrag(item, event)} onPointerMove={moveArraiaDrag} onPointerUp={endArraiaDrag} onPointerCancel={cancelArraiaDrag} onLostPointerCapture={cancelArraiaDrag}><img src={item.optionImage ?? item.image} alt="" draggable={false} /><strong>{item.name}</strong></button>)}</div>
