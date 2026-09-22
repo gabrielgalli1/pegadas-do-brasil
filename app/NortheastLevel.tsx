@@ -34,11 +34,11 @@ const northeastStateChecks: Record<string, [number, number]> = {
   { id: "serra", name: "SERRA", image: "/paisagem-nordeste-serra-v2.png" },
   { id: "caatinga", name: "CAATINGA", image: "/paisagem-nordeste-caatinga-v2.png" },
 ];
-const arraiaItems: readonly { id: ArraiaId; name: string; image: string; optionImage?: string; placedImage?: string; correct: boolean }[] = [
+const arraiaItems: readonly { id: ArraiaId; name: string; image: string; optionImage?: string; correct: boolean }[] = [
   { id: "bandeirinhas", name: "BANDEIRINHAS", image: "/arraia-bandeirinhas-v3.png", optionImage: "/arraia-bandeirinhas-v2.png", correct: true },
-  { id: "sanfona", name: "SANFONA", image: "/arraia-sanfona-v4.png", optionImage: "/arraia-sanfona-v2.png", placedImage: "/arraia-sanfona-v2.png", correct: true },
-  { id: "milho", name: "MILHO", image: "/arraia-milho-v4.png", optionImage: "/arraia-milho-v2.png", placedImage: "/arraia-milho-v2.png", correct: true },
-  { id: "frevo", name: "FREVO", image: "/arraia-frevo-v4.png", optionImage: "/arraia-frevo-v2.png", placedImage: "/arraia-frevo-v2.png", correct: true },
+  { id: "sanfona", name: "SANFONA", image: "/arraia-sanfona-v4.png", optionImage: "/arraia-sanfona-v2.png", correct: true },
+  { id: "milho", name: "MILHO", image: "/arraia-milho-v4.png", optionImage: "/arraia-milho-v2.png", correct: true },
+  { id: "frevo", name: "FREVO", image: "/arraia-frevo-v4.png", optionImage: "/arraia-frevo-v2.png", correct: true },
   { id: "chimarrao", name: "CHIMARRÃO", image: "/arraia-chimarrao-v2.png", correct: false },
   { id: "neve", name: "BONECO DE NEVE", image: "/arraia-boneco-neve-v2.png", correct: false },
 ];
@@ -175,11 +175,10 @@ export default function NortheastLevel({ challenge, score, feedback, sound, onAn
     onRetry();
   }
   return <section className={`screen north-challenge-screen northeast-challenge-screen ${isMap ? "" : "north-count-screen"} ${isStateDiscovery ? "northeast-state-screen" : ""} ${isClimate ? "northeast-climate-screen" : ""} ${isAnimalSearch ? "northeast-animal-screen" : ""} ${isLandscapeAlbum ? "northeast-landscape-screen" : ""} ${isArraia ? "northeast-arraia-screen" : ""}`} aria-label={`Desafio ${challenge} da Região Nordeste`}>
-    <ScoreBadge score={score} />
     <header className="north-challenge-header">
       <button className="north-round-control" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.png" alt="" /></button>
       <div className="north-heading"><h1>{current.title}</h1><p>{current.question}</p></div>
-      <div className="north-status"><b>DESAFIO {challenge} DE 6</b><div aria-label={`Desafio ${challenge} de 6`}>{Array.from({ length: 6 }, (_, index) => <span key={index} className={index < challenge ? "active" : ""}>★</span>)}</div></div>
+      <div className="north-status"><b>DESAFIO {challenge} DE 6</b><div aria-label={`Desafio ${challenge} de 6`}>{Array.from({ length: 6 }, (_, index) => <span key={index} className={index < challenge ? "active" : ""}>★</span>)}</div><ScoreBadge score={score} compact /></div>
       <button className={`north-round-control north-sound ${!sound ? "muted" : ""}`} onClick={onToggleSound} aria-label={sound ? "Desligar som" : "Ligar som"}><img src="/fases-som-v1.png" alt="" /></button>
     </header>
     <div className="north-guide"><div className="north-tip">{current.tip.split("\n").map((line, index) => <span key={line}>{line}{index === 0 && <br />}</span>)}</div></div>
@@ -225,7 +224,7 @@ export default function NortheastLevel({ challenge, score, feedback, sound, onAn
       <div className="landscape-cards" aria-label="Paisagens embaralhadas para colocar no álbum">{[northeastLandscapes[2], northeastLandscapes[0], northeastLandscapes[3], northeastLandscapes[1]].map((landscape) => <button key={landscape.id} className={selectedLandscape === landscape.id ? "selected" : ""} disabled={!canAnswer || placedLandscapes.includes(landscape.id)} onClick={() => setSelectedLandscape(landscape.id)} aria-label={"Selecionar paisagem " + landscape.name}><img src={landscape.image} alt="" /><span>ESCOLHER</span></button>)}</div>
     </div> : isArraia ? <div className="northeast-arraia-card">
       <div className="arraia-scene"><img src="/arraia-quebra-cabeca-silhuetas-v3.png" alt="Festa nordestina com pessoas dançando na praça" />
-        {arraiaItems.filter((item) => item.correct).map((item) => { const placed = arraiaChoices.includes(item.id); return <button key={item.id} className={"arraia-slot slot-" + item.id + (placed ? " placed" : "") + (arraiaOverSlot === item.id ? " drop-ready" : "")} data-arraia-slot={item.id} disabled={!canAnswer || placed} aria-label={(placed ? "Peça encaixada: " : "Silhueta para encaixar: ") + item.name}><img src={placed ? (item.placedImage ?? item.image) : item.image} alt="" /></button>; })}
+        {arraiaItems.filter((item) => item.correct).map((item) => { const placed = arraiaChoices.includes(item.id); return <button key={item.id} className={"arraia-slot slot-" + item.id + (placed ? " placed" : "") + (arraiaOverSlot === item.id ? " drop-ready" : "")} data-arraia-slot={item.id} disabled={!canAnswer || placed} aria-label={(placed ? "Peça encaixada: " : "Silhueta para encaixar: ") + item.name}><img src={item.image} alt="" /></button>; })}
       </div>
       <div className="arraia-progress"><strong>{arraiaChoices.length} DE 4 ELEMENTOS ESCOLHIDOS</strong><div>{Array.from({ length: 4 }, (_, index) => <span key={index} className={index < arraiaChoices.length ? "ready" : ""}>★</span>)}</div></div>
       <div className="arraia-options" aria-label="Peças embaralhadas do quebra-cabeça">{[arraiaItems[4], arraiaItems[1], arraiaItems[5], arraiaItems[2], arraiaItems[3], arraiaItems[0]].map((item) => <button key={item.id} className={arraiaGhost?.id === item.id ? "dragging" : ""} disabled={!canAnswer || arraiaChoices.includes(item.id)} onClick={(event) => { if (arraiaSuppressClick.current && event.detail !== 0) arraiaSuppressClick.current = false; }} onPointerDown={(event) => beginArraiaDrag(item, event)} onPointerMove={moveArraiaDrag} onPointerUp={endArraiaDrag} onPointerCancel={cancelArraiaDrag} onLostPointerCapture={cancelArraiaDrag}><img src={item.optionImage ?? item.image} alt="" draggable={false} /><strong>{item.name}</strong></button>)}</div>
