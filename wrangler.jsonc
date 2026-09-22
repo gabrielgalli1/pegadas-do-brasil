@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "pegadas-do-brasil",
+  "compatibility_date": "2026-05-01",
+  // vinext's build already injects "nodejs_compat" into the generated
+  // dist/server/wrangler.json — declaring it here too produced a duplicate
+  // that the Cloudflare API rejects (error 10021).
+  "compatibility_flags": [],
+  "main": "./worker/index.ts",
+  "assets": {
+    "directory": "dist/client",
+    "not_found_handling": "none",
+    "binding": "ASSETS"
+  }
+}
