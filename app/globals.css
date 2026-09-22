@@ -485,13 +485,14 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .credits-development{grid-area:development;border-color:#78b967;background:#f1ffe9}.credits-development h3{background:linear-gradient(180deg,#55aa3c,#287c23)}
 .credits-orientation{grid-area:orientation;width:38%;min-width:250px;justify-self:center;border-color:#e6b33a;background:#fff8d9}.credits-orientation h3{background:linear-gradient(180deg,#efb51d,#b77700)}
 .credits-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.credits-development .credits-row{grid-template-columns:repeat(4,minmax(0,1fr))}
 .credits-row article{min-height:116px;padding:7px 6px 8px}
 .credits-row article>img{width:64px;height:64px;margin-bottom:5px}
 .credits-row article>small{min-height:20px;padding:3px 6px;font-size:10px}
 .credits-row article>strong{font-size:14px;line-height:1.08}
 .credits-orientation .credits-row{grid-template-columns:1fr}.credits-orientation .credits-row article{display:grid;grid-template-columns:72px 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:left;min-height:92px}.credits-orientation .credits-row img{grid-row:1/3;width:68px;height:68px;margin:0}.credits-orientation .credits-row small{justify-self:start}.credits-orientation .credits-row strong{align-self:start}
 .credits-thanks{margin:6px 0!important}.credits-back{min-height:38px;padding:5px 20px;font-size:15px}
-@media(max-width:700px){.credits-sections{grid-template-columns:1fr;grid-template-areas:"management" "development" "orientation";gap:22px}.credits-group{padding:9px}.credits-row article>img{width:58px;height:58px}.credits-orientation{width:100%;min-width:0}.credits-modal{padding:20px 12px 14px!important}.credits-group h3{font-size:12px}.credits-thanks{margin-top:10px!important}}
+@media(max-width:700px){.credits-sections{grid-template-columns:1fr;grid-template-areas:"management" "development" "orientation";gap:22px}.credits-group{padding:9px}.credits-development .credits-row{grid-template-columns:repeat(2,minmax(0,1fr))}.credits-row article>img{width:58px;height:58px}.credits-orientation{width:100%;min-width:0}.credits-modal{padding:20px 12px 14px!important}.credits-group h3{font-size:12px}.credits-thanks{margin-top:10px!important}}
 
 /* Telas iniciais da Região Nordeste incorporadas do trabalho do Victor. */
 .game-shell:has(.northeast-challenge-screen){border:0;border-radius:0;background:transparent;box-shadow:none}
@@ -1056,3 +1057,4 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .centerwest-photo-screen .centerwest-guide{top:30%;left:4.2%}.centerwest-photo-screen .centerwest-listen{bottom:3.2%}
 @media(max-width:900px){.centerwest-photo-board{position:relative;left:auto;top:auto;width:min(680px,96%);height:590px;margin:90px auto 70px}.centerwest-photo-screen .centerwest-guide{top:20%}}
 @media(max-width:620px){.centerwest-photo-board{height:680px;margin-top:180px;grid-template-columns:1fr;grid-template-rows:auto 1fr auto 25% auto}.photo-mission,.photo-scene,.photo-feedback{grid-column:1}.photo-capture{margin:0;justify-self:center}.centerwest-photo-screen .centerwest-guide{top:18%}}
+
