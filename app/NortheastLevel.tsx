@@ -6,7 +6,7 @@ import ScoreBadge from "./ScoreBadge";
 
 type Feedback = "idle" | "correct" | "wrong" | "finished";
 type Challenge = { title: string; question: string; tip: string; correct: string; options?: readonly (string | number)[]; answer?: string | number };
-type Props = { challenge: number; score: number; feedback: Feedback; sound: boolean; onAnswer: (correct: boolean) => void; onNext: () => void; onRetry: () => void; onBack: () => void; onToggleSound: () => void; onListen: (text: string) => void };
+type Props = { mistakes: number; challenge: number; score: number; feedback: Feedback; sound: boolean; onAnswer: (correct: boolean) => void; onNext: () => void; onRetry: () => void; onBack: () => void; onToggleSound: () => void; onListen: (text: string) => void };
 type NortheastState = { id: string; name: string; short: string; path: string; label: [number, number]; color: string };
 type LandscapeId = "litoral" | "manguezal" | "serra" | "caatinga";
 type ArraiaId = "bandeirinhas" | "sanfona" | "milho" | "frevo" | "chimarrao" | "neve";
@@ -51,7 +51,7 @@ const challenges: readonly Challenge[] = [
   { title: "COMPLETE A FESTA NORDESTINA", question: "Arraste as peças até as silhuetas da imagem.", tip: "Arraste cada figura até a sombra com o mesmo formato.\nVamos completar a festa!", correct: "Muito bem! A cultura nordestina tem festas, músicas, danças e sabores muito especiais!" },
 ] as const;
 
-export default function NortheastLevel({ challenge, score, feedback, sound, onAnswer, onNext, onRetry, onBack, onToggleSound, onListen }: Props) {
+export default function NortheastLevel({ mistakes, challenge, score, feedback, sound, onAnswer, onNext, onRetry, onBack, onToggleSound, onListen }: Props) {
   const current = challenges[challenge - 1];
   const isMap = challenge === 1;
   const isStateDiscovery = challenge === 2;
@@ -231,7 +231,7 @@ export default function NortheastLevel({ challenge, score, feedback, sound, onAn
     </div> : <div className="northeast-options" role="group" aria-label={current.question}>{current.options?.map((option) => <button key={String(option)} disabled={!canAnswer} onClick={() => onAnswer(option === current.answer)}>{option}</button>)}</div>}
     {arraiaGhost && <div className="arraia-drag-ghost" style={{ left: arraiaGhost.x, top: arraiaGhost.y }} aria-hidden="true"><img src={arraiaItems.find((item) => item.id === arraiaGhost.id)?.optionImage ?? arraiaItems.find((item) => item.id === arraiaGhost.id)?.image} alt="" /></div>}
     {!isAnimalSearch && <button className="north-listen" onClick={() => onListen(isStateDiscovery ? "Toque em cada estado do mapa. Cada toque revela o nome de um estado. Vamos descobrir os nove estados do Nordeste!" : isClimate ? "Observe a paisagem do Sertão. Escolha uma opção de temperatura e uma opção de chuvas para completar o painel." : isAnimalSearch ? "Movimente a lupa pela paisagem e toque no tatu-bola quando encontrá-lo." : isLandscapeAlbum ? "Escolha uma paisagem e depois toque no espaço com o nome correspondente para completar o álbum." : isArraia ? "Arraste uma peça da parte de baixo até a silhueta escura com o mesmo formato. Complete as quatro partes da festa." : current.question)}>🔊 {isStateDiscovery || isClimate || isAnimalSearch || isLandscapeAlbum || isArraia ? "OUVIR INSTRUÇÕES" : "OUVIR PERGUNTA"}</button>}
-    {feedback !== "idle" && <div className={`feedback ${feedback}`} role="dialog" aria-live="assertive">{feedback === "wrong" ? <><span>🧭</span><h2>Quase lá!</h2><p>Leia a pergunta novamente e observe a dica. Você consegue!</p><button onClick={retryChallenge}>TENTAR NOVAMENTE</button></> : <><span>{feedback === "finished" ? "🏆" : "⭐"}</span><h2>{feedback === "finished" ? "Região Nordeste concluída!" : "Muito bem!"}</h2><p>{current.correct}</p><button onClick={onNext}>{challenge < 6 ? "PRÓXIMO DESAFIO" : "VOLTAR À JORNADA"}</button></>}</div>}
+    {feedback !== "idle" && <div className={`feedback ${feedback}`} role="dialog" aria-live="assertive">{feedback === "wrong" ? <><span>🧭</span><h2>{mistakes >= 2 ? "Vamos recomeçar!" : "Quase lá!"}</h2><p>{mistakes >= 2 ? "Você terá outra oportunidade desde o primeiro desafio do Nordeste." : current.tip.replace("\n", " ")}</p><button onClick={retryChallenge}>{mistakes >= 2 ? "RECOMEÇAR REGIÃO" : "TENTAR NOVAMENTE"}</button></> : <><span>{feedback === "finished" ? "🏆" : "⭐"}</span><h2>{feedback === "finished" ? "Região Nordeste concluída!" : "Muito bem!"}</h2><p>{current.correct}</p><button onClick={onNext}>{challenge < 6 ? "PRÓXIMO DESAFIO" : "VOLTAR À JORNADA"}</button></>}</div>}
   </section>;
 }
 

@@ -23,6 +23,7 @@ function createHarness(entry) {
     } }).outputText;
     vm.runInNewContext(code, { exports, require(name) {
       if (name === "react") return react;
+      if (name === "./supabaseClient") return { syncJogador: async () => ({ error: null }) };
       if (name === "react/jsx-runtime") return { jsx: (type, props) => ({ type, props }), jsxs: (type, props) => ({ type, props }), Fragment: "fragment" };
       let local = path.resolve(path.dirname(file), name);
       if (!path.extname(local)) local += fs.existsSync(local + ".tsx") ? ".tsx" : ".ts";
@@ -154,7 +155,9 @@ test("Keyboard selection and Enter/Space placement work without dragging", () =>
 
 test("Challenge 5 advances to puzzle, preserves scoring and completes the North journey", () => {
   const h = createHarness("app/page.tsx");
-  const names = [...fs.readFileSync("app/page.tsx", "utf8").matchAll(/const \[(\w+), \w+\] = useState/g)].map(m => m[1]);
+  const source = fs.readFileSync("app/page.tsx", "utf8");
+  const hookDeclarations = source.slice(source.indexOf("export default function Home() {"), source.indexOf("  useEffect(() => {", source.indexOf("export default function Home() {")));
+  const names = hookDeclarations.split("\n").filter(line => line.includes("= useState") || line.includes("= useRef")).map(line => line.match(/const \[(\w+),/)?.[1] ?? line.match(/const (\w+) = useRef/)?.[1]);
   const seed = (key, value) => { h.hooks[names.indexOf(key)] = value; };
   const get = key => h.hooks[names.indexOf(key)];
   const button = label => nodes(h.render()).find(n => n.type === "button" && text(n) === label);
@@ -164,10 +167,12 @@ test("Challenge 5 advances to puzzle, preserves scoring and completes the North 
   assert.equal(get("northChallenge"), 6); assert.equal(get("feedback"), "idle");
   assert.equal(get("attempts"), 0);
   const before = get("score");
-  child().props.onPlace("bahia"); assert.equal(get("score"), before); assert.equal(get("feedback"), "idle");
+  child().props.onPlace("bahia"); assert.equal(get("score"), before); assert.equal(get("feedback"), "wrong");
+  assert.match(text(h.render()), /Compare o formato das peças/);
+  button("TENTAR NOVAMENTE").props.onClick(); assert.equal(get("feedback"), "idle");
   child().props.onPlace("acre"); assert.equal(get("score"), before + 60);
   assert.equal(get("unlockedLevel"), 2); assert.equal(get("feedback"), "correct");
-  assert.equal(nodes(h.render()).some(n => n.props?.role === "dialog"), false, "Show the snapped map before the completion dialog");
+  assert.match(text(h.render()), /Região Norte concluída/);
   child().props.onPlace("acre"); assert.equal(get("score"), before + 60);
   button("🔊 OUVIR INSTRUÇÕES").props.onClick(); assert.match(h.narration, /Bahia, Acre, Paraná e Goiás/);
   child().props.onFinish(); assert.equal(get("feedback"), "finished");
@@ -177,4 +182,43 @@ test("Challenge 5 advances to puzzle, preserves scoring and completes the North 
   seed("screen", "north"); seed("northChallenge", 6); seed("unlockedLevel", 4);
   const again = get("score"); child().props.onPlace("acre");
   assert.equal(get("score"), again + 100); assert.equal(get("unlockedLevel"), 4);
+});
+
+test("Two wrong pieces restart the North region from its first challenge", () => {
+  const h = createHarness("app/page.tsx");
+  const source = fs.readFileSync("app/page.tsx", "utf8");
+  const home = source.slice(source.indexOf("export default function Home() {"), source.indexOf("  useEffect(() => {", source.indexOf("export default function Home() {")));
+  const names = home.split("\n").filter(line => line.includes("= useState") || line.includes("= useRef")).map(line => line.match(/const \[(\w+),/)?.[1] ?? line.match(/const (\w+) = useRef/)?.[1]);
+  const seed = (key, value) => { h.hooks[names.indexOf(key)] = value; };
+  const get = key => h.hooks[names.indexOf(key)];
+  const child = () => nodes(h.render()).find(n => typeof n.type === "function" && n.type.name === "NorthPuzzle");
+  const button = label => nodes(h.render()).find(n => n.type === "button" && text(n) === label);
+  h.render(); seed("screen", "north"); seed("northChallenge", 6); seed("sound", false);
+  child().props.onPlace("bahia");
+  assert.match(text(h.render()), /Compare o formato das peças/);
+  button("TENTAR NOVAMENTE").props.onClick();
+  child().props.onPlace("goias");
+  assert.match(text(h.render()), /primeiro desafio da Região Norte/);
+  button("RECOMEÇAR REGIÃO").props.onClick();
+  assert.equal(get("northChallenge"), 1);
+  assert.equal(get("mistakes"), 0);
+  assert.equal(get("feedback"), "idle");
+});
+
+test("Completing the Northeast landscape album awards 100 points", () => {
+  const h = createHarness("app/page.tsx");
+  const source = fs.readFileSync("app/page.tsx", "utf8");
+  const home = source.slice(source.indexOf("export default function Home() {"), source.indexOf("  useEffect(() => {", source.indexOf("export default function Home() {")));
+  const names = home.split("\n").filter(line => line.includes("= useState") || line.includes("= useRef")).map(line => line.match(/const \[(\w+),/)?.[1] ?? line.match(/const (\w+) = useRef/)?.[1]);
+  const seed = (key, value) => { h.hooks[names.indexOf(key)] = value; };
+  const get = key => h.hooks[names.indexOf(key)];
+  const child = () => nodes(h.render()).find(n => n.props?.challenge === 5 && typeof n.props?.onAnswer === "function");
+  const button = label => nodes(h.render()).find(n => n.type === "button" && text(n) === label);
+  h.render(); seed("screen", "northeast"); seed("northeastChallenge", 5); seed("sound", false);
+  assert.equal(get("screen"), "northeast"); assert.equal(get("northeastChallenge"), 5);
+  child().props.onAnswer(false);
+  child().props.onRetry();
+  child().props.onAnswer(true);
+  assert.equal(get("score"), 100);
+  assert.equal(get("feedback"), "correct");
 });

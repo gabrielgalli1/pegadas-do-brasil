@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-type Props = { canAnswer: boolean; onComplete: () => void; onListen: (text: string) => void };
+type Props = { canAnswer: boolean; onMistake: () => void; onComplete: () => void; onListen: (text: string) => void };
 type Item = { id: string; label: string; correct: boolean; position?: string; image?: string; explanation: string };
 
 const items: Item[] = [
@@ -26,7 +26,7 @@ function shuffle(source: Item[]) {
   return result;
 }
 
-export default function CenterWestConveyor({ canAnswer, onComplete, onListen }: Props) {
+export default function CenterWestConveyor({ canAnswer, onMistake, onComplete, onListen }: Props) {
   const [found, setFound] = useState<string[]>([]);
   const [deck, setDeck] = useState<Item[]>(items);
   const [paused, setPaused] = useState(false);
@@ -43,7 +43,7 @@ export default function CenterWestConveyor({ canAnswer, onComplete, onListen }: 
   function choose(item: Item) {
     if (!canAnswer || found.includes(item.id)) return;
     if (!item.correct) {
-      setPaused(true); setMessage(item.explanation); onListen(item.explanation);
+      setPaused(true); setMessage(item.explanation); onMistake(); onListen(item.explanation);
       if (resumeTimer.current) window.clearTimeout(resumeTimer.current);
       resumeTimer.current = window.setTimeout(() => { setPaused(false); setMessage("Continue observando a esteira."); }, 2400);
       return;

@@ -98,6 +98,7 @@ function Macaw({ message }: { message: React.ReactNode }) {
 
 function TransparentStateMap() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -195,6 +196,13 @@ export default function Home() {
   const [score, setScore] = useState(0);
   const [feedback, setFeedback] = useState<"idle" | "correct" | "wrong" | "finished">("idle");
   const [attempts, setAttempts] = useState(0);
+  const [mistakes, setMistakes] = useState(0);
+  const [regionRun, setRegionRun] = useState(0);
+  const gameShellRef = useRef<HTMLDivElement>(null);
+  const menuMusicRef = useRef<HTMLAudioElement>(null);
+  const buttonClickRef = useRef<HTMLAudioElement>(null);
+  const regionStartScore = useRef(0);
+  const regionStartFirstTryWins = useRef(0);
   const [completedChallenges, setCompletedChallenges] = useState(0);
   const [firstTryWins, setFirstTryWins] = useState(0);
   const [highestScore, setHighestScore] = useState(0);
@@ -205,6 +213,21 @@ export default function Home() {
   const [unlockedLevel, setUnlockedLevel] = useState(0);
   const [journeyNotice, setJourneyNotice] = useState<string | null>(null);
   useEffect(() => {
+    const fitDesktop = () => {
+      const shell = gameShellRef.current;
+      if (!shell) return;
+      if (window.innerWidth <= 900 || window.innerHeight < 560) {
+        shell.style.removeProperty("--game-scale");
+        return;
+      }
+      const scale = Math.min(1, (window.innerWidth - 24) / shell.offsetWidth, (window.innerHeight - 24) / shell.offsetHeight);
+      shell.style.setProperty("--game-scale", String(scale));
+    };
+    fitDesktop();
+    window.addEventListener("resize", fitDesktop);
+    return () => window.removeEventListener("resize", fitDesktop);
+  }, []);
+  useEffect(() => {
     const saved = window.localStorage.getItem("pegadas-progress");
     if (saved) try { const data = JSON.parse(saved); setScore(data.score || 0); setChallengeIndex(Math.min(data.challengeIndex || 0, 4)); setCompletedChallenges(Math.min(data.completedChallenges || 0, 5)); setFirstTryWins(data.firstTryWins || 0); setHighestScore(data.highestScore || data.score || 0); setCompletedPhase(Boolean(data.completedPhase)); setCompletedRegions(Array.isArray(data.completedRegions) ? data.completedRegions : []); setInitialPhasePerfect(Boolean(data.initialPhasePerfect)); setInitialPhaseHadMistake(Boolean(data.initialPhaseHadMistake)); setUnlockedLevel(Math.min(5, Math.max(data.unlockedLevel || 0, data.completedPhase ? 1 : 0))); } catch { /* ignora progresso inválido */ }
     setAvatarId(window.localStorage.getItem("pegadas-avatar"));
@@ -213,6 +236,11 @@ export default function Home() {
     if (savedAudio) try { const audio = JSON.parse(savedAudio); setMusic(audio.music ?? true); setEffects(audio.effects ?? true); setSound(audio.narration ?? true); setVolume(audio.volume ?? 75); } catch { /* mantém as configurações padrão */ }
     const savedAccessibility = window.localStorage.getItem("pegadas-accessibility");
     if (savedAccessibility) try { const accessibility = JSON.parse(savedAccessibility); setHighContrast(accessibility.highContrast ?? false); setLargeText(accessibility.largeText ?? false); setButtonHighlight(accessibility.buttonHighlight ?? false); } catch { /* mantém as configurações padrão */ }
+    if (new URLSearchParams(window.location.search).get("preview") === "inicial") {
+      const previewChallenge = Number(new URLSearchParams(window.location.search).get("desafio"));
+      setChallengeIndex(previewChallenge >= 1 && previewChallenge <= 5 ? previewChallenge - 1 : 0);
+      setScreen("game");
+    }
     if (new URLSearchParams(window.location.search).get("preview") === "nordeste") {
       const previewChallenge = Number(new URLSearchParams(window.location.search).get("desafio"));
       setNortheastChallenge(previewChallenge >= 1 && previewChallenge <= 6 ? previewChallenge : 1);
@@ -227,6 +255,35 @@ export default function Home() {
   useEffect(() => { window.localStorage.setItem("pegadas-progress", JSON.stringify({ score, challengeIndex, completedChallenges, firstTryWins, highestScore, completedPhase, completedRegions, initialPhasePerfect, initialPhaseHadMistake, unlockedLevel })); }, [score, challengeIndex, completedChallenges, firstTryWins, highestScore, completedPhase, completedRegions, initialPhasePerfect, initialPhaseHadMistake, unlockedLevel]);
   useEffect(() => { window.localStorage.setItem("pegadas-audio", JSON.stringify({ music, effects, narration: sound, volume })); window.localStorage.setItem("pegadas-volume", String(volume)); }, [music, effects, sound, volume]);
   useEffect(() => { window.localStorage.setItem("pegadas-accessibility", JSON.stringify({ highContrast, largeText, buttonHighlight })); }, [highContrast, largeText, buttonHighlight]);
+  useEffect(() => {
+    const audio = menuMusicRef.current;
+    if (!audio) return;
+    audio.volume = Math.max(0, Math.min(1, volume / 100));
+    if (screen !== "menu" || !music || volume === 0) {
+      audio.pause();
+      return;
+    }
+    const playMenuMusic = () => { void audio.play().catch(() => { /* aguarda a primeira interação exigida pelo navegador */ }); };
+    playMenuMusic();
+    window.addEventListener("pointerdown", playMenuMusic, { once: true });
+    window.addEventListener("keydown", playMenuMusic, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", playMenuMusic);
+      window.removeEventListener("keydown", playMenuMusic);
+    };
+  }, [screen, music, volume]);
+  useEffect(() => {
+    const playButtonClick = (event: MouseEvent) => {
+      const button = event.target instanceof Element ? event.target.closest("button") : null;
+      const audio = buttonClickRef.current;
+      if (!button || button.disabled || !audio || !effects || volume === 0) return;
+      audio.volume = Math.max(0, Math.min(1, volume / 100));
+      audio.currentTime = 0;
+      void audio.play().catch(() => { /* áudio indisponível neste navegador */ });
+    };
+    document.addEventListener("click", playButtonClick, true);
+    return () => document.removeEventListener("click", playButtonClick, true);
+  }, [effects, volume]);
 
   const selectedAvatar = avatars.find((avatar) => avatar.id === avatarId);
   const achievements = [
@@ -288,6 +345,25 @@ export default function Home() {
     setScreen("journey");
   }
 
+  function registerMistake() {
+    setMistakes((count) => Math.min(count + 1, 2));
+    setFeedback("wrong");
+  }
+
+  function continueAfterMistake() {
+    if (mistakes < 2) { setFeedback("idle"); return; }
+    setFeedback("idle");
+    setMistakes(0);
+    setAttempts(0);
+    setRegionRun((run) => run + 1);
+    setScore(regionStartScore.current);
+    setFirstTryWins(regionStartFirstTryWins.current);
+    if (screen === "game") { setChallengeIndex(0); setInitialPhaseHadMistake(false); }
+    if (screen === "north") setNorthChallenge(1);
+    if (screen === "northeast") setNortheastChallenge(1);
+    if (screen === "centerwest") setCenterWestChallenge(1);
+  }
+
   function chooseCountry(country: string) {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
@@ -300,7 +376,7 @@ export default function Home() {
       if (sound) speak("Muito bem! Essa é a silhueta do Brasil!");
     } else {
       setInitialPhaseHadMistake(true);
-      setFeedback("wrong");
+      registerMistake();
       if (sound) speak("Quase! Observe o formato de cada país e tente novamente.");
     }
   }
@@ -316,7 +392,7 @@ export default function Home() {
       if (sound) speak("Muito bem! O Brasil está localizado na América do Sul!");
     } else {
       setInitialPhaseHadMistake(true);
-      setFeedback("wrong");
+      registerMistake();
       if (sound) speak("Quase! Observe o mapa e tente novamente.");
     }
   }
@@ -332,7 +408,7 @@ export default function Home() {
       if (sound) speak("Muito bem! O Oceano Atlântico banha o litoral do Brasil!");
     } else {
       setInitialPhaseHadMistake(true);
-      setFeedback("wrong");
+      registerMistake();
       if (sound) speak("Quase! Observe o litoral do Brasil e tente novamente.");
     }
   }
@@ -348,7 +424,7 @@ export default function Home() {
       if (sound) speak("Muito bem! O Brasil possui 26 estados e o Distrito Federal, formando 27 unidades federativas!");
     } else {
       setInitialPhaseHadMistake(true);
-      setFeedback("wrong");
+      registerMistake();
       if (sound) speak("Quase! Conte cada parte colorida do mapa, incluindo o Distrito Federal, e tente novamente.");
     }
   }
@@ -367,12 +443,12 @@ export default function Home() {
       if (sound) speak("Muito bem! A Floresta Amazônica está presente no Brasil e é uma das maiores florestas tropicais do mundo!");
     } else {
       setInitialPhaseHadMistake(true);
-      setFeedback("wrong");
+      registerMistake();
       if (sound) speak("Quase! Observe a vegetação e o clima de cada paisagem e tente novamente.");
     }
   }
   function chooseNorthRegion(region: string) {
-    if (feedback === "correct") return;
+    if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (region === "Norte") {
       const earnedPoints = attempts === 0 ? 100 : 60;
@@ -381,7 +457,7 @@ export default function Home() {
       setFeedback("correct");
       if (sound) speak("Muito bem! Você encontrou a Região Norte!");
     } else {
-      setFeedback("wrong");
+      registerMistake();
       if (sound) speak("Quase! Observe a parte superior do mapa e tente novamente.");
     }
   }
@@ -395,7 +471,7 @@ export default function Home() {
       setFeedback("correct");
       if (sound) speak("Muito bem! A Região Norte possui sete estados: Acre, Amapá, Amazonas, Pará, Rondônia, Roraima e Tocantins.");
     } else {
-      setFeedback("wrong");
+      registerMistake();
       if (sound) speak("Quase! Conte cada estado colorido e tente novamente.");
     }
   }
@@ -409,7 +485,7 @@ export default function Home() {
       setFeedback("correct");
       if (sound) speak("Muito bem! O Amazonas é o maior estado do Brasil em extensão territorial e fica na Região Norte!");
     } else {
-      setFeedback("wrong");
+      registerMistake();
       if (sound) speak("Quase! Compare o tamanho dos quatro estados destacados e tente novamente.");
     }
   }
@@ -423,7 +499,7 @@ export default function Home() {
       setFeedback("correct");
       if (sound) speak("Muito bem! O boto-cor-de-rosa vive em água doce, nos rios da Amazônia!");
     } else {
-      setFeedback("wrong");
+      registerMistake();
       if (sound) speak("Quase! Compare os ambientes e pense em onde o boto vive na natureza. Tente novamente.");
     }
   }
@@ -437,7 +513,7 @@ export default function Home() {
       setFeedback("correct");
       if (sound) speak("Muito bem! A vitória-régia é uma planta aquática e um símbolo da Amazônia!");
     } else {
-      setFeedback("wrong");
+      registerMistake();
       if (sound) speak("Quase! Procure a planta com grandes folhas redondas que flutuam na água. Tente novamente.");
     }
   }
@@ -452,17 +528,17 @@ export default function Home() {
       setCompletedRegions((regions) => regions.includes("norte") ? regions : [...regions, "norte"]);
       setFeedback("correct");
       if (sound) speak("Muito bem! Você encaixou o Acre e completou o mapa da Região Norte!");
-    } else if (sound) speak("Essa peça não encaixa. Compare os formatos e tente novamente!");
+    } else { registerMistake(); if (sound) speak("Essa peça não encaixa. Compare os formatos e tente novamente!"); }
   }
   function answerNortheast(correct: boolean) {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (!correct) {
-      setFeedback("wrong");
+      registerMistake();
       if (sound) speak("Quase! Observe a dica e tente novamente.");
       return;
     }
-    const earnedPoints = attempts === 0 ? 100 : 60;
+    const earnedPoints = northeastChallenge === 5 ? 100 : attempts === 0 ? 100 : 60;
     setScore((value) => {
       const nextScore = value + earnedPoints;
       setHighestScore((best) => Math.max(best, nextScore));
@@ -478,7 +554,7 @@ export default function Home() {
   function answerCenterWest(correct: boolean) {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
-    if (!correct) { setFeedback("wrong"); return; }
+    if (!correct) { registerMistake(); return; }
     const earnedPoints = attempts === 0 ? 100 : 60;
     setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
     if (attempts === 0) setFirstTryWins((value) => value + 1);
@@ -492,23 +568,28 @@ export default function Home() {
   function nextCenterWestChallenge() {
     setFeedback("idle");
     setAttempts(0);
+    setMistakes(0);
     if (centerWestChallenge < 6) setCenterWestChallenge((value) => value + 1);
     else setScreen("journey");
   }
   function nextNortheastChallenge() {
     setFeedback("idle");
     setAttempts(0);
+    setMistakes(0);
     if (northeastChallenge < 6) setNortheastChallenge((value) => value + 1);
     else setScreen("journey");
   }
   function nextChallenge() {
-    setChallengeIndex((value) => value + 1); setFeedback("idle"); setAttempts(0);
+    setChallengeIndex((value) => value + 1); setFeedback("idle"); setAttempts(0); setMistakes(0);
   }
-  function restart() { setChallengeIndex(0); setScore(0); setFeedback("idle"); setAttempts(0); setInitialPhaseHadMistake(false); setInitialPhasePerfect(false); }
+  function restart() { regionStartScore.current = 0; regionStartFirstTryWins.current = firstTryWins; setChallengeIndex(0); setScore(0); setFeedback("idle"); setAttempts(0); setMistakes(0); setRegionRun((run) => run + 1); setInitialPhaseHadMistake(false); setInitialPhasePerfect(false); }
   function openJourneyLevel(index: number) {
     setJourneyNotice(null);
     setFeedback("idle");
     setAttempts(0);
+    setMistakes(0);
+    regionStartScore.current = score;
+    regionStartFirstTryWins.current = firstTryWins;
     if (index === 0) { setScreen("game"); return; }
     if (index === 1) { setNorthChallenge(1); setScreen("north"); return; }
     if (index === 2) { setNortheastChallenge(1); setScreen("northeast"); return; }
@@ -516,7 +597,7 @@ export default function Home() {
     setJourneyNotice(`${journeyLevels[index].title} desbloqueada! As aventuras desta região serão adicionadas na próxima etapa.`);
   }
 
-  return <main className={`${highContrast ? "high-contrast" : ""} ${largeText ? "large-text" : ""} ${buttonHighlight ? "button-highlight" : ""}`}><div className="game-shell">
+  return <main className={`${highContrast ? "high-contrast" : ""} ${largeText ? "large-text" : ""} ${buttonHighlight ? "button-highlight" : ""}`}><div className="game-shell" ref={gameShellRef}><audio ref={menuMusicRef} src="/musica-menu.mp3" loop preload="auto" aria-hidden="true" /><audio ref={buttonClickRef} src="/som-clique-botao.wav" preload="auto" aria-hidden="true" />
     {screen === "menu" && <section className="screen menu-screen" aria-label="Menu principal">
       <nav className="menu-tools" aria-label="Opções do jogo">
         <button className={selectedAvatar ? "avatar-selected-tool" : ""} onClick={() => setModal("avatar")}><span className="menu-avatar" aria-hidden="true"><img src={selectedAvatar?.image ?? "/icone-avatar-v1.png"} alt="" /></span>{selectedAvatar ? selectedAvatar.name : "Avatar"}</button><button onClick={() => setModal("achievements")}><img src="/icone-conquistas-v1.png" alt="" />Conquistas</button><button className={!sound ? "sound-muted" : ""} onClick={() => setModal("sound")}><img src="/icone-som-v1.png" alt="" />Som</button><button onClick={() => setModal("accessibility")}><img src="/icone-acessibilidade-v1.png" alt="" />Acessibilidade</button><button onClick={() => setModal("help")}><img src="/icone-como-jogar-v1.png" alt="" />Como jogar</button>
@@ -545,7 +626,7 @@ export default function Home() {
       <p className="journey-footer"><span aria-hidden="true">●</span> Complete as fases na ordem para desbloquear novas regiões! <span aria-hidden="true">●</span></p>
     </section>}
 
-    {screen === "game" && <section className="screen play-screen challenge-screen">
+    {screen === "game" && <section className={`screen play-screen challenge-screen challenge-step-${challengeIndex + 1}`}>
       <header className="challenge-header">
         <button className="challenge-control back" onClick={() => setScreen("journey")} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.png" alt="" /></button>
         <div className="challenge-status"><b>DESAFIO {challengeIndex + 1} DE 5</b><div aria-label={`${challengeIndex + 1} de 5 desafios`}>{Array.from({ length: plannedChallengeCount }, (_, index) => <span key={index} className={index <= challengeIndex ? "active" : ""}>★</span>)}</div><ScoreBadge score={score} compact /></div>
@@ -603,12 +684,12 @@ export default function Home() {
         </div>
         <button className="challenge-listen" onClick={() => speak("Qual destas paisagens está presente no Brasil?")}>🔊 OUVIR PERGUNTA</button>
       </div>}
-      {feedback !== "idle" && <div className={`feedback ${feedback}`} role="dialog" aria-live="assertive">{feedback === "wrong" && <><span>🧭</span><h2>Quase lá!</h2><p>{challengeIndex === 0 ? "Observe o formato de cada país e tente novamente." : challengeIndex === 1 ? "Observe as cores e a posição dos continentes no mapa." : challengeIndex === 2 ? "Observe o litoral do Brasil e tente novamente." : challengeIndex === 3 ? "Conte cada parte colorida, incluindo o Distrito Federal." : "Observe a vegetação e o clima de cada paisagem."}</p><button onClick={() => setFeedback("idle")}>TENTAR NOVAMENTE</button></>}{feedback === "correct" && <><span>⭐</span><h2>Muito bem!</h2><p>{challengeIndex === 0 ? "Essa é a silhueta do Brasil!" : challengeIndex === 1 ? "O Brasil está localizado na América do Sul!" : challengeIndex === 2 ? "O Oceano Atlântico banha o litoral do Brasil!" : "O Brasil possui 26 estados e o Distrito Federal: 27 unidades federativas!"}</p><button onClick={nextChallenge}>PRÓXIMO DESAFIO</button></>}{feedback === "finished" && <><span>🏆</span><h2>Nível concluído!</h2><p>Muito bem! A Floresta Amazônica está presente no Brasil. Você concluiu os cinco desafios!</p><button onClick={() => setScreen("journey")}>VOLTAR À JORNADA</button><button className="secondary" onClick={restart}>JOGAR NOVAMENTE</button></>}</div>}
+      {feedback !== "idle" && <div className={`feedback ${feedback}`} role="dialog" aria-live="assertive">{feedback === "wrong" && <><span>🧭</span><h2>{mistakes >= 2 ? "Vamos recomeçar!" : "Quase lá!"}</h2><p>{challengeIndex === 0 ? "Observe o formato de cada país e tente novamente." : challengeIndex === 1 ? "Observe as cores e a posição dos continentes no mapa." : challengeIndex === 2 ? "Observe o litoral do Brasil e tente novamente." : challengeIndex === 3 ? "Conte cada parte colorida, incluindo o Distrito Federal." : "Observe a vegetação e o clima de cada paisagem."}{mistakes >= 2 && " Você voltará ao começo desta fase."}</p><button onClick={continueAfterMistake}>{mistakes >= 2 ? "RECOMEÇAR FASE" : "TENTAR NOVAMENTE"}</button></>}{feedback === "correct" && <><span>⭐</span><h2>Muito bem!</h2><p>{challengeIndex === 0 ? "Essa é a silhueta do Brasil!" : challengeIndex === 1 ? "O Brasil está localizado na América do Sul!" : challengeIndex === 2 ? "O Oceano Atlântico banha o litoral do Brasil!" : "O Brasil possui 26 estados e o Distrito Federal: 27 unidades federativas!"}</p><button onClick={nextChallenge}>PRÓXIMO DESAFIO</button></>}{feedback === "finished" && <><span>🏆</span><h2>Nível concluído!</h2><p>Muito bem! A Floresta Amazônica está presente no Brasil. Você concluiu os cinco desafios!</p><button onClick={() => setScreen("journey")}>VOLTAR À JORNADA</button><button className="secondary" onClick={restart}>JOGAR NOVAMENTE</button></>}</div>}
     </section>}
 
     {screen === "north" && <section className={`screen north-challenge-screen ${northChallenge === 1 ? "north-location-screen" : ""} ${northChallenge >= 2 ? "north-count-screen" : ""} ${northChallenge === 3 ? "north-largest-screen" : ""} ${northChallenge === 4 || northChallenge === 5 ? "north-habitat-screen" : ""} ${northChallenge === 5 ? "north-plant-screen" : ""} ${northChallenge === 6 ? "north-puzzle-screen" : ""}`} aria-label={`Desafio ${northChallenge} da Região Norte`}>
       <header className="north-challenge-header">
-        <button className="north-round-control" onClick={() => { setFeedback("idle"); setScreen("journey"); }} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.png" alt="" /></button>
+        <button className="north-round-control" onClick={() => { setFeedback("idle"); setMistakes(0); setScreen("journey"); }} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.png" alt="" /></button>
         <div className="north-heading"><h1>{northChallenge === 1 ? "ONDE FICA A REGIÃO NORTE?" : northChallenge === 2 ? "QUANTOS ESTADOS?" : northChallenge === 3 ? "MAIOR ESTADO BRASILEIRO" : northChallenge === 4 ? "ONDE VIVE O BOTO?" : northChallenge === 5 ? "PLANTA SÍMBOLO DA REGIÃO" : "COMPLETE O MAPA DO NORTE"}</h1><p>{northChallenge === 1 ? "Toque na Região Norte no mapa do Brasil." : northChallenge === 2 ? "Quantos estados fazem parte da Região Norte?" : northChallenge === 3 ? "Qual é o maior estado do Brasil em extensão territorial?" : northChallenge === 4 ? "Qual é o habitat natural do boto-cor-de-rosa?" : northChallenge === 5 ? "Qual destas plantas é um símbolo da Amazônia?" : "Arraste a peça que falta para o lugar correto."}</p></div>
         <div className="north-status"><b>DESAFIO {northChallenge} DE 6</b><div aria-label={`Desafio ${northChallenge} de 6`}>{Array.from({ length: 6 }, (_, index) => <span key={index} className={index < northChallenge ? "active" : ""}>★</span>)}</div><ScoreBadge score={score} compact /></div>
         <button className={`north-round-control north-sound ${!sound ? "muted" : ""}`} onClick={() => setSound(!sound)} aria-label={sound ? "Desligar som" : "Ligar som"}><img src="/fases-som-v1.png" alt="" /></button>
@@ -635,16 +716,16 @@ export default function Home() {
         {northHabitatOptions.map((habitat) => <button key={habitat.id} className={`north-habitat-card north-habitat-${habitat.id}`} onClick={() => chooseNorthHabitat(habitat.id)} disabled={feedback !== "idle"}><img src={habitat.image} alt="" /><strong>{habitat.label}</strong></button>)}
       </div> : northChallenge === 5 ? <div className="north-habitat-options north-plant-options" role="group" aria-label="Escolha a planta que é um símbolo da Amazônia">
         {northPlantOptions.map((plant) => <button key={plant.id} className={`north-habitat-card north-plant-${plant.id}`} onClick={() => chooseNorthPlant(plant.id)} disabled={feedback !== "idle"}><img src={plant.image} alt="" /><strong>{plant.label}</strong></button>)}
-      </div> : <NorthPuzzle solved={feedback === "correct" || feedback === "finished"} onPlace={placeNorthPuzzle} onFinish={() => { setFeedback("finished"); if (sound) speak("Parabéns, explorador! Você concluiu os seis desafios da Região Norte!"); }} />}
+      </div> : <NorthPuzzle key={regionRun} solved={feedback === "correct" || feedback === "finished"} onPlace={placeNorthPuzzle} onFinish={() => { setFeedback("finished"); if (sound) speak("Parabéns, explorador! Você concluiu os seis desafios da Região Norte!"); }} />}
       <button className="north-listen" onClick={() => speak(northChallenge === 1 ? "Bem-vindo, explorador! Toque na Região Norte no mapa do Brasil." : northChallenge === 2 ? "Quantos estados fazem parte da Região Norte? Conte cada parte colorida do mapa e escolha: cinco, seis, sete ou oito." : northChallenge === 3 ? "Qual é o maior estado do Brasil em extensão territorial? Compare os estados destacados no mapa e escolha: Amazonas, Pará, Mato Grosso ou Minas Gerais." : northChallenge === 4 ? "Qual é o habitat natural do boto-cor-de-rosa? Observe as imagens e escolha: rio da Amazônia, mar com recifes, praia ou lago nas montanhas nevadas." : northChallenge === 5 ? "Qual destas plantas é um símbolo da Amazônia? Observe as imagens e escolha: vitória-régia, girassol, cacto ou roseira." : "Falta uma peça no mapa da Região Norte! Arraste a peça que falta para o espaço pontilhado. Você também pode tocar em uma peça e depois no espaço vazio. Escolha entre Bahia, Acre, Paraná e Goiás.")}>🔊 {northChallenge === 6 ? "OUVIR INSTRUÇÕES" : "OUVIR PERGUNTA"}</button>
-      {feedback !== "idle" && (northChallenge !== 6 || feedback === "finished") && <div className={`feedback ${feedback}`} role="dialog" aria-live="assertive">
-        {feedback === "wrong" ? <><span>🧭</span><h2>Quase lá!</h2><p>{northChallenge === 1 ? "Observe a parte superior do mapa e tente novamente." : northChallenge === 2 ? "Conte cada estado colorido e tente novamente." : northChallenge === 3 ? "Compare o tamanho dos quatro estados destacados e tente novamente." : northChallenge === 4 ? "Compare os ambientes e pense em onde o boto vive na natureza." : "Procure a planta com grandes folhas redondas que flutuam na água."}</p><button onClick={() => setFeedback("idle")}>TENTAR NOVAMENTE</button></> : <><span>⭐</span><h2>{northChallenge === 6 ? "Região Norte concluída!" : "Muito bem!"}</h2><p>{northChallenge === 1 ? "Você encontrou a Região Norte!" : northChallenge === 2 ? "A Região Norte possui 7 estados!" : northChallenge === 3 ? "O Amazonas é o maior estado do Brasil em extensão territorial e fica na Região Norte!" : northChallenge === 4 ? "O boto-cor-de-rosa vive em água doce, nos rios da Amazônia!" : northChallenge === 5 ? "A vitória-régia é uma planta aquática e um símbolo da Amazônia!" : "Você encaixou o Acre e concluiu os seis desafios da Região Norte!"}</p><button onClick={() => { setFeedback("idle"); setAttempts(0); if (northChallenge < 6) setNorthChallenge((value) => value + 1); else setScreen("journey"); }}>{northChallenge < 6 ? "PRÓXIMO DESAFIO" : "VOLTAR À JORNADA"}</button></>}
+      {feedback !== "idle" && <div className={`feedback ${feedback}`} role="dialog" aria-live="assertive">
+        {feedback === "wrong" ? <><span>🧭</span><h2>{mistakes >= 2 ? "Vamos recomeçar!" : "Quase lá!"}</h2><p>{northChallenge === 1 ? "Observe a parte superior do mapa e tente novamente." : northChallenge === 2 ? "Conte cada estado colorido e tente novamente." : northChallenge === 3 ? "Compare o tamanho dos quatro estados destacados e tente novamente." : northChallenge === 4 ? "Compare os ambientes e pense em onde o boto vive na natureza." : northChallenge === 5 ? "Procure a planta com grandes folhas redondas que flutuam na água." : "Compare o formato das peças com o espaço vazio do mapa."}{mistakes >= 2 && " Você voltará ao primeiro desafio da Região Norte."}</p><button onClick={continueAfterMistake}>{mistakes >= 2 ? "RECOMEÇAR REGIÃO" : "TENTAR NOVAMENTE"}</button></> : <><span>⭐</span><h2>{northChallenge === 6 ? "Região Norte concluída!" : "Muito bem!"}</h2><p>{northChallenge === 1 ? "Você encontrou a Região Norte!" : northChallenge === 2 ? "A Região Norte possui 7 estados!" : northChallenge === 3 ? "O Amazonas é o maior estado do Brasil em extensão territorial e fica na Região Norte!" : northChallenge === 4 ? "O boto-cor-de-rosa vive em água doce, nos rios da Amazônia!" : northChallenge === 5 ? "A vitória-régia é uma planta aquática e um símbolo da Amazônia!" : "Você encaixou o Acre e concluiu os seis desafios da Região Norte!"}</p><button onClick={() => { setFeedback("idle"); setAttempts(0); setMistakes(0); if (northChallenge < 6) setNorthChallenge((value) => value + 1); else setScreen("journey"); }}>{northChallenge < 6 ? "PRÓXIMO DESAFIO" : "VOLTAR À JORNADA"}</button></>}
       </div>}
     </section>}
 
-    {screen === "northeast" && <NortheastLevel challenge={northeastChallenge} score={score} feedback={feedback} sound={sound} onAnswer={answerNortheast} onNext={nextNortheastChallenge} onRetry={() => setFeedback("idle")} onBack={() => { setFeedback("idle"); setScreen("journey"); }} onToggleSound={() => setSound(!sound)} onListen={(text) => { if (sound) speak(text); }} />}
+    {screen === "northeast" && <NortheastLevel key={regionRun} mistakes={mistakes} challenge={northeastChallenge} score={score} feedback={feedback} sound={sound} onAnswer={answerNortheast} onNext={nextNortheastChallenge} onRetry={continueAfterMistake} onBack={() => { setFeedback("idle"); setMistakes(0); setScreen("journey"); }} onToggleSound={() => setSound(!sound)} onListen={(text) => { if (sound) speak(text); }} />}
 
-    {screen === "centerwest" && <CenterWestLevel challenge={centerWestChallenge} score={score} feedback={feedback} sound={sound} onAnswer={answerCenterWest} onNext={nextCenterWestChallenge} onRetry={() => setFeedback("idle")} onBack={() => { setFeedback("idle"); setAttempts(0); setScreen("journey"); }} onToggleSound={() => setSound(!sound)} onListen={(text) => { if (sound) speak(text); }} />}
+    {screen === "centerwest" && <CenterWestLevel key={regionRun} mistakes={mistakes} challenge={centerWestChallenge} score={score} feedback={feedback} sound={sound} onAnswer={answerCenterWest} onNext={nextCenterWestChallenge} onRetry={continueAfterMistake} onBack={() => { setFeedback("idle"); setAttempts(0); setMistakes(0); setScreen("journey"); }} onToggleSound={() => setSound(!sound)} onListen={(text) => { if (sound) speak(text); }} />}
 
     {modal && <div className="modal-backdrop" role="presentation" onMouseDown={() => setModal(null)}><section className={`modal ${modal === "achievements" ? "achievements-modal" : modal === "sound" ? "sound-modal" : modal === "accessibility" ? "accessibility-modal" : modal === "help" ? "help-modal" : modal === "credits" ? "credits-modal" : modal === "nickname" ? "nickname-modal" : ""}`} role="dialog" aria-modal="true" aria-labelledby="modal-title" onMouseDown={(e) => e.stopPropagation()}><button className="modal-close" onClick={() => setModal(null)} aria-label="Fechar">×</button>{modal === "avatar" && <><h2 id="modal-title">Escolha seu avatar</h2>{avatarReminder && <p className="avatar-alert" role="alert">Escolha um personagem para liberar a aventura!</p>}<div className="avatar-grid">{avatars.map((avatar) => <button key={avatar.id} className={avatar.id === avatarId ? "selected" : ""} onClick={() => chooseAvatar(avatar.id)} aria-pressed={avatar.id === avatarId} aria-label={`Escolher ${avatar.description}`}><img src={avatar.image} alt="" /><strong>{avatar.name}</strong><small>{avatar.description}</small>{avatar.id === avatarId && <b>✓ Escolhido</b>}</button>)}</div><p className="avatar-safety">Você pode trocar de avatar quando quiser.</p></>}{modal === "nickname" && <form className="nickname-form" onSubmit={submitNickname}><h2 id="modal-title">Como podemos te chamar?</h2><p>Escolha um apelido para o seu explorador. Não use seu nome verdadeiro!</p><label className="nickname-label" htmlFor="nickname-input">Apelido<input id="nickname-input" type="text" maxLength={15} autoFocus value={nicknameInput} onChange={(e) => { setNicknameInput(e.target.value); setNicknameError(null); }} placeholder="Ex: Onça Veloz" aria-describedby={nicknameError ? "nickname-error" : undefined} /></label>{nicknameError && <p id="nickname-error" className="nickname-error" role="alert">{nicknameError}</p>}<div className="nickname-actions"><button type="submit" className="nickname-submit" disabled={nicknameSaving}>{nicknameSaving ? "SALVANDO..." : "CONFIRMAR"}</button><button type="button" className="nickname-skip" onClick={() => setModal(null)}>Pular por agora</button></div></form>}{modal === "achievements" && <><header className="achievements-heading"><img src="/icone-conquistas-v1.png" alt="" /><div><h2 id="modal-title">MINHAS CONQUISTAS</h2><p><strong>{unlockedAchievements} de 6</strong> conquistadas</p></div></header><div className="achievement-progress" aria-label={`${unlockedAchievements} de 6 conquistas desbloqueadas`}><span style={{ width: `${(unlockedAchievements / 6) * 100}%` }}></span>{achievements.map((_, index) => <i key={index} className={index < unlockedAchievements ? "earned" : ""}>★</i>)}</div><div className="achievement-grid">{achievements.map((achievement) => <article key={achievement.title} className={achievement.unlocked ? "unlocked" : "locked"}><div className="achievement-medal" aria-hidden="true">{achievement.icon}</div>{!achievement.unlocked && <span className="achievement-lock" aria-label="Conquista bloqueada">🔒</span>}<h3>{achievement.title}</h3><p>{achievement.description}</p><small>{achievement.unlocked ? "✓ CONQUISTADA" : "BLOQUEADA"}</small></article>)}</div><footer className="achievements-footer">Continue explorando para desbloquear novas medalhas!</footer></>}{modal === "sound" && <><header className="sound-heading"><img src="/icone-som-v1.png" alt="" /><h2 id="modal-title">SOM E NARRAÇÃO</h2></header><div className="volume-control"><strong>VOLUME GERAL</strong><div><span aria-hidden="true">🔈</span><input type="range" min="0" max="100" value={volume} onChange={(e) => setVolume(Number(e.target.value))} aria-label="Volume geral" style={{ background: `linear-gradient(90deg, #13aef0 0%, #13aef0 ${volume}%, #66bd38 ${volume}%, #66bd38 100%)` }} /><span aria-hidden="true">🔊</span></div></div><div className="sound-options"><article className="music-option"><img className="sound-option-icon" src="/som-musica-v1.png" alt="" /><div><h3>MÚSICA</h3><p>Música de fundo do jogo</p></div><button className={music ? "toggle on" : "toggle"} onClick={() => setMusic(!music)} role="switch" aria-checked={music} aria-label="Música">{music ? "LIGADO" : "DESLIGADO"}<i></i></button></article><article className="effects-option"><img className="sound-option-icon" src="/som-efeitos-v1.png" alt="" /><div><h3>EFEITOS SONOROS</h3><p>Botões, acertos e recompensas</p></div><button className={effects ? "toggle on" : "toggle"} onClick={() => setEffects(!effects)} role="switch" aria-checked={effects} aria-label="Efeitos sonoros">{effects ? "LIGADO" : "DESLIGADO"}<i></i></button></article><article className="narration-option"><img className="sound-option-icon" src="/som-narracao-v2.png" alt="" /><div><h3>NARRAÇÃO</h3><p>Instruções e perguntas faladas</p></div><button className={sound ? "toggle on" : "toggle"} onClick={() => setSound(!sound)} role="switch" aria-checked={sound} aria-label="Narração">{sound ? "LIGADO" : "DESLIGADO"}<i></i></button></article></div></>}{modal === "accessibility" && <><header className="accessibility-heading"><img src="/icone-acessibilidade-v1.png" alt="" /><h2 id="modal-title">ACESSIBILIDADE</h2></header><div className="accessibility-options"><article className="contrast-option"><span className="accessibility-icon contrast-icon" aria-hidden="true"></span><div><h3>ALTO CONTRASTE</h3><p>Aumenta a diferença entre as cores</p></div><button className={highContrast ? "toggle on" : "toggle"} onClick={() => setHighContrast(!highContrast)} role="switch" aria-checked={highContrast} aria-label="Alto contraste">{highContrast ? "LIGADO" : "DESLIGADO"}<i></i></button></article><article className="text-option"><span className="accessibility-icon text-icon" aria-hidden="true">AA</span><div><h3>TEXTO AMPLIADO</h3><p>Aumenta o tamanho das letras</p></div><div className="text-size-control" role="group" aria-label="Tamanho do texto"><button className={!largeText ? "selected" : ""} onClick={() => setLargeText(false)} aria-pressed={!largeText}>NORMAL</button><button className={largeText ? "selected" : ""} onClick={() => setLargeText(true)} aria-pressed={largeText}>GRANDE</button></div></article><article className="highlight-option"><span className="accessibility-icon highlight-icon" aria-hidden="true">☝</span><div><h3>DESTAQUE DOS BOTÕES</h3><p>Realça os botões interativos</p></div><button className={buttonHighlight ? "toggle on" : "toggle"} onClick={() => setButtonHighlight(!buttonHighlight)} role="switch" aria-checked={buttonHighlight} aria-label="Destaque visual dos botões">{buttonHighlight ? "LIGADO" : "DESLIGADO"}<i></i></button></article></div><div className="accessibility-footprints" aria-hidden="true">👣　👣</div></>}{modal === "help" && <HowToPlay />}{modal === "credits" && <Credits onClose={() => setModal(null)} />}</section></div>}
   </div></main>;
