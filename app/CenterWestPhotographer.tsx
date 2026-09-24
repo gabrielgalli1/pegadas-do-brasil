@@ -3,7 +3,7 @@
 import { useState, type KeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
 
 type AnimalId = "tuiuiu" | "capivara" | "jacare";
-type Props = { canAnswer: boolean; onComplete: () => void; onListen: (text: string) => void };
+type Props = { canAnswer: boolean; onMistake: () => void; onComplete: () => void; onListen: (text: string) => void };
 type Mission = { id: AnimalId; name: string; x: number; y: number; crop: string; cropSize: string; fact: string };
 
 const missions: Mission[] = [
@@ -12,7 +12,7 @@ const missions: Mission[] = [
   { id: "jacare", name: "JACARÉ", x: 82, y: 68, crop: "91% 70%", cropSize: "350% auto", fact: "O jacaré ajuda a manter o equilíbrio da vida no Pantanal." },
 ];
 
-export default function CenterWestPhotographer({ canAnswer, onComplete, onListen }: Props) {
+export default function CenterWestPhotographer({ canAnswer, onMistake, onComplete, onListen }: Props) {
   const [missionIndex, setMissionIndex] = useState(0);
   const [photos, setPhotos] = useState<AnimalId[]>([]);
   const [frame, setFrame] = useState({ x: 50, y: 50 });
@@ -36,7 +36,7 @@ export default function CenterWestPhotographer({ canAnswer, onComplete, onListen
   function photograph() {
     if (!canAnswer || photos.length === missions.length) return;
     const framed = Math.abs(frame.x - current.x) <= 13 && Math.abs(frame.y - current.y) <= 16;
-    if (!framed) { const text = "O animal ainda não está bem enquadrado. Observe a paisagem e tente novamente."; setMessage(text); onListen(text); return; }
+    if (!framed) { const text = "O animal ainda não está bem enquadrado. Observe a paisagem e tente novamente."; setMessage(text); onMistake(); return; }
     const next = [...photos, current.id];
     setPhotos(next); setMessage(current.fact); onListen(current.fact);
     if (next.length === missions.length) { window.setTimeout(onComplete, 700); return; }

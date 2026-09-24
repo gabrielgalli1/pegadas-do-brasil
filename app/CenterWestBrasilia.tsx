@@ -3,7 +3,7 @@
 import { useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 
 type PieceId = "base" | "torres" | "concha" | "cupula" | "espelho";
-type Props = { canAnswer: boolean; onComplete: () => void; onListen: (text: string) => void };
+type Props = { canAnswer: boolean; onMistake: () => void; onComplete: () => void; onListen: (text: string) => void };
 type Piece = { id: PieceId; name: string; color: string; path: string; transform: string; viewBox: string; imagePosition: string };
 
 const pieces: Piece[] = [
@@ -15,7 +15,7 @@ const pieces: Piece[] = [
 ];
 const order: PieceId[] = ["concha", "base", "espelho", "torres", "cupula"];
 
-export default function CenterWestBrasilia({ canAnswer, onComplete, onListen }: Props) {
+export default function CenterWestBrasilia({ canAnswer, onMistake, onComplete, onListen }: Props) {
   const [placed, setPlaced] = useState<PieceId[]>([]);
   const [selected, setSelected] = useState<PieceId | null>(null);
   const [ghost, setGhost] = useState<{ id: PieceId; x: number; y: number } | null>(null);
@@ -24,7 +24,7 @@ export default function CenterWestBrasilia({ canAnswer, onComplete, onListen }: 
   function place(slot: PieceId, piece: PieceId) {
     if (!canAnswer || placed.includes(piece)) return;
     setSelected(null);
-    if (slot !== piece) { onListen("Essa peça não encaixa aí. Observe a referência e tente outro espaço."); return; }
+    if (slot !== piece) { onMistake(); return; }
     const next = [...placed, piece];
     setPlaced(next);
     onListen(pieces.find((item) => item.id === piece)!.name + ". Peça encaixada!");

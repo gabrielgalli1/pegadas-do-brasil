@@ -1020,7 +1020,7 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .conveyor-collection{display:flex;justify-content:center;gap:7px}.conveyor-collection>span{width:clamp(37px,3.6vw,55px);aspect-ratio:1;display:grid;place-items:center;overflow:hidden;border:2px dashed #b8a98e;border-radius:11px;background:#fffaf0;color:#b8a98e;font-size:22px}.conveyor-collection>span.filled{border:3px solid #53a949;background:#eaffdf;box-shadow:0 2px 0 #2c762d}.conveyor-collection i{display:block;width:100%;height:100%;background-image:url('/itens-centro-oeste-esteira-v1.png');background-size:500% 200%;background-repeat:no-repeat}
 .conveyor-message{min-height:27px;padding:4px 12px;border:2px solid #e1b34e;border-radius:12px;background:#fff3bc;color:#173652;text-align:center;font-size:clamp(10px,.95vw,14px);font-weight:900}
 .conveyor-window{min-height:0;overflow:hidden;border:3px solid #346d2c;border-radius:16px 16px 5px 5px;background:#dff5d3}
-.conveyor-track{height:100%;display:flex;align-items:stretch;gap:9px;width:max-content;padding:7px;animation:centerwestConveyor 42s linear infinite;will-change:transform}.conveyor-track.paused{animation-play-state:paused}
+.conveyor-track{height:100%;display:flex;align-items:stretch;gap:9px;width:max-content;padding:7px;animation:centerwestConveyor 36s linear infinite;will-change:transform}.conveyor-track.paused{animation-play-state:paused}
 @keyframes centerwestConveyor{from{transform:translateX(0)}to{transform:translateX(calc(-50% - 4.5px))}}
 .conveyor-card{position:relative;flex:0 0 clamp(112px,10.3vw,158px);min-height:0;padding:4px;display:grid;grid-template-rows:minmax(0,1fr) auto;overflow:visible;border:3px solid #fff;outline:2px solid #2f8030;border-radius:13px;background:#fff;box-shadow:0 4px 0 #1d5d28;color:#12395f;transition:transform .15s,filter .15s}.conveyor-card:hover:not(:disabled),.conveyor-card:focus-visible{z-index:2;transform:translateY(-3px) scale(1.02);outline-color:#ffad00}.conveyor-card.collected{filter:saturate(.55);opacity:.42}.conveyor-art{display:block;min-height:0;border-radius:9px;background-image:url('/itens-centro-oeste-esteira-v1.png');background-size:500% 200%;background-repeat:no-repeat}.conveyor-card strong{padding:4px 2px 1px;font-size:clamp(9px,.85vw,13px);line-height:1;text-align:center}.conveyor-check{position:absolute;right:-7px;top:-7px;width:31px;height:31px;display:grid;place-items:center;border:3px solid #fff;border-radius:50%;background:#20a83b;color:#fff;font-size:20px;font-weight:1000;box-shadow:0 2px 0 #126c27}
 .conveyor-belt{height:34px;margin-top:-7px;display:flex;justify-content:space-around;align-items:center;border:4px solid #233c50;border-radius:10px;background:#405564;box-shadow:inset 0 5px #263a48}.conveyor-belt span{width:22px;height:22px;border:4px solid #1b2d3b;border-radius:50%;background:#99a9b5;box-shadow:inset 0 3px #d9e2e8}
@@ -1061,3 +1061,12 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 @media(max-width:900px){.centerwest-photo-board{position:relative;left:auto;top:auto;width:min(680px,96%);height:590px;margin:90px auto 70px}.centerwest-photo-screen .centerwest-guide{top:20%}}
 @media(max-width:620px){.centerwest-photo-board{height:680px;margin-top:180px;grid-template-columns:1fr;grid-template-rows:auto 1fr auto 25% auto}.photo-mission,.photo-scene,.photo-feedback{grid-column:1}.photo-capture{margin:0;justify-self:center}.centerwest-photo-screen .centerwest-guide{top:18%}}
 
+
+@media (min-width:901px) and (min-height:560px){html,body{height:100%;overflow:hidden}main{box-sizing:border-box;position:relative;height:100dvh;min-height:0;overflow:hidden}.game-shell{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(var(--game-scale,1));transform-origin:center;width:min(1600px,100%)}}
+
+/* O painel inicial acompanha a margem direita dos demais desafios. */
+@media (min-width:901px){.challenge-screen .challenge-status{right:0;top:54%;width:17%}}
+
+@media (min-width:901px){.challenge-screen:is(.challenge-step-1,.challenge-step-2,.challenge-step-4) .challenge-status{right:3%;top:81%}}
+
+@media (min-width:901px){.challenge-screen:is(.challenge-step-3,.challenge-step-5) .challenge-status{right:3%;top:78%;transform:scale(.82);transform-origin:top right}}
