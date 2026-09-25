@@ -44,6 +44,7 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .avatar-grid b{position:absolute;right:7px;top:7px;background:#27862b;color:#fff;border-radius:14px;padding:3px 7px;font-size:11px}
 .avatar-alert{margin:0 0 16px!important;background:#fff0bf;border:3px solid #f2a515;border-radius:18px;padding:9px;font-weight:900;color:#8c4a00}
 .avatar-safety{margin-bottom:0!important;color:#3c6c2a}
+.avatar-nickname-edit{display:block;margin:14px auto 0;background:linear-gradient(#22aff5,#0a87cf);color:#fff;border:4px solid #fff;outline:3px solid #086397;border-radius:20px;padding:10px 24px;font-size:17px;font-weight:900;text-shadow:0 2px #075c94;cursor:pointer}.avatar-nickname-edit:focus-visible{outline:5px solid #ffda00;outline-offset:2px}
 .achievements-modal{width:min(1080px,94%)!important;max-height:94%;overflow:auto;padding:24px 34px 20px!important;border-radius:34px!important;background-color:#f4ffe3!important;background-image:url('/fundo-conquistas-v1.png')!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important}
 .achievements-heading{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:8px}
 .achievements-heading img{width:105px;height:105px;object-fit:contain}
