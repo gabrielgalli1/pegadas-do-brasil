@@ -8,7 +8,8 @@ const LONG_NUMBER_PATTERN = /\d{3,}/;
 
 // Common Brazilian first names and surnames, lowercase and without accents.
 // Names that are also everyday words kids use in nicknames (rosa, flor, luz,
-// sol, estrela, leão, lobo...) are intentionally left out.
+// sol, lua, luna, estrela, leão, lobo...) and the game's own characters (Téo,
+// the Centro-Oeste mascot) are intentionally left out.
 const REAL_NAMES = new Set(`
 ana maria mariana marina julia juliana luiza luisa luana laura larissa leticia
 beatriz bia camila carolina carol clara cecilia alice helena heloisa valentina
@@ -22,10 +23,10 @@ priscila rafaela raquel rebeca regina renata rita roberta sabrina samara
 sandra sara sarah silvia simone stella tatiana tereza teresa thais valeria
 vanessa vera vivian yasmin yasmim agatha allana antonella catarina cristina
 daniela denise elaine elen ellen fabiola flavia gisele graziela ivone jussara
-kelly lilian luna marcela michele michelle nadia pietra rayssa sueli taina
+kelly lilian marcela michele michelle nadia pietra rayssa sueli taina
 tainara vitoria yara zilda jennifer
 joao jose pedro paulo lucas luca mateus matheus gabriel rafael miguel arthur
-artur heitor bernardo davi david enzo lorenzo theo teo gustavo guilherme
+artur heitor bernardo davi david enzo lorenzo gustavo guilherme
 henrique felipe filipe samuel benjamin nicolas daniel anthony antonio
 bruno caio carlos caua diego diogo eduardo edu emanuel enrico erick eric
 fabio fernando francisco gael giovanni igor isaac ian joaquim jorge julio
@@ -47,6 +48,33 @@ function normalize(word: string): string {
   return word.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
 }
 
+// Digits kids swap for letters ("Jo4o", "M4r1a"). 1 can stand for i or l.
+const LEET: Record<string, string> = { "0": "o", "3": "e", "4": "a", "5": "s", "6": "g", "7": "t", "8": "b", "9": "g" };
+
+// Reduces spelling variants to one form, so "Joaao", "Thiago"/"Tiago",
+// "Kauã"/"Cauã" and "Isabella"/"Isabela" all compare equal.
+function skeleton(word: string): string {
+  return word
+    .replace(/ph/g, "f")
+    .replace(/th/g, "t")
+    .replace(/y/g, "i")
+    .replace(/w/g, "v")
+    .replace(/k/g, "c")
+    .replace(/h$/, "")
+    .replace(/(\p{L})\1+/gu, "$1");
+}
+
+const REAL_NAME_SKELETONS = new Set([...REAL_NAMES].map(skeleton));
+
+function looksLikeRealName(word: string): boolean {
+  if (!/\p{L}/u.test(word)) return false; // plain numbers like "10" are fine
+  const readings = /1/.test(word) ? [word.replace(/1/g, "i"), word.replace(/1/g, "l")] : [word];
+  return readings.some((reading) => {
+    const letters = reading.replace(/\d/g, (digit) => LEET[digit] ?? "");
+    return REAL_NAMES.has(letters) || REAL_NAME_SKELETONS.has(skeleton(letters));
+  });
+}
+
 export function tidyNickname(raw: string): string {
   return raw.trim().replace(/\s+/g, " ");
 }
@@ -56,8 +84,9 @@ export function validateNickname(nickname: string): string | null {
   if (nickname.length < 2 || nickname.length > 15) return "O apelido deve ter entre 2 e 15 letras.";
   if (!NICKNAME_PATTERN.test(nickname)) return "Use só letras, números e espaços — sem símbolos.";
   if (LONG_NUMBER_PATTERN.test(nickname)) return "Não use números longos no apelido.";
-  const words = nickname.split(" ").map((word) => normalize(word).replace(/\d+/g, ""));
-  if (words.some((word) => REAL_NAMES.has(word))) {
+  const words = normalize(nickname).split(" ");
+  // Also check the words glued together, to catch names split by spaces ("Jo ão").
+  if ([...words, words.join("")].some(looksLikeRealName)) {
     return "Isso parece um nome de verdade! Invente um apelido, como \"Onça Veloz\".";
   }
   return null;
