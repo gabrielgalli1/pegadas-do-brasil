@@ -94,6 +94,18 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 - `npm test`: build the starter and verify its rendered loading skeleton
 - `npm run db:generate`: generate Drizzle migrations after schema changes
 
+## Deploy na Vercel
+
+O build usa o [Nitro](https://v3.nitro.build/) quando roda na Vercel (variável
+`VERCEL=1`) ou quando `NITRO_PRESET` está definido; nos outros casos continua
+gerando o build para Cloudflare Workers. As configurações ficam em `vercel.json`.
+
+1. Na Vercel, importe o repositório (as opções de build já vêm do `vercel.json`).
+2. Em **Settings → Environment Variables**, cadastre
+   `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+3. Para testar o build localmente: `NITRO_PRESET=vercel npx vite build`
+   (a saída fica em `.vercel/output`).
+
 ## Learn More
 
 - [vinext Documentation](https://github.com/cloudflare/vinext)

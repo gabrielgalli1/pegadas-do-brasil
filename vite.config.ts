@@ -1,5 +1,7 @@
+import { fileURLToPath } from "node:url";
 import { cloudflare } from "@cloudflare/vite-plugin";
 import { sites } from "@openai/sites-vite-plugin";
+import { nitro } from "nitro/vite";
 import vinext from "vinext";
 import { defineConfig } from "vite";
 import hostingConfig from "./.openai/hosting.json";
@@ -11,6 +13,10 @@ const { d1, r2 } = hostingConfig;
 
 // macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
+
+// A Vercel define VERCEL=1 durante o build. Nesse caso (ou com NITRO_PRESET
+// definido, para builds locais) usamos o Nitro no lugar do plugin do Cloudflare.
+const isNitroBuild = Boolean(process.env.VERCEL || process.env.NITRO_PRESET);
 
 const localBindingConfig = {
   main: "./worker/index.ts",
@@ -42,16 +48,32 @@ export default defineConfig(async () => {
   process.env.MINIFLARE_REGISTRY_PATH ??= ".wrangler/registry";
 
   return {
+    // Com o Nitro, o resolvedor de CSS do Vite não acha o `@import "tailwindcss"`
+    // do globals.css; apontamos direto para o CSS do pacote.
+    resolve: isNitroBuild
+      ? {
+          alias: [
+            {
+              find: /^tailwindcss$/,
+              replacement: fileURLToPath(
+                new URL("./node_modules/tailwindcss/index.css", import.meta.url),
+              ),
+            },
+          ],
+        }
+      : undefined,
     server: isCodexSeatbeltSandbox
       ? { watch: { useFsEvents: false, usePolling: true } }
       : undefined,
-    plugins: [
-      vinext(),
-      sites(),
-      cloudflare({
-        viteEnvironment: { name: "rsc", childEnvironments: ["ssr"] },
-        config: localBindingConfig,
-      }),
-    ],
+    plugins: isNitroBuild
+      ? [vinext(), nitro()]
+      : [
+          vinext(),
+          sites(),
+          cloudflare({
+            viteEnvironment: { name: "rsc", childEnvironments: ["ssr"] },
+            config: localBindingConfig,
+          }),
+        ],
   };
 });
