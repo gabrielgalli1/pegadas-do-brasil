@@ -26,19 +26,28 @@
   .mobile-menu-avatar b{color:#119bd7;font-size:25px}
   .mobile-menu-credits{align-self:end;justify-self:start;min-height:31px;padding:4px 14px;border:2px solid #fff;border-radius:13px;background:#0b92d5;box-shadow:0 3px 0 #07527e;color:#fff;font-size:12px}
 
-  .mobile-journey-screen{display:flex;flex-direction:column;width:100%;height:100%;min-height:0;overflow:hidden;background:#e3f8c2 url('/fases-fundo-v1.png') center/cover no-repeat!important;padding:1.2% 2%}
-  .mobile-journey-header{display:grid;grid-template-columns:55px minmax(0,1fr) 55px;align-items:center;gap:10px;min-height:66px}
+  .mobile-journey-screen{display:grid;grid-template-rows:clamp(66px,20%,78px) minmax(0,1fr) clamp(31px,10%,40px);width:100%;height:100%;min-height:0;overflow:hidden;background:#e3f8c2 url('/fases-fundo-v1.png') center/100% 100% no-repeat!important;padding:1% 1.5% 1.5%}
+  .mobile-journey-header{display:grid;grid-template-columns:56px minmax(0,1fr) 56px;align-items:start;gap:8px;min-height:0}
   .mobile-journey-header>button{width:50px;height:50px;padding:0;background:transparent}
   .mobile-journey-header>button img{width:100%;height:100%;object-fit:contain}
-  .mobile-journey-header div{text-align:center}
-  .mobile-journey-header h1{margin:0;font-size:clamp(23px,4vw,34px);line-height:1;color:#092f5b;text-shadow:-2px -2px #fff,2px -2px #fff,-2px 2px #fff,2px 2px #fff}
-  .mobile-journey-header p{margin:3px 0 0;color:#287222;font-size:clamp(11px,1.6vw,15px);font-weight:900}
-  .mobile-journey-levels{display:flex;align-items:stretch;gap:12px;flex:1;min-height:0;overflow-x:auto;overflow-y:hidden;padding:5px 5px 9px;scroll-snap-type:x mandatory;touch-action:pan-x}
-  .mobile-journey-level{position:relative;flex:0 0 clamp(125px,19vw,160px);min-width:0;min-height:0;padding:0;border:3px solid #fff;border-radius:20px;background:#f7ffe9;box-shadow:0 4px 0 #0b5e9a;overflow:hidden;scroll-snap-align:start}
-  .mobile-journey-level img{width:100%;height:100%;display:block;object-fit:contain}
-  .mobile-journey-level span{position:absolute;right:6px;bottom:6px;display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:#083b70;color:#fff;font-size:15px}
-  .mobile-journey-level.locked{filter:grayscale(.7);opacity:.75}
-  .mobile-journey-footer{margin:8px 0 0;text-align:center;color:#124d21;font-size:clamp(10px,1.45vw,13px);font-weight:900}
+  .mobile-journey-header div{text-align:center;padding-top:3px}
+  .mobile-journey-header h1{margin:0;color:#092f5b;font-size:clamp(22px,3.8vw,34px);line-height:1;font-weight:1000;text-shadow:-2px -2px #fff,2px -2px #fff,-2px 2px #fff,2px 2px #fff,0 3px #b7d994}
+  .mobile-journey-header h1 span{color:#4f9c20;font-size:.45em;vertical-align:middle;text-shadow:none}
+  .mobile-journey-header p{margin:4px 0 0;color:#287222;font-size:clamp(11px,1.55vw,14px);font-weight:900;text-shadow:0 1px #fff}
+  .mobile-journey-content{display:grid;grid-template-columns:18% minmax(0,1fr);gap:1%;min-height:0}
+  .mobile-journey-guide{position:relative;display:flex;flex-direction:column;align-items:center;min-width:0;min-height:0}
+  .mobile-journey-guide img{display:block;width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 4px 2px #143c4f38)}
+  .mobile-journey-levels{min-width:0;min-height:0;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;touch-action:pan-x;scrollbar-width:thin;scrollbar-color:#4f9d2b transparent}
+  .mobile-journey-track{position:relative;display:flex;align-items:stretch;gap:10px;width:max-content;height:100%;min-height:0;padding:0 12px 3px 2px}
+  .mobile-journey-track::before{content:"";position:absolute;z-index:0;left:38px;right:40px;bottom:24px;border-top:3px dashed #4f9d2b;filter:drop-shadow(0 2px 0 #fff);pointer-events:none}
+  .mobile-journey-level{position:relative;z-index:1;flex:0 0 clamp(113px,15.2vw,143px);height:calc(100% - 13px);min-width:0;min-height:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible;scroll-snap-align:start}
+  .mobile-journey-level img{display:block;width:100%;height:calc(100% - 20px);object-fit:contain;object-position:center top;filter:drop-shadow(0 4px 2px #143c4f38)}
+  .mobile-journey-level.locked img{filter:grayscale(.38) saturate(.55) brightness(.88) drop-shadow(0 4px 2px #143c4f38);opacity:.88}
+  .mobile-journey-level-state{position:absolute;z-index:2;left:50%;bottom:-10px;transform:translateX(-50%);display:grid;place-items:center;width:34px;height:34px;border:3px solid #fff;outline:2px solid #5a5e61;border-radius:50%;background:linear-gradient(#f9f9f9,#bfc3c5);box-shadow:0 3px 0 #3d424555;color:#555;font-size:17px;line-height:1;text-shadow:0 1px #fff}
+  .mobile-journey-level.unlocked:not(.completed) .mobile-journey-level-state{background:linear-gradient(#48b8f0,#087ac1);outline-color:#07578e;color:#fff;text-shadow:0 2px #06466f}
+  .mobile-journey-level.completed .mobile-journey-level-state{background:linear-gradient(#ffe94f,#ffb400);outline-color:#c57600;color:#fff;text-shadow:0 2px #c87500}
+  .mobile-journey-footer{align-self:end;justify-self:center;max-width:94%;margin:0;padding:5px 15px;border:2px solid #48942b;outline:2px solid #fff;border-radius:24px;background:#f6ffe6;color:#246b20;box-shadow:0 3px 0 #255f1e66;text-align:center;font-size:clamp(10px,1.45vw,13px);line-height:1.05;font-weight:900;text-shadow:0 1px #fff}
+  .mobile-journey-footer span{margin:0 5px;color:#4e9d28;font-size:.75em}
   .mobile-journey-notice{position:absolute;z-index:10;left:20%;right:20%;bottom:15%;padding:10px 36px 10px 12px;border:3px solid #0b5e9a;border-radius:15px;background:#fffdf1;text-align:center;font-size:15px;font-weight:900}
   .mobile-journey-notice button{position:absolute;right:5px;top:2px;background:transparent;font-size:22px}
 
@@ -107,4 +116,6 @@
 @media (max-width:900px) and (orientation:landscape){
   .game-shell:has(.mobile-menu-screen){border:8px solid #073563!important;border-radius:28px!important;background:#d9ffc6!important;box-shadow:0 4px 12px #00152c55!important}
   .game-shell:has(.mobile-menu-screen)::before,.game-shell:has(.mobile-menu-screen)::after{display:block!important;height:7px}
+  .game-shell:has(.mobile-journey-screen){border:8px solid #073563!important;border-radius:28px!important;background:#d9ffc6!important;box-shadow:0 4px 12px #00152c55!important}
+  .game-shell:has(.mobile-journey-screen)::before,.game-shell:has(.mobile-journey-screen)::after{display:block!important;height:7px}
 }

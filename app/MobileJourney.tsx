@@ -21,20 +21,27 @@ export default function MobileJourney({
   return <section className="screen mobile-journey-screen" aria-label="Escolha sua aventura no celular">
     <header className="mobile-journey-header">
       <button onClick={onBack} aria-label="Voltar ao menu"><img src="/fases-voltar-v1.png" alt="" /></button>
-      <div><h1>ESCOLHA SUA AVENTURA</h1><p>Explore o Brasil passo a passo!</p></div>
+      <div><h1><span aria-hidden="true">◆</span> ESCOLHA SUA AVENTURA <span aria-hidden="true">◆</span></h1><p>Aprenda, explore e descubra o Brasil passo a passo!</p></div>
       <button onClick={onToggleSound} aria-label={sound ? "Desligar som" : "Ligar som"} aria-pressed={sound}><img src="/fases-som-v1.png" alt="" /></button>
     </header>
-    <div className="mobile-journey-levels" aria-label="Fases do jogo">
-      {levels.map((level, index) => {
-        const unlocked = index <= unlockedLevel;
-        const completed = index < unlockedLevel || (index === 0 && completedPhase);
-        return <button key={level.id} className={"mobile-journey-level" + (unlocked ? " unlocked" : " locked")} disabled={!unlocked} onClick={() => onOpen(index)} aria-label={level.title + ", " + level.phases + " fases, " + (completed ? "concluída" : unlocked ? "disponível" : "bloqueada")}>
-          <img src={level.image} alt="" />
-          <span aria-hidden="true">{!unlocked ? "🔒" : completed ? "★" : "▶"}</span>
-        </button>;
-      })}
+    <div className="mobile-journey-content">
+      <aside className="mobile-journey-guide" aria-label="Mensagem da arara Ari">
+        <img src="/fases-mascote-v2.png" alt="Arara Ari" />
+      </aside>
+      <div className="mobile-journey-levels" aria-label="Fases do jogo">
+        <div className="mobile-journey-track">
+          {levels.map((level, index) => {
+            const unlocked = index <= unlockedLevel;
+            const completed = index < unlockedLevel || (index === 0 && completedPhase);
+            return <button key={level.id} className={`mobile-journey-level ${unlocked ? "unlocked" : "locked"} ${completed ? "completed" : ""}`} disabled={!unlocked} onClick={() => onOpen(index)} aria-label={`${level.title}, ${level.phases} fases, ${completed ? "concluída" : unlocked ? "disponível" : "bloqueada"}`}>
+              <img src={level.image} alt="" />
+              <span className="mobile-journey-level-state" aria-hidden="true">{!unlocked ? "🔒" : completed ? "★" : "▶"}</span>
+            </button>;
+          })}
+        </div>
+      </div>
     </div>
-    <p className="mobile-journey-footer">Deslize para ver todas as regiões e complete as fases na ordem!</p>
+    <p className="mobile-journey-footer"><span aria-hidden="true">●</span> Deslize para ver todas as regiões e complete as fases na ordem! <span aria-hidden="true">●</span></p>
     {notice && <div className="mobile-journey-notice" role="status">{notice}<button onClick={onCloseNotice} aria-label="Fechar aviso">×</button></div>}
   </section>;
 }
