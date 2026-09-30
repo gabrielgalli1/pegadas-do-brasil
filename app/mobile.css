@@ -1,0 +1,110 @@
+/* The desktop game stays in globals.css. Only phone layouts live here. */
+.mobile-menu-screen,.mobile-journey-screen,.mobile-silhouette,.mobile-orientation-gate{display:none}
+
+@media (max-width:900px){
+  main:has(.mobile-menu-screen),main:has(.mobile-journey-screen),main:has(.mobile-silhouette){display:grid;place-items:center;min-height:100dvh;height:100dvh;padding:8px 10px;overflow:hidden}
+  .game-shell:has(.mobile-menu-screen),.game-shell:has(.mobile-journey-screen),.game-shell:has(.mobile-silhouette){position:relative;left:auto;top:auto;transform:none;width:100%;height:100%;min-height:0;aspect-ratio:auto;border:8px solid #073563;border-radius:28px;box-shadow:0 4px 12px #00152c55}
+  .menu-screen,.journey-screen{display:none!important}
+
+  .mobile-menu-screen{display:grid;grid-template-rows:22% minmax(0,1fr) 10%;width:100%;height:100%;min-height:0;overflow:hidden;background:#dcf8c0 url('/menu-background-v2.png') center/cover no-repeat!important;padding:1.5% 2.2%}
+  .mobile-menu-tools{display:flex;align-items:flex-start;justify-content:center;gap:3%;min-width:0}
+  .mobile-menu-tools button{width:13%;min-width:0;padding:0;background:transparent;text-align:center;font-size:clamp(9px,1.35vw,12px);line-height:1.05}
+  .mobile-menu-tools img{display:block;width:clamp(36px,6.3vw,58px);height:clamp(36px,6.3vw,58px);object-fit:contain;margin:0 auto 3px}
+  .mobile-menu-main{display:grid;grid-template-columns:28% 32% minmax(0,1fr);align-items:stretch;gap:1.4%;min-height:0}
+  .mobile-menu-welcome{position:relative;display:flex;align-items:flex-start;justify-content:center;min-height:0}
+  .mobile-menu-speech{width:100%;min-height:42%;padding:7% 4%;border:4px solid #378d20;border-radius:40%;background:#fffdf3;text-align:center;box-shadow:0 5px 0 #21642566}
+  .mobile-menu-speech strong{display:block;font-size:clamp(16px,2.5vw,23px);line-height:1.08}
+  .mobile-menu-speech span{display:block;margin-top:5%;color:#25801d;font-size:clamp(13px,2vw,18px);line-height:1.15;font-weight:900}
+  .mobile-menu-welcome>img{position:absolute;left:-4%;bottom:-2%;width:62%;height:60%;object-fit:contain;filter:drop-shadow(0 5px 2px #174f3144)}
+  .mobile-menu-logo{width:100%;height:100%;max-height:245px;align-self:center;object-fit:contain;filter:drop-shadow(0 6px 3px #07356355)}
+  .mobile-menu-start-area{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6%;min-width:0;padding:0 2%}
+  .mobile-menu-start{width:100%;height:62%;min-height:0;border:6px solid white;outline:5px solid #083d71;border-radius:30px;background:linear-gradient(#ffb32c,#ff8a05);box-shadow:0 7px 0 #a75300;color:#fff;text-shadow:0 4px #a74a00;text-align:center;font-size:clamp(25px,4.1vw,36px);line-height:1.03}
+  .mobile-menu-start span{display:block;margin-top:4%;font-size:clamp(24px,4vw,35px);line-height:1}
+  .mobile-menu-avatar{width:100%;min-height:45px;display:flex;align-items:center;gap:8px;padding:3px 8px;border:3px solid #0b5c97;border-radius:17px;background:#fffdf3;box-shadow:0 4px 0 #0a4377;font-size:clamp(11px,1.8vw,16px)}
+  .mobile-menu-avatar img{width:40px;height:40px;object-fit:contain;flex:none}
+  .mobile-menu-avatar span{flex:1;text-align:left}
+  .mobile-menu-avatar b{color:#119bd7;font-size:25px}
+  .mobile-menu-credits{align-self:end;justify-self:start;min-height:31px;padding:4px 14px;border:2px solid #fff;border-radius:13px;background:#0b92d5;box-shadow:0 3px 0 #07527e;color:#fff;font-size:12px}
+
+  .mobile-journey-screen{display:flex;flex-direction:column;width:100%;height:100%;min-height:0;overflow:hidden;background:#e3f8c2 url('/fases-fundo-v1.png') center/cover no-repeat!important;padding:1.2% 2%}
+  .mobile-journey-header{display:grid;grid-template-columns:55px minmax(0,1fr) 55px;align-items:center;gap:10px;min-height:66px}
+  .mobile-journey-header>button{width:50px;height:50px;padding:0;background:transparent}
+  .mobile-journey-header>button img{width:100%;height:100%;object-fit:contain}
+  .mobile-journey-header div{text-align:center}
+  .mobile-journey-header h1{margin:0;font-size:clamp(23px,4vw,34px);line-height:1;color:#092f5b;text-shadow:-2px -2px #fff,2px -2px #fff,-2px 2px #fff,2px 2px #fff}
+  .mobile-journey-header p{margin:3px 0 0;color:#287222;font-size:clamp(11px,1.6vw,15px);font-weight:900}
+  .mobile-journey-levels{display:flex;align-items:stretch;gap:12px;flex:1;min-height:0;overflow-x:auto;overflow-y:hidden;padding:5px 5px 9px;scroll-snap-type:x mandatory;touch-action:pan-x}
+  .mobile-journey-level{position:relative;flex:0 0 clamp(125px,19vw,160px);min-width:0;min-height:0;padding:0;border:3px solid #fff;border-radius:20px;background:#f7ffe9;box-shadow:0 4px 0 #0b5e9a;overflow:hidden;scroll-snap-align:start}
+  .mobile-journey-level img{width:100%;height:100%;display:block;object-fit:contain}
+  .mobile-journey-level span{position:absolute;right:6px;bottom:6px;display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:#083b70;color:#fff;font-size:15px}
+  .mobile-journey-level.locked{filter:grayscale(.7);opacity:.75}
+  .mobile-journey-footer{margin:8px 0 0;text-align:center;color:#124d21;font-size:clamp(10px,1.45vw,13px);font-weight:900}
+  .mobile-journey-notice{position:absolute;z-index:10;left:20%;right:20%;bottom:15%;padding:10px 36px 10px 12px;border:3px solid #0b5e9a;border-radius:15px;background:#fffdf1;text-align:center;font-size:15px;font-weight:900}
+  .mobile-journey-notice button{position:absolute;right:5px;top:2px;background:transparent;font-size:22px}
+
+  .challenge-step-1{height:100%;min-height:0;padding:0;overflow:hidden}
+  .challenge-step-1>.challenge-header,.challenge-step-1>.silhouette-challenge{display:none!important}
+  .mobile-silhouette{display:grid;grid-template-columns:28% minmax(0,1fr);grid-template-rows:17% minmax(0,1fr);gap:1.6% 1.5%;width:100%;height:100%;padding:1.5% 1.8% 1.8%;background:#dff5cd url('/desafios-fundo-v1.png') center/cover no-repeat}
+  .mobile-silhouette-top{grid-column:1/-1;grid-row:1;display:flex;align-items:center;justify-content:space-between;min-height:0}
+  .mobile-silhouette-control{width:clamp(40px,5.7vw,52px);height:clamp(40px,5.7vw,52px);padding:0;background:transparent}
+  .mobile-silhouette-control img{width:100%;height:100%;object-fit:contain}
+  .mobile-silhouette-status{width:clamp(150px,22vw,190px);height:94%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid white;outline:2px solid #0d7bc4;border-radius:14px;background:#083b70;color:white;box-shadow:0 4px 0 #082f55}
+  .mobile-silhouette-status b{font-size:clamp(10px,1.35vw,12px)}
+  .mobile-silhouette-status div{font-size:clamp(15px,2vw,18px);line-height:1;color:#a4b8c7;letter-spacing:1px}
+  .mobile-silhouette-status div span{color:#ffb500}
+  .mobile-silhouette-status small{font-size:clamp(9px,1.25vw,11px)}
+  .mobile-silhouette-status small strong{color:#ffcc13;font-size:clamp(13px,1.8vw,16px)}
+  .mobile-silhouette-intro{grid-column:1;grid-row:2;display:flex;flex-direction:column;align-items:center;gap:3%;min-height:0}
+  .mobile-silhouette-intro h1{margin:1% 0 0;color:#07305c;text-align:center;font-size:clamp(22px,3.35vw,30px);line-height:.98;text-shadow:-2px -2px #fff,2px -2px #fff,-2px 2px #fff,2px 2px #fff}
+  .mobile-silhouette-question{width:100%;margin:0;padding:4% 3%;border-radius:13px;background:#fff9dd;text-align:center;box-shadow:0 3px 0 #d4bd69;color:#082e5b;font-size:clamp(11px,1.65vw,15px);line-height:1.15;font-weight:900}
+  .mobile-silhouette-guide{display:flex;align-items:center;width:100%;min-height:0;flex:1}
+  .mobile-silhouette-guide img{width:44%;height:100%;object-fit:contain}
+  .mobile-silhouette-guide p{flex:1;margin:0;padding:6px 4px;border:2px solid #31922a;border-radius:15px;background:#fffdf4;text-align:center;font-size:clamp(9px,1.2vw,11px);line-height:1.12;font-weight:900;color:#216b20;box-shadow:0 3px 0 #1f612755}
+  .mobile-silhouette-listen{width:85%;min-height:44px;margin-top:auto;border:3px solid white;outline:2px solid #0a679e;border-radius:15px;background:linear-gradient(#20b4f8,#078ad1);box-shadow:0 3px 0 #084e80;color:#fff;font-size:clamp(10px,1.42vw,13px);text-shadow:0 2px #075188}
+  .mobile-silhouette-grid{grid-column:2;grid-row:2;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:3%;min-height:0}
+  .mobile-silhouette-card{position:relative;min-width:0;min-height:0;display:grid;place-items:center;border:4px solid #0b3769;border-radius:20px;background:linear-gradient(#fffef6,#f4f4e9);box-shadow:0 4px 0 #0b77ad77}
+  .mobile-silhouette-card span{position:absolute;top:7px;left:7px;z-index:1;width:clamp(30px,4vw,36px);aspect-ratio:1;display:grid;place-items:center;border:3px solid #ffc428;border-radius:50%;background:#073d76;color:#fff;font-size:clamp(19px,2.6vw,23px);font-weight:1000}
+  .mobile-silhouette-card img{width:70%;height:78%;object-fit:contain;margin-left:18px;filter:drop-shadow(0 3px 1px #051d341d)}
+  .mobile-menu-screen button:focus-visible,.mobile-journey-screen button:focus-visible,.mobile-silhouette button:focus-visible{outline:4px solid #ffdf1b;outline-offset:2px}
+}
+@media (max-width:900px) and (orientation:portrait){
+  main{height:100dvh;min-height:0;overflow:hidden}
+  main>.game-shell{visibility:hidden;pointer-events:none}
+  .mobile-orientation-gate{position:fixed;z-index:1000;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:26px;background:linear-gradient(#e1f8d9e8,#d8f6ffee),url('/menu-background-v2.png') center/cover;text-align:center;color:#082e5b}
+  .mobile-orientation-gate img{width:min(43vw,170px);height:auto}
+  .mobile-orientation-gate strong{font-size:clamp(28px,8vw,42px)}
+  .mobile-orientation-gate p{max-width:320px;margin:0;font-size:19px;font-weight:900}
+  .mobile-orientation-gate span{font-size:65px;line-height:1}
+}
+@media (max-width:900px) and (orientation:landscape) and (max-height:350px){
+  .mobile-menu-screen{grid-template-rows:20% minmax(0,1fr) 9%}
+  .mobile-menu-logo{max-height:190px}
+  .mobile-menu-tools img{width:40px;height:40px}
+  .mobile-menu-start-area{gap:3%}
+  .mobile-menu-avatar{min-height:36px}
+  .mobile-menu-avatar img{width:30px;height:30px}
+  .mobile-silhouette-intro{gap:1.5%}
+  .mobile-silhouette-intro h1{font-size:22px}
+  .mobile-silhouette-guide img{width:38%}
+}
+
+
+@media (max-width:900px) and (orientation:landscape){
+  .modal.avatar-modal,.modal.sound-modal,.modal.accessibility-modal,.modal.nickname-modal{
+    box-sizing:border-box;
+    min-height:0;
+    max-height:calc(100dvh - 32px);
+    overflow-x:hidden;
+    overflow-y:auto!important;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    touch-action:pan-y;
+  }
+  .credits-development .credits-dev>small{font-size:0!important}
+  .credits-development .credits-dev>small::after{content:"DEV";font-size:10px}
+}
+
+@media (max-width:900px) and (orientation:landscape){
+  .game-shell:has(.mobile-menu-screen){border:8px solid #073563!important;border-radius:28px!important;background:#d9ffc6!important;box-shadow:0 4px 12px #00152c55!important}
+  .game-shell:has(.mobile-menu-screen)::before,.game-shell:has(.mobile-menu-screen)::after{display:block!important;height:7px}
+}
