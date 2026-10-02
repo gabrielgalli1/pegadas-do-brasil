@@ -598,3 +598,139 @@
   .north-puzzle-screen .north-tip{padding:4px 5px;font-size:9.5px}
   .north-puzzle-screen .north-puzzle-board{top:27%}
 }
+
+/* Nordeste no celular: composição horizontal consistente com a Região Norte. */
+@media (max-width:900px) and (orientation:landscape){
+  .game-shell:has(.northeast-challenge-screen){border:0!important;border-radius:0!important;box-shadow:none}
+  .northeast-challenge-screen{background-size:100% 100%!important}
+  .northeast-challenge-screen .north-heading,.northeast-challenge-screen:not(.north-count-screen) .north-heading{left:28%;top:27%;width:43%;padding:4px 7px;border:2px solid #f1d6ac;outline:0;border-radius:15px;background:#fffdf2ed;box-shadow:0 3px 0 #123c5a30}
+  .northeast-challenge-screen .north-heading h1,.northeast-challenge-screen:not(.north-count-screen) .north-heading h1{font-size:clamp(15px,2.5vw,22px);line-height:1.05;white-space:nowrap;letter-spacing:0}
+  .northeast-challenge-screen .north-heading p{display:none}
+  .northeast-challenge-screen .north-status{right:7%;top:17%;width:clamp(115px,18vw,150px);height:clamp(47px,13vh,54px);margin:0;padding:1px 3px;border:3px solid #fff;outline:2px solid #0a5594;border-radius:12px}
+  .northeast-challenge-screen .north-status div:not(.score-inline){height:14px}
+  .northeast-challenge-screen .north-status span{font-size:clamp(11px,1.6vw,15px)}
+  .northeast-challenge-screen .north-guide{position:absolute;left:3.5%;top:32%;width:25.5%;height:20%;margin:0}
+  .northeast-challenge-screen .north-tip{isolation:isolate;display:grid;place-items:center;width:100%;height:100%;padding:5px 7px;border:3px solid #c96b25;border-radius:21px;background:#fffdf1;font-size:clamp(9.5px,1.5vw,12px);line-height:1.12;box-shadow:0 3px 0 #8f4b2144}
+  .northeast-challenge-screen .north-tip::before,.northeast-challenge-screen .north-tip::after{content:"";position:absolute;transform:none;border:0;border-radius:0;clip-path:polygon(0 0,100% 0,50% 100%)}
+  .northeast-challenge-screen .north-tip::before{display:block;z-index:1;left:63%;bottom:-13px;width:24px;height:16px;background:#c96b25}
+  .northeast-challenge-screen .north-tip::after{z-index:2;left:calc(63% + 3px);bottom:-9px;width:18px;height:12px;background:#fffdf1}
+  .northeast-challenge-screen .north-listen,.northeast-animal-screen .animal-controls .animal-listen{position:absolute!important;left:5%!important;top:auto!important;bottom:8%!important;transform:none!important;display:grid!important;place-items:center!important;width:22%!important;height:clamp(30px,9%,39px)!important;min-width:0!important;min-height:0!important;margin:0!important;padding:2px 4px!important;border:3px solid white;outline:2px solid #075d98;border-radius:13px;font-size:clamp(9px,1.2vw,12px)!important;line-height:1!important;white-space:normal!important}
+  .northeast-challenge-screen .northeast-map-card{position:absolute;left:31%;top:27%;width:60%;height:53%!important;min-height:0!important;margin:0;padding:0;border-width:2px;outline-width:1px;border-radius:18px}
+  .northeast-challenge-screen .northeast-map{inset:5px!important;width:calc(100% - 10px)!important;height:calc(100% - 10px);max-width:calc(100% - 10px)!important;max-height:calc(100% - 10px)}
+  .northeast-challenge-screen .north-map-instruction{position:absolute;left:31%;top:auto;bottom:8%;width:60%;height:clamp(30px,9%,39px);display:grid;place-items:center;margin:0;padding:2px 7px;border-width:2px;border-radius:12px;font-size:clamp(10px,1.4vw,13px);line-height:1.05}
+  .northeast-state-screen .northeast-discovery-card{position:absolute;left:32%;top:26%;width:59%;height:64%;min-height:0;margin:0;padding:5px 8px 46px;border-width:2px;outline-width:1px;border-radius:18px;overflow:hidden}
+  .northeast-state-screen .northeast-states-map{height:100%;transform:scale(1.2) translateY(-1%);transform-origin:center 45%}
+  .northeast-state-screen .northeast-discovery-progress{left:6%;right:6%;bottom:5px;padding:2px 4px;border-radius:10px}
+  .northeast-state-screen .northeast-discovery-progress strong{margin-bottom:2px;font-size:clamp(9px,1.25vw,12px)}
+  .northeast-state-screen .northeast-discovery-progress div{gap:5px}
+  .northeast-state-screen .northeast-discovery-progress span{width:clamp(10px,1.8vw,15px);height:clamp(10px,1.8vw,15px)}
+  .northeast-climate-screen .northeast-climate-card{position:absolute;left:31%;top:25%;width:60%;height:66%;min-height:0;margin:0;padding:5px 7px 7px;border-width:2px;outline-width:1px;border-radius:18px;display:flex;flex-direction:column;overflow:hidden}
+  .northeast-climate-screen .northeast-climate-landscape{flex:0 0 34%;height:auto;border-width:2px;border-radius:12px}
+  .northeast-climate-screen .climate-columns{flex:1;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:5px}
+  .northeast-climate-screen .climate-columns>section{min-height:0}
+  .northeast-climate-screen .climate-columns h2{width:80%;margin-bottom:2px;padding:2px;font-size:clamp(9px,1.3vw,12px)}
+  .northeast-climate-screen .climate-answer-slot{height:clamp(19px,5vh,25px);margin-bottom:3px;border-radius:7px;font-size:clamp(11px,1.5vw,15px)}
+  .northeast-climate-screen .climate-options{min-height:0;gap:5px}
+  .northeast-climate-screen .climate-options button{min-height:0;height:100%;padding:2px;border-width:2px;border-radius:9px;font-size:clamp(9px,1.2vw,11px)}
+  .northeast-climate-screen .climate-options button img{flex:1 1 auto;width:60%;height:35px;max-height:58px;min-height:0;margin:0 auto 1px;object-fit:contain}
+  .northeast-animal-screen .northeast-animal-card{position:absolute;left:31%;top:26%;width:60%;height:55%;min-height:0;margin:0;padding:5px;border-width:2px;outline-width:1px;border-radius:18px}
+  .northeast-animal-screen .animal-search-scene{border-width:2px;border-radius:12px}
+  .northeast-animal-screen .animal-lens{width:clamp(55px,10vw,90px);height:clamp(55px,10vw,90px);border-width:3px;outline-width:2px}
+  .northeast-animal-screen .animal-lens::after{right:-22px;bottom:-17px;width:37px;height:11px;border-width:2px}
+  .northeast-animal-screen .animal-controls{display:contents}
+  .northeast-animal-screen .animal-controls .animal-hint{position:absolute!important;left:57%!important;top:auto!important;bottom:8%!important;width:34%!important;min-width:0!important;height:clamp(30px,9%,39px)!important;min-height:0!important;margin:0!important;padding:2px 4px!important;border-radius:13px;font-size:clamp(9px,1.2vw,12px)!important;line-height:1!important;white-space:normal!important}
+  .northeast-landscape-screen .northeast-landscape-card{position:absolute;left:31%;top:25%;width:60%;height:66%;min-height:0;margin:0;padding:6px 7px;border-width:2px;outline-width:1px;border-radius:18px;grid-template-rows:minmax(0,1fr) auto minmax(0,1fr);gap:5px;overflow:hidden}
+  .northeast-landscape-screen .landscape-album,.northeast-landscape-screen .landscape-cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .northeast-landscape-screen .landscape-album button{padding-bottom:16px;border-width:2px;border-radius:9px}
+  .northeast-landscape-screen .landscape-album button>span{font-size:clamp(18px,3vw,28px)}
+  .northeast-landscape-screen .landscape-album button>strong{height:16px;font-size:clamp(8px,1.15vw,11px)}
+  .northeast-landscape-screen .landscape-album-instruction{padding:2px 4px;border-width:1px;border-radius:8px;font-size:clamp(9px,1.2vw,11px);line-height:1.05}
+  .northeast-landscape-screen .landscape-cards button{border-width:2px;border-radius:9px}
+  .northeast-landscape-screen .landscape-cards button span{left:3px;right:3px;bottom:2px;padding:2px;font-size:clamp(8px,1vw,10px)}
+  .northeast-arraia-screen .northeast-arraia-card{position:absolute;left:31%;top:25%;width:60%;height:66%;min-height:0;margin:0;padding:5px;border-width:2px;outline-width:1px;border-radius:18px;display:grid;grid-template-rows:minmax(0,1fr) auto minmax(0,.62fr);gap:4px;overflow:hidden}
+  .northeast-arraia-screen .arraia-scene{border-width:2px;border-radius:10px}
+  .northeast-arraia-screen .arraia-progress{gap:5px;padding:1px 4px;border-width:1px;border-radius:8px;font-size:clamp(9px,1.15vw,11px)}
+  .northeast-arraia-screen .arraia-progress span{font-size:12px}
+  .northeast-arraia-screen .arraia-options{grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:minmax(0,1fr);gap:4px;min-height:0}
+  .northeast-arraia-screen .arraia-options button{height:100%;min-height:0;border-width:2px;border-radius:8px;grid-template-rows:minmax(0,1fr) auto}
+  .northeast-arraia-screen .arraia-options button strong{padding:1px;font-size:clamp(7px,.9vw,9px);line-height:1}
+  .northeast-challenge-screen>.feedback{position:absolute;inset:50% auto auto 50%;width:min(390px,78%);max-height:calc(100% - 28px);overflow:auto;padding:10px 14px;border-width:5px;border-radius:27px}
+}
+@media (max-width:900px) and (orientation:landscape) and (max-height:350px){
+  .northeast-challenge-screen .north-heading,.northeast-challenge-screen:not(.north-count-screen) .north-heading{top:27%}
+  .northeast-challenge-screen .north-heading h1,.northeast-challenge-screen:not(.north-count-screen) .north-heading h1{font-size:clamp(13px,2.25vw,18px)}
+  .northeast-challenge-screen .north-status{top:13%}
+  .northeast-challenge-screen .north-guide{top:32%}
+  .northeast-challenge-screen .north-tip{padding:4px 5px;font-size:9.5px}
+  .northeast-challenge-screen .northeast-map-card{top:27%}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .northeast-state-screen .north-heading h1{font-size:clamp(11px,1.9vw,16px)}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .northeast-challenge-screen .north-heading,.northeast-challenge-screen:not(.north-count-screen) .north-heading{left:27%;width:42%}
+  .northeast-challenge-screen .north-heading h1,.northeast-challenge-screen:not(.north-count-screen) .north-heading h1{font-size:clamp(14px,2.35vw,20px)}
+  .northeast-state-screen .north-heading h1{font-size:clamp(11px,1.9vw,16px)}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .northeast-challenge-screen:not(.north-count-screen) .north-tip::before{display:none}
+  .northeast-challenge-screen:not(.north-count-screen) .north-tip::after{left:72%;bottom:-9px;width:14px;height:14px;transform:rotate(45deg);clip-path:none;border:0;border-right:3px solid #c96b25;border-bottom:3px solid #c96b25;background:#fffdf1}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .northeast-challenge-screen:not(.north-count-screen) .north-guide{top:27%}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .northeast-state-screen .north-guide{top:27%}
+  .northeast-state-screen .north-tip::before{display:none}
+  .northeast-state-screen .north-tip::after{left:72%;bottom:-9px;width:14px;height:14px;transform:rotate(45deg);clip-path:none;border:0;border-right:3px solid #c96b25;border-bottom:3px solid #c96b25;background:#fffdf1}
+  .northeast-state-screen .northeast-discovery-card{left:31%;width:60%;height:66%}
+  .northeast-state-screen .northeast-states-map{transform:scale(1.08) translateY(-1%)}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .northeast-challenge-screen:not(.north-count-screen) .north-heading,.northeast-state-screen .north-heading{top:50%;transform:translateY(-50%)}
+  .northeast-challenge-screen:not(.north-count-screen) .north-heading h1{font-size:clamp(15px,2.55vw,22px)}
+  .northeast-state-screen .north-heading h1{font-size:clamp(11.5px,1.98vw,16.8px)}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .northeast-challenge-screen:not(.north-count-screen) .north-heading h1,.northeast-state-screen .north-heading h1{font-weight:900}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .northeast-climate-screen .north-heading{top:50%;transform:translateY(-50%)}
+  .northeast-climate-screen .north-heading h1{font-size:clamp(14px,2.45vw,21px);font-weight:900}
+  .northeast-climate-screen .north-guide{top:27%}
+  .northeast-climate-screen .north-tip::before{display:none}
+  .northeast-climate-screen .north-tip::after{left:72%;bottom:-9px;width:14px;height:14px;transform:rotate(45deg);clip-path:none;border:0;border-right:3px solid #c96b25;border-bottom:3px solid #c96b25;background:#fffdf1}
+  .northeast-climate-screen .northeast-climate-card{height:67%}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .northeast-animal-screen .north-heading{top:50%;transform:translateY(-50%)}
+  .northeast-animal-screen .north-heading h1{font-size:clamp(14px,2.45vw,21px);font-weight:900}
+  .northeast-animal-screen .north-guide{top:27%}
+  .northeast-animal-screen .north-tip::before{display:none}
+  .northeast-animal-screen .north-tip::after{left:72%;bottom:-9px;width:14px;height:14px;transform:rotate(45deg);clip-path:none;border:0;border-right:3px solid #c96b25;border-bottom:3px solid #c96b25;background:#fffdf1}
+  .northeast-animal-screen .animal-controls .animal-hint{left:44.4%!important;bottom:8%!important}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .northeast-landscape-screen .north-heading{top:50%;transform:translateY(-50%)}
+  .northeast-landscape-screen .north-heading h1{font-size:clamp(13px,2.25vw,19px);font-weight:900}
+  .northeast-landscape-screen .north-guide{top:27%}
+  .northeast-landscape-screen .north-tip::before{display:none}
+  .northeast-landscape-screen .north-tip::after{left:72%;bottom:-9px;width:14px;height:14px;transform:rotate(45deg);clip-path:none;border:0;border-right:3px solid #c96b25;border-bottom:3px solid #c96b25;background:#fffdf1}
+  .northeast-landscape-screen .northeast-landscape-card{height:67%}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .northeast-arraia-screen .north-heading{top:50%;transform:translateY(-50%)}
+  .northeast-arraia-screen .north-heading h1{font-size:clamp(13px,2.2vw,19px);font-weight:900}
+  .northeast-arraia-screen .north-guide{top:27%}
+  .northeast-arraia-screen .north-tip::before{display:none}
+  .northeast-arraia-screen .north-tip::after{left:72%;bottom:-9px;width:14px;height:14px;transform:rotate(45deg);clip-path:none;border:0;border-right:3px solid #c96b25;border-bottom:3px solid #c96b25;background:#fffdf1}
+  .northeast-arraia-screen .northeast-arraia-card{top:22%;height:70%;grid-template-rows:minmax(0,1fr) auto minmax(0,.4fr)}
+  .northeast-arraia-screen .arraia-scene{justify-self:center;width:auto;max-width:100%;height:100%;aspect-ratio:1672/941;border:2px solid #d18b31;border-radius:10px;box-shadow:0 2px 0 #8b4e2144}
+  .northeast-arraia-screen .arraia-scene>img:first-child{object-fit:contain}
+  .northeast-arraia-screen .arraia-drag-ghost{width:clamp(58px,9vw,78px);height:clamp(58px,9vw,78px);padding:4px;border:2px solid #fff;outline:2px solid #ffd12a;border-radius:14px;background:#fff8dcf0;box-shadow:0 7px 14px #3c210a8a;transform:translate(-50%,-65%) scale(1.04)}
+  .northeast-arraia-screen .arraia-drag-ghost img{filter:drop-shadow(0 2px 2px #4f321b66)}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .northeast-arraia-screen .northeast-arraia-card::before{content:"";position:absolute;left:5px;right:5px;top:5px;height:60%;background:url('/arraia-quebra-cabeca-silhuetas-v3.png') center/cover no-repeat;filter:blur(3px) saturate(.85);opacity:.48;pointer-events:none}
+  .northeast-arraia-screen .arraia-scene,.northeast-arraia-screen .arraia-progress,.northeast-arraia-screen .arraia-options{position:relative;z-index:1}
+}
