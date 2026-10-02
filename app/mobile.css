@@ -734,3 +734,122 @@
   .northeast-arraia-screen .northeast-arraia-card::before{content:"";position:absolute;left:5px;right:5px;top:5px;height:60%;background:url('/arraia-quebra-cabeca-silhuetas-v3.png') center/cover no-repeat;filter:blur(3px) saturate(.85);opacity:.48;pointer-events:none}
   .northeast-arraia-screen .arraia-scene,.northeast-arraia-screen .arraia-progress,.northeast-arraia-screen .arraia-options{position:relative;z-index:1}
 }
+
+/* Centro-Oeste no celular: seis desafios na composição horizontal das fases anteriores. */
+@media (max-width:900px) and (orientation:landscape){
+  main:has(.centerwest-screen){display:grid;place-items:center;width:100%;height:100dvh;min-height:100dvh;padding:8px 10px;overflow:hidden}
+  .game-shell:has(.centerwest-screen){position:relative;left:auto;top:auto;transform:none;width:100%;height:100%;min-height:0;aspect-ratio:auto;border:0!important;border-radius:0!important;box-shadow:none;overflow:hidden}
+  .centerwest-screen{position:relative;width:100%;height:100%;min-height:0;padding:0!important;overflow:hidden!important;background-position:center!important;background-size:100% 100%!important}
+  .centerwest-screen .centerwest-challenge-header{inset:3% 2.5% auto;width:95%;height:21%}
+  .centerwest-screen .north-round-control{width:clamp(38px,5.8vw,50px);height:clamp(38px,5.8vw,50px)}
+  .centerwest-screen .north-heading{left:27%;top:50%;transform:translateY(-50%);width:43%;padding:4px 7px;border:2px solid #eac695;outline:0;border-radius:15px;background:#fffdf2ed;box-shadow:0 3px 0 #123c5a30}
+  .centerwest-screen .north-heading h1{font-size:clamp(13px,2.25vw,20px);font-weight:900;line-height:1.05;white-space:nowrap;letter-spacing:0}
+  .centerwest-screen .north-heading p{display:none}
+  .centerwest-screen .north-status{right:7%;top:17%;width:clamp(115px,18vw,150px);height:clamp(47px,13vh,54px);margin:0;padding:1px 3px;border:3px solid #fff;outline:2px solid #0a5594;border-radius:12px;background:#073e78;box-shadow:0 4px 0 #082f55}
+  .centerwest-screen .north-status b{font-size:clamp(9px,1.32vw,12px);line-height:1}
+  .centerwest-screen .north-status div:not(.score-inline){height:14px;gap:0;align-items:center}
+  .centerwest-screen .north-status span{font-size:clamp(11px,1.6vw,15px);line-height:1}
+  .centerwest-screen .north-status .game-score{position:static!important;width:auto!important;height:auto!important;max-width:none;margin:0!important;padding:0!important;border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;font-size:10px!important;line-height:1!important}
+  .centerwest-screen .north-status .game-score:before{display:none}
+  .centerwest-screen .centerwest-guide{left:3.5%;top:27%;width:25.5%;height:20%;margin:0;padding:5px 7px;display:grid;place-items:center;border:3px solid #c6751d;border-radius:20px;background:#fffdf1;font-size:clamp(9px,1.35vw,12px);line-height:1.1;box-shadow:0 3px 0 #8f4b2144}
+  .centerwest-screen .centerwest-guide:before{content:none}
+  .centerwest-screen .centerwest-guide:after{left:72%;right:auto;bottom:-9px;width:14px;height:14px;transform:rotate(45deg);border:0;border-right:3px solid #c6751d;border-bottom:3px solid #c6751d;background:#fffdf1}
+  .centerwest-screen .centerwest-listen{left:5%!important;top:auto!important;bottom:8%!important;transform:none!important;display:grid;place-items:center;width:22%;height:clamp(30px,9%,39px);min-width:0;min-height:0;margin:0;padding:2px 4px;border:3px solid #fff;outline:2px solid #075d98;border-radius:13px;font-size:clamp(8px,1.15vw,12px);line-height:1;white-space:normal}
+  .centerwest-screen .centerwest-board,.centerwest-screen .centerwest-memory-board,.centerwest-screen .centerwest-puzzle-board,.centerwest-screen .centerwest-conveyor-board,.centerwest-screen .centerwest-brasilia-board,.centerwest-screen .centerwest-photo-board{position:absolute;left:31%;top:25%;width:60%;height:66%;min-height:0;margin:0;border-width:2px;border-radius:18px;box-shadow:0 3px 0 #5b5b3655}
+  .centerwest-location-screen .centerwest-board{grid-template-columns:27% 73%;padding:1%;overflow:hidden}
+  .centerwest-location-screen .centerwest-map{width:100%;height:100%}
+  .centerwest-location-screen .centerwest-drag-hint{right:-10%;font-size:clamp(18px,3vw,28px)}
+  .centerwest-memory-board{padding:6px 8px 5px;grid-template-rows:minmax(0,1fr) auto;gap:5px}
+  .centerwest-memory-board .memory-grid{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:5px}
+  .centerwest-memory-board .memory-card-back,.centerwest-memory-board .memory-card-front{border-width:2px;outline-width:1px;border-radius:9px}
+  .centerwest-memory-board .memory-card-front b{padding:2px;font-size:clamp(8px,1vw,10px)}
+  .centerwest-memory-board .memory-progress{min-height:21px;padding:1px 4px;gap:5px;border-radius:8px}
+  .centerwest-memory-board .memory-progress strong{font-size:clamp(8px,1.1vw,11px)}
+  .centerwest-puzzle-board{padding:5px 7px;grid-template-rows:minmax(0,1fr) 29% auto;gap:4px}
+  .centerwest-puzzle-board .centerwest-state-tray{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+  .centerwest-puzzle-board .centerwest-state-piece{padding:2px;border-width:2px;border-radius:8px}
+  .centerwest-puzzle-board .centerwest-state-piece strong{font-size:clamp(7px,.9vw,9px)}
+  .centerwest-puzzle-board .centerwest-piece-code{top:36%;min-width:21px;height:16px;font-size:9px}
+  .centerwest-puzzle-board .centerwest-puzzle-progress{padding:2px;font-size:clamp(9px,1vw,11px)}
+  .centerwest-conveyor-board{padding:5px 7px;grid-template-rows:auto auto minmax(0,1fr) 17px auto;gap:3px;overflow:hidden}
+  .centerwest-conveyor-board .conveyor-progress{gap:2px}
+  .centerwest-conveyor-board .conveyor-progress>strong{font-size:clamp(10px,1.25vw,13px)}
+  .centerwest-conveyor-board .conveyor-collection>span{width:clamp(23px,3.5vw,32px);border-radius:6px;font-size:15px}
+  .centerwest-conveyor-board .conveyor-message{min-height:19px;padding:2px;font-size:clamp(9px,1vw,11px)}
+  .centerwest-conveyor-board .conveyor-track{gap:5px;padding:4px}
+  .centerwest-conveyor-board .conveyor-card{flex-basis:clamp(78px,11vw,102px);padding:2px;border-width:2px;border-radius:8px}
+  .centerwest-conveyor-board .conveyor-card strong{padding:2px;font-size:clamp(8px,1vw,10px)}
+  .centerwest-conveyor-board .conveyor-belt{height:17px;margin-top:-3px;border-width:2px}
+  .centerwest-conveyor-board .conveyor-belt span{width:11px;height:11px;border-width:2px}
+  .centerwest-conveyor-board .conveyor-pause{min-width:0;padding:2px 10px;border-width:2px;border-radius:9px;font-size:clamp(9px,1.1vw,11px)}
+  .centerwest-brasilia-board{padding:5px 7px;grid-template-columns:28% minmax(0,1fr);grid-template-rows:minmax(0,1fr) 29% auto;gap:5px}
+  .centerwest-brasilia-board .brasilia-reference{padding:3px;gap:2px;border-width:2px;border-radius:9px}
+  .centerwest-brasilia-board .brasilia-reference>strong{font-size:clamp(8px,1vw,10px)}
+  .centerwest-brasilia-board .brasilia-assembly{padding:2px;border-radius:9px}
+  .centerwest-brasilia-board .brasilia-tray{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+  .centerwest-brasilia-board .brasilia-piece{padding:2px;border-width:2px;border-radius:8px}
+  .centerwest-brasilia-board .brasilia-piece strong{font-size:clamp(7px,.85vw,9px)}
+  .centerwest-brasilia-board .brasilia-progress{min-height:18px;padding:1px;gap:4px;border-radius:8px}
+  .centerwest-brasilia-board .brasilia-progress strong{font-size:clamp(8px,1vw,10px)}
+  .centerwest-brasilia-board .brasilia-progress i{font-size:11px}
+  .centerwest-photo-board{padding:5px 7px;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto minmax(0,1fr) auto 22%;gap:4px}
+  .centerwest-photo-board .photo-mission{min-height:19px;padding:2px 5px;gap:6px;border-radius:8px}
+  .centerwest-photo-board .photo-mission strong{font-size:clamp(9px,1.1vw,11px)}
+  .centerwest-photo-board .photo-mission span{padding:2px 4px;font-size:clamp(8px,.9vw,10px)}
+  .centerwest-photo-board .photo-scene{border-width:2px;outline-width:1px;border-radius:9px}
+  .centerwest-photo-board .photo-feedback{min-height:17px;padding:1px 4px;font-size:clamp(8px,.95vw,10px)}
+  .centerwest-photo-board .photo-album{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+  .centerwest-photo-board .photo-album>div{border-width:2px;border-radius:7px}
+  .centerwest-photo-board .photo-album strong{padding:1px;font-size:clamp(7px,.8vw,9px)}
+  .centerwest-photo-board .photo-capture{min-width:0;margin-left:3px;padding:4px 7px;border-width:2px;border-radius:9px;font-size:clamp(9px,1vw,11px)}
+  .centerwest-screen>.feedback{position:absolute;inset:50% auto auto 50%;width:min(390px,78%);max-height:calc(100% - 28px);overflow:auto;padding:10px 14px;border-width:5px;border-radius:27px}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .centerwest-screen .north-status .score-inline{display:flex!important;align-items:center;justify-content:center;width:100%!important;height:15px!important;gap:2px!important;margin:0!important;padding:0!important;border:0!important}
+  .centerwest-screen .north-status .score-inline img{display:none!important}
+  .centerwest-screen .north-status .score-inline span{display:flex!important;flex-direction:row!important;align-items:center;gap:3px;height:15px;font-size:10px}
+  .centerwest-screen .north-status .score-inline strong{font-size:12px;line-height:1}
+  .centerwest-screen .north-status .score-inline small{font-size:8px;line-height:1}
+}
+@media (max-width:620px) and (orientation:landscape){
+  .centerwest-screen .north-heading{width:41%}
+  .centerwest-conveyor-screen .north-heading h1,.centerwest-puzzle-screen .north-heading h1{font-size:clamp(10px,1.95vw,12px)}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .centerwest-screen.centerwest-location-screen .centerwest-guide{top:18%}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .centerwest-screen>.feedback{width:min(350px,72%);max-height:calc(100% - 28px);padding:8px 12px;border-width:5px;border-radius:25px}
+  .centerwest-screen>.feedback>span{display:block;font-size:clamp(36px,6vw,48px);line-height:1}
+  .centerwest-screen>.feedback h2{margin:3px 0;font-size:clamp(20px,3vw,26px);line-height:1.08}
+  .centerwest-screen>.feedback p{margin:5px 0 8px;font-size:clamp(12px,1.7vw,15px);line-height:1.16}
+  .centerwest-screen>.feedback button{min-height:36px;margin:3px;padding:5px 9px;border-width:3px;border-radius:13px;font-size:clamp(11px,1.5vw,14px);line-height:1.05}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .centerwest-screen.centerwest-memory-screen .centerwest-guide{top:18%}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .centerwest-screen.centerwest-puzzle-screen .centerwest-guide{top:18%}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .centerwest-screen.centerwest-conveyor-screen .centerwest-guide{top:18%}
+  .centerwest-conveyor-screen .north-heading h1{font-size:clamp(10px,1.85vw,15px)}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .centerwest-screen.centerwest-brasilia-screen .centerwest-guide{top:18%}
+  .centerwest-brasilia-screen .brasilia-ghost{width:clamp(70px,10vw,90px);height:clamp(48px,7vw,64px);border-width:2px;border-radius:9px}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .centerwest-screen.centerwest-photo-screen .centerwest-guide{top:18%}
+  .centerwest-screen.centerwest-photo-screen .centerwest-photo-board{top:22%;height:70%;grid-template-rows:auto minmax(0,1fr) auto 17%}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .centerwest-photo-screen .centerwest-photo-board .photo-mission{grid-column:1/-1;grid-row:1}
+  .centerwest-photo-screen .centerwest-photo-board .photo-scene{grid-column:1/-1;grid-row:2}
+  .centerwest-photo-screen .centerwest-photo-board .photo-feedback{grid-column:1/-1;grid-row:3}
+  .centerwest-photo-screen .centerwest-photo-board .photo-album{grid-column:1;grid-row:4}
+  .centerwest-photo-screen .centerwest-photo-board .photo-capture{grid-column:2;grid-row:4}
+}
+@media (max-width:900px) and (orientation:landscape){
+  .centerwest-screen.centerwest-photo-screen .centerwest-photo-board{grid-template-rows:auto minmax(0,1fr) auto 20%}
+}
