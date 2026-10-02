@@ -7,9 +7,9 @@ type Props = { canAnswer: boolean; onMistake: () => void; onComplete: () => void
 type Mission = { id: AnimalId; name: string; x: number; y: number; crop: string; cropSize: string; fact: string };
 
 const missions: Mission[] = [
-  { id: "tuiuiu", name: "TUIUIÚ", x: 52, y: 47, crop: "50% 48%", cropSize: "160% auto", fact: "O tuiuiú é uma das aves mais conhecidas e um símbolo do Pantanal." },
-  { id: "capivara", name: "CAPIVARA", x: 20, y: 62, crop: "0% 67%", cropSize: "190% auto", fact: "A capivara vive próxima aos rios e é uma excelente nadadora." },
-  { id: "jacare", name: "JACARÉ", x: 82, y: 68, crop: "91% 70%", cropSize: "350% auto", fact: "O jacaré ajuda a manter o equilíbrio da vida no Pantanal." },
+  { id: "tuiuiu", name: "TUIUIÚ", x: 52, y: 47, crop: "90% 35%", cropSize: "145% auto", fact: "O tuiuiú é uma das aves mais conhecidas e um símbolo do Pantanal." },
+  { id: "capivara", name: "CAPIVARA", x: 20, y: 62, crop: "0% 63%", cropSize: "135% auto", fact: "A capivara vive próxima aos rios e é uma excelente nadadora." },
+  { id: "jacare", name: "JACARÉ", x: 82, y: 68, crop: "100% 70%", cropSize: "190% auto", fact: "O jacaré ajuda a manter o equilíbrio da vida no Pantanal." },
 ];
 
 export default function CenterWestPhotographer({ canAnswer, onMistake, onComplete, onListen }: Props) {

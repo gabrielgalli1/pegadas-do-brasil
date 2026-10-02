@@ -40,10 +40,18 @@ export default function CenterWestBrasilia({ canAnswer, onMistake, onComplete, o
     if (!drag.current || drag.current.pointerId !== event.pointerId) return;
     drag.current.moved = true; setGhost({ id: drag.current.id, x: event.clientX, y: event.clientY });
   }
+  function nearSlot(piece: PieceId, x: number, y: number) {
+    const path = document.querySelector<SVGPathElement>(`[data-brasilia-slot="${piece}"] path`);
+    if (!path) return false;
+    const box = path.getBoundingClientRect();
+    const reach = Math.max(14, Math.min(24, window.innerWidth * 0.025));
+    return x >= box.left - reach && x <= box.right + reach && y >= box.top - reach && y <= box.bottom + reach;
+  }
   function end(event: ReactPointerEvent<HTMLButtonElement>) {
     const active = drag.current; drag.current = null; setGhost(null);
     if (!active) return;
     if (!active.moved) { setSelected(active.id); return; }
+    if (nearSlot(active.id, event.clientX, event.clientY)) { place(active.id, active.id); return; }
     const target = document.elementFromPoint(event.clientX, event.clientY)?.closest<SVGGElement>("[data-brasilia-slot]");
     const slot = target?.dataset.brasiliaSlot as PieceId | undefined;
     if (slot) place(slot, active.id);
@@ -52,7 +60,7 @@ export default function CenterWestBrasilia({ canAnswer, onMistake, onComplete, o
   return <div className="centerwest-brasilia-board">
     <div className="brasilia-reference"><strong>REFERÊNCIA</strong><span className="brasilia-reference-image" role="img" aria-label="Congresso Nacional completo" /></div>
     <div className="brasilia-assembly" role="group" aria-label="Área de montagem do Congresso Nacional">
-      <svg viewBox="0 0 600 300" className="brasilia-build-svg" aria-label="Silhuetas das cinco partes do Congresso Nacional">
+      <svg viewBox="0 0 600 300" className="brasilia-build-svg" aria-label="Silhuetas das cinco partes do Congresso Nacional" onClickCapture={(event) => { if (selected && nearSlot(selected, event.clientX, event.clientY)) { event.stopPropagation(); place(selected, selected); } }}>
         <defs><clipPath id="brasilia-placed-mask">{pieces.filter((piece) => placed.includes(piece.id)).map((piece) => <path key={piece.id} d={piece.path} transform={piece.transform} />)}</clipPath></defs>
         {placed.length > 0 && <foreignObject x="0" y="0" width="600" height="300" clipPath="url(#brasilia-placed-mask)" className="brasilia-complete-art" aria-hidden="true"><div className="brasilia-complete-image" /></foreignObject>}
         {pieces.map((piece) => { const complete = placed.includes(piece.id); return <g key={piece.id} transform={piece.transform} data-brasilia-slot={piece.id} role="button" tabIndex={0} aria-label={"Espaço de " + piece.name + (complete ? ", preenchido" : "")} className={"brasilia-shape " + (complete ? "complete" : "") + (selected ? " ready" : "")} onClick={() => selected && place(piece.id, selected)} onKeyDown={(event) => { if (selected && (event.key === "Enter" || event.key === " ")) { event.preventDefault(); place(piece.id, selected); } }}><path d={piece.path} fill={complete ? "transparent" : "#fffaf0"} /></g>; })}
