@@ -81,12 +81,29 @@ const avatars = [
   { id: "mico", image: "/avatar-mico-v1.png", name: "Dourado", description: "Mico-leão-dourado" },
 ] as const;
 
+const narrationVolumeEvent = "pegadas-narration-volume";
+let narrationRequest = 0;
 function speak(text: string) {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+  const request = ++narrationRequest;
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
+  utterance.onstart = () => {
+    if (request === narrationRequest) window.dispatchEvent(new CustomEvent(narrationVolumeEvent, { detail: true }));
+  };
+  const restoreMusic = () => {
+    if (request === narrationRequest) window.dispatchEvent(new CustomEvent(narrationVolumeEvent, { detail: false }));
+  };
+  utterance.onend = restoreMusic;
+  utterance.onerror = restoreMusic;
+  const portugueseVoices = window.speechSynthesis.getVoices().filter((voice) => voice.lang.toLowerCase().replace("_", "-").startsWith("pt-br"));
+  const preferredVoice = portugueseVoices.find((voice) => /natural|neural/i.test(voice.name))
+    ?? portugueseVoices.find((voice) => /google|microsoft/i.test(voice.name))
+    ?? portugueseVoices[0];
+  if (preferredVoice) utterance.voice = preferredVoice;
   utterance.lang = "pt-BR";
-  utterance.rate = 0.9;
+  utterance.rate = 1;
+  utterance.pitch = 1;
   utterance.volume = Math.max(0, Math.min(1, Number(window.localStorage.getItem("pegadas-volume") ?? 75) / 100));
   window.speechSynthesis.speak(utterance);
 }
@@ -204,7 +221,13 @@ export default function Home() {
   const [regionRun, setRegionRun] = useState(0);
   const gameShellRef = useRef<HTMLDivElement>(null);
   const menuMusicRef = useRef<HTMLAudioElement>(null);
+  const northMusicRef = useRef<HTMLAudioElement>(null);
+  const northeastMusicRef = useRef<HTMLAudioElement>(null);
+  const centerWestMusicRef = useRef<HTMLAudioElement>(null);
+  const narrationActiveRef = useRef(false);
   const buttonClickRef = useRef<HTMLAudioElement>(null);
+  const wrongAnswerRef = useRef<HTMLAudioElement>(null);
+  const correctAnswerRef = useRef<HTMLAudioElement>(null);
   const regionStartScore = useRef(0);
   const regionStartFirstTryWins = useRef(0);
   const [completedChallenges, setCompletedChallenges] = useState(0);
@@ -270,7 +293,7 @@ export default function Home() {
   useEffect(() => {
     const audio = menuMusicRef.current;
     if (!audio) return;
-    audio.volume = Math.max(0, Math.min(1, volume / 100));
+    audio.volume = Math.max(0, Math.min(1, (volume / 100) * (narrationActiveRef.current ? 0.25 : 1)));
     if (screen !== "menu" || !music || volume === 0) {
       audio.pause();
       return;
@@ -284,6 +307,70 @@ export default function Home() {
       window.removeEventListener("keydown", playMenuMusic);
     };
   }, [screen, music, volume]);
+  useEffect(() => {
+    const audio = northMusicRef.current;
+    if (!audio) return;
+    audio.volume = Math.max(0, Math.min(1, (volume / 100) * (narrationActiveRef.current ? 0.25 : 1)));
+    if (screen !== "north" || !music || volume === 0) {
+      audio.pause();
+      return;
+    }
+    const playNorthMusic = () => { void audio.play().catch(() => { /* aguarda a primeira interação exigida pelo navegador */ }); };
+    playNorthMusic();
+    window.addEventListener("pointerdown", playNorthMusic, { once: true });
+    window.addEventListener("keydown", playNorthMusic, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", playNorthMusic);
+      window.removeEventListener("keydown", playNorthMusic);
+    };
+  }, [screen, music, volume]);
+  useEffect(() => {
+    const audio = northeastMusicRef.current;
+    if (!audio) return;
+    audio.volume = Math.max(0, Math.min(1, (volume / 100) * (narrationActiveRef.current ? 0.25 : 1)));
+    audio.playbackRate = 0.9;
+    if (screen !== "northeast" || !music || volume === 0) {
+      audio.pause();
+      return;
+    }
+    const playNortheastMusic = () => { void audio.play().catch(() => { /* aguarda a primeira interação exigida pelo navegador */ }); };
+    playNortheastMusic();
+    window.addEventListener("pointerdown", playNortheastMusic, { once: true });
+    window.addEventListener("keydown", playNortheastMusic, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", playNortheastMusic);
+      window.removeEventListener("keydown", playNortheastMusic);
+    };
+  }, [screen, music, volume]);
+  useEffect(() => {
+    const audio = centerWestMusicRef.current;
+    if (!audio) return;
+    audio.volume = Math.max(0, Math.min(1, (volume / 100) * (narrationActiveRef.current ? 0.25 : 1)));
+    audio.playbackRate = 0.9;
+    if (screen !== "centerwest" || !music || volume === 0) {
+      audio.pause();
+      return;
+    }
+    const playCenterWestMusic = () => { void audio.play().catch(() => { /* aguarda a primeira interação exigida pelo navegador */ }); };
+    playCenterWestMusic();
+    window.addEventListener("pointerdown", playCenterWestMusic, { once: true });
+    window.addEventListener("keydown", playCenterWestMusic, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", playCenterWestMusic);
+      window.removeEventListener("keydown", playCenterWestMusic);
+    };
+  }, [screen, music, volume]);
+  useEffect(() => {
+    const updateNarrationVolume = (event: Event) => {
+      narrationActiveRef.current = (event as CustomEvent<boolean>).detail;
+      const musicVolume = Math.max(0, Math.min(1, (volume / 100) * (narrationActiveRef.current ? 0.25 : 1)));
+      [menuMusicRef, northMusicRef, northeastMusicRef, centerWestMusicRef].forEach((ref) => {
+        if (ref.current) ref.current.volume = musicVolume;
+      });
+    };
+    window.addEventListener(narrationVolumeEvent, updateNarrationVolume);
+    return () => window.removeEventListener(narrationVolumeEvent, updateNarrationVolume);
+  }, [volume]);
   useEffect(() => {
     const playButtonClick = (event: MouseEvent) => {
       const button = event.target instanceof Element ? event.target.closest("button") : null;
@@ -365,7 +452,20 @@ export default function Home() {
     startAdventure();
   }
 
+  function playCorrectAnswer() {
+    const audio = correctAnswerRef.current;
+    if (!audio || !effects || volume === 0) return;
+    audio.volume = Math.max(0, Math.min(1, volume / 100));
+    audio.currentTime = 0;
+    void audio.play().catch(() => { /* áudio indisponível neste navegador */ });
+  }
   function registerMistake() {
+    const audio = wrongAnswerRef.current;
+    if (audio && effects && volume > 0) {
+      audio.volume = Math.max(0, Math.min(1, volume / 100));
+      audio.currentTime = 0;
+      void audio.play().catch(() => { /* áudio indisponível neste navegador */ });
+    }
     setMistakes((count) => Math.min(count + 1, 2));
     setFeedback("wrong");
   }
@@ -392,6 +492,7 @@ export default function Home() {
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
       setCompletedChallenges((value) => Math.max(value, 1));
       if (attempts === 0) setFirstTryWins((value) => value + 1);
+      playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! Essa é a silhueta do Brasil!");
     } else {
@@ -408,6 +509,7 @@ export default function Home() {
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
       setCompletedChallenges((value) => Math.max(value, 2));
       if (attempts === 0) setFirstTryWins((value) => value + 1);
+      playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! O Brasil está localizado na América do Sul!");
     } else {
@@ -424,6 +526,7 @@ export default function Home() {
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
       setCompletedChallenges((value) => Math.max(value, 3));
       if (attempts === 0) setFirstTryWins((value) => value + 1);
+      playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! O Oceano Atlântico banha o litoral do Brasil!");
     } else {
@@ -440,6 +543,7 @@ export default function Home() {
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
       setCompletedChallenges((value) => Math.max(value, 4));
       if (attempts === 0) setFirstTryWins((value) => value + 1);
+      playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! O Brasil possui 26 estados e o Distrito Federal, formando 27 unidades federativas!");
     } else {
@@ -459,6 +563,7 @@ export default function Home() {
       setInitialPhasePerfect(!initialPhaseHadMistake && attempts === 0);
       setCompletedPhase(true);
       setUnlockedLevel((value) => Math.max(value, 1));
+      playCorrectAnswer();
       setFeedback("finished");
       if (sound) speak("Muito bem! A Floresta Amazônica está presente no Brasil e é uma das maiores florestas tropicais do mundo!");
     } else {
@@ -474,6 +579,7 @@ export default function Home() {
       const earnedPoints = attempts === 0 ? 100 : 60;
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
       if (attempts === 0) setFirstTryWins((value) => value + 1);
+      playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! Você encontrou a Região Norte!");
     } else {
@@ -488,6 +594,7 @@ export default function Home() {
       const earnedPoints = attempts === 0 ? 100 : 60;
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
       if (attempts === 0) setFirstTryWins((value) => value + 1);
+      playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! A Região Norte possui sete estados: Acre, Amapá, Amazonas, Pará, Rondônia, Roraima e Tocantins.");
     } else {
@@ -502,6 +609,7 @@ export default function Home() {
       const earnedPoints = attempts === 0 ? 100 : 60;
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
       if (attempts === 0) setFirstTryWins((value) => value + 1);
+      playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! O Amazonas é o maior estado do Brasil em extensão territorial e fica na Região Norte!");
     } else {
@@ -516,6 +624,7 @@ export default function Home() {
       const earnedPoints = attempts === 0 ? 100 : 60;
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
       if (attempts === 0) setFirstTryWins((value) => value + 1);
+      playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! O boto-cor-de-rosa vive em água doce, nos rios da Amazônia!");
     } else {
@@ -530,6 +639,7 @@ export default function Home() {
       const earnedPoints = attempts === 0 ? 100 : 60;
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
       if (attempts === 0) setFirstTryWins((value) => value + 1);
+      playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! A vitória-régia é uma planta aquática e um símbolo da Amazônia!");
     } else {
@@ -546,6 +656,7 @@ export default function Home() {
       if (attempts === 0) setFirstTryWins((value) => value + 1);
       setUnlockedLevel((value) => Math.max(value, 2));
       setCompletedRegions((regions) => regions.includes("norte") ? regions : [...regions, "norte"]);
+      playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! Você encaixou o Acre e completou o mapa da Região Norte!");
     } else { registerMistake(); if (sound) speak("Essa peça não encaixa. Compare os formatos e tente novamente!"); }
@@ -569,6 +680,7 @@ export default function Home() {
       setUnlockedLevel((value) => Math.max(value, 3));
       setCompletedRegions((regions) => regions.includes("nordeste") ? regions : [...regions, "nordeste"]);
     }
+    playCorrectAnswer();
     setFeedback(northeastChallenge === 6 ? "finished" : "correct");
   }
   function answerCenterWest(correct: boolean) {
@@ -582,6 +694,7 @@ export default function Home() {
       setUnlockedLevel((value) => Math.max(value, 4));
       setCompletedRegions((regions) => regions.includes("centro-oeste") ? regions : [...regions, "centro-oeste"]);
     }
+    playCorrectAnswer();
     setFeedback(centerWestChallenge === 6 ? "finished" : "correct");
     if (sound) speak(centerWestChallenge === 6 ? "Missão completa! Você registrou a fauna do Pantanal!" : "Muito bem! Desafio concluído!");
   }
@@ -617,7 +730,7 @@ export default function Home() {
     setJourneyNotice(`${journeyLevels[index].title} desbloqueada! As aventuras desta região serão adicionadas na próxima etapa.`);
   }
 
-  return <main className={`${highContrast ? "high-contrast" : ""} ${largeText ? "large-text" : ""} ${buttonHighlight ? "button-highlight" : ""}`}><div className="mobile-orientation-gate" role="status"><img src="/pegadas-logo-v1.png" alt="Pegadas do Brasil" /><strong>Gire o celular</strong><p>Para jogar, use a tela na horizontal.</p><span aria-hidden="true">↻</span></div><div className="game-shell" ref={gameShellRef}><audio ref={menuMusicRef} src="/musica-menu.mp3" loop preload="auto" aria-hidden="true" /><audio ref={buttonClickRef} src="/som-clique-botao.wav" preload="auto" aria-hidden="true" />
+  return <main className={`${highContrast ? "high-contrast" : ""} ${largeText ? "large-text" : ""} ${buttonHighlight ? "button-highlight" : ""}`}><div className="mobile-orientation-gate" role="status"><img src="/pegadas-logo-v1.png" alt="Pegadas do Brasil" /><strong>Gire o celular</strong><p>Para jogar, use a tela na horizontal.</p><span aria-hidden="true">↻</span></div><div className="game-shell" ref={gameShellRef}><audio ref={menuMusicRef} src="/musica-menu.mp3" loop preload="auto" aria-hidden="true" /><audio ref={northMusicRef} src="/musica-regiao-norte.mp3" loop preload="auto" aria-hidden="true" /><audio ref={northeastMusicRef} src="/musica-regiao-nordeste.mp3" loop preload="auto" aria-hidden="true" /><audio ref={centerWestMusicRef} src="/musica-regiao-centro-oeste.mp3" loop preload="auto" aria-hidden="true" /><audio ref={buttonClickRef} src="/som-clique-botao.wav" preload="auto" aria-hidden="true" /><audio ref={wrongAnswerRef} src="/som-erro.mp3" preload="auto" aria-hidden="true" /><audio ref={correctAnswerRef} src="/som-acerto.mp3" preload="auto" aria-hidden="true" />
     {screen === "menu" && <><section className="screen menu-screen" aria-label="Menu principal">
       <nav className="menu-tools" aria-label="Opções do jogo">
         <button className={selectedAvatar ? "avatar-selected-tool" : ""} onClick={() => setModal("avatar")}><span className="menu-avatar" aria-hidden="true"><img src={selectedAvatar?.image ?? "/icone-avatar-v1.png"} alt="" /></span>{selectedAvatar ? selectedAvatar.name : "Avatar"}</button><button onClick={() => setModal("achievements")}><img src="/icone-conquistas-v1.png" alt="" />Conquistas</button><button className={!sound ? "sound-muted" : ""} onClick={() => setModal("sound")}><img src="/icone-som-v1.png" alt="" />Som</button><button onClick={() => setModal("accessibility")}><img src="/icone-acessibilidade-v1.png" alt="" />Acessibilidade</button><button onClick={() => setModal("help")}><img src="/icone-como-jogar-v1.png" alt="" />Como jogar</button>

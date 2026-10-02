@@ -853,3 +853,28 @@
 @media (max-width:900px) and (orientation:landscape){
   .centerwest-screen.centerwest-photo-screen .centerwest-photo-board{grid-template-rows:auto minmax(0,1fr) auto 20%}
 }
+
+/* Acessibilidade mobile: o layout horizontal usa fontes fixas e precisa de aumentos próprios. */
+@media (max-width:900px){
+  .large-text :is(.mobile-menu-tools button,.mobile-menu-avatar,.mobile-menu-credits,.mobile-journey-footer,.mobile-journey-header p){font-size:clamp(12px,1.7vw,17px)!important;line-height:1.15!important}
+  .large-text .mobile-menu-speech strong{font-size:clamp(19px,2.8vw,27px)!important}.large-text .mobile-menu-speech span{font-size:clamp(16px,2.3vw,21px)!important}
+  .large-text .mobile-journey-header h1{font-size:clamp(25px,4.1vw,37px)!important}.large-text .mobile-journey-level-state{font-size:20px!important}.large-text .mobile-journey-notice{font-size:18px!important}
+  .large-text :is(.mobile-initial-header-title,.mobile-initial-intro h1){font-size:clamp(19px,2.9vw,25px)!important;line-height:1.08!important}
+  .large-text .mobile-initial-question{font-size:clamp(14px,1.9vw,18px)!important;line-height:1.15!important}
+  .large-text .mobile-initial-guide p{font-size:clamp(12px,1.6vw,15px)!important;line-height:1.15!important}
+  .large-text :is(.mobile-initial-status b,.mobile-initial-status small,.mobile-initial-status div){font-size:clamp(11px,1.5vw,15px)!important}
+  .large-text :is(.mobile-initial-listen,.mobile-initial-answer,.mobile-initial-landscape strong){font-size:clamp(12px,1.6vw,17px)!important;line-height:1.1!important}
+  .large-text .mobile-initial-number{font-size:clamp(27px,4vw,40px)!important}
+  .large-text :is(.north-heading h1,.northeast-challenge-screen .north-heading h1,.centerwest-screen .north-heading h1){font-size:clamp(17px,2.7vw,24px)!important;line-height:1.08!important}
+  .large-text :is(.north-tip,.northeast-challenge-screen .north-tip,.centerwest-guide){font-size:clamp(12px,1.7vw,16px)!important;line-height:1.15!important}
+  .large-text :is(.north-status b,.north-status span,.north-status .score-inline span,.north-status .score-inline strong,.north-status .score-inline small){font-size:clamp(11px,1.5vw,16px)!important}
+  .large-text :is(.north-listen,.northeast-challenge-screen .north-listen,.centerwest-listen,.northeast-animal-screen .animal-controls .animal-listen){font-size:clamp(11px,1.5vw,15px)!important}
+  .large-text :is(.north-map-instruction,.north-puzzle-message,.northeast-discovery-progress strong,.landscape-album-instruction,.arraia-progress,.centerwest-puzzle-progress,.brasilia-progress,.conveyor-progress,.conveyor-message,.photo-feedback,.photo-mission){font-size:clamp(12px,1.55vw,16px)!important;line-height:1.12!important}
+  .large-text :is(.north-habitat-card strong,.north-puzzle-piece strong,.north-largest-options button,.northeast-options button,.climate-options button,.landscape-album button>strong,.landscape-cards button span,.arraia-options button strong,.centerwest-state-piece strong,.brasilia-piece strong,.conveyor-card strong,.photo-album strong){font-size:clamp(11px,1.45vw,15px)!important;line-height:1.1!important}
+  .large-text :is(.challenge-screen,.north-challenge-screen)>.feedback{max-height:82%;overflow:auto}
+  .large-text :is(.challenge-screen,.north-challenge-screen)>.feedback h2{font-size:clamp(22px,3.25vw,30px)!important}.large-text :is(.challenge-screen,.north-challenge-screen)>.feedback p{font-size:clamp(15px,1.9vw,19px)!important;line-height:1.2!important}.large-text :is(.challenge-screen,.north-challenge-screen)>.feedback button{font-size:clamp(13px,1.7vw,17px)!important}
+  .high-contrast :is(.mobile-menu-screen,.mobile-journey-screen,.mobile-initial-challenge){background:#fff!important;color:#000!important}
+  .high-contrast :is(.mobile-menu-speech,.mobile-menu-avatar,.mobile-journey-notice,.mobile-initial-intro,.mobile-initial-guide p,.mobile-initial-status,.mobile-initial-answer,.mobile-initial-landscape,.north-status,.centerwest-status){background:#fff!important;color:#000!important;border-color:#000!important;text-shadow:none!important}
+  .high-contrast :is(.mobile-menu-tools button,.mobile-journey-header h1,.mobile-initial-header-title,.mobile-initial-question,.north-tip,.centerwest-guide){color:#000!important;text-shadow:none!important}
+  .button-highlight button:not(:disabled){outline-offset:-3px!important}
+}
