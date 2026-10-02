@@ -1076,3 +1076,24 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 @media (min-width:901px){.challenge-screen:is(.challenge-step-1,.challenge-step-2,.challenge-step-4) .challenge-status{right:3%;top:81%}}
 
 @media (min-width:901px){.challenge-screen:is(.challenge-step-3,.challenge-step-5) .challenge-status{right:3%;top:78%;transform:scale(.82);transform-origin:top right}}
+
+/* Acessibilidade das fases: aplica-se também aos componentes com tamanho de fonte fixo. */
+.large-text :is(.challenge-title h1,.north-heading h1,.centerwest-heading h1){font-size:clamp(27px,2.6vw,42px)!important;line-height:1.12!important}
+.large-text :is(.challenge-title p,.north-heading p,.centerwest-heading p){font-size:clamp(18px,1.8vw,26px)!important;line-height:1.2!important}
+.large-text :is(.challenge-level strong,.north-status span,.centerwest-status>span){font-size:clamp(21px,2vw,32px)!important}
+.large-text :is(.challenge-status b,.north-status b,.centerwest-status strong){font-size:clamp(15px,1.4vw,22px)!important}
+.large-text :is(.north-tip,.centerwest-guide,.mobile-initial-guide p){font-size:clamp(17px,1.5vw,23px)!important;line-height:1.2!important}
+.large-text :is(.challenge-listen,.north-listen,.centerwest-listen,.mobile-initial-listen){font-size:clamp(17px,1.5vw,23px)!important}
+.large-text :is(.north-map-instruction,.north-puzzle-message,.northeast-discovery-progress strong,.landscape-album-instruction,.arraia-progress,.centerwest-puzzle-progress,.brasilia-progress,.conveyor-progress,.conveyor-message,.photo-feedback,.photo-mission){font-size:clamp(16px,1.4vw,21px)!important;line-height:1.2!important}
+.large-text :is(.north-habitat-card strong,.north-puzzle-piece strong,.northeast-options button,.climate-options button,.landscape-album button>strong,.landscape-cards button span,.arraia-options button strong,.centerwest-state-piece strong,.brasilia-piece strong,.conveyor-card strong,.photo-album strong){font-size:clamp(15px,1.3vw,21px)!important;line-height:1.15!important}
+.large-text .feedback h2{font-size:clamp(35px,3vw,49px)!important}.large-text .feedback p{font-size:clamp(22px,1.9vw,29px)!important;line-height:1.25!important}
+.high-contrast :is(.north-board,.northeast-discovery-card,.northeast-climate-board,.landscape-album,.centerwest-board,.centerwest-memory-board,.centerwest-puzzle-board,.centerwest-conveyor-board,.centerwest-brasilia-board,.centerwest-photo-board,.north-guide,.north-tip,.centerwest-guide,.feedback,.north-heading,.centerwest-heading,.north-map-instruction,.north-puzzle-message,.mobile-initial-intro,.mobile-initial-guide p){background:#fff!important;color:#000!important;border-color:#000!important;text-shadow:none!important}
+.high-contrast :is(.challenge-title h1,.north-heading h1,.centerwest-heading h1,.north-status,.centerwest-status,.challenge-status,.north-tip,.centerwest-guide){color:#000!important;text-shadow:none!important}
+.high-contrast .screen :is(button:not(:disabled),[role="button"]){outline-color:#000!important}
+.high-contrast .screen button:not(:disabled):focus-visible{outline:4px solid #ffd400!important;outline-offset:2px!important}
+.high-contrast :is(.north-region,.northeast-states-map g[role="button"],.centerwest-state-slot):focus-visible{outline:4px solid #ffd400;outline-offset:2px}
+.button-highlight :is(.north-region,.northeast-states-map g[role="button"],.centerwest-state-slot):focus-visible{outline:5px solid #ffdc20;outline-offset:2px}
+.button-highlight :is(.north-region,.northeast-states-map g[role="button"],.centerwest-state-slot) path{stroke:#ffdc20!important;stroke-width:4px!important;paint-order:stroke fill}
+
+.large-text .text-size-control button{font-size:clamp(19px,1.65vw,25px)!important}
+.high-contrast.button-highlight .screen :is(button:not(:disabled),[role=button]){outline-color:#ffd400!important}
