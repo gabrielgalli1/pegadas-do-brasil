@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 410" role="img" aria-label="Ilustração de uma plantação de café com montanhas ao fundo">
+<defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#d9f2e8"/><stop offset="1" stop-color="#fff8d6"/></linearGradient><linearGradient id="hill" x2="0" y2="1"><stop stop-color="#a5cba2"/><stop offset="1" stop-color="#d8e9b8"/></linearGradient></defs>
+<rect width="900" height="410" fill="url(#sky)"/>
+<circle cx="735" cy="80" r="43" fill="#ffdfa0" opacity=".75"/>
+<path d="M0 180Q115 84 212 180Q326 73 450 181Q558 82 655 185Q772 93 900 178V410H0Z" fill="#bddeca" opacity=".75"/>
+<path d="M0 256Q160 166 310 244T610 247Q763 174 900 239V410H0Z" fill="url(#hill)"/>
+<path d="M0 315Q154 246 294 316T595 306Q767 260 900 314V410H0Z" fill="#8bc982" opacity=".75"/>
+<path d="M0 359Q210 287 390 366T900 350V410H0Z" fill="#64ae65" opacity=".72"/>
+<g fill="#3d9953" opacity=".55"><ellipse cx="76" cy="286" rx="34" ry="12" transform="rotate(-30 76 286)"/><ellipse cx="125" cy="271" rx="30" ry="12" transform="rotate(26 125 271)"/><ellipse cx="796" cy="291" rx="36" ry="13" transform="rotate(-25 796 291)"/><ellipse cx="844" cy="267" rx="29" ry="11" transform="rotate(28 844 267)"/></g>
+<g fill="#cf4443" opacity=".58"><circle cx="91" cy="291" r="10"/><circle cx="111" cy="304" r="9"/><circle cx="790" cy="302" r="10"/><circle cx="808" cy="309" r="9"/></g>
+<path d="M0 400Q170 339 282 400M618 402Q776 348 900 400" fill="none" stroke="#387c45" stroke-width="13" opacity=".37"/>
+</svg>

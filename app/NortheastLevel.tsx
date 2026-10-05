@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import regionsMap from "./brasil-cinco-regioes.json";
 import ScoreBadge from "./ScoreBadge";
 
@@ -69,6 +69,7 @@ export default function NortheastLevel({ mistakes, challenge, score, feedback, s
   const [selectedLandscape, setSelectedLandscape] = useState<LandscapeId | null>(null);
   const [placedLandscapes, setPlacedLandscapes] = useState<LandscapeId[]>([]);
   const [arraiaChoices, setArraiaChoices] = useState<ArraiaId[]>([]);
+  const [selectedArraia, setSelectedArraia] = useState<ArraiaId | null>(null);
   const [arraiaGhost, setArraiaGhost] = useState<{ id: ArraiaId; x: number; y: number } | null>(null);
   const [arraiaOverSlot, setArraiaOverSlot] = useState<ArraiaId | null>(null);
   const arraiaDrag = useRef<ArraiaDrag | null>(null);
@@ -122,6 +123,7 @@ export default function NortheastLevel({ mistakes, challenge, score, feedback, s
     if (!item?.correct || piece !== slot) { onAnswer(false); return; }
     const next = [...arraiaChoices, slot];
     setArraiaChoices(next);
+    setSelectedArraia(null);
     onListen(item.name + ". Peça encaixada corretamente!");
     if (next.length === 4) onAnswer(true);
   }
@@ -224,13 +226,13 @@ export default function NortheastLevel({ mistakes, challenge, score, feedback, s
       <div className="landscape-cards" aria-label="Paisagens embaralhadas para colocar no álbum">{[northeastLandscapes[2], northeastLandscapes[0], northeastLandscapes[3], northeastLandscapes[1]].map((landscape) => <button key={landscape.id} className={selectedLandscape === landscape.id ? "selected" : ""} disabled={!canAnswer || placedLandscapes.includes(landscape.id)} onClick={() => setSelectedLandscape(landscape.id)} aria-label={"Selecionar paisagem " + landscape.name}><img src={landscape.image} alt="" /><span>ESCOLHER</span></button>)}</div>
     </div> : isArraia ? <div className="northeast-arraia-card">
       <div className="arraia-scene"><img src="/arraia-quebra-cabeca-silhuetas-v3.png" alt="Festa nordestina com pessoas dançando na praça" />
-        {arraiaItems.filter((item) => item.correct).map((item) => { const placed = arraiaChoices.includes(item.id); return <button key={item.id} className={"arraia-slot slot-" + item.id + (placed ? " placed" : "") + (arraiaOverSlot === item.id ? " drop-ready" : "")} data-arraia-slot={item.id} disabled={!canAnswer || placed} aria-label={(placed ? "Peça encaixada: " : "Silhueta para encaixar: ") + item.name}><img src={item.image} alt="" /></button>; })}
+        {arraiaItems.filter((item) => item.correct).map((item) => { const placed = arraiaChoices.includes(item.id); return <button key={item.id} className={"arraia-slot slot-" + item.id + (placed ? " placed" : "") + (arraiaOverSlot === item.id ? " drop-ready" : "")} data-arraia-slot={item.id} disabled={!canAnswer || placed} onClick={() => placeArraiaPiece(item.id, selectedArraia)} aria-label={(placed ? "Peça encaixada: " : "Silhueta para encaixar: ") + item.name}><img src={item.image} alt="" /></button>; })}
       </div>
       <div className="arraia-progress"><strong>{arraiaChoices.length} DE 4 ELEMENTOS ESCOLHIDOS</strong><div>{Array.from({ length: 4 }, (_, index) => <span key={index} className={index < arraiaChoices.length ? "ready" : ""}>★</span>)}</div></div>
-      <div className="arraia-options" aria-label="Peças embaralhadas do quebra-cabeça">{[arraiaItems[4], arraiaItems[1], arraiaItems[5], arraiaItems[2], arraiaItems[3], arraiaItems[0]].map((item) => <button key={item.id} className={arraiaGhost?.id === item.id ? "dragging" : ""} disabled={!canAnswer || arraiaChoices.includes(item.id)} onClick={(event) => { if (arraiaSuppressClick.current && event.detail !== 0) arraiaSuppressClick.current = false; }} onPointerDown={(event) => beginArraiaDrag(item, event)} onPointerMove={moveArraiaDrag} onPointerUp={endArraiaDrag} onPointerCancel={cancelArraiaDrag} onLostPointerCapture={cancelArraiaDrag}><img src={item.optionImage ?? item.image} alt="" draggable={false} /><strong>{item.name}</strong></button>)}</div>
+      <div className="arraia-options" aria-label="Peças embaralhadas do quebra-cabeça">{[arraiaItems[4], arraiaItems[1], arraiaItems[5], arraiaItems[2], arraiaItems[3], arraiaItems[0]].map((item) => <button key={item.id} className={(arraiaGhost?.id === item.id ? "dragging " : "") + (selectedArraia === item.id ? "selected" : "")} disabled={!canAnswer || arraiaChoices.includes(item.id)} aria-pressed={selectedArraia === item.id} onClick={(event) => { if (arraiaSuppressClick.current && event.detail !== 0) { arraiaSuppressClick.current = false; return; } setSelectedArraia(item.id); }} onPointerDown={(event) => beginArraiaDrag(item, event)} onPointerMove={moveArraiaDrag} onPointerUp={endArraiaDrag} onPointerCancel={cancelArraiaDrag} onLostPointerCapture={cancelArraiaDrag}><img src={item.optionImage ?? item.image} alt="" draggable={false} /><strong>{item.name}</strong></button>)}</div>
     </div> : <div className="northeast-options" role="group" aria-label={current.question}>{current.options?.map((option) => <button key={String(option)} disabled={!canAnswer} onClick={() => onAnswer(option === current.answer)}>{option}</button>)}</div>}
     {arraiaGhost && <div className="arraia-drag-ghost" style={{ left: arraiaGhost.x, top: arraiaGhost.y }} aria-hidden="true"><img src={arraiaItems.find((item) => item.id === arraiaGhost.id)?.optionImage ?? arraiaItems.find((item) => item.id === arraiaGhost.id)?.image} alt="" /></div>}
-    {!isAnimalSearch && <button className="north-listen" onClick={() => onListen(isStateDiscovery ? "Toque em cada estado do mapa. Cada toque revela o nome de um estado. Vamos descobrir os nove estados do Nordeste!" : isClimate ? "Observe a paisagem do Sertão. Escolha uma opção de temperatura e uma opção de chuvas para completar o painel." : isAnimalSearch ? "Movimente a lupa pela paisagem e toque no tatu-bola quando encontrá-lo." : isLandscapeAlbum ? "Escolha uma paisagem e depois toque no espaço com o nome correspondente para completar o álbum." : isArraia ? "Arraste uma peça da parte de baixo até a silhueta escura com o mesmo formato. Complete as quatro partes da festa." : current.question)}>🔊 {isStateDiscovery || isClimate || isAnimalSearch || isLandscapeAlbum || isArraia ? "OUVIR INSTRUÇÕES" : "OUVIR PERGUNTA"}</button>}
+    {!isAnimalSearch && <button className="north-listen" onClick={() => onListen(isStateDiscovery ? "Toque em cada estado do mapa. Cada toque revela o nome de um estado. Vamos descobrir os nove estados do Nordeste!" : isClimate ? "Observe a paisagem do Sertão. Escolha uma opção de temperatura e uma opção de chuvas para completar o painel." : isAnimalSearch ? "Movimente a lupa pela paisagem e toque no tatu-bola quando encontrá-lo." : isLandscapeAlbum ? "Escolha uma paisagem e depois toque no espaço com o nome correspondente para completar o álbum." : isArraia ? "Arraste uma peça até a silhueta com o mesmo formato ou toque na peça e depois na silhueta. Complete as quatro partes da festa." : current.question)}>🔊 {isStateDiscovery || isClimate || isAnimalSearch || isLandscapeAlbum || isArraia ? "OUVIR INSTRUÇÕES" : "OUVIR PERGUNTA"}</button>}
     {feedback !== "idle" && <div className={`feedback ${feedback}`} role="dialog" aria-live="assertive">{feedback === "wrong" ? <><span>🧭</span><h2>{mistakes >= 2 ? "Vamos recomeçar!" : "Quase lá!"}</h2><p>{mistakes >= 2 ? "Você terá outra oportunidade desde o primeiro desafio do Nordeste." : current.tip.replace("\n", " ")}</p><button onClick={retryChallenge}>{mistakes >= 2 ? "RECOMEÇAR REGIÃO" : "TENTAR NOVAMENTE"}</button></> : <><span>{feedback === "finished" ? "🏆" : "⭐"}</span><h2>{feedback === "finished" ? "Região Nordeste concluída!" : "Muito bem!"}</h2><p>{current.correct}</p><button onClick={onNext}>{challenge < 6 ? "PRÓXIMO DESAFIO" : "VOLTAR À JORNADA"}</button></>}</div>}
   </section>;
 }
