@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./mobile.css";
+import "./southeast.css";
+import "./southeast-coffee.css";
+import "./southeast-wordsearch.css";
+import "./southeast-passport.css";
+import "./southeast-river.css";
 
 export const metadata: Metadata = {
   title: "Pegadas do Brasil — Jogo de Geografia",
