@@ -1097,3 +1097,16 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 
 .large-text .text-size-control button{font-size:clamp(19px,1.65vw,25px)!important}
 .high-contrast.button-highlight .screen :is(button:not(:disabled),[role=button]){outline-color:#ffd400!important}
+
+/* Progresso geral exibido na tela de seleção de fases. */
+.journey-progress{position:absolute;z-index:9;right:9.5%;top:6.5%;width:14.5%;box-sizing:border-box;padding:5px 7px 4px;border:3px solid #fff;outline:2px solid #4f932e;border-radius:15px;background:linear-gradient(#0d477e,#082e5b);color:#fff;text-align:center;box-shadow:0 4px 0 #07204777;line-height:1}
+.journey-progress>b{display:block;font-size:clamp(8px,.8vw,13px);white-space:nowrap}
+.journey-progress>div:not(.score-inline){height:16px;display:flex;align-items:center;justify-content:center;gap:1px}
+.journey-progress>div:not(.score-inline)>span{color:#fff;font-size:clamp(10px,1vw,16px);line-height:1;text-shadow:0 1px #777}
+.journey-progress>div:not(.score-inline)>span.active{color:#ffc928;text-shadow:0 1px #a35e00}
+.journey-progress .score-inline{grid-template-columns:22px 1fr!important;gap:3px!important;margin:2px 0 -1px!important;padding:3px 2px 0!important;border-top-width:1px!important}
+.journey-progress .score-inline img{width:21px;height:21px;border-radius:6px}
+.journey-progress .score-inline span{gap:3px!important;font-size:inherit!important;text-shadow:none!important}
+.journey-progress .score-inline strong{font-size:clamp(12px,1.1vw,17px);line-height:1}
+.journey-progress .score-inline small{font-size:clamp(6px,.55vw,8px);line-height:1}
+.high-contrast .journey-progress{background:#000!important;border-color:#fff!important;outline-color:#000!important}

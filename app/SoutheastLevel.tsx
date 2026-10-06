@@ -11,11 +11,11 @@ import SoutheastRiverCleanup from "./SoutheastRiverCleanup";
 type Feedback = "idle" | "correct" | "wrong" | "finished";
 type Props = { challenge: number; score: number; mistakes: number; feedback: Feedback; sound: boolean; onAnswer: (correct: boolean) => void; onNext: () => void; onRetry: () => void; onBack: () => void; onToggleSound: () => void; onListen: (text: string) => void };
 type State = "mg" | "es" | "rj" | "sp";
-const states: { id: State; name: string; capital: string; path: string; color: string }[] = [
-  { id: "mg", name: "Minas Gerais", capital: "Belo Horizonte", path: "path5192", color: "#e9ae41" },
-  { id: "es", name: "Espírito Santo", capital: "Vitória", path: "path5172", color: "#9a78c9" },
-  { id: "rj", name: "Rio de Janeiro", capital: "Rio de Janeiro", path: "path5200", color: "#35a5d8" },
-  { id: "sp", name: "São Paulo", capital: "São Paulo", path: "path5270", color: "#63b969" },
+const states: { id: State; name: string; capital: string; path: string; color: string; hint: string }[] = [
+  { id: "mg", name: "Minas Gerais", capital: "Belo Horizonte", path: "path5192", color: "#e9ae41", hint: "Procure o maior estado do Sudeste, acima de São Paulo e do Rio de Janeiro." },
+  { id: "es", name: "Espírito Santo", capital: "Vitória", path: "path5172", color: "#9a78c9", hint: "Procure o pequeno estado litorâneo ao norte do Rio de Janeiro." },
+  { id: "rj", name: "Rio de Janeiro", capital: "Rio de Janeiro", path: "path5200", color: "#35a5d8", hint: "Procure o estado litorâneo entre São Paulo e Espírito Santo." },
+  { id: "sp", name: "São Paulo", capital: "São Paulo", path: "path5270", color: "#63b969", hint: "Procure o estado ao sul de Minas Gerais e a oeste do Rio de Janeiro." },
 ];
 const shuffleStates = () => {
   const choices = [...states];
@@ -35,6 +35,7 @@ export default function SoutheastLevel({ challenge, score, mistakes, feedback, s
   const [stateChoices, setStateChoices] = useState(states);
   const previousChallenge = useRef<number | null>(null);
   const [changingClue, setChangingClue] = useState(false);
+  const [mistakeHint, setMistakeHint] = useState("");
   const clueTimers = useRef<number[]>([]);
   useEffect(() => () => { clueTimers.current.forEach(window.clearTimeout); }, []);
   useEffect(() => {
@@ -43,10 +44,14 @@ export default function SoutheastLevel({ challenge, score, mistakes, feedback, s
   }, [challenge]);
   const canPlay = feedback === "idle" && (challenge !== 2 || solvedState === null);
   const currentState = states[clue];
-  const chooseRegion = (id: string) => { if (canPlay) onAnswer(id === "sudeste"); };
+  const chooseRegion = (id: string) => {
+    if (!canPlay) return;
+    if (id !== "sudeste") setMistakeHint("Dica: procure a região formada por Minas Gerais, Espírito Santo, Rio de Janeiro e São Paulo, na parte inferior direita do mapa.");
+    onAnswer(id === "sudeste");
+  };
   const chooseState = (id: State) => {
     if (!canPlay) return;
-    if (id !== currentState.id) { onAnswer(false); return; }
+    if (id !== currentState.id) { setMistakeHint(`Dica: ${currentState.hint}`); onAnswer(false); return; }
     setSolvedState(id);
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const checkDelay = reducedMotion ? 250 : 650;
@@ -71,10 +76,10 @@ export default function SoutheastLevel({ challenge, score, mistakes, feedback, s
       {challenge === 2 && <><div key={clue} className={`southeast-detective-clue ${changingClue ? "leaving" : ""}`} aria-live="polite"><span aria-hidden="true">🔎</span><div><small>PISTA {clue + 1} DE 4</small><strong>Minha capital é {currentState.capital}. Qual é o estado?</strong></div></div><div className="southeast-detective-map-frame"><img className="southeast-static-map" src="/sudeste-estados-ilustrado-v1.svg" alt="Mapa da Região Sudeste com Minas Gerais em amarelo, Espírito Santo em roxo, Rio de Janeiro em azul e São Paulo em verde." /><span>Escolha uma das quatro alternativas abaixo</span></div><div className="southeast-state-choices" role="group" aria-label="Escolha o estado da capital indicada">{stateChoices.map(state => <button key={state.id} className={`${solvedState === state.id ? "solved " : ""}state-${state.id}`} disabled={!canPlay} onClick={() => chooseState(state.id)} aria-label={solvedState === state.id ? `${state.name}, correto` : state.name}><span aria-hidden="true">{state.id.toUpperCase()}</span><strong>{state.name}</strong></button>)}</div><span className="southeast-sr-only" role="status">{solvedState ? `Correto! ${states[clue].name}.` : ""}</span></>}
       {challenge === 3 && <SoutheastCoffee canPlay={canPlay} onComplete={() => onAnswer(true)} />}
       {challenge === 4 && <SoutheastWordSearch canPlay={canPlay} onComplete={() => onAnswer(true)} />}
-      {challenge === 5 && <SoutheastPassport canPlay={canPlay} onWrong={() => onAnswer(false)} onComplete={() => onAnswer(true)} />}
+      {challenge === 5 && <SoutheastPassport canPlay={canPlay} onWrong={(hint) => { setMistakeHint(`Dica: ${hint}`); onAnswer(false); }} onComplete={() => onAnswer(true)} />}
       {challenge === 6 && <SoutheastRiverCleanup canPlay={canPlay} onComplete={() => onAnswer(true)} />}
     </div>
     {challenge === 1 && <p className="southeast-location-instruction">Clique ou toque na Região Sudeste no mapa!</p>}
-    {feedback !== "idle" && <div className={`feedback ${feedback} southeast-feedback`} role="dialog" aria-modal="true" aria-live="assertive"><span aria-hidden="true">{feedback === "wrong" ? "🧭" : feedback === "finished" ? "🏆" : "⭐"}</span><h2>{feedback === "wrong" ? mistakes >= 2 ? "Vamos recomeçar!" : "Quase lá!" : feedback === "finished" ? "Sudeste concluído!" : "Muito bem!"}</h2><p>{feedback === "wrong" ? mistakes >= 2 ? "Vamos tentar a região novamente." : "Observe a pista e tente outra vez." : challenge === 1 ? "Você encontrou o Sudeste!" : challenge === 2 ? "Você reconheceu os quatro estados da região!" : challenge === 3 ? "Você completou a jornada do café! O Sudeste é a principal região produtora de café do Brasil." : challenge === 4 ? "Todas as palavras foram encontradas!" : challenge === 5 ? "Seu passaporte recebeu os quatro carimbos!" : "Você concluiu o mutirão! A recuperação do Tietê depende de cuidado contínuo e tratamento de esgoto."}</p><button onClick={feedback === "wrong" ? onRetry : onNext}>{feedback === "wrong" ? mistakes >= 2 ? "RECOMEÇAR REGIÃO" : "TENTAR NOVAMENTE" : feedback === "finished" ? "VOLTAR À JORNADA" : "PRÓXIMO DESAFIO"}</button></div>}
+    {feedback !== "idle" && <div className={`feedback ${feedback} southeast-feedback`} role="dialog" aria-modal="true" aria-live="assertive"><span aria-hidden="true">{feedback === "wrong" ? "🧭" : feedback === "finished" ? "🏆" : "⭐"}</span><h2>{feedback === "wrong" ? mistakes >= 2 ? "Vamos recomeçar!" : "Quase lá!" : feedback === "finished" ? "Sudeste concluído!" : "Muito bem!"}</h2><p>{feedback === "wrong" ? mistakes >= 2 ? "A Região Sudeste será reiniciada desde o Desafio 1." : mistakeHint || "Observe a pista e tente outra vez." : challenge === 1 ? "Você encontrou o Sudeste!" : challenge === 2 ? "Você reconheceu os quatro estados da região!" : challenge === 3 ? "Você completou a jornada do café! O Sudeste é a principal região produtora de café do Brasil." : challenge === 4 ? "Todas as palavras foram encontradas!" : challenge === 5 ? "Seu passaporte recebeu os quatro carimbos!" : "Você concluiu o mutirão! A recuperação do Tietê depende de cuidado contínuo e tratamento de esgoto."}</p><button onClick={feedback === "wrong" ? onRetry : onNext}>{feedback === "wrong" ? mistakes >= 2 ? "RECOMEÇAR REGIÃO" : "TENTAR NOVAMENTE" : feedback === "finished" ? "VOLTAR À JORNADA" : "PRÓXIMO DESAFIO"}</button></div>}
   </section>;
 }

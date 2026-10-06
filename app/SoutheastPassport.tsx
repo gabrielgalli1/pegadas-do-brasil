@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 
 type StateId = "mg" | "es" | "rj" | "sp";
-type Props = { canPlay: boolean; onWrong: () => void; onComplete: () => void };
+type Props = { canPlay: boolean; onWrong: (hint: string) => void; onComplete: () => void };
 type DragPreview = { state: StateId; label: string; image: string; x: number; y: number; offsetX: number; offsetY: number; width: number };
 type DragStart = { state: StateId; label: string; image: string; pointerId: number; x: number; y: number; offsetX: number; offsetY: number; width: number; moved: boolean };
 
@@ -72,8 +72,10 @@ export default function SoutheastPassport({ canPlay, onWrong, onComplete }: Prop
       return;
     }
     if (source !== target) {
+      const attraction = attractions.find((item) => item.state === source);
+      const correctState = states.find((state) => state.id === source);
       setMessage("Esse ponto turístico pertence a outro estado. Observe a imagem e tente novamente!");
-      onWrong();
+      onWrong(`${attraction?.label ?? "Esse ponto turístico"} pertence a ${correctState?.name ?? "outro estado"}. Leve o cartão ao estado indicado no passaporte.`);
       return;
     }
     const attraction = attractions.find((item) => item.state === source);

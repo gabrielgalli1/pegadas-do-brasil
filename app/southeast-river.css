@@ -195,3 +195,44 @@
 .southeast-river-failed-count span{max-width:115px;font-size:clamp(8px,.7vw,11px);font-weight:850;line-height:1.05;text-align:left}
 .southeast-river-failed>button{min-width:48%;background:linear-gradient(#ffcb55,#e67d23);box-shadow:0 5px 0 #8c3e17,0 8px 15px #29110875}
 @media(max-width:620px){.southeast-river-failed-count{padding:3px 7px;gap:5px}.southeast-river-failed-count b{font-size:14px}.southeast-river-failed-count span{font-size:5px}.southeast-river-failed>button{min-width:55%}}
+
+/* Desafio 6 — composição móvel alinhada aos demais desafios do Sudeste. */
+@media(min-width:621px) and (max-width:900px){
+  .southeast-river-screen .southeast-board-6{left:29%;top:17%;width:68%;height:77%;padding:.75%}
+  .southeast-river-screen .southeast-speech{top:20%;left:3%;width:25%;min-height:11%;font-size:clamp(10px,1.45vw,14px)}
+  .southeast-river-screen .southeast-listen{left:17%;bottom:8%;width:22%;transform:translateX(-50%)}
+  .southeast-river-screen .southeast-title{top:12%}
+  .southeast-river-screen .southeast-status{top:1%;right:12%;width:13.5%;padding:1px 3px;border-width:2px;outline-width:2px;border-radius:11px}
+  .southeast-river-screen .southeast-status b{font-size:clamp(6px,.9vw,8px);line-height:1}
+  .southeast-river-screen .southeast-status span{font-size:clamp(8px,1.1vw,11px);line-height:1}
+  .southeast-river-screen .southeast-status>div:not(.score-inline){height:11px;align-items:center}
+  .southeast-river-screen .southeast-status .score-inline{grid-template-columns:18px 1fr!important;gap:2px!important;margin:2px 0 -1px!important;padding:2px 2px 0!important;border-top-width:1px!important}
+  .southeast-river-screen .southeast-status .score-inline img{width:17px;height:17px;border-radius:5px}
+  .southeast-river-screen .southeast-status .score-inline span{gap:2px!important}
+  .southeast-river-screen .southeast-status .score-inline strong{font-size:12px;line-height:1}
+  .southeast-river-screen .southeast-status .score-inline small{font-size:5.5px;line-height:1}
+  .southeast-river-game{gap:.7%}
+  .southeast-river-toolbar{height:14%;grid-template-columns:34% minmax(0,1fr) 10%;gap:1.5%;padding:.6% 1.2%}
+  .southeast-cleanup-score{column-gap:5px;padding-right:3%}
+  .southeast-cleanup-score>span{width:22px;font-size:14px}
+  .southeast-cleanup-score strong{font-size:clamp(7px,.9vw,10px);line-height:1}
+  .southeast-cleanup-score small{font-size:clamp(5px,.7vw,8px);line-height:1}
+  .southeast-wave small{font-size:6px}
+  .southeast-wave strong{font-size:12px}
+  .southeast-river-footer{height:16%}
+  .southeast-river-start{top:50%;width:78%;gap:3px;padding:1.8% 3% 1.5%;border-width:3px;border-radius:15px}
+  .southeast-river-start>span{width:27px;border-width:2px;font-size:17px;box-shadow:0 3px 0 #034a64,0 5px 10px #001f2f80}
+  .southeast-river-start strong{font-size:13px;line-height:1}
+  .southeast-river-start p{max-width:98%;font-size:8px;line-height:1.12}
+  .southeast-river-howto{gap:5px;margin:1px 0}
+  .southeast-river-howto-card{padding:3px 5px;gap:1px;border-radius:8px}
+  .southeast-river-howto-card>b{font-size:6px}
+  .southeast-river-howto-card>div{grid-template-columns:43px 1fr;gap:3px;min-height:17px}
+  .southeast-river-howto-card>div>span:last-child{font-size:6px}
+  .southeast-river-howto kbd{height:17px;min-width:17px;padding:0 3px;border-width:1px;border-bottom-width:2px;border-radius:4px;font-size:9px}
+  .southeast-river-howto kbd.space-key{width:41px;font-size:5px}
+  .southeast-phone-control{width:28px;height:19px;border-width:1px;font-size:10px}
+  .southeast-net-control{width:35px;height:19px;border-width:1px;font-size:5px}
+  .southeast-net-control i{width:7px;height:7px}
+  .southeast-river-start>button{min-width:32%;margin-top:0;padding:4px 17px;border-width:2px;font-size:9px;box-shadow:0 3px 0 #08612e,0 5px 9px #00291975}
+}
