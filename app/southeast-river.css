@@ -1,24 +1,197 @@
-.southeast-river-screen .southeast-speech{top:25%;left:4%;width:20%;min-height:10%;padding:1%;font-size:clamp(13px,1.08vw,17px)}
+.southeast-river-screen .southeast-speech{top:24%;left:4%;width:20%;min-height:10%;padding:1%;font-size:clamp(13px,1.08vw,17px)}
 .southeast-river-screen .southeast-speech:after{left:auto;right:16px}
 .southeast-river-screen .southeast-status{right:-1.7%;width:12.8%;padding:6px 5px;border-width:3px;outline-width:2px;border-radius:15px}
 .southeast-river-screen .southeast-status b{font-size:clamp(11px,.95vw,15px)}.southeast-river-screen .southeast-status span{font-size:clamp(14px,1.35vw,21px)}
-.southeast-river-screen .southeast-board{left:25%;top:19%;width:62%;height:70%;padding:.8%;gap:0;border-color:#3c8f63;background:linear-gradient(150deg,#f8fff2,#e8f8d8);overflow:hidden}
-.southeast-river-screen .southeast-listen{left:56%;bottom:1.8%;width:21%;transform:translateX(-50%)}
-.southeast-river-game{width:100%;height:100%;min-height:0;display:flex;flex-direction:column;gap:1%;color:#073054}
-.southeast-river-toolbar{height:14%;flex:none;display:grid;grid-template-columns:34% minmax(0,1fr) 10%;align-items:center;gap:2%;padding:1% 2%;box-sizing:border-box;border:2px solid #69a444;border-radius:13px;background:linear-gradient(180deg,#edffdc,#d5f3bd);box-shadow:0 2px 0 #8dbb70}
-.southeast-river-toolbar>div:first-child{height:100%;display:grid;grid-template-columns:auto 1fr;grid-template-rows:1fr 1fr;align-items:center;column-gap:6px;padding-right:5%;border-right:2px solid #a0c687}.southeast-river-toolbar>div:first-child span{grid-row:1/3;font-size:clamp(19px,2vw,30px)}.southeast-river-toolbar>div:first-child strong{align-self:end;font-size:clamp(10px,.95vw,15px)}.southeast-river-toolbar>div:first-child small{align-self:start;color:#39714a;font-size:clamp(7px,.63vw,10px);font-weight:1000}.southeast-river-toolbar>strong{font-size:clamp(13px,1.2vw,19px);color:#276442}
-.southeast-river-progress{height:45%;box-sizing:border-box;padding:3px;border:2px solid #527a59;border-radius:999px;background:#cdd8cb;box-shadow:inset 0 2px 3px #234a3344;overflow:hidden}.southeast-river-progress span{display:block;height:100%;min-width:2%;border-radius:999px;background:linear-gradient(90deg,#f1bd27,#79ca42 48%,#1fa469);box-shadow:inset 0 2px #fff8;transition:width .45s ease}
-.southeast-river-scene{position:relative;width:100%;flex:1;min-height:0;border:3px solid #2d8468;border-radius:15px;overflow:hidden;background:#5ab7cd;box-shadow:inset 0 0 0 2px #fff;touch-action:manipulation;cursor:crosshair}
-.southeast-river-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;user-select:none}.southeast-river-dirt{position:absolute;z-index:1;inset:0;background:#704713;opacity:var(--river-dirt);mix-blend-mode:multiply;pointer-events:none;transition:opacity .55s ease}
-.southeast-river-item{position:absolute;z-index:3;width:clamp(35px,3.5vw,53px);aspect-ratio:1;padding:0;display:grid;place-items:center;border:3px solid #fff;border-radius:50%;transform:translate(-50%,-50%);font-size:clamp(22px,2.4vw,36px);line-height:1;background:#fffce8dc;box-shadow:0 3px 0 #714c23,0 5px 9px #072f4c55;cursor:pointer;transition:left .09s linear,top .09s linear,transform .16s ease,filter .2s ease}
-.southeast-river-item.trash{border-color:#ffca35;background:#fff6cfe8}.southeast-river-item.animal{border-color:#62c475;background:#ddffdce8}.southeast-river-item:hover:not(:disabled),.southeast-river-item:focus-visible{transform:translate(-50%,-55%) scale(1.12);outline:4px solid #ffdc25;outline-offset:2px}.southeast-river-item.warning{animation:southeast-river-warning .42s ease 2;background:#ffe0db;border-color:#df4438}
-.southeast-cleanup-boat{position:absolute;z-index:4;bottom:15%;display:flex;flex-direction:column;align-items:center;transform:translateX(-50%);filter:drop-shadow(0 5px 3px #08365366);transition:left .2s ease}.southeast-cleanup-boat .boat{font-size:clamp(39px,5vw,72px);line-height:.7}.southeast-cleanup-boat .net{margin-bottom:-8px;font-size:clamp(21px,2.4vw,35px);transform:rotate(-10deg)}
-.southeast-river-controls{position:absolute;z-index:6;left:50%;bottom:1.5%;display:flex;align-items:flex-end;gap:8px;transform:translateX(-50%)}.southeast-river-controls button{width:clamp(38px,4vw,59px);aspect-ratio:1;padding:0;display:grid;place-items:center;border:3px solid #fff;border-radius:50%;background:linear-gradient(#ffcf45,#ef8e21);color:#073054;font-size:clamp(22px,2.5vw,38px);font-weight:1000;box-shadow:0 3px 0 #8a4c13}.southeast-river-controls button.collect{width:clamp(48px,5vw,73px);background:linear-gradient(#75de63,#22a84d);color:#fff;display:flex;flex-direction:column;justify-content:center;line-height:.78}.southeast-river-controls button.collect span{font-size:.7em}.southeast-river-controls button.collect strong{font-size:clamp(7px,.63vw,10px)}.southeast-river-controls button:hover:not(:disabled){transform:translateY(-3px);filter:brightness(1.07)}.southeast-river-controls button:focus-visible{outline:4px solid #073054;outline-offset:2px}
-.southeast-river-inventory{position:absolute;z-index:5;right:1%;bottom:2%;min-width:22%;padding:1% 1.5%;box-sizing:border-box;border:2px solid #d88e2d;border-radius:11px;background:#fff8dded;color:#694719}.southeast-river-inventory>strong{display:block;font-size:clamp(7px,.65vw,10px)}.southeast-river-inventory>div{display:flex;justify-content:center;gap:3px}.southeast-river-inventory span{width:clamp(13px,1.3vw,20px);aspect-ratio:1;display:grid;place-items:center;border:1px dashed #bd985a;border-radius:4px;background:#fff;color:#26934d;font-size:clamp(9px,.9vw,14px);font-weight:1000}
-.southeast-river-message{height:8%;min-height:0;margin:0;display:grid;place-items:center;padding:0 2%;box-sizing:border-box;border:2px solid #6da542;border-radius:10px;background:#f2ffe4;color:#275d3d;font-size:clamp(10px,.92vw,14px);font-weight:900;line-height:1.05}
-@keyframes southeast-river-warning{25%{transform:translate(-58%,-50%) rotate(-8deg)}75%{transform:translate(-42%,-50%) rotate(8deg)}}
-.high-contrast .southeast-river-toolbar,.high-contrast .southeast-river-message{background:#fff!important;color:#000!important;border-color:#000!important}.high-contrast .southeast-river-scene{border-color:#000!important}.high-contrast .southeast-river-background{filter:contrast(1.15) saturate(.7)}.high-contrast .southeast-river-item{background:#fff!important;color:#000!important;border-color:#000!important}.high-contrast .southeast-river-item.trash{outline:3px solid #ffde00}.high-contrast .southeast-river-item.animal{outline:3px solid #0b772e}
-.large-text .southeast-river-toolbar>div:first-child strong{font-size:clamp(13px,1.15vw,18px)!important}.large-text .southeast-river-message{font-size:clamp(13px,1.15vw,18px)!important}
-@media(max-width:900px){.southeast-river-screen .southeast-board{left:26%;top:20%;width:62%;height:68%}.southeast-river-screen .southeast-speech{top:24%;left:2.5%;width:22.5%}.southeast-river-screen .southeast-status{right:-1.5%;width:14.5%;padding:4px}.southeast-river-screen .southeast-listen{left:57%;bottom:1.5%;width:24%}.southeast-river-toolbar{grid-template-columns:36% minmax(0,1fr) 10%;padding:1%}.southeast-river-item{width:34px;font-size:22px}.southeast-cleanup-boat .boat{font-size:43px}.southeast-river-controls button{width:38px}.southeast-river-controls button.collect{width:48px}.southeast-river-inventory{min-width:24%}}
-@media(max-width:620px){.southeast-river-screen .southeast-board{left:31%;top:22%;width:67%;height:66%}.southeast-river-screen .southeast-speech{top:23.5%;left:2%;width:28%;font-size:10px}.southeast-river-screen .southeast-status{right:0;width:21%;padding:3px}.southeast-river-screen .southeast-listen{left:50%;bottom:1%;width:40%}.southeast-river-toolbar{height:16%;grid-template-columns:39% minmax(0,1fr) 10%}.southeast-river-toolbar>div:first-child span{font-size:15px}.southeast-river-toolbar>div:first-child strong{font-size:7px}.southeast-river-toolbar>div:first-child small{font-size:5px}.southeast-river-toolbar>strong{font-size:9px}.southeast-river-item{width:28px;border-width:2px;font-size:18px}.southeast-cleanup-boat{bottom:15%}.southeast-cleanup-boat .boat{font-size:34px}.southeast-cleanup-boat .net{font-size:18px}.southeast-river-controls{gap:4px}.southeast-river-controls button{width:30px;border-width:2px;font-size:18px}.southeast-river-controls button.collect{width:39px}.southeast-river-controls button.collect strong{font-size:5px}.southeast-river-inventory{min-width:28%;padding:1%}.southeast-river-inventory>strong{font-size:5px}.southeast-river-inventory span{width:10px;font-size:7px}.southeast-river-message{font-size:8px}}
-@media(prefers-reduced-motion:reduce){.southeast-river-item,.southeast-cleanup-boat,.southeast-river-progress span,.southeast-river-dirt{transition:none!important;animation:none!important}}
+.southeast-river-screen .southeast-board{left:25%;top:18.5%;width:62%;height:71%;padding:.75%;gap:0;border-color:#287d73;background:linear-gradient(150deg,#f7fff2,#dff4d0);overflow:hidden}
+.southeast-river-screen .southeast-listen{left:56%;bottom:1.5%;width:21%;transform:translateX(-50%)}
+.southeast-river-game{width:100%;height:100%;min-height:0;display:flex;flex-direction:column;gap:.8%;color:#073054}
+.southeast-river-toolbar{height:14%;flex:none;display:grid;grid-template-columns:32% minmax(0,1fr) 10%;align-items:center;gap:2%;padding:.8% 1.6%;box-sizing:border-box;border:2px solid #4c9367;border-radius:12px;background:linear-gradient(180deg,#f1ffe6,#d6f1bf);box-shadow:0 2px 0 #8ab773}
+.southeast-cleanup-score{height:100%;display:grid;grid-template-columns:auto 1fr;grid-template-rows:1fr 1fr;align-items:center;column-gap:7px;padding-right:5%;border-right:2px solid #a2c88b}.southeast-cleanup-score>span{grid-row:1/3;width:clamp(23px,2.2vw,34px);aspect-ratio:1;display:grid;place-items:center;border-radius:7px;background:#0879bf;color:#fff;font-size:clamp(15px,1.5vw,23px);box-shadow:inset 0 -3px #075887}.southeast-cleanup-score strong{align-self:end;font-size:clamp(9px,.84vw,13px)}.southeast-cleanup-score small{align-self:start;color:#38714c;font-size:clamp(7px,.61vw,10px);font-weight:1000}
+.southeast-river-progress{height:42%;box-sizing:border-box;padding:3px;border:2px solid #527a59;border-radius:999px;background:#c8d7c6;box-shadow:inset 0 2px 3px #234a3344;overflow:hidden}.southeast-river-progress span{display:block;height:100%;min-width:1.5%;border-radius:999px;background:linear-gradient(90deg,#ffba29,#7cd23f 48%,#17a76d);box-shadow:inset 0 2px #fff8;transition:width .45s ease}
+.southeast-wave{display:flex;flex-direction:column;align-items:center;line-height:1}.southeast-wave small{font-size:clamp(6px,.58vw,9px);font-weight:1000;color:#3c6a4d}.southeast-wave strong{font-size:clamp(13px,1.25vw,19px);color:#236846}
+.southeast-river-scene{position:relative;width:100%;flex:1;min-height:0;border:3px solid #247d74;border-radius:14px;overflow:hidden;background:#587f78;box-shadow:inset 0 0 0 2px #fff;touch-action:none;cursor:crosshair;isolation:isolate}
+.southeast-river-background{position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;user-select:none;filter:saturate(.82) contrast(1.04)}
+.southeast-river-water-tone{position:absolute;z-index:1;inset:27% 0 0;background:linear-gradient(180deg,rgba(81,87,53,.08),rgba(63,57,30,calc(.35 - var(--river-health) * .18)));mix-blend-mode:multiply;pointer-events:none;transition:background .5s ease}
+.southeast-current-lines{position:absolute;z-index:2;inset:27% 0 0;overflow:hidden;opacity:.48;pointer-events:none}.southeast-current-lines i{position:absolute;left:-25%;width:34%;height:2px;border-radius:50%;background:linear-gradient(90deg,transparent,#e7ead0cc,transparent);transform:skewX(-28deg);animation:southeast-current 5.2s linear infinite}.southeast-current-lines i:nth-child(1){top:12%;animation-delay:-1.8s}.southeast-current-lines i:nth-child(2){top:30%;width:48%;animation-duration:6.4s}.southeast-current-lines i:nth-child(3){top:49%;animation-delay:-3.4s;animation-duration:4.8s}.southeast-current-lines i:nth-child(4){top:68%;width:42%;animation-delay:-.8s}.southeast-current-lines i:nth-child(5){top:87%;animation-delay:-4.1s;animation-duration:6.8s}
+.southeast-river-vignette{position:absolute;z-index:2;inset:0;box-shadow:inset 0 0 25px #093a3d66,inset 0 -20px 45px #15321d35;pointer-events:none}
+.southeast-river-item{position:absolute;z-index:5;width:clamp(32px,3.15vw,49px);aspect-ratio:1;display:grid;place-items:center;border:2px solid #fff7c5;border-radius:42% 58% 54% 46%;transform:translate(-50%,-50%) rotate(var(--item-tilt));background:linear-gradient(145deg,#fffbe9f2,#ffca59e8);box-shadow:0 3px 0 #714519,0 6px 12px #062b3c66;transition:top .06s linear,left .18s ease,opacity .25s ease;pointer-events:none}.southeast-river-item>span{font-size:clamp(19px,2.05vw,31px);line-height:1;filter:drop-shadow(0 1px #fff)}.southeast-river-item>i{position:absolute;right:-12px;top:45%;width:12px;height:4px;border-top:2px solid #fff9;border-radius:50%}.southeast-river-item.caught{animation:southeast-trash-caught .48s ease forwards}
+.southeast-cleanup-boat{position:absolute;z-index:7;left:var(--boat-x);bottom:10%;width:clamp(58px,6vw,92px);height:clamp(38px,4vw,61px);transform:translateX(-50%);filter:drop-shadow(0 7px 4px #052a376e);transition:left .12s ease;pointer-events:none}.southeast-boat-hull{position:absolute;left:5%;right:2%;bottom:0;height:42%;display:grid;place-items:center;border:3px solid #fff;border-radius:15% 12% 52% 45%;background:linear-gradient(#ffca36,#f47c22);color:#126d49;font-size:clamp(11px,1.2vw,18px);font-weight:1000;box-shadow:inset 0 -5px #c75216}.southeast-boat-cabin{position:absolute;left:32%;bottom:36%;width:38%;height:37%;border:3px solid #fff;border-radius:8px 10px 2px 2px;background:linear-gradient(135deg,#bceeff,#2b9bd1);box-shadow:inset 0 -3px #1674a4}.southeast-boat-flag{position:absolute;left:43%;bottom:70%;width:3px;height:22%;background:#fff}.southeast-boat-flag:after{content:"";position:absolute;left:2px;top:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:12px solid #35b55c}.southeast-net{position:absolute;z-index:-1;left:50%;top:-12%;width:42%;aspect-ratio:1;border:3px solid #f7f2d0;border-radius:50%;background:repeating-radial-gradient(circle,#ffffffaa 0 1px,transparent 1px 6px);opacity:.25;transform:translate(-50%,20%) scale(.55);transition:.25s ease}.southeast-cleanup-boat.casting .southeast-net{opacity:1;transform:translate(-50%,-65%) scale(1.35);box-shadow:0 0 0 10px #fff3}
+.southeast-river-health{position:absolute;z-index:8;left:1.2%;top:2%;display:flex;align-items:center;gap:6px;padding:5px 8px;border:2px solid #fff;border-radius:10px;background:#073b55d9;color:#fff;box-shadow:0 3px 0 #062b3d}.southeast-river-health>span{font-size:clamp(14px,1.5vw,23px)}.southeast-river-health>div{display:grid;grid-template-columns:auto auto;column-gap:8px;align-items:center}.southeast-river-health small{grid-column:1/3;font-size:clamp(5px,.5vw,8px);font-weight:1000}.southeast-river-health b{grid-column:2;font-size:clamp(9px,.85vw,13px)}
+.southeast-river-misses{position:absolute;z-index:8;right:1.2%;top:2%;padding:5px 8px;border:2px solid #fff;border-radius:9px;background:#763d1bd9;color:#fff;font-size:clamp(6px,.57vw,9px);font-weight:1000;box-shadow:0 3px 0 #492510}.southeast-river-misses strong{margin-left:4px;font-size:1.35em;color:#ffd955}
+.southeast-combo{position:absolute;z-index:9;left:50%;top:28%;transform:translateX(-50%) rotate(-3deg);padding:5px 12px;border:2px solid #fff;border-radius:999px;background:#ffb91f;color:#073054;font-size:clamp(10px,1.05vw,16px);font-weight:1000;box-shadow:0 4px 0 #ad6416;animation:southeast-combo-pop .3s ease}
+.southeast-river-controls{position:absolute;z-index:10;left:50%;bottom:1.7%;display:flex;align-items:flex-end;gap:8px;transform:translateX(-50%)}.southeast-river-controls button{width:clamp(36px,3.7vw,56px);aspect-ratio:1;padding:0;display:grid;place-items:center;border:3px solid #fff;border-radius:50%;background:linear-gradient(#ffd553,#ef8b1f);color:#073054;font-size:clamp(20px,2.3vw,35px);font-weight:1000;box-shadow:0 3px 0 #8a4c13;cursor:pointer}.southeast-river-controls button.collect{width:clamp(46px,4.7vw,70px);position:relative;background:linear-gradient(#74dd63,#1d9b4a);color:#fff;display:flex;flex-direction:column;justify-content:center;line-height:.8}.southeast-river-controls button.collect>span{width:38%;aspect-ratio:1;border:2px solid #fff;border-radius:50%;background:repeating-radial-gradient(circle,#fff 0 1px,transparent 1px 4px)}.southeast-river-controls button.collect strong{font-size:clamp(6px,.61vw,10px)}.southeast-river-controls button:hover:not(:disabled){transform:translateY(-3px);filter:brightness(1.08)}.southeast-river-controls button:focus-visible,.southeast-river-start button:focus-visible{outline:4px solid #ffec38;outline-offset:3px}.southeast-river-controls button:disabled{filter:grayscale(.65);opacity:.58;cursor:not-allowed}
+.southeast-river-start{position:absolute;z-index:15;left:50%;top:54%;width:min(68%,420px);transform:translate(-50%,-50%);display:grid;justify-items:center;gap:5px;padding:2.8% 4%;box-sizing:border-box;border:3px solid #fff;border-radius:18px;background:linear-gradient(155deg,#073f61ed,#0d7169ed);color:#fff;text-align:center;box-shadow:0 7px 0 #052b42,0 15px 35px #001c2a88;backdrop-filter:blur(3px)}.southeast-river-start>span{font-size:clamp(25px,3vw,46px)}.southeast-river-start strong{font-size:clamp(12px,1.25vw,19px)}.southeast-river-start p{margin:0;font-size:clamp(9px,.86vw,13px);font-weight:700;line-height:1.2}.southeast-river-start button{margin-top:3px;padding:7px 20px;border:3px solid #fff;border-radius:999px;background:linear-gradient(#7be26e,#20a650);color:#fff;font-size:clamp(10px,.95vw,15px);font-weight:1000;box-shadow:0 3px 0 #0a6531;cursor:pointer}.southeast-river-start small{font-size:clamp(6px,.57vw,9px);color:#d6f6ff;font-weight:800}
+.southeast-river-message{height:10%;min-height:0;display:grid;grid-template-columns:1.4fr 1fr;align-items:center;margin:0;padding:0 2%;box-sizing:border-box;border:2px solid #63a34e;border-radius:9px;background:#f2ffe4;color:#275d3d;line-height:1.08}.southeast-river-message>span{font-size:clamp(9px,.85vw,13px);font-weight:1000}.southeast-river-message>small{padding-left:4%;border-left:1px solid #98bf80;font-size:clamp(6px,.59vw,9px);font-weight:800;color:#476448}
+@keyframes southeast-current{from{transform:translateX(0) skewX(-28deg)}to{transform:translateX(420%) skewX(-28deg)}}
+@keyframes southeast-trash-caught{40%{opacity:1;transform:translate(-50%,-70%) rotate(0) scale(1.25)}100%{opacity:0;transform:translate(-50%,120%) rotate(140deg) scale(.2)}}
+@keyframes southeast-combo-pop{from{transform:translateX(-50%) scale(.4) rotate(-8deg)}70%{transform:translateX(-50%) scale(1.12) rotate(2deg)}}
+.high-contrast .southeast-river-toolbar,.high-contrast .southeast-river-message{background:#fff!important;color:#000!important;border-color:#000!important}.high-contrast .southeast-river-scene{border-color:#000!important}.high-contrast .southeast-river-background{filter:grayscale(.35) contrast(1.35)}.high-contrast .southeast-river-item{background:#ffde00!important;border:3px solid #000!important}.high-contrast .southeast-river-start{background:#000!important;border-color:#ffde00!important}.high-contrast .southeast-river-health,.high-contrast .southeast-river-misses{background:#000!important;border-color:#fff!important}
+.large-text .southeast-cleanup-score strong{font-size:clamp(12px,1.05vw,17px)!important}.large-text .southeast-river-message>span{font-size:clamp(12px,1.05vw,17px)!important}.large-text .southeast-river-start p{font-size:clamp(11px,1vw,16px)!important}
+@media(max-width:900px){.southeast-river-screen .southeast-board{left:26%;top:19.5%;width:62%;height:69%}.southeast-river-screen .southeast-speech{top:23%;left:2.5%;width:22.5%}.southeast-river-screen .southeast-status{right:-1.5%;width:14.5%;padding:4px}.southeast-river-screen .southeast-listen{left:57%;bottom:1.2%;width:24%}.southeast-river-toolbar{grid-template-columns:36% minmax(0,1fr) 10%;padding:.7%}.southeast-river-item{width:33px}.southeast-cleanup-boat{width:62px;height:41px}.southeast-river-controls button{width:36px}.southeast-river-controls button.collect{width:46px}}
+@media(max-width:620px){.southeast-river-screen .southeast-board{left:31%;top:21%;width:67%;height:67%}.southeast-river-screen .southeast-speech{top:22.5%;left:2%;width:28%;font-size:10px}.southeast-river-screen .southeast-status{right:0;width:21%;padding:3px}.southeast-river-screen .southeast-listen{left:50%;bottom:.8%;width:40%}.southeast-river-toolbar{height:16%;grid-template-columns:42% minmax(0,1fr) 11%;gap:1%}.southeast-cleanup-score>span{width:19px}.southeast-cleanup-score strong{font-size:6px}.southeast-cleanup-score small{font-size:5px}.southeast-wave strong{font-size:9px}.southeast-river-item{width:25px;border-width:1px}.southeast-river-item>span{font-size:16px}.southeast-cleanup-boat{bottom:11%;width:48px;height:32px}.southeast-river-health{padding:3px 5px}.southeast-river-health>span{font-size:12px}.southeast-river-health small{font-size:4px}.southeast-river-health b{font-size:7px}.southeast-river-misses{padding:3px 5px;font-size:5px}.southeast-river-controls{gap:4px}.southeast-river-controls button{width:28px;border-width:2px;font-size:17px}.southeast-river-controls button.collect{width:36px}.southeast-river-controls button.collect strong{font-size:5px}.southeast-river-start{width:76%;padding:3% 4%;gap:3px}.southeast-river-start>span{font-size:22px}.southeast-river-start strong{font-size:8px}.southeast-river-start p{font-size:6px}.southeast-river-start button{padding:4px 13px;font-size:7px}.southeast-river-start small{font-size:4px}.southeast-river-message{grid-template-columns:1.25fr 1fr}.southeast-river-message>span{font-size:6px}.southeast-river-message>small{font-size:4px}}
+@media(prefers-reduced-motion:reduce){.southeast-river-item,.southeast-cleanup-boat,.southeast-river-progress span,.southeast-net{transition:none!important;animation:none!important}.southeast-current-lines{display:none}.southeast-combo{animation:none}}
+
+/* Refinamentos de legibilidade e jogabilidade */
+.southeast-river-screen .southeast-speech{font-size:clamp(15px,1.2vw,19px);line-height:1.15}
+.southeast-cleanup-score strong{font-size:clamp(11px,.96vw,15px)}
+.southeast-cleanup-score small{font-size:clamp(8px,.72vw,11px)}
+.southeast-wave small{font-size:clamp(8px,.68vw,10px)}
+.southeast-wave strong{font-size:clamp(15px,1.35vw,21px)}
+.southeast-river-health{padding:6px 10px}
+.southeast-river-health small{font-size:clamp(7px,.62vw,10px)}
+.southeast-river-health b{font-size:clamp(12px,1vw,16px)}
+.southeast-river-misses{padding:6px 10px;font-size:clamp(8px,.72vw,11px)}
+.southeast-river-item{width:clamp(39px,3.9vw,59px);border:0;border-radius:0;background:transparent;box-shadow:none}
+.southeast-river-item>span{position:relative;z-index:2;font-size:clamp(28px,3vw,45px);filter:drop-shadow(0 2px 0 #fff) drop-shadow(0 5px 4px #072b356e)}
+.southeast-river-item>i{z-index:1;left:50%;right:auto;top:auto;bottom:1%;width:88%;height:15%;transform:translateX(-50%);border:2px solid #eaffff9c;border-top-color:#fff;border-radius:50%;background:#164f5a3b;box-shadow:0 2px 5px #092d3666}
+.southeast-river-start{width:min(74%,500px);gap:7px;padding:3% 4.5%}
+.southeast-river-start>span{font-size:clamp(32px,3.5vw,52px)}
+.southeast-river-start strong{font-size:clamp(17px,1.48vw,23px)}
+.southeast-river-start p{font-size:clamp(12px,1.06vw,16px);line-height:1.25}
+.southeast-river-start button{padding:8px 25px;font-size:clamp(13px,1.12vw,17px)}
+.southeast-river-start small{font-size:clamp(8px,.7vw,11px)}
+.southeast-cleanup-boat{bottom:4%}
+.southeast-river-footer{height:15%;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1%;align-items:center}
+.southeast-river-message{height:100%;grid-template-columns:1.35fr 1fr;padding:0 2.2%;border-radius:10px}
+.southeast-river-message>span{font-size:clamp(11px,.98vw,15px);line-height:1.15}
+.southeast-river-message>small{font-size:clamp(8px,.69vw,11px);line-height:1.12}
+.southeast-river-controls{position:static;left:auto;bottom:auto;height:100%;padding:0 7px;box-sizing:border-box;align-items:center;gap:7px;transform:none;border:2px solid #4d9560;border-radius:11px;background:linear-gradient(180deg,#eaffdc,#caeeb8)}
+.southeast-river-controls button{width:clamp(40px,4vw,60px)}
+.southeast-river-controls button.collect{width:clamp(50px,5vw,75px)}
+.southeast-river-controls button.collect strong{font-size:clamp(8px,.7vw,11px)}
+.high-contrast .southeast-river-footer{background:#fff;color:#000}
+.high-contrast .southeast-river-controls{background:#fff!important;border-color:#000!important}
+.high-contrast .southeast-river-item{background:transparent!important;border:0!important;outline:0!important}
+.high-contrast .southeast-river-item>span{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 4px #000)}
+@media(max-width:900px){
+  .southeast-river-screen .southeast-speech{font-size:clamp(12px,1.45vw,16px)}
+  .southeast-cleanup-score strong{font-size:clamp(8px,1vw,12px)}
+  .southeast-cleanup-score small{font-size:clamp(6px,.8vw,9px)}
+  .southeast-wave small{font-size:7px}
+  .southeast-river-health small{font-size:6px}
+  .southeast-river-health b{font-size:10px}
+  .southeast-river-misses{font-size:7px}
+  .southeast-river-item{width:38px}
+  .southeast-river-item>span{font-size:29px}
+  .southeast-river-start{width:72%;gap:5px;padding:2.4% 4%}
+  .southeast-river-start>span{font-size:30px}
+  .southeast-river-start strong{font-size:15px}
+  .southeast-river-start p{font-size:10px}
+  .southeast-river-start button{padding:6px 19px;font-size:11px}
+  .southeast-river-start small{font-size:7px}
+  .southeast-river-footer{height:16%}
+  .southeast-river-message>span{font-size:9px}
+  .southeast-river-message>small{font-size:6px}
+  .southeast-river-controls button{width:38px}
+  .southeast-river-controls button.collect{width:47px}
+}
+@media(max-width:620px){
+  .southeast-river-screen .southeast-speech{font-size:11px}
+  .southeast-cleanup-score strong{font-size:7px}
+  .southeast-cleanup-score small{font-size:5.5px}
+  .southeast-river-item{width:30px}
+  .southeast-river-item>span{font-size:23px}
+  .southeast-river-start{width:78%}
+  .southeast-river-start strong{font-size:10px}
+  .southeast-river-start p{font-size:7px}
+  .southeast-river-start button{font-size:8px}
+  .southeast-river-start small{font-size:5px}
+  .southeast-river-footer{height:18%;gap:.5%}
+  .southeast-river-message{grid-template-columns:1fr}
+  .southeast-river-message>span{font-size:7px}
+  .southeast-river-message>small{display:none}
+  .southeast-river-controls{gap:3px;padding:0 3px}
+  .southeast-river-controls button{width:29px}
+  .southeast-river-controls button.collect{width:37px}
+}
+
+.southeast-trash-sprite{position:relative;z-index:2;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 2px 0 #fff) drop-shadow(0 5px 4px #072b356e)}
+.high-contrast .southeast-trash-sprite{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 5px #000)}
+
+/* Painel inicial e rodapé com leitura reforçada */
+.southeast-river-start{width:min(76%,530px);gap:9px;padding:4.2% 5% 3.4%;border:4px solid #e9ffff;border-radius:22px;background:linear-gradient(155deg,rgba(4,53,82,.97),rgba(8,123,112,.97));box-shadow:0 8px 0 #03283f,0 18px 38px #0017208c,inset 0 1px 0 #8fe4dc;overflow:visible}
+.southeast-river-start:before{content:"MISSÃO DE LIMPEZA";position:absolute;left:50%;top:0;transform:translate(-50%,-50%);padding:5px 16px;border:2px solid #fff;border-radius:999px;background:linear-gradient(#ffd85a,#f29a24);color:#073054;font-size:clamp(9px,.78vw,12px);font-weight:1000;letter-spacing:.04em;box-shadow:0 3px 0 #9a5717;white-space:nowrap}
+.southeast-river-start>span{width:clamp(50px,5vw,74px);aspect-ratio:1;display:grid;place-items:center;border:3px solid #fff;border-radius:50%;background:radial-gradient(circle at 35% 30%,#bdf4ff,#2ca7c7 63%,#087295);font-size:clamp(30px,3.2vw,48px);box-shadow:0 5px 0 #034a64,0 8px 18px #001f2f80}
+.southeast-river-start strong{font-size:clamp(19px,1.65vw,26px);line-height:1.05;text-shadow:0 2px #00364d}
+.southeast-river-start p{max-width:94%;font-size:clamp(14px,1.2vw,18px);line-height:1.3;text-wrap:balance}
+.southeast-river-start button{min-width:34%;padding:10px 28px;border-width:3px;font-size:clamp(15px,1.3vw,20px);box-shadow:0 5px 0 #08612e,0 8px 15px #00291975;transition:transform .15s ease,filter .15s ease}
+.southeast-river-start button:hover:not(:disabled){transform:translateY(-2px) scale(1.03);filter:brightness(1.08)}
+.southeast-river-start small{padding-top:2px;font-size:clamp(10px,.82vw,13px);line-height:1.2;color:#e6fbff}
+.southeast-river-footer{height:17%}
+.southeast-river-message{grid-template-columns:1.25fr 1fr;padding:0 2.5%;border-width:3px;background:linear-gradient(180deg,#f7ffe9,#e4f7cb);box-shadow:inset 0 1px #fff,0 2px 0 #88b36b}
+.southeast-river-message>span{padding-right:3%;font-size:clamp(13px,1.12vw,17px);line-height:1.18}
+.southeast-river-message>small{padding-left:5%;border-left-width:2px;font-size:clamp(10px,.82vw,13px);line-height:1.2}
+.southeast-river-controls{border-width:3px;box-shadow:inset 0 1px #fff,0 2px 0 #88b36b}
+@media(max-width:900px){
+  .southeast-river-start{width:75%;gap:6px;padding:4% 4.5% 3%}
+  .southeast-river-start:before{padding:3px 11px;font-size:8px}
+  .southeast-river-start>span{width:45px;font-size:27px}
+  .southeast-river-start strong{font-size:16px}
+  .southeast-river-start p{font-size:11px}
+  .southeast-river-start button{padding:7px 20px;font-size:12px}
+  .southeast-river-start small{font-size:7.5px}
+  .southeast-river-footer{height:18%}
+  .southeast-river-message>span{font-size:11px}
+  .southeast-river-message>small{font-size:8px}
+}
+@media(max-width:620px){
+  .southeast-river-start{width:80%;gap:4px;padding:4.5% 4% 2.5%}
+  .southeast-river-start:before{font-size:6px}
+  .southeast-river-start>span{width:34px;font-size:20px;border-width:2px}
+  .southeast-river-start strong{font-size:11px}
+  .southeast-river-start p{font-size:8px}
+  .southeast-river-start button{padding:5px 14px;font-size:9px}
+  .southeast-river-start small{font-size:5.5px}
+  .southeast-river-footer{height:20%}
+  .southeast-river-message>span{font-size:8px}
+}
+
+@media(hover:hover) and (pointer:fine){.southeast-river-controls button:not(.collect){display:none}.southeast-river-controls{padding-inline:10px}.southeast-river-controls button.collect{width:clamp(54px,5.2vw,78px)}}
+
+/* Ajuste fino de enquadramento */
+.southeast-river-screen{background-size:102.5% 100%!important;background-position:42% center!important}
+.southeast-river-screen .southeast-status{right:-2.35%}
+.southeast-river-start{left:50%;top:50%;width:min(70%,500px);padding:3.4% 4.5% 3%;transform:translate(-50%,-50%)}
+@media(max-width:900px){.southeast-river-screen{background-size:103% 100%!important;background-position:41% center!important}.southeast-river-screen .southeast-status{right:-2%}.southeast-river-start{width:71%;top:50%;padding:3.2% 4% 2.7%}}
+@media(max-width:620px){.southeast-river-screen{background-size:104% 100%!important;background-position:40% center!important}.southeast-river-screen .southeast-status{right:-.5%}.southeast-river-start{width:78%;padding:4% 4% 2.5%}}
+
+/* Guia visual dos controles antes do mutirão. */
+.southeast-river-start{width:min(82%,570px);gap:7px;padding:3.7% 4.2% 2.7%}
+.southeast-river-howto{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:2px 0}
+.southeast-river-howto-card{min-width:0;padding:7px 8px;border:1px solid #a4e3dc;border-radius:12px;background:#032f49a6;box-shadow:inset 0 1px 0 #ffffff2e;display:grid;gap:5px}
+.southeast-river-howto-card>b{font-size:clamp(8px,.72vw,11px);letter-spacing:.055em;color:#ffdc61}
+.southeast-river-howto-card>div{display:grid;grid-template-columns:minmax(55px,.75fr) 1fr;align-items:center;gap:7px;min-height:26px;text-align:left}
+.southeast-river-howto-card>div>span:last-child{font-size:clamp(8px,.68vw,11px);font-weight:850;color:#f1fdff;line-height:1.1}
+.southeast-key-pair{display:flex;justify-content:center;gap:3px}
+.southeast-river-howto kbd{height:24px;min-width:24px;padding:0 5px;display:inline-grid;place-items:center;box-sizing:border-box;border:2px solid #dce9ed;border-bottom:4px solid #8ea5ad;border-radius:6px;background:linear-gradient(#fff,#dbe7e9);color:#073054;font-family:inherit;font-size:13px;font-weight:1000;box-shadow:0 2px 4px #00192380}
+.southeast-river-howto kbd.space-key{width:58px;margin:auto;font-size:7px;letter-spacing:.04em}
+.southeast-phone-control{position:relative;width:34px;height:28px;margin:auto;display:grid;place-items:center;border:2px solid #dff8ff;border-radius:6px;color:#ffdc61;font-size:16px;font-weight:1000}
+.southeast-phone-control i{position:absolute;right:3px;bottom:2px;width:4px;height:4px;border-radius:50%;background:#fff}
+.southeast-net-control{width:45px;height:27px;margin:auto;display:flex;align-items:center;justify-content:center;gap:3px;border:2px solid #fff;border-radius:999px;background:linear-gradient(#73dd68,#209b4d);color:#fff;font-size:7px;font-weight:1000;box-shadow:0 2px 0 #07582c}
+.southeast-net-control i{width:11px;height:11px;border:1px solid #fff;border-radius:50%;background:repeating-radial-gradient(circle,#fff 0 1px,transparent 1px 3px)}
+.southeast-river-start>button{margin-top:1px}
+@media(max-width:900px){.southeast-river-start{width:80%;padding:3.2% 3.5% 2.4%}.southeast-river-howto{gap:6px}.southeast-river-howto-card{padding:5px;gap:3px}.southeast-river-howto-card>div{grid-template-columns:50px 1fr;gap:4px;min-height:22px}.southeast-river-howto kbd{height:21px;min-width:21px;font-size:11px}.southeast-river-howto kbd.space-key{width:49px}.southeast-river-howto-card>div>span:last-child{font-size:7px}}
+@media(max-width:620px){.southeast-river-start{width:82%;padding:3.2% 3% 2%;gap:3px}.southeast-river-howto{gap:4px}.southeast-river-howto-card{padding:3px;border-radius:7px}.southeast-river-howto-card>b{font-size:5.5px}.southeast-river-howto-card>div{grid-template-columns:37px 1fr;min-height:16px}.southeast-river-howto-card>div>span:last-child{font-size:5px}.southeast-river-howto kbd{height:15px;min-width:15px;padding:0 2px;border-width:1px;border-bottom-width:2px;border-radius:3px;font-size:8px}.southeast-river-howto kbd.space-key{width:35px;font-size:4.5px}.southeast-phone-control{width:25px;height:18px;font-size:10px;border-width:1px}.southeast-net-control{width:32px;height:18px;font-size:4.5px;border-width:1px}.southeast-net-control i{width:7px;height:7px}.southeast-river-start>button{padding:4px 14px}}
+@media(min-width:901px){
+  .southeast-river-start{width:min(84%,590px);gap:4px;padding:2.25% 3.8% 1.8%}
+  .southeast-river-start>span{width:clamp(43px,4.1vw,60px);font-size:clamp(25px,2.55vw,38px)}
+  .southeast-river-start strong{font-size:clamp(16px,1.4vw,21px)}
+  .southeast-river-start p{font-size:clamp(11px,1vw,15px);line-height:1.2}
+  .southeast-river-howto-card{padding:5px 7px;gap:3px}
+  .southeast-river-howto-card>div{min-height:22px}
+  .southeast-river-start>button{padding:7px 24px;font-size:clamp(13px,1.1vw,17px)}
+}
+
+/* Ajuste final da janela de instruções. */
+.southeast-river-start:before{content:none}
+@media(min-width:901px){.southeast-river-start{width:min(76%,530px);padding-inline:3.2%}}
+
+/* Limite de resíduos escapados e reinício da rodada. */
+.southeast-river-misses strong{min-width:34px}
+.southeast-river-failed{background:linear-gradient(155deg,rgba(94,38,25,.97),rgba(147,68,27,.97));border-color:#fff2d1;box-shadow:0 8px 0 #4a2016,0 18px 38px #190b078c,inset 0 1px 0 #ffc781}
+.southeast-river-failed>span{background:radial-gradient(circle at 35% 30%,#fff2b5,#f0a32d 63%,#bc5b1e);box-shadow:0 5px 0 #713117,0 8px 18px #27100680}
+.southeast-river-failed-count{display:flex;align-items:center;justify-content:center;gap:9px;padding:5px 13px;border:1px solid #ffd39d;border-radius:10px;background:#3c160a7d;color:#fff8e9}
+.southeast-river-failed-count b{font-size:clamp(19px,1.8vw,27px);color:#ffd35a;line-height:1}
+.southeast-river-failed-count span{max-width:115px;font-size:clamp(8px,.7vw,11px);font-weight:850;line-height:1.05;text-align:left}
+.southeast-river-failed>button{min-width:48%;background:linear-gradient(#ffcb55,#e67d23);box-shadow:0 5px 0 #8c3e17,0 8px 15px #29110875}
+@media(max-width:620px){.southeast-river-failed-count{padding:3px 7px;gap:5px}.southeast-river-failed-count b{font-size:14px}.southeast-river-failed-count span{font-size:5px}.southeast-river-failed>button{min-width:55%}}

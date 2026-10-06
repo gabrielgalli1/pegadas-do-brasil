@@ -24,3 +24,42 @@
 @media(prefers-reduced-motion:reduce){.southeast-coffee-scene,.southeast-coffee-actions button,.southeast-coffee-berries .berry{transition:none!important}.southeast-coffee-scene.moving{opacity:1;transform:none}}
 
 @media(max-width:620px){.large-text .southeast-coffee-actions{height:33%}.large-text .southeast-coffee-actions p{font-size:clamp(12px,2.2vw,15px)!important}.large-text .southeast-coffee-actions button{font-size:clamp(11px,2vw,14px)!important}.large-text .southeast-coffee-steps div strong{font-size:11px!important}}
+
+/* Acabamento visual da jornada do café. */
+.southeast-coffee-screen .southeast-board{background:linear-gradient(145deg,#fffdf4 0%,#fff6dc 100%);box-shadow:0 7px 0 #85551f,0 16px 30px #183d3860}
+.southeast-coffee-steps div{position:relative;background:linear-gradient(180deg,#fffaf0,#f3e6c9);box-shadow:inset 0 1px 0 #fff,0 2px 4px #5f482724;transition:transform .22s ease,box-shadow .22s ease,background .22s ease}
+.southeast-coffee-steps div.current{background:linear-gradient(180deg,#ffeab2,#f7ce70);transform:translateY(-2px);box-shadow:inset 0 1px 0 #fff,0 5px 0 #b9823d,0 8px 12px #7652252d}
+.southeast-coffee-steps div.done{background:linear-gradient(180deg,#d9f6c7,#b6e69d);box-shadow:inset 0 1px 0 #fff,0 3px 0 #4b913f}
+.southeast-coffee-steps div.done span{width:25px;height:25px;display:grid;place-items:center;border-radius:50%;background:#43a755;color:#fff;box-shadow:0 2px 0 #277238;font-size:16px}
+.southeast-coffee-scene{isolation:isolate;box-shadow:inset 0 0 0 2px #fff8,inset 0 -16px 24px #2e6c3030,0 4px 9px #38562b26}
+.southeast-coffee-scene::after{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(180deg,#fff4 0%,transparent 32%,#25682b12 100%);pointer-events:none}
+.southeast-coffee-scene-label{position:absolute;z-index:4;left:12px;top:10px;display:flex;align-items:center;gap:7px;padding:5px 11px 5px 6px;border:2px solid #fff;border-radius:999px;background:#164f42dc;color:#fff;box-shadow:0 3px 0 #0d382c88,0 6px 12px #163e3130;font-size:clamp(9px,.82vw,13px);letter-spacing:.04em}
+.southeast-coffee-scene-label span{width:23px;height:23px;display:grid;place-items:center;border-radius:50%;background:#f3bb45;color:#55350d;font-weight:1000}
+.southeast-coffee-scene-label strong{font-size:inherit}
+.southeast-coffee-plant,.southeast-coffee-cup{position:relative;z-index:1;filter:drop-shadow(0 7px 5px #274d284a)}
+.southeast-coffee-berries .berry{z-index:3;background:radial-gradient(circle at 32% 25%,#ff9e91 0 12%,#e33f44 18% 58%,#9e1f2a 100%);box-shadow:0 4px 0 #7d1b25,0 0 0 2px #86212a,0 7px 14px #5b172b55}
+.southeast-coffee-berries .berry:hover:not(:disabled){transform:translateY(-3px) scale(1.18);filter:brightness(1.08)}
+.southeast-coffee-actions{position:relative;background:linear-gradient(135deg,#fff9e8,#ffedbe);box-shadow:inset 0 1px 0 #fff,0 3px 8px #73502320}
+.southeast-coffee-actions p{padding-left:8px;color:#123e59}
+.southeast-coffee-actions button{background:linear-gradient(180deg,#59c971,#218e49);box-shadow:inset 0 1px 0 #ffffff99,0 4px 0 #1c6337,0 7px 12px #194d3035}
+.southeast-coffee-action-hint{padding:10px 12px;border:2px solid #7db867;border-radius:12px;background:#e6f7d6;text-align:center;box-shadow:inset 0 1px #fff;color:#1d6b3c}
+@media(max-width:620px){.southeast-coffee-scene-label{left:6px;top:5px;padding:3px 7px 3px 4px}.southeast-coffee-scene-label span{width:18px;height:18px}.southeast-coffee-action-hint{padding:5px}}
+@media(prefers-reduced-motion:reduce){.southeast-coffee-steps div{transition:none!important}}
+
+/* Figuras vetoriais e área de plantio ampliada. */
+.southeast-coffee-icon{display:block;width:clamp(25px,2.35vw,36px);height:clamp(25px,2.35vw,36px);flex:0 0 auto;overflow:visible}
+.southeast-coffee-steps div>span{width:clamp(29px,2.5vw,38px);height:clamp(29px,2.5vw,38px);display:grid;place-items:center}
+.southeast-coffee-steps div>span .southeast-coffee-icon{width:100%;height:100%}
+.southeast-coffee-steps div.done>span{width:clamp(27px,2.25vw,34px);height:clamp(27px,2.25vw,34px);padding:0;background:transparent;box-shadow:none}
+.southeast-soil-target{z-index:4;left:27%;right:27%;top:57%;bottom:0;width:auto;height:auto;transform:none;padding:0;border:0;border-radius:55% 55% 18px 18px;background:transparent;box-shadow:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.southeast-soil-target span{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:3px dashed #fff;border-radius:100px;background:#fff4c8;color:#593b20;box-shadow:0 3px 0 #75491d,0 7px 12px #4e2d1f33;font-size:clamp(11px,1.05vw,16px);font-weight:900;transition:transform .15s ease,filter .15s ease}
+.southeast-soil-target .southeast-coffee-icon{width:24px;height:24px}
+.southeast-soil-target:hover:not(:disabled) span{transform:translateY(-4px) scale(1.03);filter:brightness(1.04)}
+.southeast-soil-target:focus-visible{outline:4px solid #ffdc42;outline-offset:-5px}
+.southeast-soil-target:disabled{cursor:default}
+.southeast-coffee-actions button{display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.southeast-coffee-actions button .southeast-coffee-icon{width:clamp(24px,2vw,31px);height:clamp(24px,2vw,31px)}
+.southeast-coffee-berries .berry{display:grid;place-items:center;padding:2px;color:transparent}
+.southeast-coffee-berries .berry .southeast-coffee-icon{width:88%;height:88%;filter:drop-shadow(0 2px 1px #67141f66)}
+.southeast-coffee-berries .berry.picked .southeast-coffee-icon{width:75%;height:75%;filter:none}
+@media(max-width:620px){.southeast-coffee-steps div>span{width:22px;height:22px}.southeast-soil-target{left:23%;right:23%;top:53%}.southeast-soil-target span{padding:4px 8px;font-size:8px}.southeast-soil-target .southeast-coffee-icon{width:18px;height:18px}.southeast-coffee-actions button{gap:3px}.southeast-coffee-actions button .southeast-coffee-icon{width:19px;height:19px}}

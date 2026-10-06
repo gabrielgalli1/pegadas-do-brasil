@@ -92,3 +92,24 @@
 @keyframes southeast-clue-leave{to{opacity:0;transform:translateX(-20px) scale(.97)}}
 .southeast-sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media(prefers-reduced-motion:reduce){.southeast-detective-clue,.southeast-detective-clue.leaving{animation:none!important}.southeast-detective-screen .southeast-state-choices button::after,.southeast-detective-screen .southeast-state-choices button>span,.southeast-detective-screen .southeast-state-choices button>strong{transition:none!important}}
+
+/* Desafio 1 — mantém o mapa inteiro dentro do card na versão desktop. */
+@media(min-width:901px){
+  .southeast-location-screen .southeast-board-1{top:19.5%;height:57.5%}
+  .southeast-board-1 .southeast-brazil-map{display:block;width:94%;height:92%;margin:2% auto}
+}
+
+/* Desafio 2 — aproxima discretamente o título do card no desktop. */
+@media(min-width:901px){.southeast-detective-screen .southeast-title{top:4%}}
+
+/* A cor acompanha o estado, independentemente da posição sorteada. */
+.southeast-detective-screen .southeast-state-choices button.state-mg{background:#e9ae41;border-color:#c48b25}
+.southeast-detective-screen .southeast-state-choices button.state-es{background:#9a78c9;border-color:#7756aa}
+.southeast-detective-screen .southeast-state-choices button.state-rj{background:#35a5d8;border-color:#237eae}
+.southeast-detective-screen .southeast-state-choices button.state-sp{background:#63b969;border-color:#418e47}
+
+/* Desafio 4 — ajuste vertical discreto do título no desktop. */
+@media(min-width:901px){.southeast-word-screen .southeast-title{top:4%}}
+
+/* Desafio 5 — ajuste vertical discreto do título no desktop. */
+@media(min-width:901px){.southeast-passport-screen .southeast-title{top:4%}}
