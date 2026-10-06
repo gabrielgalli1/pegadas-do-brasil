@@ -63,3 +63,12 @@
 .southeast-coffee-berries .berry .southeast-coffee-icon{width:88%;height:88%;filter:drop-shadow(0 2px 1px #67141f66)}
 .southeast-coffee-berries .berry.picked .southeast-coffee-icon{width:75%;height:75%;filter:none}
 @media(max-width:620px){.southeast-coffee-steps div>span{width:22px;height:22px}.southeast-soil-target{left:23%;right:23%;top:53%}.southeast-soil-target span{padding:4px 8px;font-size:8px}.southeast-soil-target .southeast-coffee-icon{width:18px;height:18px}.southeast-coffee-actions button{gap:3px}.southeast-coffee-actions button .southeast-coffee-icon{width:19px;height:19px}}
+
+/* Desafio 3 — mesma composição móvel dos desafios anteriores. */
+@media(min-width:621px) and (max-width:900px){
+  .southeast-coffee-screen .southeast-board-3{left:29%;top:23%;width:59%;height:69%}
+  .southeast-coffee-screen .southeast-speech{top:20%;left:3%;width:25%;font-size:clamp(10px,1.45vw,14px)}
+  .southeast-coffee-screen .southeast-listen{left:17%;bottom:8%;width:22%;transform:translateX(-50%)}
+  .southeast-coffee-screen .southeast-title{top:20%}
+  .southeast-coffee-screen .southeast-status{top:-5%}
+}

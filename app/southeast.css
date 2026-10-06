@@ -113,3 +113,45 @@
 
 /* Desafio 5 — ajuste vertical discreto do título no desktop. */
 @media(min-width:901px){.southeast-passport-screen .southeast-title{top:4%}}
+
+/* Desafio 1 — proporções para celular em orientação horizontal. */
+@media(min-width:621px) and (max-width:900px){
+  .southeast-location-screen .southeast-title{left:28%;top:3%;width:55%}
+  .southeast-location-screen .southeast-status{right:-.5%;top:104%;width:15.5%;padding:6px 5px;border-width:3px;border-radius:15px}
+  .southeast-location-screen .southeast-status b{font-size:clamp(9px,1.35vw,12px)}
+  .southeast-location-screen .southeast-status span{font-size:clamp(14px,1.5vw,19px)}
+  .southeast-location-screen .southeast-status .score-inline{padding-top:3px}
+}
+
+@media(min-width:621px) and (max-width:900px){.southeast-location-screen .southeast-board-1{top:23%;height:54%}}
+
+/* Desafio 1 — mesma composição das demais regiões no celular horizontal. */
+@media(min-width:621px) and (max-width:900px){
+  .southeast-location-screen .southeast-title{left:26.5%;top:28%;width:41.5%;padding:.55% 1.5%;border-width:2px;border-radius:16px;box-shadow:0 3px 0 #235f2b66,0 7px 15px #082e5b20}
+  .southeast-location-screen .southeast-title h1{font-size:clamp(17px,2.45vw,23px);line-height:1.08;white-space:nowrap}
+  .southeast-location-screen .southeast-title p{display:none}
+  .southeast-location-screen .southeast-status{right:12%;top:3%;width:18%;padding:4px 5px;border-width:3px;border-radius:14px}
+  .southeast-location-screen .southeast-status b{font-size:clamp(8px,1.25vw,11px)}
+  .southeast-location-screen .southeast-status>div:not(.score-inline){gap:1px}
+  .southeast-location-screen .southeast-status span{font-size:clamp(12px,1.45vw,17px)}
+  .southeast-location-screen .southeast-status .score-inline{padding-top:1px}
+  .southeast-location-screen .southeast-board-1{left:29.5%;top:27.5%;width:61%;height:56%}
+  .southeast-location-instruction{left:29.5%;top:85%;width:61%;height:7%;font-size:clamp(10px,1.35vw,14px)}
+  .southeast-location-screen .southeast-speech{top:20%;left:3%;width:25%;font-size:clamp(10px,1.45vw,14px)}
+  .southeast-location-screen .southeast-listen{left:17%;bottom:8%;width:22%;transform:translateX(-50%)}
+}
+
+/* Feedback de acerto mais compacto no celular horizontal. */
+@media(min-width:621px) and (max-width:900px) and (max-height:520px){
+  .southeast-feedback{width:min(360px,55%);padding:12px 16px 14px;border-width:6px;border-radius:28px}
+  .southeast-feedback>span{display:block;font-size:38px;line-height:1}
+  .southeast-feedback h2{margin:4px 0;font-size:clamp(22px,2.8vw,28px);line-height:1.05}
+  .southeast-feedback p{margin:6px 0;font-size:clamp(13px,1.6vw,16px);line-height:1.2}
+  .southeast-feedback button{margin:7px;padding:9px 13px;font-size:clamp(13px,1.6vw,16px)}
+}
+/* Desafio 2 — composição móvel alinhada ao Desafio 1. */
+@media(min-width:621px) and (max-width:900px){
+  .southeast-detective-screen .southeast-board-2{left:29%;top:23%;width:59%;height:69%}
+  .southeast-detective-screen .southeast-title{top:20%}
+  .southeast-detective-screen .southeast-status{top:-5%}
+}
