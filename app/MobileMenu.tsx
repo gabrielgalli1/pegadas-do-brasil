@@ -20,7 +20,7 @@ export default function MobileMenu({
 }: MobileMenuProps) {
   return <section className="screen mobile-menu-screen" aria-label="Menu principal para celular">
     <nav className="mobile-menu-tools" aria-label="Opções do jogo">
-      <button onClick={onAvatar}><img src={selectedAvatar?.image ?? "/icone-avatar-v1.png"} alt="" />Avatar</button>
+      <button className="mobile-menu-avatar-tool" onClick={onAvatar}><img src={selectedAvatar?.image ?? "/icone-avatar-v1.png"} alt="" />Avatar</button>
       <button onClick={onAchievements}><img src="/icone-conquistas-v1.png" alt="" />Conquistas</button>
       <button onClick={onSound}><img src="/icone-som-v1.png" alt="" />Som</button>
       <button onClick={onAccessibility}><img src="/icone-acessibilidade-v1.png" alt="" />Acessibilidade</button>

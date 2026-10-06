@@ -268,6 +268,7 @@ export default function Home() {
     if (savedAudio) try { const audio = JSON.parse(savedAudio); setMusic(audio.music ?? true); setEffects(audio.effects ?? true); setSound(audio.narration ?? true); setVolume(audio.volume ?? 75); } catch { /* mantém as configurações padrão */ }
     const savedAccessibility = window.localStorage.getItem("pegadas-accessibility");
     if (savedAccessibility) try { const accessibility = JSON.parse(savedAccessibility); setHighContrast(accessibility.highContrast ?? false); setLargeText(accessibility.largeText ?? false); setButtonHighlight(accessibility.buttonHighlight ?? false); } catch { /* mantém as configurações padrão */ }
+    if (new URLSearchParams(window.location.search).get("preview") === "jornada") setScreen("journey");
     if (new URLSearchParams(window.location.search).get("preview") === "inicial") {
       const previewChallenge = Number(new URLSearchParams(window.location.search).get("desafio"));
       setChallengeIndex(previewChallenge >= 1 && previewChallenge <= 5 ? previewChallenge - 1 : 0);
@@ -677,7 +678,7 @@ export default function Home() {
       if (sound) speak("Quase! Observe a dica e tente novamente.");
       return;
     }
-    const earnedPoints = northeastChallenge === 5 ? 100 : attempts === 0 ? 100 : 60;
+    const earnedPoints = attempts === 0 ? 100 : 60;
     setScore((value) => {
       const nextScore = value + earnedPoints;
       setHighestScore((best) => Math.max(best, nextScore));
@@ -743,7 +744,7 @@ export default function Home() {
   function nextChallenge() {
     setChallengeIndex((value) => value + 1); setFeedback("idle"); setAttempts(0); setMistakes(0);
   }
-  function restart() { regionStartScore.current = 0; regionStartFirstTryWins.current = firstTryWins; setChallengeIndex(0); setScore(0); setFeedback("idle"); setAttempts(0); setMistakes(0); setRegionRun((run) => run + 1); setInitialPhaseHadMistake(false); setInitialPhasePerfect(false); }
+  function restart() { regionStartScore.current = score; regionStartFirstTryWins.current = firstTryWins; setChallengeIndex(0); setFeedback("idle"); setAttempts(0); setMistakes(0); setRegionRun((run) => run + 1); setInitialPhaseHadMistake(false); setInitialPhasePerfect(false); }
   function openJourneyLevel(index: number) {
     setJourneyNotice(null);
     setFeedback("idle");
@@ -772,7 +773,11 @@ export default function Home() {
         <h1><span aria-hidden="true">◆</span> ESCOLHA SUA AVENTURA <span aria-hidden="true">◆</span></h1>
         <p>Aprenda, explore e descubra o Brasil passo a passo!</p>
       </header>
-      <button className={`journey-art-button journey-sound ${!sound ? "muted" : ""}`} onClick={() => setSound(!sound)} aria-label={sound ? "Desligar som" : "Ligar som"} aria-pressed={sound}><img src="/fases-som-v1.png" alt="" /></button>
+      <div className="journey-progress" aria-label={`Progresso geral: ${(completedPhase ? 1 : 0) + completedRegions.length} de ${journeyLevels.length} fases e ${score} pontos`}>
+        <b>FASES {(completedPhase ? 1 : 0) + completedRegions.length} DE {journeyLevels.length}</b>
+        <div aria-hidden="true">{journeyLevels.map((level, index) => <span key={level.id} className={index < (completedPhase ? 1 : 0) + completedRegions.length ? "active" : ""}>★</span>)}</div>
+        <ScoreBadge score={score} compact />
+      </div>      <button className={`journey-art-button journey-sound ${!sound ? "muted" : ""}`} onClick={() => setSound(!sound)} aria-label={sound ? "Desligar som" : "Ligar som"} aria-pressed={sound}><img src="/fases-som-v1.png" alt="" /></button>
       <img className="journey-mascot-art" src="/fases-mascote-v2.png" alt="Arara Ari convidando você para explorar o Brasil" />
       <div className="journey-levels">
         {journeyLevels.map((level, index) => {
@@ -786,7 +791,7 @@ export default function Home() {
       </div>
       {journeyNotice && <div className="journey-notice" role="status">{journeyNotice}<button onClick={() => setJourneyNotice(null)} aria-label="Fechar aviso">×</button></div>}
       <p className="journey-footer"><span aria-hidden="true">●</span> Complete as fases na ordem para desbloquear novas regiões! <span aria-hidden="true">●</span></p>
-    </section><MobileJourney levels={journeyLevels} unlockedLevel={unlockedLevel} completedPhase={completedPhase} sound={sound} notice={journeyNotice} onOpen={openJourneyLevel} onBack={() => setScreen("menu")} onToggleSound={() => setSound(!sound)} onCloseNotice={() => setJourneyNotice(null)} /></>}
+    </section><MobileJourney levels={journeyLevels} unlockedLevel={unlockedLevel} completedPhase={completedPhase} completedCount={(completedPhase ? 1 : 0) + completedRegions.length} score={score} sound={sound} notice={journeyNotice} onOpen={openJourneyLevel} onBack={() => setScreen("menu")} onToggleSound={() => setSound(!sound)} onCloseNotice={() => setJourneyNotice(null)} /></>}
 
     {screen === "game" && <section className={`screen play-screen challenge-screen challenge-step-${challengeIndex + 1}`}>
       <MobileInitialChallenge index={challengeIndex} score={score} sound={sound} countries={countryOptions} continents={continentOptions} oceans={oceanOptions} stateCounts={stateCountOptions} landscapes={landscapeOptions} stateMap={<TransparentStateMap />} onBack={() => setScreen("journey")} onToggleSound={() => setSound(!sound)} onCountry={chooseCountry} onContinent={chooseContinent} onOcean={chooseOcean} onStateCount={chooseStateCount} onLandscape={chooseLandscape} onListen={speak} />

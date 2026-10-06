@@ -53,3 +53,24 @@
 @media(min-width:901px){.southeast-passport-count strong{font-size:clamp(16px,1.35vw,21px)}.southeast-passport-toolbar>p{font-size:clamp(14px,1.2vw,19px)}}@media(max-width:900px){.southeast-passport-screen .southeast-status{right:-1.5%;width:15.5%;padding:4px}.southeast-passport-screen .southeast-status b{font-size:10px}.southeast-passport-screen .southeast-status span{font-size:14px}}
 @media(max-width:620px){.southeast-passport-screen .southeast-status{right:0;width:21%;padding:3px}.southeast-passport-screen .southeast-status b{font-size:9px}.southeast-passport-screen .southeast-status span{font-size:11px}}
 .southeast-passport-screen .southeast-speech:after{left:auto;right:14px}
+
+/* Desafio 5 — mesma composição móvel do Desafio 4. */
+@media(min-width:621px) and (max-width:900px){
+  .southeast-passport-screen .southeast-board-5{left:29%;top:19%;width:64%;height:73%}
+  .southeast-passport-screen .southeast-speech{top:20%;left:3%;width:25%;min-height:11%;font-size:clamp(10px,1.45vw,14px)}
+  .southeast-passport-screen .southeast-listen{left:17%;bottom:8%;width:22%;transform:translateX(-50%)}
+  .southeast-passport-screen .southeast-title{top:20%}
+  .southeast-passport-screen .southeast-status{top:-8%;right:12%;width:16%;padding:2px 4px;border-width:3px;border-radius:12px}
+  .southeast-passport-screen .southeast-status b{font-size:clamp(7px,1.05vw,9px)}
+  .southeast-passport-screen .southeast-status span{font-size:clamp(10px,1.3vw,13px)}
+  .southeast-passport-screen .southeast-status .score-inline{padding-top:0;font-size:clamp(9px,1.15vw,12px)}
+  .southeast-passport-game{gap:2%}
+  .southeast-passport-toolbar{height:18%;padding:.75% 1.5%;overflow:hidden}
+  .southeast-passport-count{grid-template-rows:auto auto;align-content:center}
+  .southeast-passport-count strong{align-self:center;font-size:clamp(11px,1.35vw,14px);line-height:1}
+  .southeast-passport-count small{align-self:center;font-size:clamp(7px,.8vw,9px);line-height:1.05}
+  .southeast-passport-toolbar>p{font-size:clamp(10px,1.35vw,13px);line-height:1.1}
+  .southeast-passport-layout{min-height:0;overflow:hidden}
+  .southeast-passport-screen .southeast-tourist-gallery button img{object-fit:contain;background:#eaf4dc}
+  .southeast-passport-screen .southeast-tourist-gallery button>span{min-height:27%;height:27%}
+}
