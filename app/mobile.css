@@ -892,3 +892,75 @@
   .mobile-journey-progress .score-inline strong{font-size:13px;line-height:1}
   .mobile-journey-progress .score-inline small{font-size:6px;line-height:1}
 }
+
+
+/* Janelas do menu em celulares deitados: mantem todo o conteudo util dentro da tela. */
+@media (max-width:900px) and (orientation:landscape) and (max-height:500px){
+  .modal-backdrop{position:fixed;padding:6px;overflow:hidden}
+  .modal{width:min(640px,88vw);max-height:calc(100dvh - 12px)!important;padding:10px 14px 9px!important;border-width:5px;border-radius:25px!important;overflow-x:hidden;overflow-y:auto}
+  .modal-close{right:7px;top:2px;width:32px;height:32px;padding:0;font-size:29px;line-height:1}
+  .modal h2{margin:0 30px 7px!important;font-size:clamp(21px,5.8vh,27px)!important;line-height:1.05}
+  .modal p{font-size:12px;line-height:1.12}
+  .modal.avatar-modal{width:min(540px,76vw);padding:10px 13px 8px!important;overflow:hidden!important}
+  .avatar-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px!important}
+  .avatar-grid button{min-height:0;height:101px;padding:4px 4px 3px!important;border-width:3px!important;border-radius:15px!important}
+  .avatar-grid button:hover,.avatar-grid button:focus-visible{transform:none}
+  .avatar-grid button>img{width:48px;height:48px;margin:0 auto 1px}
+  .avatar-grid strong{margin-top:1px;font-size:14px;line-height:1}
+  .avatar-grid small{margin-top:2px;font-size:9px!important;line-height:1}
+  .avatar-grid b{right:3px;top:3px;padding:2px 4px;border-radius:9px;font-size:8px}
+  .avatar-safety{margin:5px 0 0!important;font-size:10px!important}
+  .avatar-nickname-edit{margin:5px auto 1px;padding:5px 12px;border-width:3px;border-radius:13px;font-size:11px;line-height:1}
+  .modal.achievements-modal{width:min(650px,88vw)!important}
+  .achievements-heading{gap:8px;margin-bottom:2px}
+  .achievements-heading img{width:42px;height:42px}
+  .achievements-heading h2{font-size:22px!important}
+  .achievements-heading p{margin:1px 0 0!important;font-size:12px!important}
+  .achievement-progress{height:14px;margin:2px auto 6px;border-width:2px}
+  .achievement-progress i{font-size:15px}
+  .achievement-grid{gap:6px}
+  .achievement-grid article{min-height:99px;padding:4px 6px 3px;border-width:3px;border-radius:15px}
+  .achievement-medal{width:42px;height:42px;border-width:4px;font-size:25px}
+  .achievement-lock{right:5px;top:5px;width:25px;height:27px;border-width:2px;font-size:16px}
+  .achievement-grid h3{margin:3px 0 1px;font-size:12px}
+  .achievement-grid p{font-size:9px;line-height:1.05}
+  .achievement-grid small{padding-top:2px;font-size:8px}
+  .achievements-footer{margin:5px auto 0;padding:3px 12px;font-size:10px}
+  .modal.sound-modal,.modal.accessibility-modal{width:min(610px,84vw)!important}
+  .sound-heading,.accessibility-heading{gap:7px;margin-bottom:4px}
+  .sound-heading img,.accessibility-heading img{width:38px;height:38px}
+  .sound-heading h2,.accessibility-heading h2{font-size:22px!important}
+  .volume-control{margin:0 auto 6px}
+  .volume-control>strong{margin-bottom:1px;font-size:10px}
+  .volume-control>div{gap:7px}
+  .volume-control span{font-size:18px}
+  .sound-modal .volume-control input[type="range"]{height:10px!important}
+  .sound-options,.accessibility-options{gap:5px;margin-bottom:0}
+  .sound-options article,.accessibility-options article{min-height:0;grid-template-columns:42px minmax(0,1fr) auto;gap:7px;padding:4px 8px;border-width:3px;border-radius:14px}
+  .sound-option-icon,.accessibility-icon{width:36px;height:36px;border-width:3px}
+  .text-icon{font-size:16px}.highlight-icon{font-size:23px}
+  .sound-options h3,.accessibility-options h3{font-size:13px}
+  .sound-options p,.accessibility-options p{margin:1px 0 0!important;font-size:9px!important}
+  .toggle,.accessibility-options .toggle{min-width:92px;padding:4px 5px 4px 8px;gap:4px;font-size:9px}
+  .toggle i{width:22px;height:22px}
+  .text-size-control{border-width:2px;border-radius:14px}
+  .text-size-control button{min-width:61px;padding:6px 7px;font-size:9px}
+  .modal.help-modal{width:min(720px,94vw)!important;padding:8px 10px!important}
+  .help-heading{gap:6px;margin-bottom:5px}
+  .help-heading img{width:38px;height:38px}
+  .help-heading h2{font-size:22px!important}
+  .help-steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .help-step{min-height:0;padding:6px 5px 5px;border-width:3px;border-radius:15px}
+  .help-step .step-number{left:6px;top:6px;width:29px;height:29px;border-width:2px;font-size:16px}
+  .help-step h3{margin:3px 0;padding-left:27px;font-size:13px}
+  .help-step p{min-height:0;margin:0 0 3px!important;font-size:9px!important}
+  .help-avatars{gap:2px}.help-avatars div{padding:2px;border-width:2px;border-radius:8px}
+  .help-avatars img{width:31px;height:31px}.help-avatars strong{font-size:8px}
+  .help-adventure-art,.help-phase-art{height:83px;border-radius:12px}
+  .help-adventure-art{gap:4px}.help-adventure-art span{padding:5px 9px;border-width:3px;border-radius:12px;font-size:12px}.help-adventure-art i{font-size:19px}
+  .help-phase-art span{width:29px;height:29px;border-width:2px;font-size:14px}.help-phase-art i{font-size:12px}.help-phase-art b{right:7px;top:7px;font-size:28px}
+  .help-footer{min-height:48px;grid-template-columns:55px minmax(0,1fr)!important;gap:4px;padding-right:0!important}
+  .help-footer>img{width:55px;height:47px}.help-footer strong{font-size:11px}.help-footer>div{gap:2px}
+  .help-listen{padding:4px 9px;border-width:3px;border-radius:12px;font-size:10px;box-shadow:0 0 0 4px #fff8df,0 0 0 6px #cde8a8,0 3px 6px #17345855!important}
+  .modal.credits-modal{width:min(690px,92vw)!important;padding:9px 12px 8px!important}
+}

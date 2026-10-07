@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import regionsMap from "./brasil-cinco-regioes.json";
 import NorthPuzzle from "./NorthPuzzle";
 import type { NorthPuzzlePieceId } from "./north-puzzle-data";
@@ -11,8 +11,11 @@ import ScoreBadge from "./ScoreBadge";
 import MobileMenu from "./MobileMenu";
 import MobileJourney from "./MobileJourney";
 import MobileInitialChallenge from "./MobileInitialChallenge";
-import { syncJogador } from "./supabaseClient";
+import { loadPlayerProgress, syncJogador, syncPlayerProgress } from "./supabaseClient";
 import { tidyNickname, validateNickname } from "./nicknameValidation";
+import { isRemoteProgressNewer, normalizePlayerProgress, readCachedProgress, unlockedAchievementIds, type PlayerProgress } from "./progressPersistence";
+import { recordedNarrations } from "./narrationCatalog";
+import { audioVolume, backgroundMusicVolume } from "./audioVolume";
 
 const northPlantOptions = [
   { id: "vitoria-regia", label: "Vitória-régia", image: "/planta-vitoria-regia-norte-v1.png" },
@@ -83,30 +86,76 @@ const avatars = [
 ] as const;
 
 const narrationVolumeEvent = "pegadas-narration-volume";
+
 let narrationRequest = 0;
+let recordedNarration: HTMLAudioElement | null = null;
 function speak(text: string) {
-  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+  if (typeof window === "undefined") return;
   const request = ++narrationRequest;
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.onstart = () => {
-    if (request === narrationRequest) window.dispatchEvent(new CustomEvent(narrationVolumeEvent, { detail: true }));
+  window.speechSynthesis?.cancel();
+  if (recordedNarration) {
+    recordedNarration.pause();
+    recordedNarration.currentTime = 0;
+    recordedNarration = null;
+  }
+  const volume = audioVolume(Number(window.localStorage.getItem("pegadas-volume") ?? 75));
+  const setNarrating = (active: boolean) => {
+    if (request === narrationRequest) window.dispatchEvent(new CustomEvent(narrationVolumeEvent, { detail: active }));
   };
-  const restoreMusic = () => {
-    if (request === narrationRequest) window.dispatchEvent(new CustomEvent(narrationVolumeEvent, { detail: false }));
+  const speakWithBrowser = () => {
+    if (!("speechSynthesis" in window) || typeof SpeechSynthesisUtterance === "undefined") {
+      setNarrating(false);
+      return;
+    }
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.onstart = () => setNarrating(true);
+    utterance.onend = () => setNarrating(false);
+    utterance.onerror = () => setNarrating(false);
+    const portugueseVoices = window.speechSynthesis.getVoices().filter((voice) => voice.lang.toLowerCase().replace("_", "-").startsWith("pt-br"));
+    const preferredVoice = portugueseVoices.find((voice) => /natural|neural/i.test(voice.name))
+      ?? portugueseVoices.find((voice) => /google|microsoft/i.test(voice.name))
+      ?? portugueseVoices[0];
+    if (preferredVoice) utterance.voice = preferredVoice;
+    utterance.lang = "pt-BR";
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    utterance.volume = volume;
+    window.speechSynthesis.speak(utterance);
   };
-  utterance.onend = restoreMusic;
-  utterance.onerror = restoreMusic;
-  const portugueseVoices = window.speechSynthesis.getVoices().filter((voice) => voice.lang.toLowerCase().replace("_", "-").startsWith("pt-br"));
-  const preferredVoice = portugueseVoices.find((voice) => /natural|neural/i.test(voice.name))
-    ?? portugueseVoices.find((voice) => /google|microsoft/i.test(voice.name))
-    ?? portugueseVoices[0];
-  if (preferredVoice) utterance.voice = preferredVoice;
-  utterance.lang = "pt-BR";
-  utterance.rate = 1;
-  utterance.pitch = 1;
-  utterance.volume = Math.max(0, Math.min(1, Number(window.localStorage.getItem("pegadas-volume") ?? 75) / 100));
-  window.speechSynthesis.speak(utterance);
+
+  const recordedSource = recordedNarrations[text];
+  if (!recordedSource || typeof Audio === "undefined") {
+    speakWithBrowser();
+    return;
+  }
+
+  const sources = typeof recordedSource === "string" ? [recordedSource] : [...recordedSource];
+  let sourceIndex = 0;
+  let fallbackStarted = false;
+  const fallback = () => {
+    if (fallbackStarted || request !== narrationRequest) return;
+    fallbackStarted = true;
+    if (recordedNarration) recordedNarration.pause();
+    recordedNarration = null;
+    speakWithBrowser();
+  };
+  const playNext = () => {
+    if (request !== narrationRequest) return;
+    const audio = new Audio(sources[sourceIndex]);
+    recordedNarration = audio;
+    audio.preload = "auto";
+    audio.volume = volume;
+    audio.onplaying = () => setNarrating(true);
+    audio.onended = () => {
+      if (recordedNarration === audio) recordedNarration = null;
+      sourceIndex += 1;
+      if (sourceIndex < sources.length) playNext();
+      else setNarrating(false);
+    };
+    audio.onerror = fallback;
+    void audio.play().catch(fallback);
+  };
+  playNext();
 }
 
 function Logo({ compact = false }: { compact?: boolean }) {
@@ -226,6 +275,7 @@ export default function Home() {
   const northMusicRef = useRef<HTMLAudioElement>(null);
   const northeastMusicRef = useRef<HTMLAudioElement>(null);
   const centerWestMusicRef = useRef<HTMLAudioElement>(null);
+  const southeastMusicRef = useRef<HTMLAudioElement>(null);
   const narrationActiveRef = useRef(false);
   const buttonClickRef = useRef<HTMLAudioElement>(null);
   const wrongAnswerRef = useRef<HTMLAudioElement>(null);
@@ -241,6 +291,24 @@ export default function Home() {
   const [initialPhaseHadMistake, setInitialPhaseHadMistake] = useState(false);
   const [unlockedLevel, setUnlockedLevel] = useState(0);
   const [journeyNotice, setJourneyNotice] = useState<string | null>(null);
+  const [progressReady, setProgressReady] = useState(false);
+
+  const applyProgress = useCallback((progress: PlayerProgress) => {
+    setScore(progress.score);
+    setChallengeIndex(progress.challengeIndex);
+    setCompletedChallenges(progress.completedChallenges);
+    setFirstTryWins(progress.firstTryWins);
+    setHighestScore(progress.highestScore);
+    setCompletedPhase(progress.completedPhase);
+    setCompletedRegions(progress.completedRegions);
+    setInitialPhasePerfect(progress.initialPhasePerfect);
+    setInitialPhaseHadMistake(progress.initialPhaseHadMistake);
+    setUnlockedLevel(progress.unlockedLevel);
+    setNorthChallenge(progress.northChallenge);
+    setNortheastChallenge(progress.northeastChallenge);
+    setCenterWestChallenge(progress.centerWestChallenge);
+    setSoutheastChallenge(progress.southeastChallenge);
+  }, []);
   useEffect(() => {
     const fitDesktop = () => {
       const shell = gameShellRef.current;
@@ -257,13 +325,16 @@ export default function Home() {
     return () => window.removeEventListener("resize", fitDesktop);
   }, []);
   useEffect(() => {
-    const saved = window.localStorage.getItem("pegadas-progress");
-    if (saved) try { const data = JSON.parse(saved); setScore(data.score || 0); setChallengeIndex(Math.min(data.challengeIndex || 0, 4)); setCompletedChallenges(Math.min(data.completedChallenges || 0, 5)); setFirstTryWins(data.firstTryWins || 0); setHighestScore(data.highestScore || data.score || 0); setCompletedPhase(Boolean(data.completedPhase)); setCompletedRegions(Array.isArray(data.completedRegions) ? data.completedRegions : []); setInitialPhasePerfect(Boolean(data.initialPhasePerfect)); setInitialPhaseHadMistake(Boolean(data.initialPhaseHadMistake)); setUnlockedLevel(Math.min(5, Math.max(data.unlockedLevel || 0, data.completedPhase ? 1 : 0))); } catch { /* ignora progresso inválido */ }
-    setAvatarId(window.localStorage.getItem("pegadas-avatar"));
+    let cancelled = false;
+    const cachedProgress = readCachedProgress(window.localStorage.getItem("pegadas-progress"));
+    if (cachedProgress) applyProgress(cachedProgress);
+    const savedAvatarId = window.localStorage.getItem("pegadas-avatar");
+    setAvatarId(savedAvatarId);
     const savedNickname = window.localStorage.getItem("pegadas-nickname");
-    // Nicknames saved before the real-name rule existed are dropped so the player picks a new one.
-    if (savedNickname && validateNickname(savedNickname)) window.localStorage.removeItem("pegadas-nickname");
-    else setNickname(savedNickname);
+    // Nicknames saved before the validation rules existed are dropped so the player picks a new one.
+    const safeNickname = savedNickname && !validateNickname(savedNickname) ? savedNickname : null;
+    if (savedNickname && !safeNickname) window.localStorage.removeItem("pegadas-nickname");
+    setNickname(safeNickname);
     const savedAudio = window.localStorage.getItem("pegadas-audio");
     if (savedAudio) try { const audio = JSON.parse(savedAudio); setMusic(audio.music ?? true); setEffects(audio.effects ?? true); setSound(audio.narration ?? true); setVolume(audio.volume ?? 75); } catch { /* mantém as configurações padrão */ }
     const savedAccessibility = window.localStorage.getItem("pegadas-accessibility");
@@ -294,15 +365,35 @@ export default function Home() {
       setSoutheastChallenge(previewChallenge >= 1 && previewChallenge <= 6 ? previewChallenge : 1);
       setScreen("southeast");
     }
-  }, []);
-  useEffect(() => { window.localStorage.setItem("pegadas-progress", JSON.stringify({ score, challengeIndex, completedChallenges, firstTryWins, highestScore, completedPhase, completedRegions, initialPhasePerfect, initialPhaseHadMistake, unlockedLevel })); }, [score, challengeIndex, completedChallenges, firstTryWins, highestScore, completedPhase, completedRegions, initialPhasePerfect, initialPhaseHadMistake, unlockedLevel]);
+
+    void (async () => {
+      if (savedAvatarId && safeNickname) await syncJogador({ avatarId: savedAvatarId, apelido: safeNickname });
+      const remoteProgress = await loadPlayerProgress();
+      if (cancelled) return;
+      if (remoteProgress && (!cachedProgress || isRemoteProgressNewer(cachedProgress.updatedAt, remoteProgress.updatedAt))) {
+        applyProgress(remoteProgress.progress);
+      }
+      setProgressReady(true);
+    })();
+
+    return () => { cancelled = true; };
+  }, [applyProgress]);
+  useEffect(() => {
+    if (!progressReady || new URLSearchParams(window.location.search).has("preview")) return;
+    const progress = normalizePlayerProgress({ score, challengeIndex, completedChallenges, firstTryWins, highestScore, completedPhase, completedRegions, initialPhasePerfect, initialPhaseHadMistake, unlockedLevel, northChallenge, northeastChallenge, centerWestChallenge, southeastChallenge });
+    const cachedProgress = { ...progress, updatedAt: new Date().toISOString() };
+    window.localStorage.setItem("pegadas-progress", JSON.stringify(cachedProgress));
+    if (!avatarId || !nickname) return;
+    const timer = window.setTimeout(() => { void syncPlayerProgress(progress, unlockedAchievementIds(progress)); }, 500);
+    return () => window.clearTimeout(timer);
+  }, [progressReady, avatarId, nickname, score, challengeIndex, completedChallenges, firstTryWins, highestScore, completedPhase, completedRegions, initialPhasePerfect, initialPhaseHadMistake, unlockedLevel, northChallenge, northeastChallenge, centerWestChallenge, southeastChallenge]);
   useEffect(() => { window.localStorage.setItem("pegadas-audio", JSON.stringify({ music, effects, narration: sound, volume })); window.localStorage.setItem("pegadas-volume", String(volume)); }, [music, effects, sound, volume]);
   useEffect(() => { window.localStorage.setItem("pegadas-accessibility", JSON.stringify({ highContrast, largeText, buttonHighlight })); }, [highContrast, largeText, buttonHighlight]);
   useEffect(() => {
     const audio = menuMusicRef.current;
     if (!audio) return;
-    audio.volume = Math.max(0, Math.min(1, (volume / 100) * (narrationActiveRef.current ? 0.25 : 1)));
-    if (screen !== "menu" || !music || volume === 0) {
+    audio.volume = backgroundMusicVolume(volume, narrationActiveRef.current);
+    if ((screen !== "menu" && screen !== "journey") || !music || volume === 0) {
       audio.pause();
       return;
     }
@@ -318,7 +409,7 @@ export default function Home() {
   useEffect(() => {
     const audio = northMusicRef.current;
     if (!audio) return;
-    audio.volume = Math.max(0, Math.min(1, (volume / 100) * (narrationActiveRef.current ? 0.25 : 1)));
+    audio.volume = backgroundMusicVolume(volume, narrationActiveRef.current);
     if (screen !== "north" || !music || volume === 0) {
       audio.pause();
       return;
@@ -335,7 +426,7 @@ export default function Home() {
   useEffect(() => {
     const audio = northeastMusicRef.current;
     if (!audio) return;
-    audio.volume = Math.max(0, Math.min(1, (volume / 100) * (narrationActiveRef.current ? 0.25 : 1)));
+    audio.volume = backgroundMusicVolume(volume, narrationActiveRef.current);
     audio.playbackRate = 0.9;
     if (screen !== "northeast" || !music || volume === 0) {
       audio.pause();
@@ -353,7 +444,7 @@ export default function Home() {
   useEffect(() => {
     const audio = centerWestMusicRef.current;
     if (!audio) return;
-    audio.volume = Math.max(0, Math.min(1, (volume / 100) * (narrationActiveRef.current ? 0.25 : 1)));
+    audio.volume = backgroundMusicVolume(volume, narrationActiveRef.current);
     audio.playbackRate = 0.9;
     if (screen !== "centerwest" || !music || volume === 0) {
       audio.pause();
@@ -369,10 +460,36 @@ export default function Home() {
     };
   }, [screen, music, volume]);
   useEffect(() => {
+    const audio = southeastMusicRef.current;
+    if (!audio) return;
+    audio.volume = backgroundMusicVolume(volume, narrationActiveRef.current);
+    const playFromContent = () => {
+      if (audio.currentTime < 3) audio.currentTime = 3;
+      void audio.play().catch(() => { /* aguarda a primeira interação exigida pelo navegador */ });
+    };
+    const restartAfterIntro = () => {
+      audio.currentTime = 3;
+      playFromContent();
+    };
+    if (screen !== "southeast" || !music || volume === 0) {
+      audio.pause();
+      return;
+    }
+    playFromContent();
+    audio.addEventListener("ended", restartAfterIntro);
+    window.addEventListener("pointerdown", playFromContent, { once: true });
+    window.addEventListener("keydown", playFromContent, { once: true });
+    return () => {
+      audio.removeEventListener("ended", restartAfterIntro);
+      window.removeEventListener("pointerdown", playFromContent);
+      window.removeEventListener("keydown", playFromContent);
+    };
+  }, [screen, music, volume]);
+  useEffect(() => {
     const updateNarrationVolume = (event: Event) => {
       narrationActiveRef.current = (event as CustomEvent<boolean>).detail;
-      const musicVolume = Math.max(0, Math.min(1, (volume / 100) * (narrationActiveRef.current ? 0.25 : 1)));
-      [menuMusicRef, northMusicRef, northeastMusicRef, centerWestMusicRef].forEach((ref) => {
+      const musicVolume = backgroundMusicVolume(volume, narrationActiveRef.current);
+      [menuMusicRef, northMusicRef, northeastMusicRef, centerWestMusicRef, southeastMusicRef].forEach((ref) => {
         if (ref.current) ref.current.volume = musicVolume;
       });
     };
@@ -384,7 +501,7 @@ export default function Home() {
       const button = event.target instanceof Element ? event.target.closest("button") : null;
       const audio = buttonClickRef.current;
       if (!button || button.disabled || !audio || !effects || volume === 0) return;
-      audio.volume = Math.max(0, Math.min(1, volume / 100));
+      audio.volume = audioVolume(volume);
       audio.currentTime = 0;
       void audio.play().catch(() => { /* áudio indisponível neste navegador */ });
     };
@@ -463,14 +580,14 @@ export default function Home() {
   function playCorrectAnswer() {
     const audio = correctAnswerRef.current;
     if (!audio || !effects || volume === 0) return;
-    audio.volume = Math.max(0, Math.min(1, volume / 100));
+    audio.volume = audioVolume(volume);
     audio.currentTime = 0;
     void audio.play().catch(() => { /* áudio indisponível neste navegador */ });
   }
   function registerMistake() {
     const audio = wrongAnswerRef.current;
     if (audio && effects && volume > 0) {
-      audio.volume = Math.max(0, Math.min(1, volume / 100));
+      audio.volume = audioVolume(volume);
       audio.currentTime = 0;
       void audio.play().catch(() => { /* áudio indisponível neste navegador */ });
     }
@@ -760,7 +877,7 @@ export default function Home() {
     setJourneyNotice(`${journeyLevels[index].title} desbloqueada! As aventuras desta região serão adicionadas na próxima etapa.`);
   }
 
-  return <main className={`${highContrast ? "high-contrast" : ""} ${largeText ? "large-text" : ""} ${buttonHighlight ? "button-highlight" : ""}`}><div className="mobile-orientation-gate" role="status"><img src="/pegadas-logo-v1.png" alt="Pegadas do Brasil" /><strong>Gire o celular</strong><p>Para jogar, use a tela na horizontal.</p><span aria-hidden="true">↻</span></div><div className="game-shell" ref={gameShellRef}><audio ref={menuMusicRef} src="/musica-menu.mp3" loop preload="auto" aria-hidden="true" /><audio ref={northMusicRef} src="/musica-regiao-norte.mp3" loop preload="auto" aria-hidden="true" /><audio ref={northeastMusicRef} src="/musica-regiao-nordeste.mp3" loop preload="auto" aria-hidden="true" /><audio ref={centerWestMusicRef} src="/musica-regiao-centro-oeste.mp3" loop preload="auto" aria-hidden="true" /><audio ref={buttonClickRef} src="/som-clique-botao.wav" preload="auto" aria-hidden="true" /><audio ref={wrongAnswerRef} src="/som-erro.mp3" preload="auto" aria-hidden="true" /><audio ref={correctAnswerRef} src="/som-acerto.mp3" preload="auto" aria-hidden="true" />
+  return <main className={`${highContrast ? "high-contrast" : ""} ${largeText ? "large-text" : ""} ${buttonHighlight ? "button-highlight" : ""}`}><div className="mobile-orientation-gate" role="status"><img src="/pegadas-logo-v1.png" alt="Pegadas do Brasil" /><strong>Gire o celular</strong><p>Para jogar, use a tela na horizontal.</p><span aria-hidden="true">↻</span></div><div className="game-shell" ref={gameShellRef}><audio ref={menuMusicRef} src="/musica-menu.mp3" loop preload="auto" aria-hidden="true" /><audio ref={northMusicRef} src="/musica-regiao-norte.mp3" loop preload="auto" aria-hidden="true" /><audio ref={northeastMusicRef} src="/musica-regiao-nordeste.mp3" loop preload="auto" aria-hidden="true" /><audio ref={centerWestMusicRef} src="/musica-regiao-centro-oeste.mp3" loop preload="auto" aria-hidden="true" /><audio ref={southeastMusicRef} src="/musica-regiao-sudeste.mp3" preload="auto" aria-hidden="true" /><audio ref={buttonClickRef} src="/som-clique-botao.wav" preload="auto" aria-hidden="true" /><audio ref={wrongAnswerRef} src="/som-erro.mp3" preload="auto" aria-hidden="true" /><audio ref={correctAnswerRef} src="/som-acerto.mp3" preload="auto" aria-hidden="true" />
     {screen === "menu" && <><section className="screen menu-screen" aria-label="Menu principal">
       <nav className="menu-tools" aria-label="Opções do jogo">
         <button className={selectedAvatar ? "avatar-selected-tool" : ""} onClick={() => setModal("avatar")}><span className="menu-avatar" aria-hidden="true"><img src={selectedAvatar?.image ?? "/icone-avatar-v1.png"} alt="" /></span>{selectedAvatar ? selectedAvatar.name : "Avatar"}</button><button onClick={() => setModal("achievements")}><img src="/icone-conquistas-v1.png" alt="" />Conquistas</button><button className={!sound ? "sound-muted" : ""} onClick={() => setModal("sound")}><img src="/icone-som-v1.png" alt="" />Som</button><button onClick={() => setModal("accessibility")}><img src="/icone-acessibilidade-v1.png" alt="" />Acessibilidade</button><button onClick={() => setModal("help")}><img src="/icone-como-jogar-v1.png" alt="" />Como jogar</button>

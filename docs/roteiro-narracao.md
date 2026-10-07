@@ -4,6 +4,8 @@ Este roteiro reúne as falas que o jogo **já envia à narração**. Gere **um a
 
 **Direção de voz:** acolhedora, animada sem gritar, ritmo tranquilo e dicção clara para crianças. Mantenha a música de fundo fora dos arquivos de voz, pois o jogo já toca a música separadamente. Baixe em MP3. Faça uma pausa curta após cada frase. Gere primeiro `geral-como-jogar.mp3` como amostra e mantenha a mesma voz nos demais.
 
+**Status em 07/10/2026:** 38 gravações integradas — menu (4), fase inicial (15) e Região Norte (19). No tutorial geral, os arquivos `geral-escolha-avatar.mp3`, `geral-inicie-aventura.mp3` e `geral-avance-fases.mp3` são reproduzidos em sequência.
+
 ## Menu e ajuda
 
 | Arquivo | Fala |

@@ -6,6 +6,23 @@
 const NICKNAME_PATTERN = /^[\p{L}\p{N} ]+$/u;
 const LONG_NUMBER_PATTERN = /\d{3,}/;
 
+// Keep this vocabulary in sync with the Supabase migration. Short terms are
+// matched as complete words to avoid false positives such as "computador".
+const BLOCKED_WORDS = new Set(`
+anus babaca bicha bosta bunda corno cu cuzao cuzona foda fodase foder gostosa
+gostoso idiota imbecil merda nazista nude nudes otario pau pelada pelado pica
+porra puta putaria puto rola sexo sexy transa trouxa viado
+`.trim().split(/\s+/));
+
+// Longer roots can be checked in the compact nickname and therefore also catch
+// spaces, suffixes, plural forms and deliberate spelling variations.
+const BLOCKED_FRAGMENTS = [
+  "arrombad", "assassin", "bucet", "capivarud", "caralh", "estupr",
+  "foded", "fodid", "gostos", "gozad", "masturb", "oncapintud", "pelad",
+  "penis", "pintud", "piroc", "porn", "punhet", "siriric", "suicid",
+  "vagin", "xerec",
+] as const;
+
 // Common Brazilian first names and surnames, lowercase and without accents.
 // Names that are also everyday words kids use in nicknames (rosa, flor, luz,
 // sol, lua, luna, estrela, leão, lobo...) and the game's own characters (Téo,
@@ -75,6 +92,18 @@ function looksLikeRealName(word: string): boolean {
   });
 }
 
+function hasBlockedContent(nickname: string): boolean {
+  const base = normalize(nickname);
+  const oneReadings = /1/.test(base) ? [base.replace(/1/g, "i"), base.replace(/1/g, "l")] : [base];
+  return oneReadings.some((reading) => {
+    const decoded = reading.replace(/\d/g, (digit) => LEET[digit] ?? digit);
+    const words = decoded.split(" ");
+    const compact = decoded.replace(/\s+/g, "");
+    return words.some((word) => BLOCKED_WORDS.has(word)) ||
+      BLOCKED_FRAGMENTS.some((fragment) => compact.includes(fragment));
+  });
+}
+
 export function tidyNickname(raw: string): string {
   return raw.trim().replace(/\s+/g, " ");
 }
@@ -84,6 +113,7 @@ export function validateNickname(nickname: string): string | null {
   if (nickname.length < 2 || nickname.length > 15) return "O apelido deve ter entre 2 e 15 letras.";
   if (!NICKNAME_PATTERN.test(nickname)) return "Use só letras, números e espaços — sem símbolos.";
   if (LONG_NUMBER_PATTERN.test(nickname)) return "Não use números longos no apelido.";
+  if (hasBlockedContent(nickname)) return "Esse apelido não pode ser usado. Escolha um apelido divertido e respeitoso.";
   const words = normalize(nickname).split(" ");
   // Also check the words glued together, to catch names split by spaces ("Jo ão").
   if ([...words, words.join("")].some(looksLikeRealName)) {

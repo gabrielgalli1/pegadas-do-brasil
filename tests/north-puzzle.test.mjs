@@ -9,6 +9,7 @@ function createHarness(entry) {
   const hooks = []; let cursor = 0; let narration = "";
   const react = {
     useEffect() {},
+    useCallback(callback) { return callback; },
     useState(initial) { const i = cursor++; if (!(i in hooks)) hooks[i] = initial; return [hooks[i], value => { hooks[i] = typeof value === "function" ? value(hooks[i]) : value; }]; },
     useRef(initial) { const i = cursor++; if (!(i in hooks)) hooks[i] = { current: initial }; return hooks[i]; },
   };
@@ -28,7 +29,7 @@ function createHarness(entry) {
       let local = path.resolve(path.dirname(file), name);
       if (!path.extname(local)) local += fs.existsSync(local + ".tsx") ? ".tsx" : ".ts";
       return load(local);
-    }, window: { localStorage: { getItem() { return null; } }, speechSynthesis: { cancel() {}, speak(value) { narration = value.text; } } },
+    }, window: { localStorage: { getItem() { return null; } }, speechSynthesis: { cancel() {}, getVoices() { return []; }, speak(value) { narration = value.text; } } },
     SpeechSynthesisUtterance: class { constructor(text) { this.text = text; } } });
     return exports;
   }
@@ -205,7 +206,7 @@ test("Two wrong pieces restart the North region from its first challenge", () =>
   assert.equal(get("feedback"), "idle");
 });
 
-test("Completing the Northeast landscape album awards 100 points", () => {
+test("Completing the Northeast landscape album after a retry awards 60 points", () => {
   const h = createHarness("app/page.tsx");
   const source = fs.readFileSync("app/page.tsx", "utf8");
   const home = source.slice(source.indexOf("export default function Home() {"), source.indexOf("  useEffect(() => {", source.indexOf("export default function Home() {")));
@@ -219,6 +220,6 @@ test("Completing the Northeast landscape album awards 100 points", () => {
   child().props.onAnswer(false);
   child().props.onRetry();
   child().props.onAnswer(true);
-  assert.equal(get("score"), 100);
+  assert.equal(get("score"), 60);
   assert.equal(get("feedback"), "correct");
 });
