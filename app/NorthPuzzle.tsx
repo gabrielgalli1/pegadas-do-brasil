@@ -68,7 +68,7 @@ export default function NorthPuzzle({ solved, onPlace, onFinish }: Props) {
     }
   }
   const ghostPiece = northPuzzlePieces.find((piece) => piece.id === ghost?.id);
-  return <div className="north-puzzle" onKeyDown={(event) => {
+  return <div className="north-puzzle" role="application" tabIndex={0} aria-label="Quebra-cabeça do mapa da Região Norte" onKeyDown={(event) => {
     if (event.key === "Escape") {
       drag.current = null; setGhost(null); setOverSlot(false); setSelected(null);
       setMessage("Seleção cancelada. Escolha uma peça para continuar.");

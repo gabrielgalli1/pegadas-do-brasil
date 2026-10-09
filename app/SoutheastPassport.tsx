@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 
 type StateId = "mg" | "es" | "rj" | "sp";
-type Props = { canPlay: boolean; onWrong: (hint: string) => void; onComplete: () => void };
+type Props = { canPlay: boolean; onWrong: (hint: string) => void; onComplete: () => void; onListen: (text: string) => void };
 type DragPreview = { state: StateId; label: string; image: string; x: number; y: number; offsetX: number; offsetY: number; width: number };
 type DragStart = { state: StateId; label: string; image: string; pointerId: number; x: number; y: number; offsetX: number; offsetY: number; width: number; moved: boolean };
 
@@ -35,7 +35,7 @@ const states: { id: StateId; name: string; color: string }[] = [
   { id: "sp", name: "São Paulo", color: "#8d63ae" },
 ];
 
-export default function SoutheastPassport({ canPlay, onWrong, onComplete }: Props) {
+export default function SoutheastPassport({ canPlay, onWrong, onComplete, onListen }: Props) {
   const [cards, setCards] = useState(() => [...attractions].reverse());
   const [selected, setSelected] = useState<StateId | null>(null);
   const [placed, setPlaced] = useState<StateId[]>([]);
@@ -83,6 +83,9 @@ export default function SoutheastPassport({ canPlay, onWrong, onComplete }: Prop
     setPlaced(next);
     setSelected(null);
     setMessage(`Carimbo conquistado: ${attraction?.label ?? "ponto turístico"}!`);
+    const spokenLabel = attraction?.label === "MASP" ? "Masp" : attraction?.label ?? "Ponto turístico";
+    const article = spokenLabel === "Ouro Preto" ? "" : "O ";
+    onListen(`${article}${spokenLabel} pertence a ${states.find((item) => item.id === state)?.name}. Carimbo conquistado!`);
     if (next.length === attractions.length) completeTimer.current = window.setTimeout(onComplete, 650);
   }
 

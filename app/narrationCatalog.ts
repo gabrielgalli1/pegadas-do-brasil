@@ -3,7 +3,7 @@ export type RecordedNarration = string | readonly string[];
 // Each key is the exact fallback text already spoken by the game. As the
 // studio recordings arrive, adding them here replaces browser speech without
 // changing the challenge components.
-export const recordedNarrations: Record<string, RecordedNarration> = {
+const baseRecordedNarrations: Record<string, RecordedNarration> = {
   "Primeiro, escolha seu avatar. Segundo, inicie a aventura e entre na jornada pelo Brasil. Terceiro, avance pelas fases. Complete uma fase de cada vez e aprenda sobre o Brasil.": [
     "/narracoes/geral-escolha-avatar.mp3",
     "/narracoes/geral-inicie-aventura.mp3",
@@ -47,4 +47,139 @@ export const recordedNarrations: Record<string, RecordedNarration> = {
   "Muito bem! Você encaixou o Acre e completou o mapa da Região Norte!": "/narracoes/norte-06-acerto.mp3",
   "Essa peça não encaixa. Compare os formatos e tente novamente!": "/narracoes/norte-06-erro.mp3",
   "Parabéns, explorador! Você concluiu os seis desafios da Região Norte!": "/narracoes/norte-06-conclusao.mp3",
+};
+const northeastStateFiles = [
+  ["Maranhão", "nordeste-estado-maranhao.mp3"],
+  ["Piauí", "nordeste-estado-piaui.mp3"],
+  ["Ceará", "nordeste-estado-ceara.mp3"],
+  ["Rio Grande do Norte", "nordeste-estado-rio-grande-do-norte.mp3"],
+  ["Paraíba", "nordeste-estado-paraiba.mp3"],
+  ["Pernambuco", "nordeste-estado-pernambuco.mp3"],
+  ["Alagoas", "nordeste-estado-alagoas.mp3"],
+  ["Sergipe", "nordeste-estado-sergipe.mp3"],
+  ["Bahia", "nordeste-estado-bahia.mp3"],
+] as const;
+const northeastCountFiles = Array.from({ length: 9 }, (_, index) => `nordeste-contagem-${String(index + 1).padStart(2, "0")}.mp3`);
+const northeastStateNarrations = Object.fromEntries(northeastStateFiles.flatMap(([state, stateFile]) =>
+  northeastCountFiles.map((countFile, index) => [
+    `${state}. ${index + 1} de 9 estados descobertos.`,
+    [`/narracoes/${stateFile}`, `/narracoes/${countFile}`] as const,
+  ]),
+));
+
+const northeastNarrations: Record<string, RecordedNarration> = {
+  "Clique na Região Nordeste no mapa do Brasil.": "/narracoes/nordeste-01-instrucao.mp3",
+  "Toque em cada estado do mapa. Cada toque revela o nome de um estado. Vamos descobrir os nove estados do Nordeste!": "/narracoes/nordeste-02-instrucao.mp3",
+  "Observe a paisagem do Sertão. Escolha uma opção de temperatura e uma opção de chuvas para completar o painel.": "/narracoes/nordeste-03-instrucao.mp3",
+  "Movimente a lupa pela paisagem e toque no tatu-bola quando encontrá-lo.": "/narracoes/nordeste-04-instrucao.mp3",
+  "Dica: procure perto das pedras e das plantas no canto direito da paisagem.": "/narracoes/nordeste-04-dica.mp3",
+  "Escolha uma paisagem e depois toque no espaço com o nome correspondente para completar o álbum.": "/narracoes/nordeste-05-instrucao.mp3",
+  "Arraste uma peça da parte de baixo até a silhueta escura com o mesmo formato. Complete as quatro partes da festa.": "/narracoes/nordeste-06-instrucao.mp3",
+  "Quase! Observe a dica e tente novamente.": "/narracoes/nordeste-erro-geral.mp3",
+  "LITORAL. Paisagem colocada corretamente.": "/narracoes/nordeste-paisagem-litoral.mp3",
+  "MANGUEZAL. Paisagem colocada corretamente.": "/narracoes/nordeste-paisagem-manguezal.mp3",
+  "SERRA. Paisagem colocada corretamente.": "/narracoes/nordeste-paisagem-serra.mp3",
+  "CAATINGA. Paisagem colocada corretamente.": "/narracoes/nordeste-paisagem-caatinga.mp3",
+  "BANDEIRINHAS. Peça encaixada corretamente!": "/narracoes/nordeste-peca-bandeirinhas.mp3",
+  "SANFONA. Peça encaixada corretamente!": "/narracoes/nordeste-peca-sanfona.mp3",
+  "MILHO. Peça encaixada corretamente!": "/narracoes/nordeste-peca-milho.mp3",
+  "FREVO. Peça encaixada corretamente!": "/narracoes/nordeste-peca-frevo.mp3",
+  ...northeastStateNarrations,
+};
+
+const centerWestNarrations: Record<string, RecordedNarration> = {
+  "Olá, explorador! Eu sou o Téo. Bem-vindo ao Centro-Oeste! Arraste a peça da região até um dos três espaços vazios no mapa. Observe a posição das regiões para escolher o encaixe correto. Você também pode tocar na peça e depois no espaço.": "/narracoes/centro-oeste-01-instrucao.mp3",
+  "Vire duas cartas por vez e encontre os quatro pares de animais do Centro-Oeste: onça-pintada, lobo-guará, tuiuiú e capivara.": "/narracoes/centro-oeste-02-instrucao.mp3",
+  "Observe o formato das quatro peças. Arraste Mato Grosso, Goiás, Mato Grosso do Sul e Distrito Federal até os espaços corretos para completar o mapa do Centro-Oeste.": "/narracoes/centro-oeste-03-instrucao.mp3",
+  "Observe os cartões na esteira. Toque em milho, gado, Pantanal, Cerrado, Brasília e pequi. Use o botão pausar quando precisar de mais tempo.": "/narracoes/centro-oeste-04-instrucao.mp3",
+  "Observe a referência do Congresso Nacional. Arraste a plataforma, as torres, a concha, a cúpula e o espelho de água até as silhuetas correspondentes. Você também pode tocar na peça e depois no espaço correto.": "/narracoes/centro-oeste-05-instrucao.mp3",
+  "Encontre o animal indicado na missão. Mova a moldura com o mouse, toque ou use as setas do teclado. Quando o animal estiver enquadrado, pressione Fotografar. Registre o tuiuiú, a capivara e o jacaré.": "/narracoes/centro-oeste-06-instrucao.mp3",
+  "Muito bem! Desafio concluído!": "/narracoes/centro-oeste-acerto-geral.mp3",
+  "Missão completa! Você registrou a fauna do Pantanal!": "/narracoes/centro-oeste-06-conclusao.mp3",
+  "MATO GROSSO. Peça encaixada!": "/narracoes/centro-oeste-mapa-mt.mp3",
+  "GOIÁS. Peça encaixada!": "/narracoes/centro-oeste-mapa-go.mp3",
+  "MATO GROSSO DO SUL. Peça encaixada!": "/narracoes/centro-oeste-mapa-ms.mp3",
+  "DISTRITO FEDERAL. Peça encaixada!": "/narracoes/centro-oeste-mapa-df.mp3",
+  "O milho é uma cultura agrícola importante no Centro-Oeste.": "/narracoes/centro-oeste-esteira-milho.mp3",
+  "A pecuária tem forte presença na economia do Centro-Oeste.": "/narracoes/centro-oeste-esteira-gado.mp3",
+  "O Pantanal ocupa áreas de Mato Grosso e Mato Grosso do Sul.": "/narracoes/centro-oeste-esteira-pantanal.mp3",
+  "O Cerrado é o bioma predominante em grande parte da região.": "/narracoes/centro-oeste-esteira-cerrado.mp3",
+  "Brasília, a capital do Brasil, fica no Distrito Federal.": "/narracoes/centro-oeste-esteira-brasilia.mp3",
+  "O pequi é um fruto muito presente na culinária do Cerrado.": "/narracoes/centro-oeste-esteira-pequi.mp3",
+  "O Centro-Oeste não possui litoral. A praia pertence a outras regiões.": "/narracoes/centro-oeste-esteira-praia.mp3",
+  "A Caatinga é característica principalmente da Região Nordeste.": "/narracoes/centro-oeste-esteira-caatinga.mp3",
+  "A araucária é característica principalmente da Região Sul.": "/narracoes/centro-oeste-esteira-araucaria.mp3",
+  "A neve não é uma característica do clima do Centro-Oeste.": "/narracoes/centro-oeste-esteira-neve.mp3",
+  "A Floresta Amazônica é característica principalmente da Região Norte.": "/narracoes/centro-oeste-esteira-amazonia.mp3",
+  "O pinguim vive em regiões frias e não é um animal típico do Centro-Oeste.": "/narracoes/centro-oeste-esteira-pinguim.mp3",
+  "PLATAFORMA. Peça encaixada!": "/narracoes/centro-oeste-brasilia-plataforma.mp3",
+  "TORRES. Peça encaixada!": "/narracoes/centro-oeste-brasilia-torres.mp3",
+  "CONCHA. Peça encaixada!": "/narracoes/centro-oeste-brasilia-concha.mp3",
+  "CÚPULA. Peça encaixada!": "/narracoes/centro-oeste-brasilia-cupula.mp3",
+  "ESPELHO-D’ÁGUA. Peça encaixada!": "/narracoes/centro-oeste-brasilia-espelho.mp3",
+  "O tuiuiú é uma das aves mais conhecidas e um símbolo do Pantanal.": "/narracoes/centro-oeste-foto-tuiuiu.mp3",
+  "A capivara vive próxima aos rios e é uma excelente nadadora.": "/narracoes/centro-oeste-foto-capivara.mp3",
+  "O jacaré ajuda a manter o equilíbrio da vida no Pantanal.": "/narracoes/centro-oeste-foto-jacare.mp3",
+};
+
+const southeastNarrations: Record<string, RecordedNarration> = {
+  "Mutirão concluído! Você ajudou a cuidar do Rio Tietê. A recuperação do rio também exige coleta e tratamento de esgoto. Parabéns, explorador! Você concluiu os seis desafios da Região Sudeste!": ["/narracoes/sudeste-06-conclusao.mp3", "/narracoes/sudeste-conclusao-regiao.mp3"],
+
+  "Bem-vindo, explorador! Encontre a Região Sudeste no mapa do Brasil. Toque na região formada por Minas Gerais, Espírito Santo, Rio de Janeiro e São Paulo.": "/narracoes/sudeste-01-instrucao.mp3",
+  "Muito bem! Você encontrou a Região Sudeste!": "/narracoes/sudeste-01-acerto.mp3",
+  "Quase! Procure a região na parte inferior direita do mapa e tente novamente.": "/narracoes/sudeste-01-erro.mp3",
+  "Descubra os quatro estados do Sudeste pela capital indicada. Observe a pista e escolha entre Minas Gerais, Espírito Santo, Rio de Janeiro e São Paulo.": "/narracoes/sudeste-02-instrucao.mp3",
+  "Minha capital é Belo Horizonte. Qual é o estado?": "/narracoes/sudeste-02-pergunta-mg.mp3",
+  "Minha capital é Vitória. Qual é o estado?": "/narracoes/sudeste-02-pergunta-es.mp3",
+  "Minha capital é Rio de Janeiro. Qual é o estado?": "/narracoes/sudeste-02-pergunta-rj.mp3",
+  "Minha capital é São Paulo. Qual é o estado?": "/narracoes/sudeste-02-pergunta-sp.mp3",
+  "Correto! Belo Horizonte é a capital de Minas Gerais.": "/narracoes/sudeste-02-acerto-mg.mp3",
+  "Correto! Vitória é a capital do Espírito Santo.": "/narracoes/sudeste-02-acerto-es.mp3",
+  "Correto! Rio de Janeiro é a capital do estado do Rio de Janeiro.": "/narracoes/sudeste-02-acerto-rj.mp3",
+  "Correto! São Paulo é a capital do estado de São Paulo.": "/narracoes/sudeste-02-acerto-sp.mp3",
+  "Quase! Observe a capital indicada e tente novamente.": "/narracoes/sudeste-02-erro.mp3",
+  "Muito bem! Você reconheceu os quatro estados da Região Sudeste!": "/narracoes/sudeste-02-conclusao.mp3",
+  "Vamos cultivar café! Escolha a muda e toque na terra para plantar. Depois, regue o cafeeiro três vezes, colha os três frutos vermelhos e toque três vezes para preparar uma xícara.": "/narracoes/sudeste-03-instrucao.mp3",
+  "Primeiro, escolha a muda. Depois, toque na terra para plantar.": "/narracoes/sudeste-03-plantar.mp3",
+  "Agora, regue o cafeeiro três vezes para ele crescer.": "/narracoes/sudeste-03-cuidar.mp3",
+  "O cafeeiro cresceu! Toque nos três frutos vermelhos para colher.": "/narracoes/sudeste-03-colher.mp3",
+  "Frutos colhidos! Toque três vezes no botão para preparar o café.": "/narracoes/sudeste-03-preparar.mp3",
+  "Café pronto! Você completou a jornada do café. O Sudeste é a principal região produtora de café do Brasil!": "/narracoes/sudeste-03-acerto.mp3",
+  "Encontre as sete palavras escondidas na grade: mata, serra, praia, mico, café, cidade e Cristo. Escolha a primeira e a última letra de cada palavra. Elas aparecem na horizontal ou na vertical.": "/narracoes/sudeste-04-instrucao.mp3",
+  "Essa sequência não forma uma palavra da lista. Observe a horizontal e a vertical e tente novamente.": "/narracoes/sudeste-04-erro.mp3",
+  "Muito bem! Você encontrou todas as palavras da viagem!": "/narracoes/sudeste-04-acerto.mp3",
+  "Leve cada cartão turístico ao seu estado. Arraste o cartão até o passaporte ou toque no cartão e depois no estado correspondente.": "/narracoes/sudeste-05-instrucao.mp3",
+  "Ouro Preto pertence a Minas Gerais. Carimbo conquistado!": "/narracoes/sudeste-05-acerto-ouro-preto.mp3",
+  "O Convento da Penha pertence ao Espírito Santo. Carimbo conquistado!": "/narracoes/sudeste-05-acerto-convento.mp3",
+  "O Cristo Redentor pertence ao Rio de Janeiro. Carimbo conquistado!": "/narracoes/sudeste-05-acerto-cristo.mp3",
+  "O Masp pertence a São Paulo. Carimbo conquistado!": "/narracoes/sudeste-05-acerto-masp.mp3",
+  "Quase! Ouro Preto pertence a Minas Gerais. Leve o cartão ao estado indicado no passaporte.": "/narracoes/sudeste-05-erro-ouro-preto.mp3",
+  "Quase! O Convento da Penha pertence ao Espírito Santo. Leve o cartão ao estado indicado no passaporte.": "/narracoes/sudeste-05-erro-convento.mp3",
+  "Quase! O Cristo Redentor pertence ao Rio de Janeiro. Leve o cartão ao estado indicado no passaporte.": "/narracoes/sudeste-05-erro-cristo.mp3",
+  "Quase! O Masp pertence a São Paulo. Leve o cartão ao estado indicado no passaporte.": "/narracoes/sudeste-05-erro-masp.mp3",
+  "Muito bem! Seu passaporte recebeu os quatro carimbos do Sudeste!": "/narracoes/sudeste-05-conclusao.mp3",
+  "Nossa missão é recolher os resíduos antes que a corrente os leve. No computador, use as setas para mover o barco e a barra de espaço para lançar a rede. No celular, arraste o barco e toque no botão Rede. Lance a rede quando o resíduo estiver próximo.": "/narracoes/sudeste-06-instrucao.mp3",
+  "A corrente começou! Mova o barco e lance a rede no momento certo.": "/narracoes/sudeste-06-inicio.mp3",
+  "A rede passou longe. Acompanhe o resíduo e tente quando ele chegar perto do barco.": "/narracoes/sudeste-06-rede-vazia.mp3",
+  "Um resíduo passou pelo barco, mas ele voltará. Reposicione o barco e tente novamente!": "/narracoes/sudeste-06-residuo-escapou.mp3",
+  "Doze resíduos escaparam pela corrente. Recomece o mutirão e tente recolher todos antes que passem pelo barco.": "/narracoes/sudeste-06-reiniciar.mp3",
+  "Mutirão concluído! Você ajudou a cuidar do Rio Tietê. A recuperação do rio também exige coleta e tratamento de esgoto.": "/narracoes/sudeste-06-conclusao.mp3",
+  "Parabéns, explorador! Você concluiu os seis desafios da Região Sudeste!": "/narracoes/sudeste-conclusao-regiao.mp3",
+  "Dica: procure a palavra mata.": "/narracoes/sudeste-04-dica-mata.mp3",
+  "Dica: procure a palavra serra.": "/narracoes/sudeste-04-dica-serra.mp3",
+  "Dica: procure a palavra praia.": "/narracoes/sudeste-04-dica-praia.mp3",
+  "Dica: procure a palavra mico.": "/narracoes/sudeste-04-dica-mico.mp3",
+  "Dica: procure a palavra café.": "/narracoes/sudeste-04-dica-cafe.mp3",
+  "Dica: procure a palavra cidade.": "/narracoes/sudeste-04-dica-cidade.mp3",
+  "Dica: procure a palavra Cristo.": "/narracoes/sudeste-04-dica-cristo.mp3",
+  "Quase lá! Observe a dica e tente outra vez.": "/narracoes/sudeste-erro-dica.mp3",
+  "Vamos recomeçar! A Região Sudeste será reiniciada desde o primeiro desafio.": "/narracoes/sudeste-reinicio-regiao.mp3",
+
+};
+
+export const recordedNarrations: Record<string, RecordedNarration> = {
+  ...baseRecordedNarrations,
+  ...northeastNarrations,
+  ...centerWestNarrations,
+  ...southeastNarrations,
 };

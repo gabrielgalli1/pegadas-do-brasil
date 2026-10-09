@@ -10,6 +10,7 @@ import "./southeast-river.css";
 export const metadata: Metadata = {
   title: "Pegadas do Brasil — Jogo de Geografia",
   description: "Uma aventura educativa pelas regiões do Brasil para crianças de 7 a 10 anos.",
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

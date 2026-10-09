@@ -5,19 +5,42 @@ import test from "node:test";
 
 import { recordedNarrations } from "../app/narrationCatalog.ts";
 
-const pageSource = fs.readFileSync("app/page.tsx", "utf8");
 const sources = Object.values(recordedNarrations).flatMap((source) => typeof source === "string" ? [source] : [...source]);
+const uniqueSources = new Set(sources);
 
-test("all delivered menu, initial and North recordings are mapped", () => {
-  assert.equal(Object.keys(recordedNarrations).length, 37);
-  assert.equal(new Set(sources).size, 38);
-  for (const text of Object.keys(recordedNarrations)) {
-    assert.ok(pageSource.includes(JSON.stringify(text)), `fala sem chamada correspondente: ${text}`);
+test("all delivered recordings are mapped for menu through Southeast", () => {
+  assert.equal(Object.keys(recordedNarrations).length, 216);
+  assert.equal(uniqueSources.size, 153);
+
+  const expectedByPrefix = {
+    "geral-": 4,
+    "inicial-": 15,
+    "norte-": 19,
+    "nordeste-": 34,
+    "centro-oeste-": 32,
+    "sudeste-": 49,
+  };
+  for (const [prefix, expected] of Object.entries(expectedByPrefix)) {
+    const actual = [...uniqueSources].filter((source) => path.basename(source).startsWith(prefix)).length;
+    assert.equal(actual, expected, `${prefix} deveria ter ${expected} arquivos, mas tem ${actual}`);
   }
 });
 
+test("dynamic regional narration sequences resolve to recordings", () => {
+  assert.deepEqual(recordedNarrations["Maranhão. 1 de 9 estados descobertos."], [
+    "/narracoes/nordeste-estado-maranhao.mp3",
+    "/narracoes/nordeste-contagem-01.mp3",
+  ]);
+  assert.equal(recordedNarrations["MATO GROSSO DO SUL. Peça encaixada!"], "/narracoes/centro-oeste-mapa-ms.mp3");
+  assert.equal(recordedNarrations["Dica: procure a palavra café."], "/narracoes/sudeste-04-dica-cafe.mp3");
+  assert.deepEqual(recordedNarrations["Mutirão concluído! Você ajudou a cuidar do Rio Tietê. A recuperação do rio também exige coleta e tratamento de esgoto. Parabéns, explorador! Você concluiu os seis desafios da Região Sudeste!"], [
+    "/narracoes/sudeste-06-conclusao.mp3",
+    "/narracoes/sudeste-conclusao-regiao.mp3",
+  ]);
+});
+
 test("all narration files exist and contain MPEG audio", () => {
-  for (const source of new Set(sources)) {
+  for (const source of uniqueSources) {
     const file = path.join("public", source.replace(/^\//, ""));
     const bytes = fs.readFileSync(file);
     const hasId3 = bytes.subarray(0, 3).toString("ascii") === "ID3";

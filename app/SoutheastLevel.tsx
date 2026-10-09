@@ -28,7 +28,7 @@ const shuffleStates = () => {
 const regionNames: Record<string, string> = { norte: "Norte", nordeste: "Nordeste", "centro-oeste": "Centro-Oeste", sudeste: "Sudeste", sul: "Sul" };
 const regionLabels: Record<string, [number, number]> = { norte: [216, 170], nordeste: [458, 232], "centro-oeste": [286, 312], sudeste: [397, 374], sul: [314, 452] };
 const titles = ["", "ONDE FICA O SUDESTE?", "DETETIVE DOS ESTADOS", "DO PÉ AO CAFÉ", "PALAVRAS DA VIAGEM", "PASSAPORTE DO SUDESTE", "GUARDIÕES DO RIO TIETÊ"];
-const speeches = ["", "Bem-vindo, explorador! Encontre a Região Sudeste no mapa.", "Descubra cada estado pela capital indicada.", "Vamos cultivar café! Escolha a muda, plante, regue, colha os frutos e prepare uma xícara.", "Encontre as sete palavras escondidas na grade.", "Leve cada cartão turístico ao seu estado.", "Nossa missão: recolher os resíduos antes que a corrente os leve!"];
+const speeches = ["", "Bem-vindo, explorador! Encontre a Região Sudeste no mapa do Brasil. Toque na região formada por Minas Gerais, Espírito Santo, Rio de Janeiro e São Paulo.", "Descubra os quatro estados do Sudeste pela capital indicada. Observe a pista e escolha entre Minas Gerais, Espírito Santo, Rio de Janeiro e São Paulo.", "Vamos cultivar café! Escolha a muda e toque na terra para plantar. Depois, regue o cafeeiro três vezes, colha os três frutos vermelhos e toque três vezes para preparar uma xícara.", "Encontre as sete palavras escondidas na grade: mata, serra, praia, mico, café, cidade e Cristo. Escolha a primeira e a última letra de cada palavra. Elas aparecem na horizontal ou na vertical.", "Leve cada cartão turístico ao seu estado. Arraste o cartão até o passaporte ou toque no cartão e depois no estado correspondente.", "Nossa missão é recolher os resíduos antes que a corrente os leve. No computador, use as setas para mover o barco e a barra de espaço para lançar a rede. No celular, arraste o barco e toque no botão Rede. Lance a rede quando o resíduo estiver próximo."];
 export default function SoutheastLevel({ challenge, score, mistakes, feedback, sound, onAnswer, onNext, onRetry, onBack, onToggleSound, onListen }: Props) {
   const [clue, setClue] = useState(0);
   const [solvedState, setSolvedState] = useState<State | null>(null);
@@ -46,12 +46,22 @@ export default function SoutheastLevel({ challenge, score, mistakes, feedback, s
   const currentState = states[clue];
   const chooseRegion = (id: string) => {
     if (!canPlay) return;
-    if (id !== "sudeste") setMistakeHint("Dica: procure a região formada por Minas Gerais, Espírito Santo, Rio de Janeiro e São Paulo, na parte inferior direita do mapa.");
+    if (id !== "sudeste") {
+      setMistakeHint("Dica: procure a região formada por Minas Gerais, Espírito Santo, Rio de Janeiro e São Paulo, na parte inferior direita do mapa.");
+      onListen(mistakes >= 1 ? "Vamos recomeçar! A Região Sudeste será reiniciada desde o primeiro desafio." : "Quase! Procure a região na parte inferior direita do mapa e tente novamente.");
+    }
     onAnswer(id === "sudeste");
   };
   const chooseState = (id: State) => {
     if (!canPlay) return;
-    if (id !== currentState.id) { setMistakeHint(`Dica: ${currentState.hint}`); onAnswer(false); return; }
+    if (id !== currentState.id) {
+      setMistakeHint(`Dica: ${currentState.hint}`);
+      onListen(mistakes >= 1 ? "Vamos recomeçar! A Região Sudeste será reiniciada desde o primeiro desafio." : "Quase! Observe a capital indicada e tente novamente.");
+      onAnswer(false);
+      return;
+    }
+    const capitalAnswer = currentState.id === "mg" ? "Correto! Belo Horizonte é a capital de Minas Gerais." : currentState.id === "es" ? "Correto! Vitória é a capital do Espírito Santo." : currentState.id === "rj" ? "Correto! Rio de Janeiro é a capital do estado do Rio de Janeiro." : "Correto! São Paulo é a capital do estado de São Paulo.";
+    onListen(capitalAnswer);
     setSolvedState(id);
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const checkDelay = reducedMotion ? 250 : 650;
@@ -70,14 +80,14 @@ export default function SoutheastLevel({ challenge, score, mistakes, feedback, s
       <button className={`southeast-round southeast-sound ${!sound ? "muted" : ""}`} onClick={onToggleSound} aria-label={sound ? "Desligar narração" : "Ligar narração"}><img src="/fases-som-v1.png" alt="" /></button>
     </header>
     <div className="southeast-speech">{speeches[challenge]}</div>
-    <button className="southeast-listen" onClick={() => onListen(speeches[challenge])}>{challenge <= 2 ? "🔊 OUVIR PERGUNTA" : "🔊 OUVIR INSTRUÇÕES"}</button>
+    <button className="southeast-listen" onClick={() => onListen(challenge === 2 ? `Minha capital é ${currentState.capital}. Qual é o estado?` : speeches[challenge])}>{challenge <= 2 ? "🔊 OUVIR PERGUNTA" : "🔊 OUVIR INSTRUÇÕES"}</button>
     <div className={`southeast-board southeast-board-${challenge}`}>
       {challenge === 1 && <svg className="southeast-brazil-map" viewBox="0 10 560 510" role="group" aria-label="Mapa interativo das cinco regiões do Brasil">{regionsMap.regions.map(region => <g key={region.id} role="button" tabIndex={canPlay ? 0 : -1} aria-label={`Região ${regionNames[region.id]}`} aria-disabled={!canPlay} onClick={() => chooseRegion(region.id)} onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); chooseRegion(region.id); } }}>{region.paths.map(path => <path key={path.id} d={path.d} fill={region.color} />)}<text x={regionLabels[region.id][0]} y={regionLabels[region.id][1]}>{regionNames[region.id].toUpperCase()}</text></g>)}</svg>}
       {challenge === 2 && <><div key={clue} className={`southeast-detective-clue ${changingClue ? "leaving" : ""}`} aria-live="polite"><span aria-hidden="true">🔎</span><div><small>PISTA {clue + 1} DE 4</small><strong>Minha capital é {currentState.capital}. Qual é o estado?</strong></div></div><div className="southeast-detective-map-frame"><img className="southeast-static-map" src="/sudeste-estados-ilustrado-v1.svg" alt="Mapa da Região Sudeste com Minas Gerais em amarelo, Espírito Santo em roxo, Rio de Janeiro em azul e São Paulo em verde." /><span>Escolha uma das quatro alternativas abaixo</span></div><div className="southeast-state-choices" role="group" aria-label="Escolha o estado da capital indicada">{stateChoices.map(state => <button key={state.id} className={`${solvedState === state.id ? "solved " : ""}state-${state.id}`} disabled={!canPlay} onClick={() => chooseState(state.id)} aria-label={solvedState === state.id ? `${state.name}, correto` : state.name}><span aria-hidden="true">{state.id.toUpperCase()}</span><strong>{state.name}</strong></button>)}</div><span className="southeast-sr-only" role="status">{solvedState ? `Correto! ${states[clue].name}.` : ""}</span></>}
-      {challenge === 3 && <SoutheastCoffee canPlay={canPlay} onComplete={() => onAnswer(true)} />}
-      {challenge === 4 && <SoutheastWordSearch canPlay={canPlay} onComplete={() => onAnswer(true)} />}
-      {challenge === 5 && <SoutheastPassport canPlay={canPlay} onWrong={(hint) => { setMistakeHint(`Dica: ${hint}`); onAnswer(false); }} onComplete={() => onAnswer(true)} />}
-      {challenge === 6 && <SoutheastRiverCleanup canPlay={canPlay} onComplete={() => onAnswer(true)} />}
+      {challenge === 3 && <SoutheastCoffee canPlay={canPlay} onComplete={() => onAnswer(true)} onListen={onListen} />}
+      {challenge === 4 && <SoutheastWordSearch canPlay={canPlay} onComplete={() => onAnswer(true)} onListen={onListen} />}
+      {challenge === 5 && <SoutheastPassport canPlay={canPlay} onWrong={(hint) => { setMistakeHint(`Dica: ${hint}`); onListen(mistakes >= 1 ? "Vamos recomeçar! A Região Sudeste será reiniciada desde o primeiro desafio." : `Quase! ${hint}`); onAnswer(false); }} onComplete={() => onAnswer(true)} onListen={onListen} />}
+      {challenge === 6 && <SoutheastRiverCleanup canPlay={canPlay} onComplete={() => onAnswer(true)} onListen={onListen} />}
     </div>
     {challenge === 1 && <p className="southeast-location-instruction">Clique ou toque na Região Sudeste no mapa!</p>}
     {feedback !== "idle" && <div className={`feedback ${feedback} southeast-feedback`} role="dialog" aria-modal="true" aria-live="assertive"><span aria-hidden="true">{feedback === "wrong" ? "🧭" : feedback === "finished" ? "🏆" : "⭐"}</span><h2>{feedback === "wrong" ? mistakes >= 2 ? "Vamos recomeçar!" : "Quase lá!" : feedback === "finished" ? "Sudeste concluído!" : "Muito bem!"}</h2><p>{feedback === "wrong" ? mistakes >= 2 ? "A Região Sudeste será reiniciada desde o Desafio 1." : mistakeHint || "Observe a pista e tente outra vez." : challenge === 1 ? "Você encontrou o Sudeste!" : challenge === 2 ? "Você reconheceu os quatro estados da região!" : challenge === 3 ? "Você completou a jornada do café! O Sudeste é a principal região produtora de café do Brasil." : challenge === 4 ? "Todas as palavras foram encontradas!" : challenge === 5 ? "Seu passaporte recebeu os quatro carimbos!" : "Você concluiu o mutirão! A recuperação do Tietê depende de cuidado contínuo e tratamento de esgoto."}</p><button onClick={feedback === "wrong" ? onRetry : onNext}>{feedback === "wrong" ? mistakes >= 2 ? "RECOMEÇAR REGIÃO" : "TENTAR NOVAMENTE" : feedback === "finished" ? "VOLTAR À JORNADA" : "PRÓXIMO DESAFIO"}</button></div>}

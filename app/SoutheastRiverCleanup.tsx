@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 
-type Props = { canPlay: boolean; onComplete: () => void };
+type Props = { canPlay: boolean; onComplete: () => void; onListen: (text: string) => void };
 type GamePhase = "ready" | "playing" | "failed" | "complete";
 type TrashItem = { id: string; icon: string; label: string; x: number; y: number; speed: number; tilt: number; caught: boolean };
 
@@ -45,7 +45,7 @@ function TrashSprite({ kind }: { kind: string }) {
   return <svg className="southeast-trash-sprite" viewBox="0 0 64 64" aria-hidden="true"><path d="m18 21-12 9 12 10 4 12h20l4-12 12-10-12-9-4-10H22Z" fill="#ef78a3" stroke="#71344e" strokeWidth="4"/><path d="m8 27 8 7-8 4M56 27l-8 7 8 4" fill="#ffd15a" stroke="#71344e" strokeWidth="3"/><path d="M24 31h16" stroke="#fff" strokeWidth="4" strokeLinecap="round"/></svg>;
 }
 
-export default function SoutheastRiverCleanup({ canPlay, onComplete }: Props) {
+export default function SoutheastRiverCleanup({ canPlay, onComplete, onListen }: Props) {
   const [phase, setPhase] = useState<GamePhase>("ready");
   const [boatX, setBoatX] = useState(50);
   const [items, setItems] = useState<TrashItem[]>(makeInitialItems);
@@ -89,7 +89,8 @@ export default function SoutheastRiverCleanup({ canPlay, onComplete }: Props) {
     phaseRef.current = "playing";
     setPhase("playing");
     setMessage("A corrente começou! Mova o barco e lance a rede no momento certo.");
-  }, [canPlay]);
+    onListen("A corrente começou! Mova o barco e lance a rede no momento certo.");
+  }, [canPlay, onListen]);
 
   const restartGame = useCallback(() => {
     timerRefs.current.forEach(window.clearTimeout);
@@ -110,7 +111,8 @@ export default function SoutheastRiverCleanup({ canPlay, onComplete }: Props) {
     setNetCooling(false);
     setPhase("playing");
     setMessage("Novo mutirão iniciado! Observe a corrente e não deixe os resíduos escaparem.");
-  }, []);
+    onListen("A corrente começou! Mova o barco e lance a rede no momento certo.");
+  }, [onListen]);
 
   const catchTrash = useCallback((target: TrashItem) => {
     const nextItems = itemsRef.current.map((item) => item.id === target.id ? { ...item, caught: true } : item);
@@ -145,10 +147,10 @@ export default function SoutheastRiverCleanup({ canPlay, onComplete }: Props) {
       .filter((item) => !item.caught && item.y >= 55 && item.y <= 88 && Math.abs(item.x - boatXRef.current) <= 14)
       .sort((first, second) => Math.hypot(first.x - boatXRef.current, first.y - 72) - Math.hypot(second.x - boatXRef.current, second.y - 72))[0];
     if (nearby) catchTrash(nearby);
-    else setMessage("A rede passou longe. Acompanhe o resíduo e tente quando ele chegar perto do barco.");
+    else { setMessage("A rede passou longe. Acompanhe o resíduo e tente quando ele chegar perto do barco."); onListen("A rede passou longe. Acompanhe o resíduo e tente quando ele chegar perto do barco."); }
     rememberTimer(window.setTimeout(() => setNetActive(false), reducedMotion ? 120 : 360));
     rememberTimer(window.setTimeout(() => setNetCooling(false), reducedMotion ? 220 : 620));
-  }, [canPlay, catchTrash, netCooling, reducedMotion, rememberTimer]);
+  }, [canPlay, catchTrash, netCooling, onListen, reducedMotion, rememberTimer]);
 
   useEffect(() => {
     if (!canPlay || phase !== "playing") return;
@@ -174,13 +176,15 @@ export default function SoutheastRiverCleanup({ canPlay, onComplete }: Props) {
           phaseRef.current = "failed";
           setPhase("failed");
           setMessage("Doze resíduos escaparam. O mutirão será reiniciado para tentar novamente.");
+          onListen("Doze resíduos escaparam pela corrente. Recomece o mutirão e tente recolher todos antes que passem pelo barco.");
         } else {
           setMessage(escaped > 1 ? "Alguns resíduos passaram. Reposicione o barco e observe as faixas da corrente." : "Um resíduo passou pelo barco, mas ele voltará. Tente novamente!");
+          if (escaped === 1) onListen("Um resíduo passou pelo barco, mas ele voltará. Reposicione o barco e tente novamente!");
         }
       }
     }, 60);
     return () => window.clearInterval(timer);
-  }, [canPlay, collected, missed, phase, reducedMotion]);
+  }, [canPlay, collected, missed, onListen, phase, reducedMotion]);
 
   useEffect(() => {
     const handleKey = (event: KeyboardEvent) => {

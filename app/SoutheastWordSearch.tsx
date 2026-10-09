@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-type Props = { canPlay: boolean; onComplete: () => void };
+type Props = { canPlay: boolean; onComplete: () => void; onListen: (text: string) => void };
 type Cell = { row: number; col: number };
 type Placement = { word: string; cells: Cell[] };
 type Puzzle = { grid: string[][]; placements: Placement[] };
@@ -67,12 +67,14 @@ function makePuzzle(): Puzzle {
 function keyOf(cell: Cell) { return `${cell.row}-${cell.col}`; }
 function sameCell(a: Cell, b: Cell) { return a.row === b.row && a.col === b.col; }
 
-export default function SoutheastWordSearch({ canPlay, onComplete }: Props) {
+export default function SoutheastWordSearch({ canPlay, onComplete, onListen }: Props) {
   const [puzzle, setPuzzle] = useState<Puzzle | null>(null);
   useEffect(() => {
     const timer = window.setTimeout(() => setPuzzle(makePuzzle()), 0);
     return () => window.clearTimeout(timer);
   }, []);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [activeCell, setActiveCell] = useState<Cell>({ row: 0, col: 0 });
   const [start, setStart] = useState<Cell | null>(null);
   const [found, setFound] = useState<string[]>([]);
   const [message, setMessage] = useState("Escolha a primeira e a última letra de uma palavra.");
@@ -93,7 +95,9 @@ export default function SoutheastWordSearch({ canPlay, onComplete }: Props) {
       ? middleRow < SIZE / 2 ? "na metade de cima" : "na metade de baixo"
       : middleCol < SIZE / 2 ? "na metade esquerda" : "na metade direita";
     setHintedWord(placement.word);
+    const spokenWord = placement.word === "CAFE" ? "café" : placement.word.toLowerCase();
     setMessage(`Dica: procure ${placement.word === "CAFE" ? "CAFÉ" : placement.word} ${area}; ela segue na ${vertical ? "vertical" : "horizontal"}.`);
+    onListen(`Dica: procure a palavra ${spokenWord}.`);
   }
   function choose(cell: Cell) {
     if (!canPlay) return;
@@ -116,6 +120,7 @@ export default function SoutheastWordSearch({ canPlay, onComplete }: Props) {
     setStart(null);
     if (!placement || found.includes(placement.word)) {
       setMessage("Essa sequência não forma uma palavra da lista. Tente novamente!");
+      onListen("Essa sequência não forma uma palavra da lista. Observe a horizontal e a vertical e tente novamente.");
       return;
     }
     const next = [...found, placement.word];
@@ -125,6 +130,21 @@ export default function SoutheastWordSearch({ canPlay, onComplete }: Props) {
     if (next.length === WORDS.length) window.setTimeout(onComplete, 500);
   }
 
+  function handleGridKey(event: React.KeyboardEvent<HTMLButtonElement>, cell: Cell) {
+    const moves: Record<string, Cell> = {
+      ArrowUp: { row: Math.max(0, cell.row - 1), col: cell.col },
+      ArrowDown: { row: Math.min(SIZE - 1, cell.row + 1), col: cell.col },
+      ArrowLeft: { row: cell.row, col: Math.max(0, cell.col - 1) },
+      ArrowRight: { row: cell.row, col: Math.min(SIZE - 1, cell.col + 1) },
+      Home: { row: cell.row, col: 0 },
+      End: { row: cell.row, col: SIZE - 1 },
+    };
+    const next = moves[event.key];
+    if (!next || sameCell(next, cell)) return;
+    event.preventDefault();
+    setActiveCell(next);
+    window.requestAnimationFrame(() => gridRef.current?.querySelector<HTMLButtonElement>(`[data-cell="${keyOf(next)}"]`)?.focus());
+  }
   if (!puzzle) return <div className="southeast-word-loading" role="status">Montando um novo caça-palavras…</div>;
 
   return <div className="southeast-word-game">
@@ -134,13 +154,13 @@ export default function SoutheastWordSearch({ canPlay, onComplete }: Props) {
       <button type="button" className="southeast-word-hint" onClick={giveHint} disabled={!canPlay || found.length === WORDS.length} aria-label="Receber uma dica sobre uma palavra ainda não encontrada"><span aria-hidden="true">💡</span> PRECISO DE UMA DICA</button>
     </div>
     <div className="southeast-word-layout">
-      <div className="southeast-word-grid" role="grid" aria-label="Caça-palavras com dez linhas e dez colunas">
+      <div ref={gridRef} className="southeast-word-grid" role="grid" aria-label="Caça-palavras com dez linhas e dez colunas. Use as setas para navegar entre as letras.">
         {puzzle.grid.flatMap((row, rowIndex) => row.map((letter, colIndex) => {
           const cell = { row: rowIndex, col: colIndex };
           const cellKey = keyOf(cell);
           const foundWord = foundCellWords.get(cellKey);
           const colorClass = foundWord ? `word-${WORDS.indexOf(foundWord)}` : "";
-          return <button key={cellKey} role="gridcell" className={`${start && sameCell(start, cell) ? "selected" : ""} ${foundWord ? "found" : ""} ${colorClass}`} onClick={() => choose(cell)} disabled={!canPlay} aria-label={`Linha ${rowIndex + 1}, coluna ${colIndex + 1}: letra ${letter}`}>{letter}</button>;
+          return <button key={cellKey} data-cell={cellKey} role="gridcell" tabIndex={sameCell(activeCell, cell) ? 0 : -1} aria-selected={start ? sameCell(start, cell) : undefined} className={`${start && sameCell(start, cell) ? "selected" : ""} ${foundWord ? "found" : ""} ${colorClass}`} onFocus={() => setActiveCell(cell)} onKeyDown={(event) => handleGridKey(event, cell)} onClick={() => choose(cell)} disabled={!canPlay} aria-label={`Linha ${rowIndex + 1}, coluna ${colIndex + 1}: letra ${letter}`}>{letter}</button>;
         }))}
       </div>
       <aside className="southeast-word-list" aria-label="Palavras para encontrar">

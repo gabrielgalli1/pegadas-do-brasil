@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-type Props = { canPlay: boolean; onComplete: () => void };
+type Props = { canPlay: boolean; onComplete: () => void; onListen: (text: string) => void };
 const steps = ["PLANTAR", "CUIDAR", "COLHER", "PREPARAR"];
 type CoffeeIconName = "seedling" | "water" | "berries" | "cup" | "check";
 const iconNames: CoffeeIconName[] = ["seedling", "water", "berries", "cup"];
@@ -15,7 +15,7 @@ function CoffeeIcon({ name }: { name: CoffeeIconName }) {
 }
 const sceneLabels = ["PREPARE A TERRA", "CUIDE DO CAFEEIRO", "COLHA OS FRUTOS", "PREPARE A XÍCARA"];
 
-export default function SoutheastCoffee({ canPlay, onComplete }: Props) {
+export default function SoutheastCoffee({ canPlay, onComplete, onListen }: Props) {
   const [step, setStep] = useState(0);
   const [seedling, setSeedling] = useState(false);
   const [water, setWater] = useState(0);
@@ -33,18 +33,19 @@ export default function SoutheastCoffee({ canPlay, onComplete }: Props) {
     if (!canPlay || moving) return;
     if (!seedling) { setMessage("Primeiro escolha a muda no botão abaixo."); return; }
     setMessage("Muda plantada! Agora vamos cuidar dela.");
+    onListen("Agora, regue o cafeeiro três vezes para ele crescer.");
     advance(1);
   }
   function waterPlant() {
     if (!canPlay || moving) return;
     const next = water + 1; setWater(next);
-    if (next === 3) { setMessage("O cafeeiro cresceu e seus frutos amadureceram!"); advance(2); }
+    if (next === 3) { setMessage("O cafeeiro cresceu e seus frutos amadureceram!"); onListen("O cafeeiro cresceu! Toque nos três frutos vermelhos para colher."); advance(2); }
     else setMessage(`Muito bem! Regue mais ${3 - next} ${3 - next === 1 ? "vez" : "vezes"}.`);
   }
   function pickFruit(index: number) {
     if (!canPlay || moving || picked.includes(index)) return;
     const next = [...picked, index]; setPicked(next);
-    if (next.length === 3) { setMessage("Frutos colhidos! Vamos preparar o café."); advance(3); }
+    if (next.length === 3) { setMessage("Frutos colhidos! Vamos preparar o café."); onListen("Frutos colhidos! Toque três vezes no botão para preparar o café."); advance(3); }
     else setMessage(`Você colheu ${next.length} de 3 frutos. Continue!`);
   }
   function brewCoffee() {
@@ -65,6 +66,6 @@ export default function SoutheastCoffee({ canPlay, onComplete }: Props) {
         {step === 2 && <div className="southeast-coffee-berries" role="group" aria-label="Colha os três frutos vermelhos">{[0,1,2].map(index => <button key={index} className={`berry berry-${index} ${picked.includes(index) ? "picked" : ""}`} onClick={() => pickFruit(index)} disabled={!canPlay || moving || picked.includes(index)} aria-label={`Colher fruto ${index + 1}`}><CoffeeIcon name={picked.includes(index) ? "check" : "berries"} /></button>)}</div>}
       </> : <svg className="southeast-coffee-cup" viewBox="0 0 500 260" aria-hidden="true"><path d="M177 76H338L325 208Q253 238 190 208Z" fill="#fffaf0" stroke="#4d8d90" strokeWidth="9"/><path d="M193 203H319L326 139H185Z" fill="#7b4523" opacity={brew / 3}/><path d="M339 99Q397 98 386 145Q376 178 330 169" fill="none" stroke="#4d8d90" strokeWidth="12"/><path d="M165 224H361" stroke="#a37243" strokeWidth="13" strokeLinecap="round"/>{brew > 0 && <path d="M223 52Q208 31 227 15M268 49Q251 28 270 12M310 49Q294 26 313 11" fill="none" stroke="#d8e8d4" strokeWidth="8" strokeLinecap="round"/>}<path d="M169 83H341" stroke="#4d8d90" strokeWidth="9" strokeLinecap="round"/></svg>}
     </div>
-    <div className="southeast-coffee-actions"><p role="status">{message}</p>{step === 0 ? <button className={seedling ? "selected" : ""} onClick={() => { setSeedling(true); setMessage("Muda escolhida! Toque na terra para plantar."); }} disabled={!canPlay || moving} aria-pressed={seedling}><CoffeeIcon name="seedling" /> {seedling ? "MUDA ESCOLHIDA" : "ESCOLHER MUDA"}</button> : step === 1 ? <button onClick={waterPlant} disabled={!canPlay || moving}><CoffeeIcon name="water" /> REGAR O CAFEEIRO · {water}/3</button> : step === 2 ? <strong className="southeast-coffee-action-hint">TOQUE NOS FRUTOS VERMELHOS · {picked.length}/3</strong> : <button onClick={brewCoffee} disabled={!canPlay || moving}><CoffeeIcon name="cup" /> PREPARAR CAFÉ · {brew}/3</button>}</div>
+    <div className="southeast-coffee-actions"><p role="status">{message}</p>{step === 0 ? <button className={seedling ? "selected" : ""} onClick={() => { setSeedling(true); setMessage("Muda escolhida! Toque na terra para plantar."); onListen("Primeiro, escolha a muda. Depois, toque na terra para plantar."); }} disabled={!canPlay || moving} aria-pressed={seedling}><CoffeeIcon name="seedling" /> {seedling ? "MUDA ESCOLHIDA" : "ESCOLHER MUDA"}</button> : step === 1 ? <button onClick={waterPlant} disabled={!canPlay || moving}><CoffeeIcon name="water" /> REGAR O CAFEEIRO · {water}/3</button> : step === 2 ? <strong className="southeast-coffee-action-hint">TOQUE NOS FRUTOS VERMELHOS · {picked.length}/3</strong> : <button onClick={brewCoffee} disabled={!canPlay || moving}><CoffeeIcon name="cup" /> PREPARAR CAFÉ · {brew}/3</button>}</div>
   </div>;
 }
