@@ -85,7 +85,7 @@ export default function SoutheastPassport({ canPlay, onWrong, onComplete, onList
     setMessage(`Carimbo conquistado: ${attraction?.label ?? "ponto turístico"}!`);
     const spokenLabel = attraction?.label === "MASP" ? "Masp" : attraction?.label ?? "Ponto turístico";
     const article = spokenLabel === "Ouro Preto" ? "" : "O ";
-    onListen(`${article}${spokenLabel} pertence a ${states.find((item) => item.id === state)?.name}. Carimbo conquistado!`);
+    onListen(`${article}${spokenLabel} pertence a ${states.find((item) => item.id === target)?.name}. Carimbo conquistado!`);
     if (next.length === attractions.length) completeTimer.current = window.setTimeout(onComplete, 650);
   }
 
