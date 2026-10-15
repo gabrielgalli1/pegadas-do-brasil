@@ -190,7 +190,7 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .challenge-mascot{position:absolute;left:0;bottom:15%;width:18%;max-height:50%;object-fit:contain;filter:drop-shadow(0 8px 2px #174b2944);transform:scaleX(-1)}
 .silhouette-guide{position:absolute;z-index:3;left:1%;top:40%;bottom:auto;width:17%;display:flex;flex-direction:column;align-items:center;gap:8px}
 .silhouette-guide .challenge-mascot{position:static;width:106%;max-height:232px;object-fit:contain;transform:none}
-.silhouette-tip{position:relative;width:122%;padding:10px 8px;border:4px solid #2f8125;border-radius:22px;background:#fffdf4;color:#176b22;text-align:center;font-size:clamp(11px,1vw,17px);font-weight:1000;line-height:1.12;box-shadow:0 5px 0 #1f5f2444}
+.silhouette-tip{position:relative;width:136%;min-height:68px;display:grid;place-items:center;padding:12px 11px;border:4px solid #2f8125;border-radius:22px;background:#fffdf4;color:#176b22;text-align:center;font-size:clamp(12px,1.08vw,18px);font-weight:1000;line-height:1.16;box-shadow:0 5px 0 #1f5f2444}
 .silhouette-tip:after{content:"";position:absolute;left:48%;bottom:-18px;border:10px solid transparent;border-top-color:#2f8125}
 .country-grid{grid-column:1;grid-row:2;width:67%;height:91%;justify-self:center;align-self:end;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:3.8% 3.2%;min-height:0}
 .country-card{position:relative;min-width:0;min-height:0;border:5px solid #082e5b;border-radius:28px;background:linear-gradient(180deg,#fffef8,#f5f4e8);box-shadow:0 6px 0 #0a6b9c55;overflow:hidden;transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
@@ -342,6 +342,7 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .north-location-screen .north-heading{left:30%;top:12%;width:49%}
 .north-location-screen .north-status{right:0;top:62%;width:18%}
 .north-location-screen .north-listen{left:54.5%}
+.north-location-screen .north-guide{top:36%;width:24%}
 @media(max-width:900px){.north-challenge-screen{min-height:100vh;background-size:cover!important;overflow:auto;padding:145px 18px 35px}.north-challenge-header{grid-template-columns:60px 1fr 110px 60px}.north-heading h1{font-size:27px}.north-guide,.north-map-card,.north-map-instruction,.north-listen{position:relative;left:auto;right:auto;top:auto;bottom:auto;transform:none;margin:18px auto}.north-guide{width:210px}.north-map-card{width:min(620px,95%);height:430px}.north-map-instruction{width:min(620px,95%)}.north-listen{display:block}.north-status{margin-top:28px}}
 @media(max-width:900px){.north-location-screen .north-heading{left:15%;top:0;width:70%}.north-location-screen .north-status{right:5%;top:110px;width:150px}}
 /* Desafio 2: eixo central comum ao mapa, respostas e áudio. */
@@ -1110,3 +1111,22 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .journey-progress .score-inline strong{font-size:clamp(12px,1.1vw,17px);line-height:1}
 .journey-progress .score-inline small{font-size:clamp(6px,.55vw,8px);line-height:1}
 .high-contrast .journey-progress{background:#000!important;border-color:#fff!important;outline-color:#000!important}
+
+/* Emblemas conquistados ao concluir cada fase */
+.phase-emblem{display:block;width:132px;aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 4px 4px #082c5940)}
+.achievement-grid article{min-height:235px;padding-top:7px}.achievement-grid article.locked .phase-emblem{filter:grayscale(1) contrast(.75) opacity(.38);box-shadow:inset 0 0 0 4px #777}.achievement-grid article.unlocked .phase-emblem{filter:drop-shadow(0 0 11px #ffd42c) drop-shadow(0 4px 3px #082c5940)}
+.achievement-grid h3{margin-top:2px}.achievement-lock{z-index:2}
+.feedback.finished{width:min(570px,88%);padding-top:20px}
+.phase-emblem-reward{--reward:#2e8d3d;--reward-dark:#17632d;--reward-soft:#e2ffd7;position:relative;display:flex;align-items:center;justify-content:center;gap:18px;width:min(430px,100%);min-height:142px;margin:0 auto 8px;padding:9px 22px 9px 12px;border:4px solid var(--reward);border-radius:30px;background:radial-gradient(circle at 15% 22%,#fff 0 12%,transparent 38%),linear-gradient(135deg,#fafff4 0 46%,var(--reward-soft) 100%);box-shadow:inset 0 0 0 4px #fff,0 6px 0 var(--reward-dark),0 10px 22px #082c5930;overflow:visible;animation:emblem-reward-card .45s cubic-bezier(.2,.9,.25,1.25) both}
+.phase-emblem-reward-brasil{--reward:#d99c00;--reward-dark:#946300;--reward-soft:#fff3ae}.phase-emblem-reward-norte{--reward:#168b4a;--reward-dark:#08602f;--reward-soft:#d8ffd9}.phase-emblem-reward-nordeste{--reward:#f17a11;--reward-dark:#a94700;--reward-soft:#fff0bd}.phase-emblem-reward-centro-oeste{--reward:#769a13;--reward-dark:#496800;--reward-soft:#eefac2}.phase-emblem-reward-sudeste{--reward:#168fd4;--reward-dark:#075c9a;--reward-soft:#d9f4ff}.phase-emblem-reward-sul{--reward:#8d43c7;--reward-dark:#57247e;--reward-soft:#f0ddff}
+.phase-emblem-reward .phase-emblem{z-index:2;width:118px;flex:0 0 auto;filter:drop-shadow(0 0 9px #ffd733) drop-shadow(0 5px 3px #65430055);animation:emblem-reward-reveal .9s cubic-bezier(.18,.9,.26,1.25) .12s both}
+.phase-emblem-reward-copy{z-index:2;display:flex;flex-direction:column;align-items:center;line-height:1.05;text-align:center}
+.phase-emblem-reward-copy strong{color:var(--reward-dark);font-size:21px}.phase-emblem-reward-copy span{margin-top:8px;color:#153b2a;font-size:23px;font-weight:1000}
+.phase-emblem-sparkles{position:absolute!important;inset:0!important;pointer-events:none;font-size:20px!important}
+.phase-emblem-sparkles i{position:absolute;color:#ffbd00;font-style:normal;opacity:0;animation:emblem-sparkle 1.4s ease-out .35s both}.phase-emblem-sparkles i:nth-child(1){left:4%;top:8%;--spark-x:-15px;--spark-y:-16px}.phase-emblem-sparkles i:nth-child(2){left:28%;top:-5%;--spark-x:4px;--spark-y:-19px}.phase-emblem-sparkles i:nth-child(3){right:5%;top:10%;--spark-x:17px;--spark-y:-13px}.phase-emblem-sparkles i:nth-child(4){right:9%;bottom:5%;--spark-x:16px;--spark-y:15px}.phase-emblem-sparkles i:nth-child(5){left:7%;bottom:3%;--spark-x:-14px;--spark-y:14px}
+.phase-emblem-reward.is-owned .phase-emblem{animation:none;filter:drop-shadow(0 4px 3px #082c5940)}.phase-emblem-reward.is-owned .phase-emblem-sparkles{display:none}.phase-emblem-reward.is-owned{animation:none}
+@keyframes emblem-reward-card{from{opacity:0;transform:translateY(20px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes emblem-reward-reveal{0%{opacity:0;transform:rotate(-18deg) scale(.3)}60%{opacity:1;transform:rotate(7deg) scale(1.12)}100%{opacity:1;transform:none}}
+@keyframes emblem-sparkle{0%{opacity:0;transform:scale(.2)}35%{opacity:1}100%{opacity:0;transform:translate(var(--spark-x),var(--spark-y)) rotate(100deg) scale(1.2)}}
+.high-contrast .phase-emblem{outline:4px solid #000}.high-contrast .phase-emblem-reward{background:#fff;color:#000;border-color:#000;outline-color:#000;box-shadow:inset 0 0 0 3px #fff,0 6px 0 #000}.high-contrast .phase-emblem-reward-copy :is(strong,span){color:#000}
+@media(prefers-reduced-motion:reduce){.phase-emblem-reward,.phase-emblem-reward .phase-emblem,.phase-emblem-sparkles i{animation:none}}

@@ -3,10 +3,11 @@
 import { useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import regionsMap from "./brasil-cinco-regioes.json";
 import ScoreBadge from "./ScoreBadge";
+import { PhaseEmblemReward } from "./phaseEmblems";
 
 type Feedback = "idle" | "correct" | "wrong" | "finished";
 type Challenge = { title: string; question: string; tip: string; correct: string; options?: readonly (string | number)[]; answer?: string | number };
-type Props = { mistakes: number; challenge: number; score: number; feedback: Feedback; sound: boolean; onAnswer: (correct: boolean) => void; onNext: () => void; onRetry: () => void; onBack: () => void; onToggleSound: () => void; onListen: (text: string) => void };
+type Props = { mistakes: number; challenge: number; score: number; feedback: Feedback; sound: boolean; newEmblem: boolean; onAnswer: (correct: boolean) => void; onNext: () => void; onRetry: () => void; onBack: () => void; onToggleSound: () => void; onListen: (text: string) => void };
 type NortheastState = { id: string; name: string; short: string; path: string; label: [number, number]; color: string };
 type LandscapeId = "litoral" | "manguezal" | "serra" | "caatinga";
 type ArraiaId = "bandeirinhas" | "sanfona" | "milho" | "frevo" | "chimarrao" | "neve";
@@ -43,7 +44,7 @@ const arraiaItems: readonly { id: ArraiaId; name: string; image: string; optionI
   { id: "neve", name: "BONECO DE NEVE", image: "/arraia-boneco-neve-v2.png", correct: false },
 ];
 const challenges: readonly Challenge[] = [
-  { title: "ONDE FICA O NORDESTE?", question: "Clique na Região Nordeste no mapa do Brasil.", tip: "Bem-vindo, explorador!\nVamos conhecer a Região Nordeste!", correct: "Você encontrou a Região Nordeste!" },
+  { title: "ONDE FICA O NORDESTE?", question: "Clique na Região Nordeste no mapa do Brasil.", tip: "Olá, explorador! Eu sou o Tuca.\nBoas-vindas à Região Nordeste!\nProcure a região laranja no lado direito do mapa.", correct: "Você encontrou a Região Nordeste!" },
   { title: "QUANTOS ESTADOS TEM O NORDESTE?", question: "Toque em cada estado para descobrir e contar.", tip: "Cada toque revela um estado.\nVamos contar juntos?", correct: "Muito bem! O Nordeste possui 9 estados!" },
   { title: "COMO É O CLIMA DO SERTÃO?", question: "Complete o painel com as características do clima.", tip: "Observe a paisagem!\nComo são o calor e as chuvas no Sertão?", correct: "Muito bem! No Sertão faz calor e chove pouco durante boa parte do ano!" },
   { title: "ENCONTRE O TATU-BOLA", question: "Observe a Caatinga e encontre o animal.", tip: "Tenho uma carapaça e posso me enrolar como uma bola.\nOnde estou?", correct: "Você encontrou o tatu-bola escondido na Caatinga!" },
@@ -51,7 +52,7 @@ const challenges: readonly Challenge[] = [
   { title: "COMPLETE A FESTA NORDESTINA", question: "Arraste as peças até as silhuetas da imagem.", tip: "Arraste cada figura até a sombra com o mesmo formato.\nVamos completar a festa!", correct: "Muito bem! A cultura nordestina tem festas, músicas, danças e sabores muito especiais!" },
 ] as const;
 
-export default function NortheastLevel({ mistakes, challenge, score, feedback, sound, onAnswer, onNext, onRetry, onBack, onToggleSound, onListen }: Props) {
+export default function NortheastLevel({ mistakes, challenge, score, feedback, sound, newEmblem, onAnswer, onNext, onRetry, onBack, onToggleSound, onListen }: Props) {
   const current = challenges[challenge - 1];
   const isMap = challenge === 1;
   const isStateDiscovery = challenge === 2;
@@ -232,8 +233,8 @@ export default function NortheastLevel({ mistakes, challenge, score, feedback, s
       <div className="arraia-options" aria-label="Peças embaralhadas do quebra-cabeça">{[arraiaItems[4], arraiaItems[1], arraiaItems[5], arraiaItems[2], arraiaItems[3], arraiaItems[0]].map((item) => <button key={item.id} className={(arraiaGhost?.id === item.id ? "dragging " : "") + (selectedArraia === item.id ? "selected" : "")} disabled={!canAnswer || arraiaChoices.includes(item.id)} aria-pressed={selectedArraia === item.id} onClick={(event) => { if (arraiaSuppressClick.current && event.detail !== 0) { arraiaSuppressClick.current = false; return; } setSelectedArraia(item.id); }} onPointerDown={(event) => beginArraiaDrag(item, event)} onPointerMove={moveArraiaDrag} onPointerUp={endArraiaDrag} onPointerCancel={cancelArraiaDrag} onLostPointerCapture={cancelArraiaDrag}><img src={item.optionImage ?? item.image} alt="" draggable={false} /><strong>{item.name}</strong></button>)}</div>
     </div> : <div className="northeast-options" role="group" aria-label={current.question}>{current.options?.map((option) => <button key={String(option)} disabled={!canAnswer} onClick={() => onAnswer(option === current.answer)}>{option}</button>)}</div>}
     {arraiaGhost && <div className="arraia-drag-ghost" style={{ left: arraiaGhost.x, top: arraiaGhost.y }} aria-hidden="true"><img src={arraiaItems.find((item) => item.id === arraiaGhost.id)?.optionImage ?? arraiaItems.find((item) => item.id === arraiaGhost.id)?.image} alt="" /></div>}
-    {!isAnimalSearch && <button className="north-listen" onClick={() => onListen(isStateDiscovery ? "Toque em cada estado do mapa. Cada toque revela o nome de um estado. Vamos descobrir os nove estados do Nordeste!" : isClimate ? "Observe a paisagem do Sertão. Escolha uma opção de temperatura e uma opção de chuvas para completar o painel." : isAnimalSearch ? "Movimente a lupa pela paisagem e toque no tatu-bola quando encontrá-lo." : isLandscapeAlbum ? "Escolha uma paisagem e depois toque no espaço com o nome correspondente para completar o álbum." : isArraia ? "Arraste uma peça da parte de baixo até a silhueta escura com o mesmo formato. Complete as quatro partes da festa." : current.question)}>🔊 {isStateDiscovery || isClimate || isAnimalSearch || isLandscapeAlbum || isArraia ? "OUVIR INSTRUÇÕES" : "OUVIR PERGUNTA"}</button>}
-    {feedback !== "idle" && <div className={`feedback ${feedback}`} role="dialog" aria-live="assertive">{feedback === "wrong" ? <><span>🧭</span><h2>{mistakes >= 2 ? "Vamos recomeçar!" : "Quase lá!"}</h2><p>{mistakes >= 2 ? "Você terá outra oportunidade desde o primeiro desafio do Nordeste." : current.tip.replace("\n", " ")}</p><button onClick={retryChallenge}>{mistakes >= 2 ? "RECOMEÇAR REGIÃO" : "TENTAR NOVAMENTE"}</button></> : <><span>{feedback === "finished" ? "🏆" : "⭐"}</span><h2>{feedback === "finished" ? "Região Nordeste concluída!" : "Muito bem!"}</h2><p>{current.correct}</p><button onClick={onNext}>{challenge < 6 ? "PRÓXIMO DESAFIO" : "VOLTAR À JORNADA"}</button></>}</div>}
+    {!isAnimalSearch && <button className="north-listen" onClick={() => onListen(isMap ? "Olá, explorador! Eu sou o Tuca. Boas-vindas à Região Nordeste! Procure a região laranja no lado direito do mapa. Clique na Região Nordeste." : isStateDiscovery ? "Toque em cada estado do mapa. Cada toque revela o nome de um estado. Vamos descobrir os nove estados do Nordeste!" : isClimate ? "Observe a paisagem do Sertão. Escolha uma opção de temperatura e uma opção de chuvas para completar o painel." : isAnimalSearch ? "Movimente a lupa pela paisagem e toque no tatu-bola quando encontrá-lo." : isLandscapeAlbum ? "Escolha uma paisagem e depois toque no espaço com o nome correspondente para completar o álbum." : isArraia ? "Arraste uma peça da parte de baixo até a silhueta escura com o mesmo formato. Complete as quatro partes da festa." : current.question)}>🔊 {isStateDiscovery || isClimate || isAnimalSearch || isLandscapeAlbum || isArraia || isMap ? "OUVIR INSTRUÇÕES" : "OUVIR PERGUNTA"}</button>}
+    {feedback !== "idle" && <div className={`feedback ${feedback}`} role="dialog" aria-live="assertive">{feedback === "wrong" ? <><span>🧭</span><h2>{mistakes >= 2 ? "Vamos recomeçar!" : "Quase lá!"}</h2><p>{mistakes >= 2 ? "Você terá outra oportunidade desde o primeiro desafio do Nordeste." : current.tip.replace("\n", " ")}</p><button onClick={retryChallenge}>{mistakes >= 2 ? "RECOMEÇAR REGIÃO" : "TENTAR NOVAMENTE"}</button></> : <>{feedback === "finished" ? <PhaseEmblemReward id="nordeste" isNew={newEmblem} /> : <span>⭐</span>}<h2>{feedback === "finished" ? "Região Nordeste concluída!" : "Muito bem!"}</h2><p>{current.correct}</p><button onClick={onNext}>{challenge < 6 ? "PRÓXIMO DESAFIO" : "VOLTAR À JORNADA"}</button></>}</div>}
   </section>;
 }
 

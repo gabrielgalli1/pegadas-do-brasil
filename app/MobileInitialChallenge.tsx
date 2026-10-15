@@ -27,7 +27,7 @@ type Props = {
 };
 
 const prompts = [
-  { title: "RECONHEÇA O BRASIL", question: "Qual dessas silhuetas representa o Brasil?", tip: "Observe bem o formato de cada país!", spoken: "Qual dessas silhuetas representa o Brasil?" },
+  { title: "RECONHEÇA O BRASIL", question: "Qual dessas silhuetas representa o Brasil?", tip: "Olá, explorador! Eu sou a Ari. Vamos começar nossa aventura e conhecer o Brasil?", spoken: "Olá, explorador! Eu sou a Ari. Vamos começar nossa aventura e conhecer o Brasil? Qual dessas silhuetas representa o Brasil?" },
   { title: "ONDE FICA O BRASIL?", question: "Em qual continente o Brasil está localizado?", tip: "Observe as cores no mapa-múndi!", spoken: "Em qual continente o Brasil está localizado?" },
   { title: "QUAL OCEANO?", question: "Qual oceano banha o litoral do Brasil?", tip: "Observe o litoral do Brasil!", spoken: "Qual oceano banha o litoral do Brasil?" },
   { title: "QUANTOS ESTADOS?", question: "Quantas unidades federativas o Brasil possui?", tip: "Conte os estados e o Distrito Federal!", spoken: "Observe o mapa. Quantas unidades federativas o Brasil possui? Conte os 26 estados e o Distrito Federal." },

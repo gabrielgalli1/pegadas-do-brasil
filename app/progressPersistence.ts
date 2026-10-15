@@ -82,12 +82,10 @@ export function readCachedProgress(raw: string | null): CachedPlayerProgress | n
 
 export function unlockedAchievementIds(progress: PlayerProgress): string[] {
   const achievements: string[] = [];
-  if (progress.completedChallenges >= 1) achievements.push("primeiros-passos");
-  if (progress.completedRegions.includes("norte")) achievements.push("explorador-do-norte");
-  if (progress.completedRegions.length >= 5) achievements.push("mestre-das-regioes");
-  if (progress.firstTryWins >= 3) achievements.push("acertei-de-primeira");
-  if (progress.highestScore >= 400) achievements.push("colecionador-de-estrelas");
-  if (progress.initialPhasePerfect) achievements.push("grande-explorador");
+  if (progress.completedPhase) achievements.push("emblema-brasil");
+  for (const region of ["norte", "nordeste", "centro-oeste", "sudeste", "sul"]) {
+    if (progress.completedRegions.includes(region)) achievements.push(`emblema-${region}`);
+  }
   return achievements;
 }
 

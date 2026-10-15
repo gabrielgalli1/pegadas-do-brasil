@@ -84,8 +84,9 @@ test("keeps the QA regressions covered in source", async () => {
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
-  assert.match(page, /completedRegions\.length >= 5/);
-  assert.match(page, /unlocked: initialPhasePerfect/);
+  assert.match(page, /completedRegions\.includes\(emblem\.id\)/);
+  assert.match(page, /<PhaseEmblemReward id="brasil"/);
+  assert.match(page, /if \(!completedPhase\) setEarnedEmblem\("brasil"\)/);
   assert.match(page, /if \(sound\) speak\(text\)/);
   assert.match(page, /if \(feedback !== "idle"\) return/);
   assert.match(css, /\.northeast-map-card\{height:430px!important;min-height:430px!important\}/);

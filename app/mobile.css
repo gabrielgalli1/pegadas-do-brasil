@@ -1,4 +1,6 @@
 /* The desktop game stays in globals.css. Only phone layouts live here. */
+@property --orientation-angle{syntax:"<angle>";inherits:true;initial-value:0deg}
+@property --flag-tilt{syntax:"<angle>";inherits:true;initial-value:0deg}
 .mobile-menu-screen,.mobile-journey-screen,.mobile-silhouette,.mobile-orientation-gate{display:none}
 
 @media (max-width:900px){
@@ -80,12 +82,31 @@
 @media (max-width:900px) and (orientation:portrait){
   main{height:100dvh;min-height:0;overflow:hidden}
   main>.game-shell{visibility:hidden;pointer-events:none}
-  .mobile-orientation-gate{position:fixed;z-index:1000;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:26px;background:linear-gradient(#e1f8d9e8,#d8f6ffee),url('/menu-background-v2.png') center/cover;text-align:center;color:#082e5b}
-  .mobile-orientation-gate img{width:min(43vw,170px);height:auto}
-  .mobile-orientation-gate strong{font-size:clamp(28px,8vw,42px)}
-  .mobile-orientation-gate p{max-width:320px;margin:0;font-size:19px;font-weight:900}
-  .mobile-orientation-gate span{font-size:65px;line-height:1}
+  .mobile-orientation-gate{position:fixed;z-index:1000;inset:0;display:grid;place-items:center;padding:clamp(14px,5vw,26px);overflow:hidden;background:#9cdfef url('/orientation-background-v1.png') center/cover no-repeat;text-align:center;color:#082e5b}
+  .mobile-orientation-gate::before,.mobile-orientation-gate::after{content:"";position:absolute;left:0;right:0;height:9px;background:linear-gradient(90deg,#19aee7 0 34%,#ffd023 34% 68%,#27862b 68%)}
+  .mobile-orientation-gate::before{top:0}.mobile-orientation-gate::after{bottom:0}
+  .orientation-card{position:relative;width:min(100%,390px);max-height:calc(100dvh - 28px);display:flex;flex-direction:column;align-items:center;gap:clamp(8px,2.2vh,16px);padding:clamp(18px,4.5vh,32px) clamp(18px,6vw,28px);border:5px solid #fff;outline:5px solid #2f8e2e;border-radius:34px;background:linear-gradient(160deg,#fffef2f5,#e9ffd8f5);box-shadow:0 10px 0 #052747,0 18px 38px #00152cb8}
+  .orientation-card::before{content:"";position:absolute;inset:9px;border:2px dashed #8dc75f;border-radius:23px;pointer-events:none}
+  .orientation-logo{position:relative;z-index:1;width:min(31vw,112px);height:auto;filter:drop-shadow(0 4px 2px #082e5b38)}
+  .orientation-phone-stage{position:relative;width:190px;height:120px;display:grid;place-items:center}
+  .orientation-phone{position:relative;width:72px;height:116px;padding:7px;border:5px solid #062f5d;border-radius:17px;background:#fff;box-shadow:0 5px 0 #041d39;transform-origin:center;transform:rotate(var(--orientation-angle)) scale(.94);animation:orientation-phone-turn 4.6s cubic-bezier(.55,.05,.25,1) infinite}
+  .orientation-phone>i{position:absolute;z-index:2;top:3px;left:50%;width:18px;height:4px;border-radius:5px;background:#062f5d;transform:translateX(-50%)}
+  .orientation-phone>span{position:relative;width:100%;height:100%;display:grid;place-items:center;border-radius:10px;background:#fff;overflow:hidden}
+  .orientation-flag{position:relative;display:block;width:72%;aspect-ratio:10/7;border-radius:3px;background:#229447;box-shadow:0 1px 3px #062f5d55;transform:rotate(calc(-1 * var(--orientation-angle) + var(--flag-tilt)))}
+  .orientation-flag::before{content:"";position:absolute;left:50%;top:50%;width:49%;aspect-ratio:1;transform:translate(-50%,-50%) rotate(45deg);border-radius:1px;background:radial-gradient(circle,#1769aa 0 37%,transparent 40%),#ffd329}
+  .orientation-turn-arrow{position:absolute;left:calc(50% + 91px);top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:42px;height:42px;color:#ff9700;font-size:43px;line-height:1;font-weight:1000;text-shadow:0 2px #8d4d00}
+  .orientation-card h1{position:relative;z-index:1;max-width:310px;margin:0;color:#073563;font-size:clamp(25px,7.2vw,34px);line-height:1.05;text-shadow:0 2px #fff}
+  .orientation-card p{position:relative;z-index:1;max-width:315px;margin:0;color:#164e32;font-size:clamp(16px,4.4vw,19px);line-height:1.3;font-weight:900}
+  .orientation-card small{position:relative;z-index:1;display:flex;align-items:center;gap:7px;margin-top:2px;padding:8px 12px;border-radius:18px;background:#073e6d;color:#fff;font-size:clamp(12px,3.5vw,15px);font-weight:900;box-shadow:0 3px 0 #032746}
+  .orientation-card small span{display:grid;place-items:center;width:21px;height:21px;border-radius:50%;background:#46ad39;color:#fff;font-size:14px}
+  @keyframes orientation-phone-turn{0%,15%{--orientation-angle:0deg;--flag-tilt:0deg}29%{--flag-tilt:7deg}42%,62%{--orientation-angle:90deg;--flag-tilt:0deg}76%{--flag-tilt:-7deg}89%,100%{--orientation-angle:0deg;--flag-tilt:0deg}}
 }
+
+@media (max-width:900px) and (orientation:portrait) and (max-height:560px){
+  .orientation-card{gap:7px;padding:14px 18px}.orientation-logo{width:78px}.orientation-phone-stage{height:92px}.orientation-phone{width:56px;height:88px}.orientation-card h1{font-size:23px}.orientation-card p{font-size:15px}.orientation-card small{padding:6px 10px;font-size:12px}
+}
+
+@media (prefers-reduced-motion:reduce){.orientation-phone{--orientation-angle:90deg;animation:none!important}}
 @media (max-width:900px) and (orientation:landscape) and (max-height:350px){
   .mobile-menu-screen{grid-template-rows:20% minmax(0,1fr) 9%}
   .mobile-menu-logo{max-height:190px}
@@ -389,6 +410,11 @@
   .challenge-screen:has(.mobile-initial-challenge)>.feedback.finished h2{margin:3px 0;font-size:clamp(21px,3.2vw,27px);line-height:1.08}
   .challenge-screen:has(.mobile-initial-challenge)>.feedback.finished p{margin:5px 0 8px;font-size:clamp(12px,1.75vw,15px);line-height:1.18}
   .challenge-screen:has(.mobile-initial-challenge)>.feedback.finished button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;margin:4px;padding:5px 9px;border-width:3px;border-radius:13px;font-size:clamp(11px,1.5vw,14px);line-height:1.05}
+  .feedback.finished .phase-emblem-reward{width:min(330px,100%);min-height:82px;gap:8px;margin-bottom:3px;padding:4px 10px 4px 5px;border-width:3px;border-radius:18px;box-shadow:inset 0 0 0 2px #fff,0 3px 0 #b86e00}
+  .feedback.finished .phase-emblem-reward .phase-emblem{width:72px}
+  .feedback.finished .phase-emblem-reward-copy strong{font-size:clamp(12px,1.75vw,15px)}
+  .feedback.finished .phase-emblem-reward-copy span{margin-top:3px;font-size:clamp(14px,2vw,18px)}
+  .feedback.finished .phase-emblem-sparkles{font-size:12px!important}
 }
 /* Região Norte: os seis desafios usam a mesma composição horizontal da fase inicial. */
 @media (max-width:900px) and (orientation:landscape){
@@ -483,7 +509,7 @@
 
 @media (max-width:900px) and (orientation:landscape){
   .north-location-screen .north-heading{top:27%}
-  .north-location-screen .north-guide{left:3.5%;top:32%;width:25.5%;height:20%}
+  .north-location-screen .north-guide{left:3.5%;top:30%;width:26.5%;height:23%}
   .north-location-screen .north-map-card{left:31.5%;top:28%;width:60%;height:52%;border-width:2px;outline-width:1px}
   .north-location-screen .north-guide .north-tip{padding:5px 7px;border:3px solid #41872a;border-radius:21px;background:#fffdf1;font-size:clamp(9.5px,1.5vw,12px);line-height:1.12;box-shadow:0 3px 0 #1f5f2444}
   .north-location-screen .north-guide .north-tip::before{display:none}
@@ -491,7 +517,7 @@
 }
 @media (max-width:900px) and (orientation:landscape) and (max-height:350px){
   .north-location-screen .north-heading{top:27%}
-  .north-location-screen .north-guide{top:32%;height:20%}
+  .north-location-screen .north-guide{top:29%;height:23%}
   .north-location-screen .north-map-card{top:30%;height:50%}
   .north-location-screen .north-guide .north-tip{padding:4px 5px;font-size:9.5px}
 }
@@ -611,7 +637,7 @@
   .northeast-challenge-screen .north-status div:not(.score-inline){height:14px}
   .northeast-challenge-screen .north-status span{font-size:clamp(11px,1.6vw,15px)}
   .northeast-challenge-screen .north-guide{position:absolute;left:3.5%;top:32%;width:25.5%;height:20%;margin:0}
-  .northeast-challenge-screen .north-tip{isolation:isolate;display:grid;place-items:center;width:100%;height:100%;padding:5px 7px;border:3px solid #c96b25;border-radius:21px;background:#fffdf1;font-size:clamp(9.5px,1.5vw,12px);line-height:1.12;box-shadow:0 3px 0 #8f4b2144}
+  .northeast-challenge-screen .north-tip{isolation:isolate;display:grid;place-items:center;width:100%;height:100%;padding:5px 7px;border:3px solid #c96b25;border-radius:21px;background:#fffdf1;font-size:clamp(8.5px,1.25vw,10.5px);line-height:1.12;box-shadow:0 3px 0 #8f4b2144}
   .northeast-challenge-screen .north-tip::before,.northeast-challenge-screen .north-tip::after{content:"";position:absolute;transform:none;border:0;border-radius:0;clip-path:polygon(0 0,100% 0,50% 100%)}
   .northeast-challenge-screen .north-tip::before{display:block;z-index:1;left:63%;bottom:-13px;width:24px;height:16px;background:#c96b25}
   .northeast-challenge-screen .north-tip::after{z-index:2;left:calc(63% + 3px);bottom:-9px;width:18px;height:12px;background:#fffdf1}
@@ -662,7 +688,7 @@
   .northeast-challenge-screen .north-heading h1,.northeast-challenge-screen:not(.north-count-screen) .north-heading h1{font-size:clamp(13px,2.25vw,18px)}
   .northeast-challenge-screen .north-status{top:13%}
   .northeast-challenge-screen .north-guide{top:32%}
-  .northeast-challenge-screen .north-tip{padding:4px 5px;font-size:9.5px}
+  .northeast-challenge-screen .north-tip{padding:4px 5px;font-size:8.5px}
   .northeast-challenge-screen .northeast-map-card{top:27%}
 }
 @media (max-width:900px) and (orientation:landscape){
@@ -963,4 +989,14 @@
   .help-footer>img{width:55px;height:47px}.help-footer strong{font-size:11px}.help-footer>div{gap:2px}
   .help-listen{padding:4px 9px;border-width:3px;border-radius:12px;font-size:10px;box-shadow:0 0 0 4px #fff8df,0 0 0 6px #cde8a8,0 3px 6px #17345855!important}
   .modal.credits-modal{width:min(690px,92vw)!important;padding:9px 12px 8px!important}
+}
+
+@media (max-width:900px) and (orientation:landscape){
+  .achievement-grid .phase-emblem{width:58px;border-radius:20%}
+  .emblem-earned{position:fixed;top:7px;right:7px;width:205px;padding:5px 8px 5px 5px;border-width:3px;outline-width:2px;border-radius:17px;box-shadow:0 4px 0 #996100,0 8px 16px #001b3c70}
+  .emblem-earned .phase-emblem{width:58px}.emblem-earned strong{font-size:13px}.emblem-earned span{margin-top:3px;font-size:11px}
+}
+@media (max-width:900px) and (orientation:landscape) and (max-height:500px){
+  .achievement-grid article{min-height:112px!important}
+  .achievement-grid .phase-emblem{width:54px}
 }

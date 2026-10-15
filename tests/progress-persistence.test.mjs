@@ -44,6 +44,7 @@ test("selects remote progress only when it is at least as recent", () => {
 
 test("derives the achievements saved in Supabase", () => {
   const progress = normalizePlayerProgress({
+    completedPhase: true,
     completedChallenges: 5,
     completedRegions: ["norte", "nordeste", "centro-oeste", "sudeste", "sul"],
     firstTryWins: 3,
@@ -51,11 +52,11 @@ test("derives the achievements saved in Supabase", () => {
     initialPhasePerfect: true,
   });
   assert.deepEqual(unlockedAchievementIds(progress), [
-    "primeiros-passos",
-    "explorador-do-norte",
-    "mestre-das-regioes",
-    "acertei-de-primeira",
-    "colecionador-de-estrelas",
-    "grande-explorador",
+    "emblema-brasil",
+    "emblema-norte",
+    "emblema-nordeste",
+    "emblema-centro-oeste",
+    "emblema-sudeste",
+    "emblema-sul",
   ]);
 });
