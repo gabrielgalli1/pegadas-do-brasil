@@ -11,12 +11,13 @@ type MobileMenuProps = {
   onAccessibility: () => void;
   onHelp: () => void;
   onCredits: () => void;
+  onLogout: () => void;
   onStart: () => void;
 };
 
 export default function MobileMenu({
   selectedAvatar, nickname, onAvatar, onAchievements, onSound,
-  onAccessibility, onHelp, onCredits, onStart,
+  onAccessibility, onHelp, onCredits, onLogout, onStart,
 }: MobileMenuProps) {
   return <section className="screen mobile-menu-screen" aria-label="Menu principal para celular">
     <nav className="mobile-menu-tools" aria-label="Opções do jogo">
@@ -25,6 +26,7 @@ export default function MobileMenu({
       <button onClick={onSound}><img src="/icone-som-v1.png" alt="" />Som</button>
       <button onClick={onAccessibility}><img src="/icone-acessibilidade-v1.png" alt="" />Acessibilidade</button>
       <button onClick={onHelp}><img src="/icone-como-jogar-v1.png" alt="" />Como jogar</button>
+      {nickname && <button onClick={onLogout}><img src="/acesso-chave-v1.svg" alt="" />Trocar jogador</button>}
     </nav>
     <div className="mobile-menu-main">
       <div className="mobile-menu-welcome">

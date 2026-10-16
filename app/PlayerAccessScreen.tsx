@@ -1,16 +1,80 @@
 "use client";
 
 import { useState } from "react";
+import { tidyNickname, validateNickname } from "./nicknameValidation";
+import { loadCurrentPlayerIdentity, loadPlayerProgress, supabase, type RemotePlayerProgress } from "./supabaseClient";
 
 type AccessMode = "welcome" | "create" | "login";
+type AccessResponse = {
+  ok: boolean;
+  message?: string;
+  nickname?: string;
+  convertedAnonymous?: boolean;
+  session?: { access_token: string; refresh_token: string } | null;
+};
 
-export default function PlayerAccessScreen({ onContinue }: { onContinue: () => void }) {
+export default function PlayerAccessScreen({ onContinue, onAuthenticated, avatarId }: {
+  onContinue: () => void;
+  onAuthenticated: (nickname: string, remoteProgress: RemotePlayerProgress | null, authenticatedAvatarId: string | null) => void;
+  avatarId: string | null;
+}) {
   const [mode, setMode] = useState<AccessMode>("welcome");
   const [showPin, setShowPin] = useState(false);
+  const [nickname, setNickname] = useState("");
+  const [pin, setPin] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
 
-  const submitPreview = (event: React.FormEvent<HTMLFormElement>) => {
+  const changeMode = (nextMode: AccessMode) => {
+    setMode(nextMode);
+    setNickname("");
+    setPin("");
+    setShowPin(false);
+    setError(null);
+  };
+
+  const submitAccess = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onContinue();
+    if (busy) return;
+    const cleanNickname = tidyNickname(nickname);
+    const nicknameError = validateNickname(cleanNickname);
+    if (nicknameError) { setError(nicknameError); return; }
+    if (!/^\d{4}$/.test(pin)) { setError("Digite um PIN com 4 números."); return; }
+    if (!supabase) { setError("O acesso ainda não está configurado neste ambiente."); return; }
+
+    setBusy(true);
+    setError(null);
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const response = await fetch(`/api/player/${mode === "create" ? "create" : "login"}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(mode === "create" && sessionData.session?.access_token ? { Authorization: `Bearer ${sessionData.session.access_token}` } : {}),
+        },
+        body: JSON.stringify({ nickname: cleanNickname, pin, avatarId }),
+      });
+      const result = await response.json() as AccessResponse;
+      if (!response.ok || !result.ok) {
+        setError(result.message ?? "Não foi possível acessar agora. Tente novamente.");
+        return;
+      }
+
+      if (result.session) {
+        const { error: sessionError } = await supabase.auth.setSession(result.session);
+        if (sessionError) throw sessionError;
+      } else if (result.convertedAnonymous) {
+        const { error: refreshError } = await supabase.auth.refreshSession();
+        if (refreshError) throw refreshError;
+      }
+
+      const [remoteProgress, identity] = await Promise.all([loadPlayerProgress(), loadCurrentPlayerIdentity()]);
+      onAuthenticated(result.nickname ?? cleanNickname, remoteProgress, identity?.avatarId ?? null);
+    } catch {
+      setError("Sem conexão com o servidor. Verifique a internet e tente novamente.");
+    } finally {
+      setBusy(false);
+    }
   };
 
   return <section className="player-access-screen" aria-label="Acesso do jogador">
@@ -28,7 +92,7 @@ export default function PlayerAccessScreen({ onContinue }: { onContinue: () => v
     </div>
 
     <div className="player-access-card">
-      {mode !== "welcome" && <button className="player-access-back" type="button" onClick={() => setMode("welcome")} aria-label="Voltar às opções de acesso">
+      {mode !== "welcome" && <button className="player-access-back" type="button" onClick={() => changeMode("welcome")} aria-label="Voltar às opções de acesso" disabled={busy}>
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M14 7 5 16l9 9M6 16h20" /></svg>
       </button>}
 
@@ -36,29 +100,30 @@ export default function PlayerAccessScreen({ onContinue }: { onContinue: () => v
         <div className="player-access-card-icon" aria-hidden="true"><img src="/feedback-compass-v1.webp" alt="" /></div>
         <h1>Olá, explorador!</h1>
         <p>Escolha como você quer começar.</p>
-        <button className="player-access-primary" type="button" onClick={() => setMode("create")}><span aria-hidden="true">＋</span><b>CRIAR MEU APELIDO</b><small>Primeira vez por aqui</small></button>
-        <button className="player-access-secondary" type="button" onClick={() => setMode("login")}><span aria-hidden="true"><img src="/acesso-chave-v1.svg" alt="" /></span><b>JÁ TENHO UM APELIDO</b><small>Entrar com apelido e PIN</small></button>
+        <button className="player-access-primary" type="button" onClick={() => changeMode("create")}><span aria-hidden="true">＋</span><b>CRIAR MEU APELIDO</b><small>Primeira vez por aqui</small></button>
+        <button className="player-access-secondary" type="button" onClick={() => changeMode("login")}><span aria-hidden="true"><img src="/acesso-chave-v1.svg" alt="" /></span><b>JÁ TENHO UM APELIDO</b><small>Entrar com apelido e PIN</small></button>
         <button className="player-access-guest" type="button" onClick={onContinue}>Jogar sem conta por enquanto</button>
       </>}
 
-      {mode === "create" && <form className="player-access-form" onSubmit={submitPreview}>
+      {mode === "create" && <form className="player-access-form" onSubmit={submitAccess}>
         <div className="player-access-card-icon small" aria-hidden="true"><img src="/feedback-star-v1.webp" alt="" /></div>
         <h1>Crie seu apelido</h1>
         <p>Escolha um apelido e um PIN para acessar seu jogador.</p>
-        <label>Apelido do explorador<input type="text" maxLength={15} placeholder="Ex: Onça Veloz" required /></label>
-        <label>Crie um PIN de 4 números<div className="player-pin-field"><input type={showPin ? "text" : "password"} inputMode="numeric" pattern="[0-9]{4}" maxLength={4} placeholder="••••" required /><button type="button" onClick={() => setShowPin((value) => !value)} aria-label={showPin ? "Ocultar PIN" : "Mostrar PIN"}><img src={showPin ? "/acesso-olho-fechado-v1.svg" : "/acesso-olho-v1.svg"} alt="" /></button></div></label>
+        <label>Apelido do explorador<input type="text" maxLength={15} placeholder="Ex: Onça Veloz" autoComplete="username" value={nickname} onChange={(event) => { setNickname(event.target.value); setError(null); }} disabled={busy} required /></label>
+        <label>Crie um PIN de 4 números<div className="player-pin-field"><input type={showPin ? "text" : "password"} inputMode="numeric" pattern="[0-9]{4}" maxLength={4} autoComplete="new-password" placeholder="••••" value={pin} onChange={(event) => { setPin(event.target.value.replace(/\D/g, "").slice(0, 4)); setError(null); }} disabled={busy} required /><button type="button" onClick={() => setShowPin((value) => !value)} aria-label={showPin ? "Ocultar PIN" : "Mostrar PIN"} disabled={busy}><img src={showPin ? "/acesso-olho-fechado-v1.svg" : "/acesso-olho-v1.svg"} alt="" /></button></div></label>
         <p className="player-access-adult-note"><img src="/acesso-escudo-v1.svg" alt="" aria-hidden="true" /> Peça ajuda a um adulto para lembrar seu apelido e PIN.</p>
-        <button className="player-access-submit" type="submit">CRIAR E CONTINUAR <span aria-hidden="true">→</span></button>
+        {error && <p className="player-access-error" role="alert">{error}</p>}
+        <button className="player-access-submit" type="submit" disabled={busy}>{busy ? "CRIANDO..." : "CRIAR E CONTINUAR"} {!busy && <span aria-hidden="true">→</span>}</button>
       </form>}
 
-      {mode === "login" && <form className="player-access-form" onSubmit={submitPreview}>
+      {mode === "login" && <form className="player-access-form" onSubmit={submitAccess}>
         <div className="player-access-card-icon small" aria-hidden="true"><img src="/acesso-chave-v1.svg" alt="" /></div>
         <h1>Continue sua aventura</h1>
         <p>Digite o mesmo apelido e PIN usados no cadastro.</p>
-        <label>Apelido do explorador<input type="text" maxLength={15} placeholder="Ex: Onça Veloz" required /></label>
-        <label>PIN de 4 números<div className="player-pin-field"><input type={showPin ? "text" : "password"} inputMode="numeric" pattern="[0-9]{4}" maxLength={4} placeholder="••••" required /><button type="button" onClick={() => setShowPin((value) => !value)} aria-label={showPin ? "Ocultar PIN" : "Mostrar PIN"}><img src={showPin ? "/acesso-olho-fechado-v1.svg" : "/acesso-olho-v1.svg"} alt="" /></button></div></label>
-        <button className="player-access-submit" type="submit">ENTRAR NO JOGO <span aria-hidden="true">→</span></button>
-        <button className="player-access-help" type="button">Esqueci meu apelido ou PIN</button>
+        <label>Apelido do explorador<input type="text" maxLength={15} placeholder="Ex: Onça Veloz" autoComplete="username" value={nickname} onChange={(event) => { setNickname(event.target.value); setError(null); }} disabled={busy} required /></label>
+        <label>PIN de 4 números<div className="player-pin-field"><input type={showPin ? "text" : "password"} inputMode="numeric" pattern="[0-9]{4}" maxLength={4} autoComplete="current-password" placeholder="••••" value={pin} onChange={(event) => { setPin(event.target.value.replace(/\D/g, "").slice(0, 4)); setError(null); }} disabled={busy} required /><button type="button" onClick={() => setShowPin((value) => !value)} aria-label={showPin ? "Ocultar PIN" : "Mostrar PIN"} disabled={busy}><img src={showPin ? "/acesso-olho-fechado-v1.svg" : "/acesso-olho-v1.svg"} alt="" /></button></div></label>
+        {error && <p className="player-access-error" role="alert">{error}</p>}
+        <button className="player-access-submit" type="submit" disabled={busy}>{busy ? "ENTRANDO..." : "ENTRAR NO JOGO"} {!busy && <span aria-hidden="true">→</span>}</button>
       </form>}
     </div>
 
