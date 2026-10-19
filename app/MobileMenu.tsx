@@ -11,12 +11,14 @@ type MobileMenuProps = {
   onAccessibility: () => void;
   onHelp: () => void;
   onCredits: () => void;
+  showSignOut: boolean;
+  onSignOut: () => void;
   onStart: () => void;
 };
 
 export default function MobileMenu({
   selectedAvatar, nickname, onAvatar, onAchievements, onSound,
-  onAccessibility, onHelp, onCredits, onStart,
+  onAccessibility, onHelp, onCredits, showSignOut, onSignOut, onStart,
 }: MobileMenuProps) {
   return <section className="screen mobile-menu-screen" aria-label="Menu principal para celular">
     <nav className="mobile-menu-tools" aria-label="Opções do jogo">
@@ -38,5 +40,6 @@ export default function MobileMenu({
       </div>
     </div>
     <button className="mobile-menu-credits" onClick={onCredits}>★ CRÉDITOS</button>
+    {showSignOut && <button className="mobile-menu-sign-out" onClick={onSignOut} aria-label="Sair deste jogador" title="Sair"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 3h13v26H5zM18 16h10m-4-4 4 4-4 4" /></svg></button>}
   </section>;
 }
