@@ -20,9 +20,15 @@ existirem contas criadas com a versão 1.
 
 Recebe `nickname`, `pin` e `avatarId`. Quando a requisição traz uma sessão
 anônima no cabeçalho `Authorization`, converte o mesmo usuário para preservar
-seu progresso. Sem sessão, cria um usuário novo. O registro em `jogadores` é
-gravado antes da conversão e restaurado se a atualização do Auth falhar. Para
-contas novas, uma falha ao inserir em `jogadores` remove o usuário criado.
+seu progresso e devolve uma nova sessão. Sem sessão, cria um usuário com a API
+administrativa, grava `jogadores` e inicia a sessão com o cliente público. O
+registro em `jogadores` é gravado antes da conversão e restaurado se a
+atualização do Auth falhar. Para contas novas, uma falha ao inserir em
+`jogadores` ou iniciar a sessão remove o usuário criado.
+
+O campo `jogadores.avatar_id` aceita `null`, pois a tela de acesso aparece antes
+da escolha do avatar. Quando o jogador escolhe um personagem no menu, o jogo
+atualiza esse campo normalmente.
 
 ### `POST /api/player/login`
 

@@ -9,7 +9,6 @@ type AccessResponse = {
   ok: boolean;
   message?: string;
   nickname?: string;
-  convertedAnonymous?: boolean;
   session?: { access_token: string; refresh_token: string } | null;
 };
 
