@@ -8,6 +8,7 @@ type Props = {
   levels: readonly Level[];
   unlockedLevel: number;
   completedPhase: boolean;
+  completedRegions: string[];
   completedCount: number;
   score: number;
   sound: boolean;
@@ -19,7 +20,7 @@ type Props = {
 };
 
 export default function MobileJourney({
-  levels, unlockedLevel, completedPhase, completedCount, score, sound, notice,
+  levels, unlockedLevel, completedPhase, completedRegions, completedCount, score, sound, notice,
   onOpen, onBack, onToggleSound, onCloseNotice,
 }: Props) {
   return <section className="screen mobile-journey-screen" aria-label="Escolha sua aventura no celular">
@@ -41,7 +42,7 @@ export default function MobileJourney({
         <div className="mobile-journey-track">
           {levels.map((level, index) => {
             const unlocked = index <= unlockedLevel;
-            const completed = index < unlockedLevel || (index === 0 && completedPhase);
+            const completed = (index === 0 && completedPhase) || (index > 0 && completedRegions.includes(level.id));
             return <button key={level.id} className={`mobile-journey-level ${unlocked ? "unlocked" : "locked"} ${completed ? "completed" : ""}`} disabled={!unlocked} onClick={() => onOpen(index)} aria-label={`${level.title}, ${level.phases} fases, ${completed ? "concluída" : unlocked ? "disponível" : "bloqueada"}`}>
               <img src={level.image} alt="" />
               <span className="mobile-journey-level-state" aria-hidden="true">{!unlocked ? "🔒" : completed ? "★" : "▶"}</span>

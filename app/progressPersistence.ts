@@ -13,6 +13,7 @@ export type PlayerProgress = {
   northeastChallenge: number;
   centerWestChallenge: number;
   southeastChallenge: number;
+  southChallenge: number;
 };
 
 export type CachedPlayerProgress = PlayerProgress & { updatedAt: string };
@@ -32,6 +33,7 @@ export const EMPTY_PROGRESS: PlayerProgress = {
   northeastChallenge: 1,
   centerWestChallenge: 1,
   southeastChallenge: 1,
+  southChallenge: 1,
 };
 
 const REGION_IDS = new Set(["norte", "nordeste", "centro-oeste", "sudeste", "sul"]);
@@ -64,6 +66,7 @@ export function normalizePlayerProgress(value: unknown): PlayerProgress {
     northeastChallenge: boundedInteger(data.northeastChallenge, 1, 6, 1),
     centerWestChallenge: boundedInteger(data.centerWestChallenge, 1, 6, 1),
     southeastChallenge: boundedInteger(data.southeastChallenge, 1, 6, 1),
+    southChallenge: boundedInteger(data.southChallenge, 1, 6, 1),
   };
 }
 

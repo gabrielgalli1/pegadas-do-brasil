@@ -7,6 +7,7 @@ import type { NorthPuzzlePieceId } from "./north-puzzle-data";
 import NortheastLevel from "./NortheastLevel";
 import CenterWestLevel from "./CenterWestLevel";
 import SoutheastLevel from "./SoutheastLevel";
+import SouthLevel from "./SouthLevel";
 import ScoreBadge from "./ScoreBadge";
 import MobileMenu from "./MobileMenu";
 import MobileJourney from "./MobileJourney";
@@ -41,7 +42,7 @@ const northLargestOptions = [
 const regionNames: Record<string, string> = { norte: "Norte", nordeste: "Nordeste", "centro-oeste": "Centro-Oeste", sudeste: "Sudeste", sul: "Sul" };
 const regionLabels: Record<string, [number, number]> = { norte: [215, 145], nordeste: [445, 225], "centro-oeste": [265, 305], sudeste: [395, 365], sul: [290, 440] };
 
-type Screen = "menu" | "journey" | "game" | "north" | "northeast" | "centerwest" | "southeast";
+type Screen = "menu" | "journey" | "game" | "north" | "northeast" | "centerwest" | "southeast" | "south";
 const plannedChallengeCount = 5;
 
 const journeyLevels = [
@@ -270,6 +271,7 @@ export default function Home() {
   const [northeastChallenge, setNortheastChallenge] = useState(1);
   const [centerWestChallenge, setCenterWestChallenge] = useState(1);
   const [southeastChallenge, setSoutheastChallenge] = useState(1);
+  const [southChallenge, setSouthChallenge] = useState(1);
   const [score, setScore] = useState(0);
   const [feedback, setFeedback] = useState<"idle" | "correct" | "wrong" | "finished">("idle");
   const [attempts, setAttempts] = useState(0);
@@ -316,6 +318,7 @@ export default function Home() {
     setNortheastChallenge(progress.northeastChallenge);
     setCenterWestChallenge(progress.centerWestChallenge);
     setSoutheastChallenge(progress.southeastChallenge);
+    setSouthChallenge(progress.southChallenge);
   }, []);
   useEffect(() => {
     const fitDesktop = () => {
@@ -413,6 +416,11 @@ export default function Home() {
       setSoutheastChallenge(previewChallenge >= 1 && previewChallenge <= 6 ? previewChallenge : 1);
       setScreen("southeast");
     }
+    if (new URLSearchParams(window.location.search).get("preview") === "sul") {
+      const previewChallenge = Number(new URLSearchParams(window.location.search).get("desafio"));
+      setSouthChallenge(previewChallenge >= 1 && previewChallenge <= 6 ? previewChallenge : 1);
+      setScreen("south");
+    }
 
     void (async () => {
       const identity = await loadCurrentPlayerIdentity();
@@ -459,13 +467,13 @@ export default function Home() {
 
   useEffect(() => {
     if (!progressReady || new URLSearchParams(window.location.search).has("preview")) return;
-    const progress = normalizePlayerProgress({ score, challengeIndex, completedChallenges, firstTryWins, highestScore, completedPhase, completedRegions, initialPhasePerfect, initialPhaseHadMistake, unlockedLevel, northChallenge, northeastChallenge, centerWestChallenge, southeastChallenge });
+    const progress = normalizePlayerProgress({ score, challengeIndex, completedChallenges, firstTryWins, highestScore, completedPhase, completedRegions, initialPhasePerfect, initialPhaseHadMistake, unlockedLevel, northChallenge, northeastChallenge, centerWestChallenge, southeastChallenge, southChallenge });
     const cachedProgress = { ...progress, updatedAt: new Date().toISOString() };
     window.localStorage.setItem("pegadas-progress", JSON.stringify(cachedProgress));
     if (!avatarId || !nickname) return;
     const timer = window.setTimeout(() => { void syncPlayerProgress(progress, unlockedAchievementIds(progress)); }, 500);
     return () => window.clearTimeout(timer);
-  }, [progressReady, avatarId, nickname, score, challengeIndex, completedChallenges, firstTryWins, highestScore, completedPhase, completedRegions, initialPhasePerfect, initialPhaseHadMistake, unlockedLevel, northChallenge, northeastChallenge, centerWestChallenge, southeastChallenge]);
+  }, [progressReady, avatarId, nickname, score, challengeIndex, completedChallenges, firstTryWins, highestScore, completedPhase, completedRegions, initialPhasePerfect, initialPhaseHadMistake, unlockedLevel, northChallenge, northeastChallenge, centerWestChallenge, southeastChallenge, southChallenge]);
   useEffect(() => { window.localStorage.setItem("pegadas-audio", JSON.stringify({ music, effects, narration: sound, volume })); window.localStorage.setItem("pegadas-volume", String(volume)); }, [music, effects, sound, volume]);
   useEffect(() => { window.localStorage.setItem("pegadas-accessibility", JSON.stringify({ highContrast, largeText, buttonHighlight })); }, [highContrast, largeText, buttonHighlight]);
   useEffect(() => {
@@ -702,6 +710,7 @@ export default function Home() {
     if (screen === "northeast") setNortheastChallenge(1);
     if (screen === "centerwest") setCenterWestChallenge(1);
     if (screen === "southeast") setSoutheastChallenge(1);
+    if (screen === "south") setSouthChallenge(1);
   }
 
   function chooseCountry(country: string) {
@@ -943,6 +952,26 @@ export default function Home() {
     if (southeastChallenge < 6) setSoutheastChallenge((value) => value + 1);
     else { setEarnedEmblem(null); setScreen("journey"); }
   }
+  function answerSouth(correct: boolean) {
+    if (feedback !== "idle") return;
+    setAttempts((value) => value + 1);
+    if (!correct) { registerMistake(); return; }
+    const earnedPoints = attempts === 0 ? 100 : 60;
+    setScore((value) => { const next = value + earnedPoints; setHighestScore((best) => Math.max(best, next)); return next; });
+    if (attempts === 0) setFirstTryWins((value) => value + 1);
+    if (southChallenge === 6) {
+      if (!completedRegions.includes("sul")) setEarnedEmblem("sul");
+      setCompletedRegions((regions) => regions.includes("sul") ? regions : [...regions, "sul"]);
+    }
+    playCorrectAnswer();
+    setFeedback(southChallenge === 6 ? "finished" : "correct");
+    if (sound) speak(southChallenge === 1 ? "Muito bem! Você encontrou a Região Sul!" : southChallenge === 6 ? "Parabéns! Você concluiu os seis desafios da Região Sul!" : "Muito bem! Desafio concluído!");
+  }
+  function nextSouthChallenge() {
+    setFeedback("idle"); setAttempts(0); setMistakes(0);
+    if (southChallenge < 6) setSouthChallenge((value) => value + 1);
+    else { setEarnedEmblem(null); setScreen("journey"); }
+  }
   function nextCenterWestChallenge() {
     setFeedback("idle");
     setAttempts(0);
@@ -974,7 +1003,7 @@ export default function Home() {
     if (index === 2) { setNortheastChallenge(1); setScreen("northeast"); return; }
     if (index === 3) { setCenterWestChallenge(1); setScreen("centerwest"); return; }
     if (index === 4) { setSoutheastChallenge(1); setScreen("southeast"); return; }
-    setJourneyNotice(`${journeyLevels[index].title} desbloqueada! As aventuras desta região serão adicionadas na próxima etapa.`);
+    if (index === 5) { setSouthChallenge(1); setScreen("south"); return; }
   }
 
   return <main className={`${highContrast ? "high-contrast" : ""} ${largeText ? "large-text" : ""} ${buttonHighlight ? "button-highlight" : ""}`}><div className="mobile-orientation-gate" role="status" aria-live="polite"><section className="orientation-card"><img className="orientation-logo" src="/pegadas-logo-v1.png" alt="Pegadas do Brasil" /><div className="orientation-phone-stage" aria-hidden="true"><div className="orientation-phone"><i></i><span><em className="orientation-flag"></em></span></div><div className="orientation-turn-arrow">↻</div></div><h1>Vire o celular para jogar</h1><p>Use a tela na horizontal para ver o jogo completo e aproveitar melhor a aventura.</p><small><span aria-hidden="true">✓</span> A tela será ajustada automaticamente</small></section></div><div className="game-shell" ref={gameShellRef}>{accessVisible && <PlayerAccessScreen avatarId={avatarId} onContinue={() => setAccessVisible(false)} onAuthenticated={finishPlayerAccess} />}<audio ref={menuMusicRef} src="/musica-menu.mp3" loop preload="auto" aria-hidden="true" /><audio ref={northMusicRef} src="/musica-regiao-norte.mp3" loop preload="auto" aria-hidden="true" /><audio ref={northeastMusicRef} src="/musica-regiao-nordeste.mp3" loop preload="auto" aria-hidden="true" /><audio ref={centerWestMusicRef} src="/musica-regiao-centro-oeste.mp3" loop preload="auto" aria-hidden="true" /><audio ref={southeastMusicRef} src="/musica-regiao-sudeste.mp3" preload="auto" aria-hidden="true" /><audio ref={buttonClickRef} src="/som-clique-botao.wav" preload="auto" aria-hidden="true" /><audio ref={wrongAnswerRef} src="/som-erro.mp3" preload="auto" aria-hidden="true" /><audio ref={correctAnswerRef} src="/som-acerto.mp3" preload="auto" aria-hidden="true" />
@@ -999,7 +1028,7 @@ export default function Home() {
       <div className="journey-levels">
         {journeyLevels.map((level, index) => {
           const unlocked = index <= unlockedLevel;
-          const completed = index < unlockedLevel || (index === 0 && completedPhase);
+          const completed = (index === 0 && completedPhase) || (index > 0 && completedRegions.includes(level.id));
           return <button key={level.id} className={`journey-level ${unlocked ? "unlocked" : "locked"} ${completed ? "completed" : ""}`} disabled={!unlocked} onClick={() => openJourneyLevel(index)} aria-label={`${level.title}, ${level.phases} fases, ${completed ? "concluída" : unlocked ? "disponível" : "bloqueada"}`}>
             <img src={level.image} alt="" />
             <span className="journey-level-state" aria-hidden="true">{!unlocked ? "🔒" : completed ? "★" : "▶"}</span>
@@ -1008,7 +1037,7 @@ export default function Home() {
       </div>
       {journeyNotice && <div className="journey-notice" role="status">{journeyNotice}<button onClick={() => setJourneyNotice(null)} aria-label="Fechar aviso">×</button></div>}
       <p className="journey-footer"><span aria-hidden="true">●</span> Complete as fases na ordem para desbloquear novas regiões! <span aria-hidden="true">●</span></p>
-    </section><MobileJourney levels={journeyLevels} unlockedLevel={unlockedLevel} completedPhase={completedPhase} completedCount={(completedPhase ? 1 : 0) + completedRegions.length} score={score} sound={sound} notice={journeyNotice} onOpen={openJourneyLevel} onBack={() => setScreen("menu")} onToggleSound={() => setSound(!sound)} onCloseNotice={() => setJourneyNotice(null)} /></>}
+    </section><MobileJourney levels={journeyLevels} unlockedLevel={unlockedLevel} completedPhase={completedPhase} completedRegions={completedRegions} completedCount={(completedPhase ? 1 : 0) + completedRegions.length} score={score} sound={sound} notice={journeyNotice} onOpen={openJourneyLevel} onBack={() => setScreen("menu")} onToggleSound={() => setSound(!sound)} onCloseNotice={() => setJourneyNotice(null)} /></>}
 
     {screen === "game" && <section className={`screen play-screen challenge-screen challenge-step-${challengeIndex + 1}`}>
       <MobileInitialChallenge index={challengeIndex} score={score} sound={sound} countries={countryOptions} continents={continentOptions} oceans={oceanOptions} stateCounts={stateCountOptions} landscapes={landscapeOptions} stateMap={<TransparentStateMap />} onBack={() => setScreen("journey")} onToggleSound={() => setSound(!sound)} onCountry={chooseCountry} onContinent={chooseContinent} onOcean={chooseOcean} onStateCount={chooseStateCount} onLandscape={chooseLandscape} onListen={speak} />
@@ -1113,6 +1142,8 @@ export default function Home() {
     {screen === "centerwest" && <CenterWestLevel key={regionRun} mistakes={mistakes} challenge={centerWestChallenge} score={score} feedback={feedback} sound={sound} newEmblem={earnedEmblem === "centro-oeste"} onAnswer={answerCenterWest} onNext={nextCenterWestChallenge} onRetry={continueAfterMistake} onBack={() => { setFeedback("idle"); setAttempts(0); setMistakes(0); setEarnedEmblem(null); setScreen("journey"); }} onToggleSound={() => setSound(!sound)} onListen={(text) => { if (sound) speak(text); }} />}
 
     {screen === "southeast" && <SoutheastLevel key={`${regionRun}-${southeastChallenge}`} mistakes={mistakes} challenge={southeastChallenge} score={score} feedback={feedback} sound={sound} newEmblem={earnedEmblem === "sudeste"} onAnswer={answerSoutheast} onNext={nextSoutheastChallenge} onRetry={continueAfterMistake} onBack={() => { setFeedback("idle"); setAttempts(0); setMistakes(0); setEarnedEmblem(null); setScreen("journey"); }} onToggleSound={() => setSound(!sound)} onListen={(text) => { if (sound) speak(text); }} />}
+
+    {screen === "south" && <SouthLevel key={`${regionRun}-${southChallenge}`} mistakes={mistakes} challenge={southChallenge} score={score} feedback={feedback} sound={sound} newEmblem={earnedEmblem === "sul"} onAnswer={answerSouth} onNext={nextSouthChallenge} onRetry={continueAfterMistake} onBack={() => { setFeedback("idle"); setAttempts(0); setMistakes(0); setEarnedEmblem(null); setScreen("journey"); }} onToggleSound={() => setSound(!sound)} onListen={(text) => { if (sound) speak(text); }} />}
 
     {modal && <div className={`modal-backdrop${modal === "nickname" ? " nickname-backdrop" : ""}`} role="presentation"><section ref={modalRef} tabIndex={-1} className={`modal ${modal === "avatar" ? "avatar-modal" : modal === "achievements" ? "achievements-modal" : modal === "sound" ? "sound-modal" : modal === "accessibility" ? "accessibility-modal" : modal === "help" ? "help-modal" : modal === "credits" ? "credits-modal" : modal === "nickname" ? "nickname-modal" : ""}`} role="dialog" aria-modal="true" aria-labelledby="modal-title"><button className="modal-close" onClick={closeModal} aria-label="Fechar">×</button>{modal === "avatar" && (accessExitConfirm ? <><h2 id="modal-title">Voltar à tela de login?</h2><div className="avatar-access-confirm" role="alert"><img src="/acesso-chave-v1.svg" alt="" aria-hidden="true" /><p>Você sairá deste jogador. Para entrar novamente, use o mesmo apelido e PIN.</p><div><button type="button" className="avatar-access-cancel" onClick={() => setAccessExitConfirm(false)}>CANCELAR</button><button type="button" className="avatar-access-leave" onClick={leaveProtectedPlayer}>SAIR E VOLTAR</button></div></div></> : <><h2 id="modal-title">Escolha seu avatar</h2>{avatarReminder && <p className="avatar-alert" role="alert">Escolha um personagem para liberar a aventura!</p>}<div className="avatar-grid">{avatars.map((avatar) => <button key={avatar.id} className={avatar.id === avatarId ? "selected" : ""} onClick={() => chooseAvatar(avatar.id)} aria-pressed={avatar.id === avatarId} aria-label={`Escolher ${avatar.description}`}><img src={avatar.image} alt="" /><strong>{avatar.name}</strong><small>{avatar.description}</small>{avatar.id === avatarId && <b>✓ Escolhido</b>}</button>)}</div><p className="avatar-safety">Você pode trocar de avatar quando quiser.</p>{avatarId && !protectedPlayer && <button type="button" className="avatar-nickname-edit" onClick={() => { setNicknameInput(nickname ?? ""); setNicknameError(null); setModal("nickname"); }}><span aria-hidden="true">✏️</span> {nickname ? `EDITAR APELIDO (${nickname})` : "CRIAR APELIDO"}</button>}<button type="button" className="avatar-access-return" onClick={returnToAccess}><img src="/acesso-chave-v1.svg" alt="" aria-hidden="true" />VOLTAR À TELA DE LOGIN</button></>)}{modal === "nickname" && <form className="nickname-form" onSubmit={submitNickname}><h2 id="modal-title">Como podemos te chamar?</h2><p>Escolha um apelido para o seu explorador. Não use seu nome verdadeiro!</p><label className="nickname-label" htmlFor="nickname-input">Apelido<input id="nickname-input" type="text" maxLength={15} value={nicknameInput} onChange={(e) => { setNicknameInput(e.target.value); setNicknameError(null); }} placeholder="Ex: Onça Veloz" aria-describedby={nicknameError ? "nickname-error" : undefined} /></label>{nicknameError && <p id="nickname-error" className="nickname-error" role="alert">{nicknameError}</p>}<div className="nickname-actions"><button type="submit" className="nickname-submit" disabled={nicknameSaving}>{nicknameSaving ? "SALVANDO..." : "CONFIRMAR"}</button><button type="button" className="nickname-skip" onClick={closeModal}>Pular por agora</button></div></form>}{modal === "achievements" && <><header className="achievements-heading"><img src="/icone-conquistas-v1.png" alt="" /><div><h2 id="modal-title">MEUS EMBLEMAS</h2><p><strong>{unlockedAchievements} de 6</strong> conquistados</p></div></header><div className="achievement-progress" aria-label={`${unlockedAchievements} de 6 emblemas conquistados`}><span style={{ width: `${(unlockedAchievements / 6) * 100}%` }}></span>{achievements.map((achievement) => <i key={achievement.id} className={achievement.unlocked ? "earned" : ""} aria-hidden="true">&#9733;</i>)}</div><div className="achievement-grid">{achievements.map((achievement) => <article key={achievement.id} className={`${achievement.unlocked ? "unlocked" : "locked"} achievement-${achievement.id}`}><PhaseEmblem id={achievement.id} label={`Emblema ${achievement.title}${achievement.unlocked ? " conquistado" : " bloqueado"}`} />{!achievement.unlocked && <span className="achievement-lock" aria-hidden="true">&#128274;</span>}<h3>{achievement.title}</h3><p>{achievement.description}</p><small>{achievement.unlocked ? "CONQUISTADO" : "BLOQUEADO"}</small></article>)}</div><footer className="achievements-footer">Complete cada fase para reunir todos os emblemas!</footer></>}{modal === "sound" && <><header className="sound-heading"><img src="/icone-som-v1.png" alt="" /><h2 id="modal-title">SOM E NARRAÇÃO</h2></header><div className="volume-control"><strong>VOLUME GERAL</strong><div><span aria-hidden="true">🔈</span><input type="range" min="0" max="100" value={volume} onChange={(e) => setVolume(Number(e.target.value))} aria-label="Volume geral" style={{ background: `linear-gradient(90deg, #13aef0 0%, #13aef0 ${volume}%, #66bd38 ${volume}%, #66bd38 100%)` }} /><span aria-hidden="true">🔊</span></div></div><div className="sound-options"><article className="music-option"><img className="sound-option-icon" src="/som-musica-v1.png" alt="" /><div><h3>MÚSICA</h3><p>Música de fundo do jogo</p></div><button className={music ? "toggle on" : "toggle"} onClick={() => setMusic(!music)} role="switch" aria-checked={music} aria-label="Música">{music ? "LIGADO" : "DESLIGADO"}<i></i></button></article><article className="effects-option"><img className="sound-option-icon" src="/som-efeitos-v1.png" alt="" /><div><h3>EFEITOS SONOROS</h3><p>Botões, acertos e recompensas</p></div><button className={effects ? "toggle on" : "toggle"} onClick={() => setEffects(!effects)} role="switch" aria-checked={effects} aria-label="Efeitos sonoros">{effects ? "LIGADO" : "DESLIGADO"}<i></i></button></article><article className="narration-option"><img className="sound-option-icon" src="/som-narracao-v2.png" alt="" /><div><h3>NARRAÇÃO</h3><p>Instruções e perguntas faladas</p></div><button className={sound ? "toggle on" : "toggle"} onClick={() => setSound(!sound)} role="switch" aria-checked={sound} aria-label="Narração">{sound ? "LIGADO" : "DESLIGADO"}<i></i></button></article></div></>}{modal === "accessibility" && <><header className="accessibility-heading"><img src="/icone-acessibilidade-v1.png" alt="" /><h2 id="modal-title">ACESSIBILIDADE</h2></header><div className="accessibility-options"><article className="contrast-option"><span className="accessibility-icon contrast-icon" aria-hidden="true"></span><div><h3>ALTO CONTRASTE</h3><p>Aumenta a diferença entre as cores</p></div><button className={highContrast ? "toggle on" : "toggle"} onClick={() => setHighContrast(!highContrast)} role="switch" aria-checked={highContrast} aria-label="Alto contraste">{highContrast ? "LIGADO" : "DESLIGADO"}<i></i></button></article><article className="text-option"><span className="accessibility-icon text-icon" aria-hidden="true">AA</span><div><h3>TEXTO AMPLIADO</h3><p>Aumenta o tamanho das letras</p></div><div className="text-size-control" role="group" aria-label="Tamanho do texto"><button className={!largeText ? "selected" : ""} onClick={() => setLargeText(false)} aria-pressed={!largeText}>NORMAL</button><button className={largeText ? "selected" : ""} onClick={() => setLargeText(true)} aria-pressed={largeText}>GRANDE</button></div></article><article className="highlight-option"><span className="accessibility-icon highlight-icon" aria-hidden="true">☝</span><div><h3>DESTAQUE DOS BOTÕES</h3><p>Realça os botões interativos</p></div><button className={buttonHighlight ? "toggle on" : "toggle"} onClick={() => setButtonHighlight(!buttonHighlight)} role="switch" aria-checked={buttonHighlight} aria-label="Destaque visual dos botões">{buttonHighlight ? "LIGADO" : "DESLIGADO"}<i></i></button></article></div><div className="accessibility-footprints" aria-hidden="true">👣　👣</div></>}{modal === "help" && <HowToPlay />}{modal === "credits" && <Credits onClose={closeModal} />}</section></div>}
   </div></main>;
