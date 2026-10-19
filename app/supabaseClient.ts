@@ -70,13 +70,6 @@ export async function loadCurrentPlayerIdentity(): Promise<CurrentPlayerIdentity
   };
 }
 
-/** Ends the session and removes data that must not leak to the next player. */
-export async function signOutPlayer(): Promise<void> {
-  if (supabase) await supabase.auth.signOut();
-  if (typeof window === "undefined") return;
-  ["pegadas-progress", "pegadas-avatar", "pegadas-nickname"].forEach((key) => window.localStorage.removeItem(key));
-}
-
 /**
  * Ensures an anonymous Supabase auth session exists, then upserts the
  * player's avatar and nickname. Never throws — callers get back an

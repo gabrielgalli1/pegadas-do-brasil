@@ -49,12 +49,8 @@ Enquanto o e-mail e a senha dependerem do apelido, contas protegidas não podem
 editar o apelido diretamente. Uma futura troca exigirá uma rota própria para
 atualizar apelido, e-mail interno e senha de forma coordenada.
 
-## Saída
+## Jogo sem conta
 
-“Trocar jogador” executa `supabase.auth.signOut()` e remove do `localStorage`:
-
-- `pegadas-progress`
-- `pegadas-avatar`
-- `pegadas-nickname`
-
-Preferências de som e acessibilidade permanecem no aparelho.
+Antes de continuar sem uma conta, a tela explica que o progresso ficará salvo
+somente no aparelho atual e poderá ser perdido ao trocar de dispositivo ou
+limpar os dados do navegador.

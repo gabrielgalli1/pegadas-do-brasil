@@ -4,7 +4,7 @@ import { useState } from "react";
 import { tidyNickname, validateNickname } from "./nicknameValidation";
 import { loadCurrentPlayerIdentity, loadPlayerProgress, supabase, type RemotePlayerProgress } from "./supabaseClient";
 
-type AccessMode = "welcome" | "create" | "login";
+type AccessMode = "welcome" | "create" | "login" | "guest";
 type AccessResponse = {
   ok: boolean;
   message?: string;
@@ -98,8 +98,18 @@ export default function PlayerAccessScreen({ onContinue, onAuthenticated, avatar
         <p>Escolha como você quer começar.</p>
         <button className="player-access-primary" type="button" onClick={() => changeMode("create")}><span aria-hidden="true">＋</span><b>CRIAR MEU APELIDO</b><small>Primeira vez por aqui</small></button>
         <button className="player-access-secondary" type="button" onClick={() => changeMode("login")}><span aria-hidden="true"><img src="/acesso-chave-v1.svg" alt="" /></span><b>JÁ TENHO UM APELIDO</b><small>Entrar com apelido e PIN</small></button>
-        <button className="player-access-guest" type="button" onClick={onContinue}>Jogar sem conta por enquanto</button>
+        <button className="player-access-guest" type="button" onClick={() => changeMode("guest")}>Jogar sem conta por enquanto</button>
       </>}
+
+      {mode === "guest" && <div className="player-access-guest-confirm" role="alertdialog" aria-labelledby="guest-confirm-title" aria-describedby="guest-confirm-description">
+        <div className="player-access-card-icon small" aria-hidden="true"><img src="/acesso-escudo-v1.svg" alt="" /></div>
+        <h1 id="guest-confirm-title">Jogar sem conta?</h1>
+        <p id="guest-confirm-description">Seu progresso ficará salvo somente neste aparelho. Se você trocar de celular, computador ou limpar os dados do navegador, poderá perder sua aventura.</p>
+        <div className="player-access-guest-actions">
+          <button className="guest-create" type="button" onClick={() => changeMode("create")}>VOLTAR E CRIAR APELIDO</button>
+          <button className="guest-continue" type="button" onClick={onContinue}>JOGAR SEM CONTA</button>
+        </div>
+      </div>}
 
       {mode === "create" && <form className="player-access-form" onSubmit={submitAccess}>
         <div className="player-access-card-icon small" aria-hidden="true"><img src="/feedback-star-v1.webp" alt="" /></div>
