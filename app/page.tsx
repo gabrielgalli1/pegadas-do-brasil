@@ -597,7 +597,7 @@ export default function Home() {
 
   const closeModal = useCallback(() => {
     setAccessExitConfirm(false);
-    closeModal();
+    setModal(null);
   }, []);
 
   const returnToAccess = useCallback(() => {
