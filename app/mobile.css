@@ -937,6 +937,7 @@
   .avatar-grid b{right:3px;top:3px;padding:2px 4px;border-radius:9px;font-size:8px}
   .avatar-safety{margin:5px 0 0!important;font-size:10px!important}
   .avatar-nickname-edit{margin:5px auto 1px;padding:5px 12px;border-width:3px;border-radius:13px;font-size:11px;line-height:1}
+  .avatar-access-return{margin:5px auto 0;padding:3px 7px;font-size:9px}.avatar-access-confirm{margin:5px auto 0;padding:5px 7px;border-radius:9px}.avatar-access-confirm p{margin-bottom:4px;font-size:8px}.avatar-access-confirm div{gap:5px}.avatar-access-confirm button{min-height:23px;padding:3px 7px;border-radius:7px;font-size:7px}
   .modal.achievements-modal{width:min(650px,88vw)!important}
   .achievements-heading{gap:8px;margin-bottom:2px}
   .achievements-heading img{width:42px;height:42px}

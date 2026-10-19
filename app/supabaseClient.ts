@@ -48,6 +48,13 @@ export type CurrentPlayerIdentity = {
   isAnonymous: boolean;
 };
 
+/** Ends an authenticated player session and clears player-specific local data. */
+export async function signOutPlayer(): Promise<void> {
+  if (supabase) await supabase.auth.signOut();
+  if (typeof window === "undefined") return;
+  ["pegadas-progress", "pegadas-avatar", "pegadas-nickname"].forEach((key) => window.localStorage.removeItem(key));
+}
+
 /** Restores the player attached to the current browser session. */
 export async function loadCurrentPlayerIdentity(): Promise<CurrentPlayerIdentity | null> {
   if (!supabase) return null;
