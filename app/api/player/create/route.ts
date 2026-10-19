@@ -67,30 +67,37 @@ export async function POST(request: Request) {
         throw updateError;
       }
 
-      return json({ ok: true, nickname, convertedAnonymous: true, session: null });
+      const { data: loginData, error: loginError } = await auth.auth.signInWithPassword({ email, password });
+      if (loginError || !loginData.session) {
+        throw loginError ?? new Error("Supabase não devolveu a sessão da conta convertida");
+      }
+
+      return json({ ok: true, nickname, convertedAnonymous: true, session: publicSession(loginData.session) });
     }
 
-    const { data: signUpData, error: signUpError } = await auth.auth.signUp({ email, password });
-    if (signUpError || !signUpData.user) {
-      if (signUpError?.message.toLowerCase().includes("already") || signUpError?.message.toLowerCase().includes("registered")) {
+    const { data: createdData, error: createError } = await admin.auth.admin.createUser({ email, password, email_confirm: true });
+    if (createError || !createdData.user) {
+      if (createError?.message.toLowerCase().includes("already") || createError?.message.toLowerCase().includes("registered")) {
         throw new PlayerAuthError(409, "Esse apelido já existe, escolha outro.", "nickname_taken");
       }
-      throw signUpError ?? new Error("Supabase não devolveu o usuário criado");
+      throw createError ?? new Error("Supabase não devolveu o usuário criado");
     }
 
-    const playerRecord: Record<string, string> = { id: signUpData.user.id, apelido: nickname };
+    const playerRecord: Record<string, string> = { id: createdData.user.id, apelido: nickname };
     if (avatarId) playerRecord.avatar_id = avatarId;
     const { error: playerError } = await admin.from("jogadores").insert(playerRecord);
     if (playerError) {
-      await admin.auth.admin.deleteUser(signUpData.user.id);
+      await admin.auth.admin.deleteUser(createdData.user.id);
       throw databaseMessage(playerError);
     }
-    if (!signUpData.session) {
-      await admin.auth.admin.deleteUser(signUpData.user.id);
-      throw new PlayerAuthError(503, "Não foi possível iniciar a sessão criada.", "session_missing");
+
+    const { data: loginData, error: loginError } = await auth.auth.signInWithPassword({ email, password });
+    if (loginError || !loginData.session) {
+      await admin.auth.admin.deleteUser(createdData.user.id);
+      throw loginError ?? new PlayerAuthError(503, "Não foi possível iniciar a sessão criada.", "session_missing");
     }
 
-    return json({ ok: true, nickname, convertedAnonymous: false, session: publicSession(signUpData.session) }, 201);
+    return json({ ok: true, nickname, convertedAnonymous: false, session: publicSession(loginData.session) }, 201);
   } catch (error) {
     return caughtResponse(error);
   }

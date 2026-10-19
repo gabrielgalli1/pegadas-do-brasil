@@ -43,7 +43,14 @@ export async function POST(request: Request) {
     const { error: registerError } = await admin.rpc("login_registrar_resultado", { p_apelido: normalizedNickname, p_sucesso: true });
     if (registerError) throw registerError;
 
-    return json({ ok: true, nickname, session: publicSession(data.session) });
+    const { data: player, error: playerError } = await admin
+      .from("jogadores")
+      .select("apelido")
+      .eq("id", data.user.id)
+      .single();
+    if (playerError) throw playerError;
+
+    return json({ ok: true, nickname: player.apelido, session: publicSession(data.session) });
   } catch (error) {
     return caughtResponse(error);
   }

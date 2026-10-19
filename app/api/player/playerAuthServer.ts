@@ -99,6 +99,6 @@ export function caughtResponse(error: unknown) {
 
 export function blockedMessage(blockedUntil: string): string {
   const milliseconds = new Date(blockedUntil).getTime() - Date.now();
-  const minutes = Math.max(1, Math.ceil(milliseconds / 60_000));
+  const minutes = Math.max(1, Math.round(milliseconds / 60_000));
   return `Muitas tentativas. Tente de novo em ${minutes} min.`;
 }

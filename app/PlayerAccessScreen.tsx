@@ -63,9 +63,6 @@ export default function PlayerAccessScreen({ onContinue, onAuthenticated, avatar
       if (result.session) {
         const { error: sessionError } = await supabase.auth.setSession(result.session);
         if (sessionError) throw sessionError;
-      } else if (result.convertedAnonymous) {
-        const { error: refreshError } = await supabase.auth.refreshSession();
-        if (refreshError) throw refreshError;
       }
 
       const [remoteProgress, identity] = await Promise.all([loadPlayerProgress(), loadCurrentPlayerIdentity()]);
