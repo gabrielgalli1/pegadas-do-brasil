@@ -75,6 +75,13 @@
 .large-text .southeast-detective-clue strong{font-size:clamp(18px,1.7vw,26px)!important}.large-text .southeast-detective-screen .southeast-state-choices button strong{font-size:clamp(14px,1.3vw,20px)!important}
 .high-contrast .southeast-detective-clue,.high-contrast .southeast-detective-map-frame{background:#fff!important;color:#000!important;border-color:#000!important}.high-contrast .southeast-detective-clue small,.high-contrast .southeast-detective-map-frame>span{color:#000!important}
 
+.southeast-feedback{width:min(560px,88%);padding:70px 34px 28px}
+@media(max-width:900px) and (orientation:landscape){
+  .southeast-feedback{width:min(430px,76%)!important;max-height:calc(100dvh - 38px);padding:46px 18px 13px!important;overflow-y:auto}
+  .southeast-feedback::before{top:5px}
+  .southeast-feedback.finished{width:min(500px,82%)!important;padding-top:38px!important}
+}
+
 @media(hover:hover){.southeast-detective-screen .southeast-state-choices button:not(:disabled):hover{transform:translateY(-8px) rotate(-1deg);box-shadow:0 10px 0 #5d8c4e,0 12px 15px #07305455;filter:brightness(1.06)}.southeast-detective-screen .southeast-state-choices button:not(:disabled):nth-child(even):hover{transform:translateY(-8px) rotate(1deg)}}
 .southeast-detective-screen .southeast-state-choices button:not(:disabled):active{transform:translateY(2px) scale(.97);box-shadow:0 1px 0 #5d8c4e}
 .southeast-detective-screen .southeast-state-choices button:focus-visible{outline:4px solid #ffda00;outline-offset:2px;transform:translateY(-3px)}
@@ -141,13 +148,16 @@
   .southeast-location-screen .southeast-listen{left:17%;bottom:8%;width:22%;transform:translateX(-50%)}
 }
 
-/* Feedback de acerto mais compacto no celular horizontal. */
+/* Feedback compacto no celular horizontal. */
 @media(min-width:621px) and (max-width:900px) and (max-height:520px){
-  .southeast-feedback{width:min(360px,55%);padding:12px 16px 14px;border-width:6px;border-radius:28px}
-  .southeast-feedback>span{display:block;font-size:38px;line-height:1}
-  .southeast-feedback h2{margin:4px 0;font-size:clamp(22px,2.8vw,28px);line-height:1.05}
-  .southeast-feedback p{margin:6px 0;font-size:clamp(13px,1.6vw,16px);line-height:1.2}
-  .southeast-feedback button{margin:7px;padding:9px 13px;font-size:clamp(13px,1.6vw,16px)}
+  .southeast-feedback{width:min(430px,76%)!important;padding:44px 16px 11px!important;border-width:5px;border-radius:27px}
+  .southeast-feedback>span:not(.phase-emblem-sparkles){display:block;width:98px;height:82px;margin:8px auto 1px;font-size:0!important;line-height:0}
+  .southeast-feedback.wrong>span:not(.phase-emblem-sparkles){width:96px;height:86px}
+  .southeast-feedback>span:not(.phase-emblem-sparkles)::before,.southeast-feedback>span:not(.phase-emblem-sparkles)::after{display:none}
+  .southeast-feedback h2{margin:2px 0;font-size:clamp(21px,2.8vw,27px);line-height:1.05}
+  .southeast-feedback p{margin:4px auto 6px;font-size:clamp(12px,1.55vw,15px);line-height:1.16}
+  .southeast-feedback button{margin:4px;padding:6px 11px;font-size:clamp(11px,1.5vw,14px)}
+  .southeast-feedback.finished{width:min(500px,82%)!important;padding-top:38px!important}
 }
 /* Desafio 2 — composição móvel alinhada ao Desafio 1. */
 @media(min-width:621px) and (max-width:900px){

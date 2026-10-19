@@ -937,6 +937,7 @@
   .avatar-grid b{right:3px;top:3px;padding:2px 4px;border-radius:9px;font-size:8px}
   .avatar-safety{margin:5px 0 0!important;font-size:10px!important}
   .avatar-nickname-edit{margin:5px auto 1px;padding:5px 12px;border-width:3px;border-radius:13px;font-size:11px;line-height:1}
+  .avatar-access-return{gap:5px;margin:5px auto 1px;padding:5px 10px;border-width:2px;border-radius:10px;font-size:8px;box-shadow:0 3px 0 #075b91}.avatar-access-return img{width:15px;height:15px;padding:2px}.avatar-access-confirm{max-width:310px;margin:18px auto 0;padding:12px 14px;border-width:2px;border-radius:14px;box-shadow:0 4px 0 #b76c13}.avatar-access-confirm>img{width:42px;height:42px;margin-bottom:5px;padding:7px;border-width:2px}.avatar-access-confirm p{margin-bottom:8px;font-size:10px}.avatar-access-confirm div{gap:6px}.avatar-access-confirm button{min-height:28px;padding:4px 9px;border-radius:8px;font-size:8px}
   .modal.achievements-modal{width:min(650px,88vw)!important}
   .achievements-heading{gap:8px;margin-bottom:2px}
   .achievements-heading img{width:42px;height:42px}
@@ -999,4 +1000,39 @@
 @media (max-width:900px) and (orientation:landscape) and (max-height:500px){
   .achievement-grid article{min-height:112px!important}
   .achievement-grid .phase-emblem{width:54px}
+}
+
+/* Versão compacta do novo feedback para celulares em modo horizontal. */
+@media (max-width:900px) and (orientation:landscape){
+  :is(.challenge-screen,.north-challenge-screen,.northeast-challenge-screen,.centerwest-screen)>.feedback{
+    width:min(430px,76%)!important;
+    max-height:calc(100dvh - 38px)!important;
+    padding:46px 18px 13px!important;
+    border-width:5px!important;
+    border-radius:27px!important;
+    overflow-y:auto;
+  }
+  :is(.challenge-screen,.north-challenge-screen,.northeast-challenge-screen,.centerwest-screen)>.feedback::before{
+    top:5px;
+    width:min(82%,330px);
+    padding:7px 12px 8px;
+    border-width:3px;
+    outline-width:2px;
+    border-radius:16px;
+    font-size:clamp(16px,2.6vw,23px);
+    box-shadow:0 3px 0 var(--feedback-dark),0 6px 11px #082c5938;
+  }
+  :is(.challenge-screen,.north-challenge-screen,.northeast-challenge-screen,.centerwest-screen)>.feedback>span:not(.phase-emblem-sparkles){
+    width:98px;
+    height:82px;
+    margin:8px auto 1px;
+    font-size:0!important;
+  }
+  :is(.challenge-screen,.north-challenge-screen,.northeast-challenge-screen,.centerwest-screen)>.feedback.wrong>span:not(.phase-emblem-sparkles){width:96px;height:86px}
+  :is(.challenge-screen,.north-challenge-screen,.northeast-challenge-screen,.centerwest-screen)>.feedback>span:not(.phase-emblem-sparkles)::before,:is(.challenge-screen,.north-challenge-screen,.northeast-challenge-screen,.centerwest-screen)>.feedback>span:not(.phase-emblem-sparkles)::after{display:none}
+  :is(.challenge-screen,.north-challenge-screen,.northeast-challenge-screen,.centerwest-screen)>.feedback h2{margin:2px 0;font-size:clamp(21px,3.1vw,29px);line-height:1.05}
+  :is(.challenge-screen,.north-challenge-screen,.northeast-challenge-screen,.centerwest-screen)>.feedback p{margin:4px auto 7px;font-size:clamp(12px,1.75vw,16px);line-height:1.16}
+  :is(.challenge-screen,.north-challenge-screen,.northeast-challenge-screen,.centerwest-screen)>.feedback button{min-width:0;min-height:37px;margin:4px;padding:6px 12px;font-size:clamp(11px,1.55vw,14px);border-width:3px;border-radius:13px}
+  :is(.challenge-screen,.north-challenge-screen,.northeast-challenge-screen,.centerwest-screen)>.feedback.finished{width:min(500px,82%)!important;padding-top:38px!important}
+  :is(.challenge-screen,.north-challenge-screen,.northeast-challenge-screen,.centerwest-screen)>.feedback.finished::before{font-size:clamp(14px,2.25vw,20px)}
 }

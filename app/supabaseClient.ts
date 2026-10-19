@@ -33,10 +33,48 @@ const KNOWN_VALIDATION_MESSAGES = [
 ];
 
 function friendlyError(rawMessage: string): string {
+  if (rawMessage.includes("23505") || rawMessage.toLowerCase().includes("duplicate key")) {
+    return "Esse apelido já existe, escolha outro.";
+  }
   const known = KNOWN_VALIDATION_MESSAGES.find((message) => rawMessage.includes(message));
   if (known) return known;
   console.error("[supabase] falha ao sincronizar jogador:", rawMessage);
   return "Não foi possível salvar agora. Você pode continuar jogando, tentamos de novo mais tarde.";
+}
+
+export type CurrentPlayerIdentity = {
+  nickname: string | null;
+  avatarId: string | null;
+  isAnonymous: boolean;
+};
+
+/** Ends an authenticated player session and clears player-specific local data. */
+export async function signOutPlayer(): Promise<void> {
+  if (supabase) await supabase.auth.signOut();
+  if (typeof window === "undefined") return;
+  ["pegadas-progress", "pegadas-avatar", "pegadas-nickname"].forEach((key) => window.localStorage.removeItem(key));
+}
+
+/** Restores the player attached to the current browser session. */
+export async function loadCurrentPlayerIdentity(): Promise<CurrentPlayerIdentity | null> {
+  if (!supabase) return null;
+  const { data: sessionData } = await supabase.auth.getSession();
+  const user = sessionData.session?.user;
+  if (!user) return null;
+  const { data, error } = await supabase
+    .from("jogadores")
+    .select("apelido,avatar_id")
+    .eq("id", user.id)
+    .maybeSingle();
+  if (error) {
+    friendlyError(error.message);
+    return { nickname: null, avatarId: null, isAnonymous: Boolean(user.is_anonymous) };
+  }
+  return {
+    nickname: typeof data?.apelido === "string" ? data.apelido : null,
+    avatarId: typeof data?.avatar_id === "string" ? data.avatar_id : null,
+    isAnonymous: Boolean(user.is_anonymous),
+  };
 }
 
 /**
