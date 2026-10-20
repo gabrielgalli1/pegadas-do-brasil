@@ -93,7 +93,20 @@ export function databaseMessage(error: { code?: string; message: string }): Play
 
 export function caughtResponse(error: unknown) {
   if (error instanceof PlayerAuthError) return json({ ok: false, code: error.code, message: error.message }, error.status);
-  console.error("[player-auth] erro inesperado", error instanceof Error ? error.message : String(error));
+  const redact = (value: string) => value
+    .replace(/sb_secret_[A-Za-z0-9._-]+/gi, "[SEGREDO_SUPABASE_OCULTO]")
+    .replace(/(PIN_SECRET_V1\s*=\s*)[^\s'\"]+/gi, "$1[SEGREDO_OCULTO]");
+  const diagnostic = error instanceof Error
+    ? { name: error.name, message: redact(error.message) }
+    : error && typeof error === "object"
+      ? Object.fromEntries(
+          ["code", "message", "details", "hint", "status"].flatMap((key) => {
+            const value = (error as Record<string, unknown>)[key];
+            return typeof value === "string" ? [[key, redact(value)]] : typeof value === "number" ? [[key, value]] : [];
+          }),
+        )
+      : { message: String(error) };
+  console.error("[player-auth] erro inesperado", diagnostic);
   return json({ ok: false, code: "unexpected_error", message: "Não foi possível conectar agora. Tente novamente." }, 503);
 }
 
