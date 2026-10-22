@@ -105,10 +105,10 @@
 
 @media(min-width:901px){
  .south-challenge-4 .south-title{left:30%;top:1.5%;width:49%;padding:.75% 2.5% 1%}.south-challenge-4 .south-title h1{font-size:clamp(24px,2.2vw,34px);text-shadow:0 2px #fff,0 3px #b8d9a1}.south-challenge-4 .south-title p{display:inline-block;margin:7px auto 0;padding:4px 16px;border:1px solid #a7ce7b;border-radius:999px;background:#e7f7d3;font-size:clamp(15px,1.35vw,21px)}
- .south-challenge-4 .south-status{right:2.5%;top:61%;width:14%;padding:6px}.south-challenge-4 .south-status b{font-size:clamp(10px,.9vw,14px)}.south-challenge-4 .south-status span{font-size:clamp(14px,1.35vw,21px)}
+ .south-challenge-4 .south-status{right:-2%;top:105%;width:12.5%;padding:6px}.south-challenge-4 .south-status b{font-size:clamp(10px,.9vw,14px)}.south-challenge-4 .south-status span{font-size:clamp(14px,1.35vw,21px)}
  .south-challenge-4 .south-speech{left:1.5%;top:38%;width:21.5%;min-height:0;padding:11px 9px;font-size:clamp(13px,1.02vw,16px);line-height:1.2}.south-challenge-4 .south-speech:after{content:"";position:absolute;left:49%;bottom:-12px;width:18px;height:18px;background:#fffdf2;border-right:3px solid #46923d;border-bottom:3px solid #46923d;transform:rotate(45deg)}
- .south-challenge-4 .south-board.board-4{left:24%;top:21%;width:66%;height:66%;padding:0;border:0;outline:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
- .south-challenge-4 .south-listen{left:57%;bottom:2.5%;width:auto;min-width:0;padding:10px 24px;transform:translateX(-50%);border-radius:22px;font-size:clamp(14px,1.3vw,20px);box-shadow:0 5px 0 #07598d}
+ .south-challenge-4 .south-board.board-4{left:23.5%;top:21%;width:62.5%;height:66%;padding:0;border:0;outline:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+ .south-challenge-4 .south-listen{left:54.75%;bottom:2.5%;width:auto;min-width:0;padding:10px 24px;transform:translateX(-50%);border-radius:22px;font-size:clamp(14px,1.3vw,20px);box-shadow:0 5px 0 #07598d}
 }
 /* Desafio 5: colheita interativa no parreiral */
 .south-harvest{position:relative;width:100%;height:100%;min-width:0;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 26%;gap:12px;box-sizing:border-box;padding:12px;border:5px solid #f9f0c7;outline:4px solid #397b34;border-radius:27px;background:linear-gradient(145deg,#f9f6d9,#dff0b8);box-shadow:0 8px 0 #245d2d88,0 13px 24px #173b4f35;overflow:hidden}
@@ -124,10 +124,10 @@
 
 @media(min-width:901px){
  .south-challenge-5 .south-title{left:30%;top:1.5%;width:49%;padding:.75% 2.5% 1%;box-shadow:0 6px 0 #235f2b66,0 10px 22px #082e5b24}.south-challenge-5 .south-title h1{font-size:clamp(24px,2.2vw,34px);text-shadow:0 2px #fff,0 3px #b8d9a1}.south-challenge-5 .south-title p{display:inline-block;margin:7px auto 0;padding:4px 16px;border:1px solid #a7ce7b;border-radius:999px;background:#e7f7d3;font-size:clamp(15px,1.35vw,21px)}
- .south-challenge-5 .south-status{right:2.5%;top:61%;width:14%;padding:6px}.south-challenge-5 .south-status b{font-size:clamp(10px,.9vw,14px)}.south-challenge-5 .south-status span{font-size:clamp(14px,1.35vw,21px)}
+ .south-challenge-5 .south-status{right:-1.3%;top:105%;width:12.5%;padding:6px}.south-challenge-5 .south-status b{font-size:clamp(10px,.9vw,14px)}.south-challenge-5 .south-status span{font-size:clamp(14px,1.35vw,21px)}
  .south-challenge-5 .south-speech{left:1.5%;top:38%;width:21.5%;min-height:0;padding:11px 9px;font-size:clamp(13px,1.02vw,16px);line-height:1.2}.south-challenge-5 .south-speech:after{content:"";position:absolute;left:49%;bottom:-12px;width:18px;height:18px;background:#fffdf2;border-right:3px solid #46923d;border-bottom:3px solid #46923d;transform:rotate(45deg)}
- .south-challenge-5 .south-board.board-5{left:24%;top:21%;width:66%;height:66%;padding:0;border:0;outline:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
- .south-challenge-5 .south-listen{left:57%;bottom:2.5%;width:auto;min-width:0;padding:10px 24px;transform:translateX(-50%);border-radius:22px;font-size:clamp(14px,1.3vw,20px);box-shadow:0 5px 0 #07598d}
+ .south-challenge-5 .south-board.board-5{left:23.5%;top:21%;width:62.5%;height:66%;padding:0;border:0;outline:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+ .south-challenge-5 .south-listen{left:54.75%;bottom:2.5%;width:auto;min-width:0;padding:10px 24px;transform:translateX(-50%);border-radius:22px;font-size:clamp(14px,1.3vw,20px);box-shadow:0 5px 0 #07598d}
 }
 .south-memory{width:94%;height:92%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6%}.south-memory-sequence{display:flex;gap:12px}.south-memory-sequence i{width:20px;height:20px;border-radius:50%;background:#c5d0d6}.south-memory-sequence i.done{background:#4ebd4b}.south-memory-buttons{width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:3%}.south-memory-buttons button{aspect-ratio:1.3;border:5px solid #fff;outline:3px solid #397d37;border-radius:50%;background:#e7ffd4;font-size:clamp(45px,6vw,90px);transition:.15s}.south-memory-buttons button.lit{background:#ffe34c;transform:scale(1.1);filter:drop-shadow(0 0 16px #ffbe00)}.south-memory-start{padding:12px 25px;border:4px solid #fff;outline:2px solid #0b6596;border-radius:16px;background:#149edf;color:#fff;font-weight:900;font-size:clamp(13px,1.4vw,21px)}
 
@@ -163,24 +163,80 @@
 .climate-state{stroke:#fffdeb;stroke-width:4.5;stroke-linejoin:round;filter:url(#climate-map-shadow);transition:fill .35s,filter .35s;transform-box:fill-box;transform-origin:center}.climate-state.pr{fill:url(#climate-pr)}.climate-state.sc{fill:url(#climate-sc)}.climate-state.rs{fill:url(#climate-rs)}.climate-state.active{fill:#ffb52c;filter:drop-shadow(0 0 5px #ffbd2f) drop-shadow(0 3px 2px #32503c55)}
 .south-climate-map text{fill:#fff;font-size:6.5px;font-weight:1000;text-anchor:middle;paint-order:stroke;stroke:#24533d;stroke-width:1.6px;letter-spacing:.025em;pointer-events:none}.south-climate-map .sc-label{font-size:5.1px}.south-climate-map .rs-label{font-size:5.7px}
 .climate-map-pin{pointer-events:none;transform-origin:center;transition:transform .45s cubic-bezier(.2,.8,.2,1)}.climate-map-pin circle:first-child{fill:#0b80ac;stroke:#fff;stroke-width:2.5;filter:drop-shadow(0 2px 2px #24462d88)}.climate-map-pin path{fill:#0b80ac;stroke:#fff;stroke-width:2;stroke-linejoin:round}.climate-map-pin circle:last-child{fill:#ffe34f;stroke:#fff;stroke-width:1.3;animation:south-climate-pulse 1.2s ease-in-out infinite}.south-climate .south-season-current{width:96%;min-height:45px;display:grid;align-content:center;border-color:#fff4c6;background:linear-gradient(#168caf,#086587)}.south-climate .south-season-current strong{font-size:clamp(10px,1vw,15px);line-height:1.05}
-.south-climate .south-season-play{grid-template-rows:minmax(0,1fr) auto}.south-climate .south-season-scene{isolation:isolate;border-color:#fff9df;background:#9bc271;box-shadow:0 0 0 3px #2b7846,0 6px 14px #173f2a38}.south-climate .south-season-scene:after{content:"";position:absolute;z-index:3;inset:0;background:linear-gradient(90deg,#092b3140 0,transparent 38%,#092b3114 100%),linear-gradient(0deg,#17321d75 0,transparent 34%);pointer-events:none}.south-climate-bg{position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.015);transition:opacity .3s,transform 1.1s}.south-climate.answered .south-climate-bg{transform:scale(1.04)}.south-climate .south-season-sun,.south-climate .south-season-cloud,.south-climate .south-season-hill,.south-climate .south-season-tree,.south-climate .south-season-ground{display:none}.weather-frost .south-season-scene,.weather-cold .south-season-scene{background:#c7e1e5}.weather-frost .south-climate-mascot,.weather-cold .south-climate-mascot{filter:drop-shadow(0 6px 4px #17363c66) saturate(.88) hue-rotate(-4deg)}
+.south-climate .south-season-play{grid-template-rows:auto minmax(0,1fr) auto}.south-climate .south-season-scene{isolation:isolate;border-color:#fff9df;background:#9bc271;box-shadow:0 0 0 3px #2b7846,0 6px 14px #173f2a38}.south-climate .south-season-scene:after{content:"";position:absolute;z-index:3;inset:0;background:linear-gradient(90deg,#092b3140 0,transparent 38%,#092b3114 100%),linear-gradient(0deg,#17321d75 0,transparent 34%);pointer-events:none}.south-climate-bg{position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.015);transition:opacity .3s,transform 1.1s}.south-climate.answered .south-climate-bg{transform:scale(1.04)}.south-climate .south-season-sun,.south-climate .south-season-cloud,.south-climate .south-season-hill,.south-climate .south-season-tree,.south-climate .south-season-ground{display:none}.weather-frost .south-season-scene,.weather-cold .south-season-scene{background:#c7e1e5}.weather-frost .south-climate-mascot,.weather-cold .south-climate-mascot{filter:drop-shadow(0 6px 4px #17363c66) saturate(.88) hue-rotate(-4deg)}
 .weather-frost .south-season-particles i,.weather-cold .south-season-particles i{opacity:1;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 6px #dffaff}.weather-frost .south-season-particles i{width:12px;height:3px;border-radius:3px;background:#e9ffff;box-shadow:0 3px 0 #c8edef}
 .weather-wind .south-season-scene{background:#8dbf73}.weather-wind .south-season-particles i{opacity:1;width:14px;height:8px;border-radius:100% 0 100% 0;background:#f1b653;transform:rotate(28deg);animation:south-climate-leaf 1.8s ease-in-out infinite alternate}.weather-wind .south-season-particles i:nth-child(even){animation-delay:-.7s}.weather-sun .south-season-scene{background:#5fc5ef}
 .south-climate-plant{display:none;position:absolute;z-index:7;left:51%;bottom:16%;width:58px;height:66px}.weather-frost .south-climate-plant{display:block}.south-climate-plant>i{position:absolute;left:27px;bottom:5px;width:7px;height:38px;border-radius:5px;background:#338545}.south-climate-plant>b,.south-climate-plant>em{position:absolute;top:13px;width:30px;height:18px;border-radius:100% 0 100% 0;background:#49a952}.south-climate-plant>b{left:3px;transform:rotate(22deg)}.south-climate-plant>em{right:0;transform:scaleX(-1) rotate(22deg)}.south-climate.answered.weather-frost .south-climate-plant:after{content:"";position:absolute;left:-13px;bottom:0;width:78px;height:67px;border:4px solid #3193a7;border-bottom-width:7px;border-radius:50% 50% 8px 8px;background:#d9eff166;box-shadow:inset 0 0 16px #fff;animation:south-piece-snap .45s ease}
-.south-climate .south-season-name{max-width:72%;padding:5px 13px 5px 7px;border-radius:14px;background:linear-gradient(135deg,#128db6,#075d80);font-size:clamp(9px,.8vw,13px);box-shadow:0 4px 0 #054b68,0 7px 14px #062d3e44}.south-climate .south-season-name svg{flex:0 0 auto}.south-climate-question{position:absolute;z-index:10;left:50%;bottom:8px;width:calc(100% - 24px);margin:0;padding:7px 12px;box-sizing:border-box;transform:translateX(-50%);border:2px solid #fff;border-radius:12px;background:linear-gradient(90deg,#fffdf0ee,#ffefb9f2,#fffdf0ee);color:#63401f;font-size:clamp(12px,1.05vw,16px);line-height:1.05;text-align:center;box-shadow:0 3px 0 #93652c,0 5px 12px #172e2338;text-shadow:0 1px #fff}.south-climate .south-season-progress>i{background:#0b80ae}.south-climate .south-season-progress>i.current{background:#198fbd}.south-climate .south-season-progress>i.done{background:#46a64c}
+.south-climate .south-season-name{max-width:72%;padding:5px 13px 5px 7px;border-radius:14px;background:linear-gradient(135deg,#128db6,#075d80);font-size:clamp(9px,.8vw,13px);box-shadow:0 4px 0 #054b68,0 7px 14px #062d3e44}.south-climate .south-season-name svg{flex:0 0 auto}.south-climate-question{position:relative;z-index:10;width:calc(100% + 4px);margin:0 -2px;padding:10px 14px;box-sizing:border-box;transform:translateY(-5px);border:2px solid #dfc276;border-radius:13px;background:linear-gradient(90deg,#fffdf0,#ffefb9,#fffdf0);color:#543412;font-size:clamp(17px,1.4vw,22px);font-weight:1000;line-height:1.12;text-align:center;box-shadow:0 3px 0 #93652c;text-shadow:0 1px #fff}.south-climate .south-season-progress>i{background:#0b80ae}.south-climate .south-season-progress>i.current{background:#198fbd}.south-climate .south-season-progress>i.done{background:#46a64c}
 .south-climate .south-season-choices{gap:9px}.south-climate .south-season-choices button{height:94px;grid-template-columns:46% 54%;padding:5px 8px 5px 6px;border-color:#d49d42;background:linear-gradient(145deg,#fffef7 0 56%,#ffe6a1 100%);box-shadow:0 4px 0 #885626,inset 0 2px 0 #fff,0 8px 14px #5d390f2b}.south-climate .south-climate-choice-art{height:76px;padding:5px;border:3px solid #fff;border-radius:14px;background:radial-gradient(circle at 48% 38%,#f8ffe8 0,#dff3bd 68%,#c3e39a 100%);box-shadow:0 0 0 2px #91bf63,inset 0 2px 7px #fff;overflow:hidden}.south-climate-choice-art img{width:100%;height:100%;display:block;object-fit:contain;transform:scale(1.16);filter:drop-shadow(0 3px 2px #35531e40);transition:transform .18s,filter .18s}.south-climate .south-season-choices button:hover:not(:disabled) .south-climate-choice-art img{transform:scale(1.25);filter:drop-shadow(0 4px 3px #35531e55) saturate(1.08) brightness(1.03)}.south-climate .south-climate-choice-copy{gap:5px;padding-left:9px}.south-climate .south-climate-choice-copy small{justify-self:start;padding:3px 6px;border-radius:999px;background:#e2f4c9;color:#267343;font-size:clamp(6px,.48vw,8px);letter-spacing:.1em}.south-climate .south-climate-choice-copy strong{font-size:clamp(12px,.95vw,15px);line-height:1.08}.south-climate .south-season-choices button.correct .south-climate-choice-art{box-shadow:0 0 0 3px #59b94f,0 0 12px #7cdd62}
 .south-climate .south-climate-choice-copy small{padding:4px 8px;font-size:clamp(9px,.68vw,11px);font-weight:1000;line-height:1;letter-spacing:.08em}.south-climate .south-seasons-footer>p{font-size:clamp(12px,.94vw,15px);font-weight:1000;line-height:1.15}
 @keyframes south-climate-leaf{to{translate:18px 5px;rotate:45deg}}@keyframes south-climate-pulse{50%{transform:scale(.65);opacity:.65}}
 
 @media(min-width:901px){
  .south-challenge-6 .south-title{left:30%;top:1.5%;width:49%;padding:.75% 2.5% 1%;box-shadow:0 6px 0 #235f2b66,0 10px 22px #082e5b24}.south-challenge-6 .south-title h1{font-size:clamp(24px,2.2vw,34px);text-shadow:0 2px #fff,0 3px #b8d9a1}.south-challenge-6 .south-title p{display:inline-block;margin:7px auto 0;padding:4px 16px;border:1px solid #a7ce7b;border-radius:999px;background:#e7f7d3;font-size:clamp(15px,1.35vw,21px)}
- .south-challenge-6 .south-status{right:2.5%;top:61%;width:14%;padding:6px}.south-challenge-6 .south-status b{font-size:clamp(10px,.9vw,14px)}.south-challenge-6 .south-status span{font-size:clamp(14px,1.35vw,21px)}
+ .south-challenge-6 .south-status{right:-1.8%;top:92%;width:13.5%;padding:6px}.south-challenge-6 .south-status b{font-size:clamp(10px,.9vw,14px)}.south-challenge-6 .south-status span{font-size:clamp(14px,1.35vw,21px)}
  .south-challenge-6 .south-speech{left:1.2%;top:38%;width:21.5%;min-height:0;padding:11px 9px;font-size:clamp(13px,1.02vw,16px);line-height:1.2}.south-challenge-6 .south-speech:after{content:"";position:absolute;left:51%;bottom:-12px;width:18px;height:18px;background:#fffdf2;border-right:3px solid #46923d;border-bottom:3px solid #46923d;transform:rotate(45deg)}
- .south-challenge-6 .south-board.board-6{left:24%;top:20%;width:57%;height:67%;padding:0;border:0;outline:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
- .south-challenge-6 .south-listen{left:52.5%;bottom:2.5%;width:auto;min-width:0;padding:10px 24px;transform:translateX(-50%);border-radius:22px;font-size:clamp(14px,1.3vw,20px);box-shadow:0 5px 0 #07598d}
+ .south-challenge-6 .south-board.board-6{left:23%;top:19%;width:62%;height:70%;padding:0;border:0;outline:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+ .south-challenge-6 .south-seasons{grid-template-rows:minmax(0,1fr);gap:0}
+ .south-challenge-6 .south-seasons-footer{display:none}
+ .south-challenge-6 .south-seasons-main{height:100%}
+ .south-challenge-6 .south-season-play{padding:9px;gap:8px}
+ .south-challenge-6 .south-season-choices button{height:96px}
+ .south-challenge-6 .south-listen{left:53.5%;bottom:1.5%;width:auto;min-width:0;padding:10px 24px;transform:translateX(-50%);border-radius:22px;font-size:clamp(14px,1.3vw,20px);box-shadow:0 5px 0 #07598d}
 }
 @media(max-width:900px){.south-seasons{grid-template-rows:minmax(0,1fr) 52px;padding:5px;gap:5px;border-width:3px}.south-seasons-main{gap:5px}.south-season-wheel-panel{padding:5px;gap:4px}.south-season-wheel{border-width:4px;outline-width:3px}.south-season-current{padding:3px 5px}.south-season-current small{font-size:5px}.south-climate-map-title{padding:3px 5px}.south-climate-map-title>span{width:28px;height:28px}.south-climate-map-title svg{width:22px;height:22px}.south-season-play{padding:4px;gap:3px}.south-season-tree{scale:.75;transform-origin:bottom left}.south-season-choices{gap:3px}.south-season-choices button{height:58px;padding:2px 4px;border-width:2px;font-size:8px}.south-climate-choice-art{height:45px}.south-climate-choice-copy small{display:block;font-size:7px;padding:2px 4px}.south-seasons-footer{gap:4px;padding:3px}.south-season-progress{gap:3px}.south-season-progress>span{display:none}.south-season-progress>i{width:25px;height:25px}.south-season-progress>i svg{width:20px;height:20px}.south-seasons-footer>p{font-size:9px;font-weight:1000}.south-challenge-6 .south-board{padding:0}}
 @media(prefers-reduced-motion:reduce){.south-season-wheel,.south-climate-mascot,.south-climate-bg,.south-season-choices button{transition:none}.south-seasons.answered .south-climate-mascot{animation:none}}
+
+/* Desafio 4: composição compacta para celulares na horizontal */
+@media(max-width:1024px) and (orientation:landscape){
+ .south-challenge-4 .south-header{top:1.5%;left:1.5%;right:1.5%;height:19%}
+ .south-challenge-4 .south-round{width:clamp(45px,12vh,62px)}
+ .south-challenge-4 .south-title{left:28%;top:18%;width:40%;padding:6px 10px;border-width:2px;outline-width:2px;border-radius:17px;box-shadow:0 3px 0 #204d2d88}
+ .south-challenge-4 .south-title h1{font-size:clamp(16px,2.5vw,22px);line-height:1.05}
+ .south-challenge-4 .south-title p{display:none}
+ .south-challenge-4 .south-status{right:12%;top:0;width:16.5%;padding:4px 3px;border-width:2px;outline-width:2px;border-radius:11px;box-shadow:0 3px 0 #07204788}
+ .south-challenge-4 .south-status b{display:block;font-size:clamp(7px,1.15vw,10px);line-height:1}
+ .south-challenge-4 .south-status>div{gap:1px;margin:1px 0}
+ .south-challenge-4 .south-status span{font-size:clamp(10px,1.55vw,13px)}
+ .south-challenge-4 .south-status .score-inline{display:flex!important;align-items:center;justify-content:center;width:100%!important;height:15px!important;gap:3px!important;margin:0!important;padding:0!important;border:0!important}
+ .south-challenge-4 .south-status .score-inline img{display:none!important}
+ .south-challenge-4 .south-status .score-inline span{display:flex!important;flex-direction:row!important;align-items:center;gap:3px!important;height:15px}
+ .south-challenge-4 .south-status .score-inline strong{font-size:11px;line-height:1}
+ .south-challenge-4 .south-status .score-inline small{font-size:6px;line-height:1}
+ .south-challenge-4 .south-speech{left:2%;top:27%;width:27%;min-height:19%;padding:7px 8px;border-width:2px;border-radius:17px;font-size:clamp(10px,1.7vw,14px);line-height:1.14;box-shadow:0 3px 0 #285c2a}
+ .south-challenge-4 .south-speech:after{content:"";position:absolute;left:43%;bottom:-8px;width:12px;height:12px;background:#fffdf2;border-right:2px solid #46923d;border-bottom:2px solid #46923d;transform:rotate(45deg)}
+ .south-challenge-4 .south-listen{left:3.5%;bottom:3%;width:24%;min-height:0;padding:6px 4px;transform:none;border-width:3px;outline-width:1px;border-radius:13px;font-size:clamp(9px,1.4vw,11px);box-shadow:0 3px 0 #07598d}
+ .south-challenge-4 .south-board.board-4{left:31%;top:20.5%;width:65%;height:76%;padding:0;border:0;outline:0;border-radius:0;background:transparent;box-shadow:none;overflow:hidden}
+ .south-challenge-4 .south-suitcase-handle{top:-9px;height:18px;border-width:4px}
+ .south-challenge-4 .south-suitcase{grid-template-columns:minmax(0,1fr) 27%;grid-template-rows:minmax(0,1fr) 44px;gap:5px;padding:7px;border-width:4px;outline-width:2px;border-radius:18px;box-shadow:0 5px 0 #42281999,0 8px 15px #173b4f38,inset 0 0 0 2px #a96a32}
+ .south-challenge-4 .south-suitcase:before,.south-challenge-4 .south-suitcase:after{top:-2px;width:34px;height:12px;border-width:2px}
+ .south-challenge-4 .south-secret-main{grid-template-rows:18px minmax(0,1fr) 24px;gap:3px;padding:5px;border-width:2px;border-radius:12px}
+ .south-challenge-4 .south-secret-route{gap:4px;font-size:7px}
+ .south-challenge-4 .south-secret-route>span{width:18px;height:18px;font-size:11px}
+ .south-challenge-4 .south-secret-route>i{border-top-width:2px}
+ .south-challenge-4 .south-active-postcard{border-width:4px;outline-width:2px;border-radius:11px;box-shadow:0 3px 0 #6d4325aa}
+ .south-challenge-4 .south-active-postcard:before{inset:3px;border-width:1px;border-radius:6px}
+ .south-challenge-4 .south-secret-main>p{padding:2px 5px;border-width:1px;border-radius:7px;font-size:clamp(7px,1.15vw,9px)}
+ .south-challenge-4 .south-secret-rack{gap:3px;padding:5px 4px;border-width:2px;border-radius:12px;box-shadow:inset 0 0 0 2px #fff,0 2px 0 #1d6a4888}
+ .south-challenge-4 .south-secret-rack h3{padding:4px 2px;border-radius:7px;font-size:clamp(6px,.9vw,8px);box-shadow:0 2px 0 #155d31}
+ .south-challenge-4 .south-secret-rack>div{gap:3px}
+ .south-challenge-4 .south-secret-rack button{grid-template-columns:18px 1fr 31px;gap:2px;padding:2px;border-width:2px;border-radius:7px;box-shadow:0 2px 0 #8f6335}
+ .south-challenge-4 .south-secret-rack button>span{width:16px;height:16px;font-size:8px}
+ .south-challenge-4 .south-secret-rack button>b{font-size:17px}
+ .south-challenge-4 .south-secret-rack button>i{font-size:5px}
+ .south-challenge-4 .south-secret-rack>small{font-size:6px;line-height:1}
+ .south-challenge-4 .south-secret-album{gap:5px;padding:3px 7px;border-width:2px;border-radius:10px;box-shadow:inset 0 0 0 2px #fff,0 2px 0 #195f7388}
+ .south-challenge-4 .south-secret-album-title{gap:5px}
+ .south-challenge-4 .south-secret-album-title>span{width:22px;height:22px;border-width:2px;font-size:12px}
+ .south-challenge-4 .south-secret-album-title small{font-size:5px}
+ .south-challenge-4 .south-secret-album-title strong{font-size:7px}
+ .south-challenge-4 .south-secret-stamps{gap:5px;padding:2px 6px}
+ .south-challenge-4 .south-secret-stamps>span{width:22px;height:22px;border-width:2px;font-size:9px}
+ .south-challenge-4 .south-secret-album>b{padding:2px 6px;border-width:1px;border-radius:8px;box-shadow:0 2px 0 #075370}
+ .south-challenge-4 .south-secret-album>b>span{font-size:14px}
+ .south-challenge-4 .south-secret-album>b em{font-size:9px}
+ .south-challenge-4 .south-secret-album>b small{font-size:5px}
+}
 .south-feedback{width:min(540px,84%);padding:66px 30px 25px}.south-feedback h2{font-size:clamp(27px,3vw,40px)}.south-feedback p{font-size:clamp(16px,1.6vw,22px)}
 .high-contrast .south-board,.high-contrast .south-title,.high-contrast .south-speech{background:#fff!important;color:#000!important;border-color:#000!important}.button-highlight .south-screen button:not(:disabled),.button-highlight .south-screen g[role=button]{outline:4px solid #ffd400;outline-offset:2px}
 @media(max-width:900px){.south-title{left:27%;width:54%}.south-title h1{font-size:clamp(16px,2.8vw,25px)}.south-title p{font-size:clamp(10px,1.5vw,14px)}.south-status{right:1%;width:18%}.south-speech{left:2%;top:23%;width:25%;font-size:clamp(10px,1.55vw,14px)}.south-board{left:28%;top:22%;width:70%;height:70%}.south-listen{left:2%;bottom:6%;width:24%;font-size:clamp(9px,1.4vw,13px)}.south-maze-controls button{width:38px;height:33px;font-size:17px}.south-scratch-card strong{font-size:11px}}
@@ -190,15 +246,15 @@
  .south-challenge-3 .south-title{left:30%;top:1.5%;width:49%;padding:.75% 2.5% 1%;box-shadow:0 6px 0 #235f2b66,0 10px 22px #082e5b24}
  .south-challenge-3 .south-title h1{font-size:clamp(24px,2.2vw,34px);letter-spacing:.02em;text-transform:uppercase;text-shadow:0 2px 0 #fff,0 3px 0 #b8d9a1}
  .south-challenge-3 .south-title p{display:inline-block;max-width:95%;margin:7px auto 0;padding:4px 16px;border:1px solid #a7ce7b;border-radius:999px;background:linear-gradient(#edfbdc,#dff3c7);color:#174f32;font-size:clamp(15px,1.45vw,23px);line-height:1.2;box-shadow:inset 0 1px 0 #fff}
- .south-challenge-3 .south-status{right:-1%;top:62%;width:14%;padding:6px;box-shadow:0 5px 0 #07204788}
+ .south-challenge-3 .south-status{right:-2%;top:105%;width:14%;padding:6px;box-shadow:0 5px 0 #07204788}
  .south-challenge-3 .south-status b{display:block;font-size:clamp(10px,.95vw,15px)}
  .south-challenge-3 .south-status>div{gap:2px}
  .south-challenge-3 .south-status span{font-size:clamp(14px,1.35vw,21px);color:#fff;text-shadow:0 2px #777}
  .south-challenge-3 .south-status span.active{color:#ffc928;text-shadow:0 2px #a35e00}
  .south-challenge-3 .south-speech{left:3%;top:38%;width:22%;min-height:0;padding:10px 9px;border-radius:22px;font-size:clamp(13px,1.05vw,17px);line-height:1.2;box-shadow:0 5px 0 #1f5f2444}
  .south-challenge-3 .south-speech:after{content:"";position:absolute;left:43%;bottom:-12px;width:18px;height:18px;background:#fffdf2;border-right:3px solid #46923d;border-bottom:3px solid #46923d;transform:rotate(45deg)}
- .south-challenge-3 .south-board.board-3{left:26%;top:21%;width:59%;height:64%;padding:0;border-width:5px;outline:3px solid #fff;border-radius:30px;background:linear-gradient(145deg,#fffef3f5,#edf9dff2);box-shadow:0 8px 0 #163f3466,0 12px 24px #082e5b30}
- .south-challenge-3 .south-listen{left:55.5%;bottom:3%;width:auto;min-width:0;padding:10px 24px;transform:translateX(-50%);border-radius:22px;font-size:clamp(14px,1.3vw,20px);box-shadow:0 5px 0 #07598d}
+ .south-challenge-3 .south-board.board-3{left:24%;top:21%;width:59%;height:64%;padding:0;border-width:5px;outline:3px solid #fff;border-radius:30px;background:linear-gradient(145deg,#fffef3f5,#edf9dff2);box-shadow:0 8px 0 #163f3466,0 12px 24px #082e5b30}
+ .south-challenge-3 .south-listen{left:53.5%;bottom:3%;width:auto;min-width:0;padding:10px 24px;transform:translateX(-50%);border-radius:22px;font-size:clamp(14px,1.3vw,20px);box-shadow:0 5px 0 #07598d}
 }
 
 /* Desafio 3: mapa ilustrado e painel de missão */
@@ -257,10 +313,10 @@
 }
 
 @media(min-width:901px){
- .south-challenge-3 .south-status{right:8%;top:4%;width:12.5%;padding:5px 6px;border-width:3px;box-shadow:0 4px 0 #07204788}
+ .south-challenge-3 .south-status{right:-1.5%;top:92%;width:12.5%;padding:5px 6px;border-width:3px;box-shadow:0 4px 0 #07204788}
  .south-challenge-3 .south-speech{left:1%;width:22%}
  .south-challenge-3 .south-speech:after{left:52%}
- .south-challenge-3 .south-board.board-3{left:24%;top:19%;width:65%;height:69%;display:block}
+ .south-challenge-3 .south-board.board-3{left:23.5%;top:19%;width:62.5%;height:69%;display:block}
  .south-challenge-3 .south-maze-wrap{min-height:0;max-height:100%;overflow:hidden;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 108px;gap:9px;padding:1.1%}
  .south-challenge-3 .south-maze-controls{display:grid;grid-template-columns:1.2fr 1.3fr 1.6fr;align-items:stretch;justify-content:initial;gap:10px;padding:7px 9px;border-radius:19px;text-align:left}
  .south-challenge-3 .south-maze-mission-title{height:100%;grid-template-columns:38px 1fr;gap:7px;padding:8px;border-radius:13px}
@@ -379,7 +435,7 @@
  .south-challenge-3 .south-title{left:28%;top:18%;width:40%;padding:6px 10px;border-width:2px;outline-width:2px;border-radius:17px;box-shadow:0 3px 0 #204d2d88}
  .south-challenge-3 .south-title h1{font-size:clamp(16px,2.5vw,22px);line-height:1.05}
  .south-challenge-3 .south-title p{display:none}
- .south-challenge-3 .south-status{right:11%;top:0;width:18.5%;padding:5px 4px;border-width:3px;outline-width:2px;border-radius:13px;box-shadow:0 3px 0 #07204788}
+ .south-challenge-3 .south-status{right:8%;top:0;width:18.5%;padding:5px 4px;border-width:3px;outline-width:2px;border-radius:13px;box-shadow:0 3px 0 #07204788}
  .south-challenge-3 .south-status b{display:block;font-size:clamp(8px,1.35vw,11px);line-height:1}
  .south-challenge-3 .south-status>div{gap:1px;margin:2px 0}
  .south-challenge-3 .south-status span{font-size:clamp(11px,1.8vw,15px)}
@@ -391,7 +447,7 @@
  .south-challenge-3 .south-speech{left:2%;top:27%;width:27%;min-height:19%;padding:7px 8px;border-width:2px;border-radius:17px;font-size:clamp(10px,1.7vw,14px);line-height:1.14;box-shadow:0 3px 0 #285c2a}
  .south-challenge-3 .south-speech:after{content:"";position:absolute;left:43%;bottom:-8px;width:12px;height:12px;background:#fffdf2;border-right:2px solid #46923d;border-bottom:2px solid #46923d;transform:rotate(45deg)}
  .south-challenge-3 .south-listen{left:3.5%;bottom:3%;width:24%;min-height:0;padding:6px 4px;border-width:3px;outline-width:1px;border-radius:13px;font-size:clamp(9px,1.4vw,11px);box-shadow:0 3px 0 #07598d}
- .south-challenge-3 .south-board.board-3{left:30%;top:23%;width:68%;height:70%;padding:0;border-width:3px;outline:2px solid #fff;border-radius:18px;overflow:hidden}
+ .south-challenge-3 .south-board.board-3{left:28%;top:23%;width:68%;height:70%;padding:0;border-width:3px;outline:2px solid #fff;border-radius:18px;overflow:hidden}
  .south-challenge-3 .south-maze-wrap{grid-template-columns:minmax(0,1fr) 27%;grid-template-rows:minmax(0,1fr);gap:1.5%;padding:1%}
  .south-challenge-3 .south-maze{padding:3px;border-width:3px;outline-width:2px;border-radius:15px;box-shadow:0 4px 0 #4f351d88,inset 0 2px 6px #173b4f55}
  .south-challenge-3 .south-maze>svg{border-radius:10px}
@@ -411,4 +467,93 @@
  .south-challenge-3 .south-maze-controls-block>small{font-size:6px;line-height:1.08;text-align:center}
  .south-challenge-3 .south-maze-guidance{width:100%;height:auto;min-height:0}
  .south-challenge-3 .south-maze-guidance>p{width:100%;height:auto;min-height:30px;margin:0;padding:4px;box-sizing:border-box;border-width:1px;border-radius:8px;font-size:clamp(7px,1vw,9px);line-height:1.08}
+}
+
+/* Desafio 5: colheita responsiva para celulares na horizontal */
+@media(max-width:1024px) and (orientation:landscape){
+ .south-challenge-5 .south-header{top:1.5%;left:1.5%;right:1.5%;height:19%}
+ .south-challenge-5 .south-round{width:clamp(45px,12vh,62px)}
+ .south-challenge-5 .south-title{left:28%;top:18%;width:40%;padding:6px 10px;border-width:2px;outline-width:2px;border-radius:17px;box-shadow:0 3px 0 #204d2d88}
+ .south-challenge-5 .south-title h1{font-size:clamp(16px,2.5vw,22px);line-height:1.05}
+ .south-challenge-5 .south-title p{display:none}
+ .south-challenge-5 .south-status{right:12%;top:0;width:16.5%;padding:4px 3px;border-width:2px;outline-width:2px;border-radius:11px;box-shadow:0 3px 0 #07204788}
+ .south-challenge-5 .south-status b{display:block;font-size:clamp(7px,1.15vw,10px);line-height:1}
+ .south-challenge-5 .south-status>div{gap:1px;margin:1px 0}
+ .south-challenge-5 .south-status span{font-size:clamp(10px,1.55vw,13px)}
+ .south-challenge-5 .south-status .score-inline{display:flex!important;align-items:center;justify-content:center;width:100%!important;height:15px!important;gap:3px!important;margin:0!important;padding:0!important;border:0!important}
+ .south-challenge-5 .south-status .score-inline img{display:none!important}
+ .south-challenge-5 .south-status .score-inline span{display:flex!important;flex-direction:row!important;align-items:center;gap:3px!important;height:15px}
+ .south-challenge-5 .south-status .score-inline strong{font-size:11px;line-height:1}
+ .south-challenge-5 .south-status .score-inline small{font-size:6px;line-height:1}
+ .south-challenge-5 .south-speech{left:2%;top:27%;width:27%;min-height:19%;padding:7px 8px;border-width:2px;border-radius:17px;font-size:clamp(10px,1.7vw,14px);line-height:1.14;box-shadow:0 3px 0 #285c2a}
+ .south-challenge-5 .south-speech:after{content:"";position:absolute;left:43%;bottom:-8px;width:12px;height:12px;background:#fffdf2;border-right:2px solid #46923d;border-bottom:2px solid #46923d;transform:rotate(45deg)}
+ .south-challenge-5 .south-listen{left:3.5%;bottom:3%;width:24%;min-height:0;padding:6px 4px;transform:none;border-width:3px;outline-width:1px;border-radius:13px;font-size:clamp(9px,1.4vw,11px);box-shadow:0 3px 0 #07598d}
+ .south-challenge-5 .south-board.board-5{left:31%;top:22%;width:66%;height:74%;padding:0;border:0;outline:0;border-radius:0;background:transparent;box-shadow:none;overflow:hidden}
+ .south-challenge-5 .south-harvest{grid-template-columns:minmax(0,1fr) 25%;gap:6px;padding:6px;border-width:3px;outline-width:2px;border-radius:17px;box-shadow:0 4px 0 #245d2d88,0 7px 13px #173b4f35}
+ .south-challenge-5 .south-vineyard{border-width:3px;border-radius:13px;box-shadow:inset 0 0 0 2px #edc87a,0 3px 0 #4c321d88}
+ .south-challenge-5 .south-vineyard-badge{top:5px;gap:3px;padding:3px 8px;border-width:2px;border-radius:10px;font-size:clamp(6px,.85vw,8px);box-shadow:0 2px 0 #174f2c}
+ .south-challenge-5 .south-harvest-panel{gap:3px;padding:5px 4px;border-width:3px;border-radius:13px;box-shadow:inset 0 0 0 2px #fff,0 3px 0 #56351e88}
+ .south-challenge-5 .south-harvest-panel>header{padding:4px 5px;border-radius:8px;box-shadow:inset 0 1px #d99a58,0 2px 0 #4d2a19}
+ .south-challenge-5 .south-harvest-panel>header small{font-size:5px}
+ .south-challenge-5 .south-harvest-panel>header strong{font-size:clamp(16px,2.5vw,21px)}
+ .south-challenge-5 .south-harvest-panel>header b{margin-top:1px;font-size:6px}
+ .south-challenge-5 .south-harvest-cue{width:94%;gap:3px;padding:2px 3px;border-width:1px;box-shadow:0 1px 0 #175c2d}
+ .south-challenge-5 .south-harvest-cue>span{width:14px;height:14px;font-size:10px}
+ .south-challenge-5 .south-harvest-cue>b{font-size:5px}
+ .south-challenge-5 .south-basket-stage>img{width:84%;filter:drop-shadow(0 3px 2px #4d301f66)}
+ .south-challenge-5 .south-basket-grapes>span{width:18px;height:21px}
+ .south-challenge-5 .south-basket-grapes .south-grape-art{width:18px;height:21px}
+ .south-challenge-5 .south-harvest-progress{gap:2px;padding:3px}
+ .south-challenge-5 .south-harvest-progress>span{border-width:1px;font-size:6px}
+ .south-challenge-5 .south-harvest-progress>span.filled{border-width:1px;box-shadow:0 0 0 1px #3d913f,0 1px 0 #24692c}
+ .south-challenge-5 .south-harvest-progress .south-grape-art.mini{width:17px;height:20px}
+ .south-challenge-5 .south-harvest-panel>p{min-height:25px;padding:3px 4px;border-width:1px;border-radius:7px;font-size:clamp(6px,.85vw,8px)}
+}
+
+/* Desafio 6: missão climática responsiva para celulares na horizontal */
+@media(max-width:1024px) and (orientation:landscape){
+ .south-challenge-6 .south-header{top:1.5%;left:1.5%;right:1.5%;height:19%}
+ .south-challenge-6 .south-round{width:clamp(45px,12vh,62px)}
+ .south-challenge-6 .south-title{left:28%;top:18%;width:40%;padding:6px 10px;border-width:2px;outline-width:2px;border-radius:17px;box-shadow:0 3px 0 #204d2d88}
+ .south-challenge-6 .south-title h1{font-size:clamp(15px,2.35vw,21px);line-height:1.05}
+ .south-challenge-6 .south-title p{display:none}
+ .south-challenge-6 .south-status{right:11%;top:0;width:17%;padding:4px 3px;border-width:2px;outline-width:2px;border-radius:11px;box-shadow:0 3px 0 #07204788}
+ .south-challenge-6 .south-status b{display:block;font-size:clamp(7px,1.15vw,10px);line-height:1}
+ .south-challenge-6 .south-status>div{gap:1px;margin:1px 0}
+ .south-challenge-6 .south-status span{font-size:clamp(10px,1.55vw,13px)}
+ .south-challenge-6 .south-status .score-inline{display:flex!important;align-items:center;justify-content:center;width:100%!important;height:15px!important;gap:3px!important;margin:0!important;padding:0!important;border:0!important}
+ .south-challenge-6 .south-status .score-inline img{display:none!important}
+ .south-challenge-6 .south-status .score-inline span{display:flex!important;flex-direction:row!important;align-items:center;gap:3px!important;height:15px}
+ .south-challenge-6 .south-status .score-inline strong{font-size:11px;line-height:1}
+ .south-challenge-6 .south-status .score-inline small{font-size:6px;line-height:1}
+ .south-challenge-6 .south-speech{left:2%;top:27%;width:27%;min-height:21%;padding:7px 8px;border-width:2px;border-radius:17px;font-size:clamp(9px,1.5vw,13px);line-height:1.12;box-shadow:0 3px 0 #285c2a}
+ .south-challenge-6 .south-speech:after{content:"";position:absolute;left:43%;bottom:-8px;width:12px;height:12px;background:#fffdf2;border-right:2px solid #46923d;border-bottom:2px solid #46923d;transform:rotate(45deg)}
+ .south-challenge-6 .south-listen{left:3.5%;bottom:3%;width:24%;min-height:0;padding:6px 4px;transform:none;border-width:3px;outline-width:1px;border-radius:13px;font-size:clamp(9px,1.4vw,11px);box-shadow:0 3px 0 #07598d}
+ .south-challenge-6 .south-board.board-6{left:30%;top:20%;width:67%;height:77%;padding:0;border:0;outline:0;border-radius:0;background:transparent;box-shadow:none;overflow:hidden}
+ .south-challenge-6 .south-seasons{grid-template-rows:minmax(0,1fr);gap:0;padding:5px;border-width:3px;border-radius:18px;box-shadow:0 4px 0 #5d3b22aa,0 8px 15px #123c4e35}
+ .south-challenge-6 .south-seasons-footer{display:none}
+ .south-challenge-6 .south-seasons-main{height:100%;grid-template-columns:31% minmax(0,1fr);gap:6px}
+ .south-challenge-6 .south-season-wheel-panel{padding:5px;gap:4px;border-width:2px;border-radius:13px}
+ .south-challenge-6 .south-climate-map-title{width:96%;gap:4px;padding:3px 5px;border-radius:9px}
+ .south-challenge-6 .south-climate-map-title>span{width:25px;height:25px;border-radius:8px}
+ .south-challenge-6 .south-climate-map-title svg{width:19px;height:19px}
+ .south-challenge-6 .south-climate-map-title small{font-size:5px}
+ .south-challenge-6 .south-climate-map-title strong{font-size:clamp(8px,1.25vw,11px)}
+ .south-challenge-6 .south-climate-map{width:96%;border-width:1px;border-radius:11px}
+ .south-challenge-6 .south-climate-map>svg{width:96%;height:96%}
+ .south-challenge-6 .south-season-current{width:96%;min-height:31px;padding:3px 5px;border-width:2px}
+ .south-challenge-6 .south-season-current small{font-size:5px}
+ .south-challenge-6 .south-season-current strong{font-size:clamp(8px,1.25vw,11px)}
+ .south-challenge-6 .south-season-play{grid-template-rows:auto minmax(0,1fr) auto;gap:4px;padding:5px;border-width:2px;border-radius:13px}
+ .south-challenge-6 .south-climate-question{width:100%;margin:0;padding:5px 7px;transform:none;border-width:1px;border-radius:8px;font-size:clamp(10px,1.65vw,14px);line-height:1.05;box-shadow:0 2px 0 #93652c}
+ .south-challenge-6 .south-season-scene{border-width:2px;border-radius:10px;box-shadow:0 0 0 2px #2b7846,0 3px 7px #173f2a38}
+ .south-challenge-6 .south-season-name{left:6px;top:6px;padding:3px 7px 3px 4px;border-width:2px;border-radius:9px;font-size:clamp(6px,.95vw,8px);box-shadow:0 2px 0 #054b68}
+ .south-challenge-6 .south-season-name svg{width:18px;height:18px}
+ .south-challenge-6 .south-climate-mascot{right:4%;width:29%;height:82%}
+ .south-challenge-6 .south-season-choices{gap:4px}
+ .south-challenge-6 .south-season-choices button{height:61px;grid-template-columns:42% 58%;padding:3px 4px 3px 3px;border-width:2px;border-radius:10px;box-shadow:0 2px 0 #885626}
+ .south-challenge-6 .south-climate-choice-art{height:48px;padding:2px;border-width:2px;border-radius:9px}
+ .south-challenge-6 .south-climate-choice-copy{gap:2px;padding-left:4px}
+ .south-challenge-6 .south-climate-choice-copy small{padding:2px 4px;font-size:clamp(6px,.85vw,8px)}
+ .south-challenge-6 .south-climate-choice-copy strong{font-size:clamp(8px,1.15vw,10px);line-height:1.03}
 }

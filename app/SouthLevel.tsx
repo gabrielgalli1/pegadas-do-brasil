@@ -132,7 +132,7 @@ function SouthMaze({ canPlay, onComplete }: { canPlay: boolean; onComplete: () =
           <rect x="-54" y="5" width="70" height="23" rx="11" fill="url(#south-finish)" stroke="#fff" strokeWidth="3"/>
           <text x="-19" y="21" textAnchor="middle" fill="#174b72" fontSize="11" fontWeight="1000">CHEGADA</text>
         </g>
-        <g transform={`translate(${player.x} ${player.y})`} filter="url(#south-shadow)"><g transform={`scale(${facing} 1)`}><image href="/sul-mascote-quero-quero-sprite-v1.webp" x="-39" y="-34" width="102" height="102" preserveAspectRatio="xMidYMid meet"/></g></g>
+        <g transform={`translate(${player.x} ${player.y})`} filter="url(#south-shadow)"><g transform={`scale(${facing} 1)`}><image href="/sul-mascote-quero-quero-sprite-v1.webp" x="-39" y="-50" width="102" height="102" preserveAspectRatio="xMidYMid meet"/></g></g>
       </svg>
     </div>
     <aside className="south-maze-controls">
@@ -308,11 +308,11 @@ function SouthClimate({canPlay,onComplete}:{canPlay:boolean;onComplete:()=>void}
         <div className="south-season-current"><small>PREVISÃO EM</small><strong>{current.place}</strong></div>
       </section>
       <section className="south-season-play">
+        <h2 className="south-climate-question">{current.prompt}</h2>
         <div className="south-season-scene" aria-label={`Paisagem de ${current.place.toLowerCase()}`}>
           <img className="south-climate-bg" src={current.image} alt={`Quero-quero em ${current.place.toLowerCase()} durante ${current.weather.toLowerCase()}`}/>
           <span className="south-season-particles">{Array.from({length:9},(_,index)=><i key={index}/>)}</span>
           <b className="south-season-name"><ClimateSymbol climate={current.id}/>{current.weather}</b>
-          <h2 className="south-climate-question">{current.prompt}</h2>
         </div>
         <div className="south-season-choices">{current.choices.map(choice=><button key={choice.id} className={`${wrong===choice.id?"wrong":""} ${locked&&choice.id===current.answer?"correct":""}`} disabled={!canPlay||locked} onClick={()=>choose(choice.id)}><span className="south-climate-choice-art"><SeasonChoiceArt kind={choice.id}/></span><span className="south-climate-choice-copy"><small>ESCOLHER</small><strong>{choice.label}</strong></span>{locked&&choice.id===current.answer&&<i aria-hidden="true">✓</i>}</button>)}</div>
       </section>
