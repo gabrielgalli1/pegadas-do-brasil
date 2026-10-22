@@ -75,9 +75,9 @@ export default function PlayerAccessScreen({ onContinue, onAuthenticated, avatar
 
   return <section className="player-access-screen" aria-label="Acesso do jogador">
     <div className="player-access-brand">
-      <img src="/pegadas-logo-v1.png" alt="Pegadas do Brasil" />
+      <img src="/pegadas-logo-v1.webp" alt="Pegadas do Brasil" />
       <div className="player-access-welcome">
-        <img src="/arara-mascote-v1.png" alt="" aria-hidden="true" />
+        <img src="/arara-mascote-v1.webp" alt="" aria-hidden="true" />
         <div><strong>Uma aventura pelo Brasil!</strong><p>Explore mapas, conheça animais e descubra paisagens enquanto completa desafios divertidos.</p></div>
       </div>
       <div className="player-access-benefits" aria-label="Destaques do jogo">

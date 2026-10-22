@@ -41,16 +41,16 @@ export default function MobileInitialChallenge({
   const prompt = prompts[index] ?? prompts[0];
   return <div className={`mobile-initial-challenge mobile-initial-step-${index + 1}`} aria-label={`Desafio ${index + 1} da fase inicial`}>
     <header className="mobile-initial-header">
-      <button className="mobile-initial-control" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.png" alt="" /></button>
+      <button className="mobile-initial-control" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.webp" alt="" /></button>
       <h1 className="mobile-initial-header-title">{prompt.title}</h1>
       <div className="mobile-initial-status"><b>DESAFIO {index + 1} DE 5</b><div aria-label={`${index + 1} de 5 desafios`}>{Array.from({ length: 5 }, (_, star) => <span key={star} className={star <= index ? "active" : ""}>★</span>)}</div><small>⭐ {score} PONTOS</small></div>
-      <button className="mobile-initial-control" onClick={onToggleSound} aria-label={sound ? "Desligar som" : "Ligar som"} aria-pressed={sound}><img src="/fases-som-v1.png" alt="" /></button>
+      <button className="mobile-initial-control" onClick={onToggleSound} aria-label={sound ? "Desligar som" : "Ligar som"} aria-pressed={sound}><img src="/fases-som-v1.webp" alt="" /></button>
     </header>
     <div className="mobile-initial-body">
       <aside className="mobile-initial-intro">
         <h1>{prompt.title}</h1>
         <p className="mobile-initial-question">{prompt.question}</p>
-        <div className="mobile-initial-guide"><img src="/arara-mascote-v1.png" alt="Arara Ari" /><p>{prompt.tip}</p></div>
+        <div className="mobile-initial-guide"><img src="/arara-mascote-v1.webp" alt="Arara Ari" /><p>{prompt.tip}</p></div>
         <button className="mobile-initial-listen" onClick={() => onListen(prompt.spoken)}>🔊 OUVIR PERGUNTA</button>
       </aside>
       <div className="mobile-initial-work">
@@ -58,11 +58,11 @@ export default function MobileInitialChallenge({
           {countries.map((country) => <button key={country.id} className="mobile-initial-silhouette" onClick={() => onCountry(country.id)} aria-label={`Opção ${country.label}`}><span>{country.label}</span><img src={country.image} alt="" /></button>)}
         </div>}
         {index === 1 && <div className="mobile-initial-map-layout">
-          <div className="mobile-initial-map"><img src="/mapa-mundi-continentes-v3.png" alt="Mapa-múndi com os continentes em cores diferentes" /></div>
+          <div className="mobile-initial-map"><img src="/mapa-mundi-continentes-v3.webp" alt="Mapa-múndi com os continentes em cores diferentes" /></div>
           <div className="mobile-initial-answers" role="group" aria-label="Escolha o continente do Brasil">{continents.map((continent, option) => <button key={continent} className={`mobile-initial-answer answer-${option + 1}`} onClick={() => onContinent(continent)}>{continent}</button>)}</div>
         </div>}
         {index === 2 && <div className="mobile-initial-map-layout">
-          <div className="mobile-initial-map"><img src="/mapa-brasil-oceano-atlantico-v1.png" alt="Mapa do Brasil ao lado do Oceano Atlântico" /></div>
+          <div className="mobile-initial-map"><img src="/mapa-brasil-oceano-atlantico-v1.webp" alt="Mapa do Brasil ao lado do Oceano Atlântico" /></div>
           <div className="mobile-initial-answers" role="group" aria-label="Escolha o oceano que banha o Brasil">{oceans.map((ocean, option) => <button key={ocean.id} className={`mobile-initial-answer answer-${option + 1}`} onClick={() => onOcean(ocean.id)}><img src={ocean.icon} alt="" /><span>{ocean.label}</span></button>)}</div>
         </div>}
         {index === 3 && <div className="mobile-initial-map-layout">

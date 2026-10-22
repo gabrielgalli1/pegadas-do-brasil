@@ -30,10 +30,10 @@ const northeastStateChecks: Record<string, [number, number]> = {
   ma: [112, 162], pi: [220, 170], ce: [307, 141], rn: [420, 112],
   pb: [452, 141], pe: [454, 187], al: [426, 234], se: [430, 278], ba: [185, 375],
 };const northeastLandscapes: readonly { id: LandscapeId; name: string; image: string }[] = [
-  { id: "litoral", name: "LITORAL", image: "/paisagem-nordeste-litoral-v2.png" },
-  { id: "manguezal", name: "MANGUEZAL", image: "/paisagem-nordeste-manguezal-v2.png" },
-  { id: "serra", name: "SERRA", image: "/paisagem-nordeste-serra-v2.png" },
-  { id: "caatinga", name: "CAATINGA", image: "/paisagem-nordeste-caatinga-v2.png" },
+  { id: "litoral", name: "LITORAL", image: "/paisagem-nordeste-litoral-v2.webp" },
+  { id: "manguezal", name: "MANGUEZAL", image: "/paisagem-nordeste-manguezal-v2.webp" },
+  { id: "serra", name: "SERRA", image: "/paisagem-nordeste-serra-v2.webp" },
+  { id: "caatinga", name: "CAATINGA", image: "/paisagem-nordeste-caatinga-v2.webp" },
 ];
 const arraiaItems: readonly { id: ArraiaId; name: string; image: string; optionImage?: string; correct: boolean }[] = [
   { id: "bandeirinhas", name: "BANDEIRINHAS", image: "/arraia-bandeirinhas-v3.png", optionImage: "/arraia-bandeirinhas-v2.png", correct: true },
@@ -179,10 +179,10 @@ export default function NortheastLevel({ mistakes, challenge, score, feedback, s
   }
   return <section className={`screen north-challenge-screen northeast-challenge-screen ${isMap ? "" : "north-count-screen"} ${isStateDiscovery ? "northeast-state-screen" : ""} ${isClimate ? "northeast-climate-screen" : ""} ${isAnimalSearch ? "northeast-animal-screen" : ""} ${isLandscapeAlbum ? "northeast-landscape-screen" : ""} ${isArraia ? "northeast-arraia-screen" : ""}`} aria-label={`Desafio ${challenge} da Região Nordeste`}>
     <header className="north-challenge-header">
-      <button className="north-round-control" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.png" alt="" /></button>
+      <button className="north-round-control" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.webp" alt="" /></button>
       <div className="north-heading"><h1>{current.title}</h1><p>{current.question}</p></div>
       <div className="north-status"><b>DESAFIO {challenge} DE 6</b><div aria-label={`Desafio ${challenge} de 6`}>{Array.from({ length: 6 }, (_, index) => <span key={index} className={index < challenge ? "active" : ""}>★</span>)}</div><ScoreBadge score={score} compact /></div>
-      <button className={`north-round-control north-sound ${!sound ? "muted" : ""}`} onClick={onToggleSound} aria-label={sound ? "Desligar som" : "Ligar som"}><img src="/fases-som-v1.png" alt="" /></button>
+      <button className={`north-round-control north-sound ${!sound ? "muted" : ""}`} onClick={onToggleSound} aria-label={sound ? "Desligar som" : "Ligar som"}><img src="/fases-som-v1.webp" alt="" /></button>
     </header>
     <div className="north-guide"><div className="north-tip">{current.tip.split("\n").map((line, index) => <span key={line}>{line}{index === 0 && <br />}</span>)}</div></div>
     {isMap ? <><div className="north-map-card northeast-map-card" role="group" aria-label="Mapa do Brasil dividido em cinco regiões">
@@ -191,21 +191,21 @@ export default function NortheastLevel({ mistakes, challenge, score, feedback, s
       <svg className="northeast-states-map" viewBox="0 0 520 500" role="group" aria-label="Mapa interativo dos nove estados da Região Nordeste">{northeastStates.map((state) => { const revealed = discovered.includes(state.id); return <g key={state.id} className={revealed ? "revealed" : ""} role="button" tabIndex={canAnswer && !revealed ? 0 : -1} aria-label={`${state.name}${revealed ? ", descoberto" : ", toque para descobrir"}`} onClick={() => discoverState(state)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); discoverState(state); } }}><path d={state.path} style={{ "--state-color": state.color } as React.CSSProperties} /><text x={state.label[0]} y={state.label[1]}>{revealed ? state.name : state.short}</text>{revealed && <text className="state-check" x={northeastStateChecks[state.id][0]} y={northeastStateChecks[state.id][1]}>✓</text>}</g>})}</svg>
       <div className="northeast-discovery-progress"><strong>{discovered.length} DE 9 ESTADOS DESCOBERTOS</strong><div>{northeastStates.map((state, index) => <span key={state.id} className={index < discovered.length ? "found" : ""} aria-hidden="true" />)}</div></div>
     </div> : isClimate ? <div className="northeast-climate-card">
-      <div className="northeast-climate-landscape"><img src="/clima-sertao-paisagem-v1.png" alt="Paisagem ensolarada do Sertão com cactos e vegetação da Caatinga" /></div>
+      <div className="northeast-climate-landscape"><img src="/clima-sertao-paisagem-v1.webp" alt="Paisagem ensolarada do Sertão com cactos e vegetação da Caatinga" /></div>
       <div className="climate-columns">
         <section aria-labelledby="temperature-title"><h2 id="temperature-title">TEMPERATURA</h2><div className="climate-answer-slot">{climateTemperature ? (climateTemperature === "quente" ? "QUENTE" : "FRIO") : "?"}</div><div className="climate-options"><button className={climateTemperature === "quente" ? "selected" : ""} disabled={!canAnswer} onClick={() => chooseClimate("temperature", "quente")}><img src="/clima-quente-v2.png" alt="" />QUENTE</button><button className={climateTemperature === "frio" ? "selected" : ""} disabled={!canAnswer} onClick={() => chooseClimate("temperature", "frio")}><img src="/clima-frio-v2.png" alt="" />FRIO</button></div></section>
         <section aria-labelledby="rain-title"><h2 id="rain-title">CHUVAS</h2><div className="climate-answer-slot">{climateRain ? (climateRain === "pouca" ? "POUCA CHUVA" : "MUITA CHUVA") : "?"}</div><div className="climate-options"><button className={climateRain === "pouca" ? "selected" : ""} disabled={!canAnswer} onClick={() => chooseClimate("rain", "pouca")}><img src="/clima-pouca-chuva-v2.png" alt="" />POUCA CHUVA</button><button className={climateRain === "muita" ? "selected" : ""} disabled={!canAnswer} onClick={() => chooseClimate("rain", "muita")}><img src="/clima-muita-chuva-v2.png" alt="" />MUITA CHUVA</button></div></section>
       </div>
     </div> : isAnimalSearch ? <><div className="northeast-animal-card">
       <div className={"animal-search-scene" + (animalHint ? " show-hint" : "")} style={{ "--lens-x": lensPosition.x + "%", "--lens-y": lensPosition.y + "%" } as CSSProperties} onPointerMove={moveLens}>
-        <img className="animal-search-background" src="/busca-caatinga-cenario-v1.png" alt="Paisagem da Caatinga onde três animais estão escondidos" />
+        <img className="animal-search-background" src="/busca-caatinga-cenario-v1.webp" alt="Paisagem da Caatinga onde três animais estão escondidos" />
         <img className="hidden-animal animal-bird" src="/animal-asa-branca-busca-v1.png" alt="" />
         <img className="hidden-animal animal-iguana" src="/animal-iguana-busca-v1.png" alt="" />
         <img className="hidden-animal animal-armadillo" src="/animal-tatu-bola-busca-v2.png" alt="" />
-        <img className="hidden-animal animal-prea" src="/animal-prea-busca-v1.png" alt="" />
-        <img className="hidden-animal animal-carcara animal-carcara-far-left" src="/animal-carcara-voando-v2.png" alt="" />
-        <img className="hidden-animal animal-carcara animal-carcara-left" src="/animal-carcara-voando-v2.png" alt="" />
-        <img className="hidden-animal animal-carcara animal-carcara-right" src="/animal-carcara-voando-v2.png" alt="" />
+        <img className="hidden-animal animal-prea" src="/animal-prea-busca-v1.webp" alt="" />
+        <img className="hidden-animal animal-carcara animal-carcara-far-left" src="/animal-carcara-voando-v2.webp" alt="" />
+        <img className="hidden-animal animal-carcara animal-carcara-left" src="/animal-carcara-voando-v2.webp" alt="" />
+        <img className="hidden-animal animal-carcara animal-carcara-right" src="/animal-carcara-voando-v2.webp" alt="" />
         <button className="animal-hotspot hotspot-bird" disabled={!canAnswer} onClick={() => onAnswer(false)} aria-label="Verificar a asa-branca" />
         <button className="animal-hotspot hotspot-iguana" disabled={!canAnswer} onClick={() => onAnswer(false)} aria-label="Verificar a iguana" />
         <button className="animal-hotspot hotspot-armadillo" disabled={!canAnswer} onClick={() => onAnswer(true)} aria-label="Verificar o tatu-bola" />
@@ -226,7 +226,7 @@ export default function NortheastLevel({ mistakes, challenge, score, feedback, s
       <p className="landscape-album-instruction">{selectedLandscape ? "Agora toque no nome correto para colocar a paisagem." : "Primeiro escolha uma das paisagens abaixo."}</p>
       <div className="landscape-cards" aria-label="Paisagens embaralhadas para colocar no álbum">{[northeastLandscapes[2], northeastLandscapes[0], northeastLandscapes[3], northeastLandscapes[1]].map((landscape) => <button key={landscape.id} className={selectedLandscape === landscape.id ? "selected" : ""} disabled={!canAnswer || placedLandscapes.includes(landscape.id)} onClick={() => setSelectedLandscape(landscape.id)} aria-label={"Selecionar paisagem " + landscape.name}><img src={landscape.image} alt="" /><span>ESCOLHER</span></button>)}</div>
     </div> : isArraia ? <div className="northeast-arraia-card">
-      <div className="arraia-scene"><img src="/arraia-quebra-cabeca-silhuetas-v3.png" alt="Festa nordestina com pessoas dançando na praça" />
+      <div className="arraia-scene"><img src="/arraia-quebra-cabeca-silhuetas-v3.webp" alt="Festa nordestina com pessoas dançando na praça" />
         {arraiaItems.filter((item) => item.correct).map((item) => { const placed = arraiaChoices.includes(item.id); return <button key={item.id} className={"arraia-slot slot-" + item.id + (placed ? " placed" : "") + (arraiaOverSlot === item.id ? " drop-ready" : "")} data-arraia-slot={item.id} disabled={!canAnswer || placed} onClick={() => placeArraiaPiece(item.id, selectedArraia)} aria-label={(placed ? "Peça encaixada: " : "Silhueta para encaixar: ") + item.name}><img src={item.image} alt="" /></button>; })}
       </div>
       <div className="arraia-progress"><strong>{arraiaChoices.length} DE 4 ELEMENTOS ESCOLHIDOS</strong><div>{Array.from({ length: 4 }, (_, index) => <span key={index} className={index < arraiaChoices.length ? "ready" : ""}>★</span>)}</div></div>

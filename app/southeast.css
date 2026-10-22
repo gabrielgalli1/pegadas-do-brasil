@@ -1,6 +1,6 @@
 .game-shell:has(.southeast-screen){border:0;border-radius:0;background:transparent;box-shadow:none}
 .game-shell:has(.southeast-screen):before,.game-shell:has(.southeast-screen):after{display:none}
-.southeast-screen{height:100%;min-height:100%;background:#dff2ce url('/fundo-sudeste-mico-v1.png') center/100% 100% no-repeat!important;overflow:hidden;color:#073054}
+.southeast-screen{height:100%;min-height:100%;background:#dff2ce url('/fundo-sudeste-mico-v1.webp') center/100% 100% no-repeat!important;overflow:hidden;color:#073054}
 .southeast-screen:after{display:none}
 .southeast-header{position:absolute;z-index:3;top:4%;left:3%;right:3%;height:14%;display:grid;grid-template-columns:9% 1fr 21% 8%;align-items:center;gap:1.5%}
 .southeast-round{width:72%;aspect-ratio:1;background:#fff8e8;border:3px solid #d88d26;border-radius:50%;padding:0;display:grid;place-items:center;box-shadow:0 3px 0 #714e14}

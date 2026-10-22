@@ -16,8 +16,8 @@ const items: Item[] = [
   { id: "caatinga", label: "CAATINGA", correct: false, position: "50% 100%", explanation: "A Caatinga é característica principalmente da Região Nordeste." },
   { id: "araucaria", label: "ARAUCÁRIA", correct: false, position: "75% 100%", explanation: "A araucária é característica principalmente da Região Sul." },
   { id: "neve", label: "NEVE", correct: false, position: "100% 100%", explanation: "A neve não é uma característica do clima do Centro-Oeste." },
-  { id: "amazonia", label: "FLORESTA AMAZÔNICA", correct: false, image: "/paisagem-amazonia-v1.png", explanation: "A Floresta Amazônica é característica principalmente da Região Norte." },
-  { id: "pinguim", label: "PINGUIM", correct: false, image: "/animal-pinguim-norte-v1.png", explanation: "O pinguim vive em regiões frias e não é um animal típico do Centro-Oeste." },
+  { id: "amazonia", label: "FLORESTA AMAZÔNICA", correct: false, image: "/paisagem-amazonia-v1.webp", explanation: "A Floresta Amazônica é característica principalmente da Região Norte." },
+  { id: "pinguim", label: "PINGUIM", correct: false, image: "/animal-pinguim-norte-v1.webp", explanation: "O pinguim vive em regiões frias e não é um animal típico do Centro-Oeste." },
 ];
 const correctItems = items.filter((item) => item.correct);
 function shuffle(source: Item[]) {

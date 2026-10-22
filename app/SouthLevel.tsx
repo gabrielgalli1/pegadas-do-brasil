@@ -26,7 +26,7 @@ function SouthPuzzle({ canPlay, onComplete }: { canPlay: boolean; onComplete: ()
   const [justPlaced, setJustPlaced] = useState<number | null>(null);
   const currentTile = tiles.find(tile => !placed.includes(tile));
   const pieceStyle = (tile: number, guide = false) => ({
-    backgroundImage: `${guide ? "linear-gradient(#fff9e6b8,#fff9e6b8)," : ""}url('/sul-cataratas-quebra-cabeca-v1.png')`,
+    backgroundImage: `${guide ? "linear-gradient(#fff9e6b8,#fff9e6b8)," : ""}url('/sul-cataratas-quebra-cabeca-v1.webp')`,
     backgroundPosition: `${(tile % 3) * 50}% ${Math.floor(tile / 3) * 100}%`,
   });
   function choosePiece() {
@@ -132,7 +132,7 @@ function SouthMaze({ canPlay, onComplete }: { canPlay: boolean; onComplete: () =
           <rect x="-54" y="5" width="70" height="23" rx="11" fill="url(#south-finish)" stroke="#fff" strokeWidth="3"/>
           <text x="-19" y="21" textAnchor="middle" fill="#174b72" fontSize="11" fontWeight="1000">CHEGADA</text>
         </g>
-        <g transform={`translate(${player.x} ${player.y})`} filter="url(#south-shadow)"><g transform={`scale(${facing} 1)`}><image href="/sul-mascote-quero-quero-sprite-v1.png" x="-39" y="-34" width="102" height="102" preserveAspectRatio="xMidYMid meet"/></g></g>
+        <g transform={`translate(${player.x} ${player.y})`} filter="url(#south-shadow)"><g transform={`scale(${facing} 1)`}><image href="/sul-mascote-quero-quero-sprite-v1.webp" x="-39" y="-34" width="102" height="102" preserveAspectRatio="xMidYMid meet"/></g></g>
       </svg>
     </div>
     <aside className="south-maze-controls">
@@ -291,7 +291,7 @@ function ClimateSymbol({climate}:{climate:ClimateId}){
   return <svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="#e9fbff" strokeWidth="5" strokeLinecap="round"><path d="M32 5v54M8 18l48 28M56 18 8 46M24 11l8 8 8-8M24 53l8-8 8 8M10 28l11 3-3 11M54 28l-11 3 3 11"/></g></svg>;
 }
 
-const climateChoiceImages:Record<ClimateChoice,string>={watering:"/sul-clima-opcao-watering-v2.png",scarf:"/sul-clima-opcao-scarf-v2.png",ball:"/sul-clima-opcao-ball-v2.png",hat:"/sul-clima-opcao-hat-v2.png",rake:"/sul-clima-opcao-rake-v2.png",cover:"/sul-clima-opcao-cover-v2.png",coat:"/sul-clima-opcao-coat-v2.png"};
+const climateChoiceImages:Record<ClimateChoice,string>={watering:"/sul-clima-opcao-watering-v2.webp",scarf:"/sul-clima-opcao-scarf-v2.webp",ball:"/sul-clima-opcao-ball-v2.png",hat:"/sul-clima-opcao-hat-v2.webp",rake:"/sul-clima-opcao-rake-v2.png",cover:"/sul-clima-opcao-cover-v2.webp",coat:"/sul-clima-opcao-coat-v2.webp"};
 function SeasonChoiceArt({kind}:{kind:ClimateChoice}){return <img src={climateChoiceImages[kind]} alt=""/>;}
 
 function SouthClimate({canPlay,onComplete}:{canPlay:boolean;onComplete:()=>void}){
@@ -323,7 +323,7 @@ function SouthClimate({canPlay,onComplete}:{canPlay:boolean;onComplete:()=>void}
 
 export default function SouthLevel({challenge,score,mistakes,feedback,sound,newEmblem,onAnswer,onNext,onRetry,onBack,onToggleSound,onListen}:Props){
   const [hint,setHint]=useState("");const canPlay=feedback==="idle";function chooseRegion(id:string){if(!canPlay)return;if(id!=="sul")setHint("Dica: procure a região mais ao sul do mapa, formada por Paraná, Santa Catarina e Rio Grande do Sul.");onAnswer(id==="sul");}
-  return <section className={`screen south-screen south-challenge-${challenge}`} aria-label={`Desafio ${challenge} da Região Sul`}><header className="south-header"><button className="south-round" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.png" alt=""/></button><div className="south-title"><h1>{titles[challenge]}</h1><p>{subtitles[challenge]}</p></div><div className="south-status"><b>DESAFIO {challenge} DE 6</b><div>{Array.from({length:6},(_,i)=><span key={i} className={i<challenge?"active":""}>★</span>)}</div><ScoreBadge score={score} compact/></div><button className={`south-round south-sound ${!sound?"muted":""}`} onClick={onToggleSound} aria-label={sound?"Desligar narração":"Ligar narração"}><img src="/fases-som-v1.png" alt=""/></button></header><div className="south-speech">{speeches[challenge]}</div><button className="south-listen" onClick={()=>onListen(speeches[challenge])}>🔊 OUVIR INSTRUÇÕES</button><div className={`south-board board-${challenge}`}>
+  return <section className={`screen south-screen south-challenge-${challenge}`} aria-label={`Desafio ${challenge} da Região Sul`}><header className="south-header"><button className="south-round" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.webp" alt=""/></button><div className="south-title"><h1>{titles[challenge]}</h1><p>{subtitles[challenge]}</p></div><div className="south-status"><b>DESAFIO {challenge} DE 6</b><div>{Array.from({length:6},(_,i)=><span key={i} className={i<challenge?"active":""}>★</span>)}</div><ScoreBadge score={score} compact/></div><button className={`south-round south-sound ${!sound?"muted":""}`} onClick={onToggleSound} aria-label={sound?"Desligar narração":"Ligar narração"}><img src="/fases-som-v1.webp" alt=""/></button></header><div className="south-speech">{speeches[challenge]}</div><button className="south-listen" onClick={()=>onListen(speeches[challenge])}>🔊 OUVIR INSTRUÇÕES</button><div className={`south-board board-${challenge}`}>
   {challenge===1&&<svg className="south-map" viewBox="0 10 560 510" role="group" aria-label="Mapa interativo das cinco regiões do Brasil">{regionsMap.regions.map(region=><g key={region.id} role="button" tabIndex={canPlay?0:-1} onClick={()=>chooseRegion(region.id)} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();chooseRegion(region.id);}}} aria-label={`Região ${regionNames[region.id]}`}>{region.paths.map(path=><path key={path.id} d={path.d} fill={region.color}/>)}<text x={labels[region.id][0]} y={labels[region.id][1]}>{regionNames[region.id].toUpperCase()}</text></g>)}</svg>}
   {challenge===2&&<SouthPuzzle canPlay={canPlay} onComplete={()=>onAnswer(true)}/>} {challenge===3&&<SouthMaze canPlay={canPlay} onComplete={()=>onAnswer(true)}/>} {challenge===4&&<SouthScratch onComplete={()=>onAnswer(true)}/>} {challenge===5&&<SouthHarvest canPlay={canPlay} onComplete={()=>onAnswer(true)}/>} {challenge===6&&<SouthClimate canPlay={canPlay} onComplete={()=>onAnswer(true)}/>}</div>
   {challenge===1&&<p className="south-map-instruction">Clique ou toque na Região Sul no mapa!</p>}

@@ -25,14 +25,14 @@ export default function MobileJourney({
 }: Props) {
   return <section className="screen mobile-journey-screen" aria-label="Escolha sua aventura no celular">
     <header className="mobile-journey-header">
-      <button onClick={onBack} aria-label="Voltar ao menu"><img src="/fases-voltar-v1.png" alt="" /></button>
+      <button onClick={onBack} aria-label="Voltar ao menu"><img src="/fases-voltar-v1.webp" alt="" /></button>
       <div><h1><span aria-hidden="true">◆</span> ESCOLHA SUA AVENTURA <span aria-hidden="true">◆</span></h1><p>Aprenda, explore e descubra o Brasil passo a passo!</p></div>
       <div className="journey-progress mobile-journey-progress" aria-label={`Progresso geral: ${completedCount} de ${levels.length} fases e ${score} pontos`}>
         <b>FASES {completedCount} DE {levels.length}</b>
         <div aria-hidden="true">{levels.map((level, index) => <span key={level.id} className={index < completedCount ? "active" : ""}>★</span>)}</div>
         <ScoreBadge score={score} compact />
       </div>
-      <button onClick={onToggleSound} aria-label={sound ? "Desligar som" : "Ligar som"} aria-pressed={sound}><img src="/fases-som-v1.png" alt="" /></button>
+      <button onClick={onToggleSound} aria-label={sound ? "Desligar som" : "Ligar som"} aria-pressed={sound}><img src="/fases-som-v1.webp" alt="" /></button>
     </header>
     <div className="mobile-journey-content">
       <aside className="mobile-journey-guide" aria-label="Mensagem da arara Ari">

@@ -134,10 +134,10 @@ export default function CenterWestLevel({ mistakes, challenge, score, feedback, 
   const question = isPhotographer ? "Encontre o animal e tire uma foto!" : isBrasilia ? "Monte o Congresso Nacional colocando as peças no lugar correto." : isConveyor ? "Escolha os elementos que fazem parte da região." : isPuzzle ? "Coloque as peças nos espaços corretos." : isMemory ? "Encontre os pares de animais." : "Encontre a região no mapa do Brasil.";
   return <section className={`screen centerwest-screen ${isPhotographer ? "centerwest-photo-screen" : isBrasilia ? "centerwest-brasilia-screen" : isConveyor ? "centerwest-conveyor-screen" : isPuzzle ? "centerwest-puzzle-screen" : isMemory ? "centerwest-memory-screen" : "centerwest-location-screen"}`} aria-label={`Desafio ${challenge} da Região Centro-Oeste`}>
     <header className="north-challenge-header centerwest-challenge-header">
-      <button className="north-round-control" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.png" alt="" /></button>
+      <button className="north-round-control" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.webp" alt="" /></button>
       <div className="north-heading"><h1>{title}</h1><p>{question}</p></div>
       <div className="north-status"><b>DESAFIO {challenge} DE 6</b><div aria-label={`Desafio ${challenge} de 6`}>{Array.from({ length: 6 }, (_, index) => <span key={index} className={index < challenge ? "active" : ""}>★</span>)}</div><ScoreBadge score={score} compact /></div>
-      <button className={`north-round-control north-sound ${!sound ? "muted" : ""}`} onClick={onToggleSound} aria-label={sound ? "Desligar som" : "Ligar som"}><img src="/fases-som-v1.png" alt="" /></button>
+      <button className={`north-round-control north-sound ${!sound ? "muted" : ""}`} onClick={onToggleSound} aria-label={sound ? "Desligar som" : "Ligar som"}><img src="/fases-som-v1.webp" alt="" /></button>
     </header>
     <div className="centerwest-guide">{isPhotographer ? <>Nossa missão:<br />fotografar a fauna!<br />Procure e enquadre cada animal.</> : isBrasilia ? <>Observe a referência<br />e monte o monumento!</> : isConveyor ? <>Observe com atenção!<br />Escolha o que pertence<br />ao Centro-Oeste.</> : isPuzzle ? <>Observe as formas<br />e complete o mapa!</> : isMemory ? <>Vamos conhecer os animais!<br />Vire duas cartas por vez.<br />Onde está cada par?</> : <>Olá, explorador!<br />Eu sou o Téo.<br />Bem-vindo ao Centro-Oeste!<br />Encaixe a região no lugar certo.</>}</div>
 

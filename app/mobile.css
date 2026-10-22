@@ -8,7 +8,7 @@
   .game-shell:has(.mobile-menu-screen),.game-shell:has(.mobile-journey-screen),.game-shell:has(.mobile-silhouette){position:relative;left:auto;top:auto;transform:none;width:100%;height:100%;min-height:0;aspect-ratio:auto;border:8px solid #073563;border-radius:28px;box-shadow:0 4px 12px #00152c55}
   .menu-screen,.journey-screen{display:none!important}
 
-  .mobile-menu-screen{display:grid;grid-template-rows:22% minmax(0,1fr) 10%;width:100%;height:100%;min-height:0;overflow:hidden;background:#dcf8c0 url('/menu-background-v2.png') center/cover no-repeat!important;padding:1.5% 2.2%}
+  .mobile-menu-screen{display:grid;grid-template-rows:22% minmax(0,1fr) 10%;width:100%;height:100%;min-height:0;overflow:hidden;background:#dcf8c0 url('/menu-background-v2.webp') center/cover no-repeat!important;padding:1.5% 2.2%}
   .mobile-menu-tools{display:flex;align-items:flex-start;justify-content:center;gap:3%;min-width:0}
   .mobile-menu-tools button{width:13%;min-width:0;padding:0;background:transparent;text-align:center;font-size:clamp(9px,1.35vw,12px);line-height:1.05}
   .mobile-menu-tools img{display:block;width:clamp(36px,6.3vw,58px);height:clamp(36px,6.3vw,58px);object-fit:contain;margin:0 auto 3px}
@@ -30,7 +30,7 @@
   .mobile-menu-credits{align-self:end;justify-self:start;min-height:31px;padding:4px 14px;border:2px solid #fff;border-radius:13px;background:#0b92d5;box-shadow:0 3px 0 #07527e;color:#fff;font-size:12px}
   .mobile-menu-sign-out{position:absolute;z-index:8;left:1.8%;top:6%;width:34px;height:34px;padding:6px;border:2px solid #fff;outline:2px solid #07558f;border-radius:10px;background:linear-gradient(180deg,#20adf1,#087fc7);box-shadow:0 3px 0 #064d82;color:#fff}.mobile-menu-sign-out svg{display:block;width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 
-  .mobile-journey-screen{display:grid;grid-template-rows:clamp(66px,20%,78px) minmax(0,1fr) clamp(31px,10%,40px);width:100%;height:100%;min-height:0;overflow:hidden;background:#e3f8c2 url('/fases-fundo-v1.png') center/100% 100% no-repeat!important;padding:1% 1.5% 1.5%}
+  .mobile-journey-screen{display:grid;grid-template-rows:clamp(66px,20%,78px) minmax(0,1fr) clamp(31px,10%,40px);width:100%;height:100%;min-height:0;overflow:hidden;background:#e3f8c2 url('/fases-fundo-v1.webp') center/100% 100% no-repeat!important;padding:1% 1.5% 1.5%}
   .mobile-journey-header{display:grid;grid-template-columns:56px minmax(0,1fr) 56px;align-items:start;gap:8px;min-height:0}
   .mobile-journey-header>button{width:50px;height:50px;padding:0;background:transparent}
   .mobile-journey-header>button img{width:100%;height:100%;object-fit:contain}
@@ -57,7 +57,7 @@
 
   .challenge-step-1{height:100%;min-height:0;padding:0;overflow:hidden}
   .challenge-step-1>.challenge-header,.challenge-step-1>.silhouette-challenge{display:none!important}
-  .mobile-silhouette{display:grid;grid-template-columns:28% minmax(0,1fr);grid-template-rows:17% minmax(0,1fr);gap:1.6% 1.5%;width:100%;height:100%;padding:1.5% 1.8% 1.8%;background:#dff5cd url('/desafios-fundo-v1.png') center/cover no-repeat}
+  .mobile-silhouette{display:grid;grid-template-columns:28% minmax(0,1fr);grid-template-rows:17% minmax(0,1fr);gap:1.6% 1.5%;width:100%;height:100%;padding:1.5% 1.8% 1.8%;background:#dff5cd url('/desafios-fundo-v1.webp') center/cover no-repeat}
   .mobile-silhouette-top{grid-column:1/-1;grid-row:1;display:flex;align-items:center;justify-content:space-between;min-height:0}
   .mobile-silhouette-control{width:clamp(40px,5.7vw,52px);height:clamp(40px,5.7vw,52px);padding:0;background:transparent}
   .mobile-silhouette-control img{width:100%;height:100%;object-fit:contain}
@@ -89,7 +89,7 @@
 @media (max-width:900px) and (orientation:portrait){
   main{height:100dvh;min-height:0;overflow:hidden}
   main>.game-shell{visibility:hidden;pointer-events:none}
-  .mobile-orientation-gate{position:fixed;z-index:1000;inset:0;display:grid;place-items:center;padding:clamp(14px,5vw,26px);overflow:hidden;background:#9cdfef url('/orientation-background-v1.png') center/cover no-repeat;text-align:center;color:#082e5b}
+  .mobile-orientation-gate{position:fixed;z-index:1000;inset:0;display:grid;place-items:center;padding:clamp(14px,5vw,26px);overflow:hidden;background:#9cdfef url('/orientation-background-v1.webp') center/cover no-repeat;text-align:center;color:#082e5b}
   .mobile-orientation-gate::before,.mobile-orientation-gate::after{content:"";position:absolute;left:0;right:0;height:9px;background:linear-gradient(90deg,#19aee7 0 34%,#ffd023 34% 68%,#27862b 68%)}
   .mobile-orientation-gate::before{top:0}.mobile-orientation-gate::after{bottom:0}
   .orientation-card{position:relative;width:min(100%,390px);max-height:calc(100dvh - 28px);display:flex;flex-direction:column;align-items:center;gap:clamp(8px,2.2vh,16px);padding:clamp(18px,4.5vh,32px) clamp(18px,6vw,28px);border:5px solid #fff;outline:5px solid #2f8e2e;border-radius:34px;background:linear-gradient(160deg,#fffef2f5,#e9ffd8f5);box-shadow:0 10px 0 #052747,0 18px 38px #00152cb8}
@@ -155,7 +155,7 @@
   .game-shell:has(.mobile-initial-challenge)::before,.game-shell:has(.mobile-initial-challenge)::after{display:none!important}
   .challenge-screen:has(.mobile-initial-challenge){height:100%;min-height:0;padding:0!important;overflow:hidden;background:transparent!important}
   .challenge-screen:has(.mobile-initial-challenge)>.challenge-header,.challenge-screen:has(.mobile-initial-challenge)>.silhouette-challenge,.challenge-screen:has(.mobile-initial-challenge)>.continent-challenge,.challenge-screen:has(.mobile-initial-challenge)>.ocean-challenge,.challenge-screen:has(.mobile-initial-challenge)>.states-challenge,.challenge-screen:has(.mobile-initial-challenge)>.landscape-challenge{display:none!important}
-  .mobile-initial-challenge{box-sizing:border-box;display:grid;grid-template-rows:clamp(59px,18%,70px) minmax(0,1fr);width:100%;height:100%;min-height:0;padding:1.4% 2.5% 2.4%;overflow:hidden;background:#dff5cd url('/desafios-fundo-v1.png') center/100% 100% no-repeat}
+  .mobile-initial-challenge{box-sizing:border-box;display:grid;grid-template-rows:clamp(59px,18%,70px) minmax(0,1fr);width:100%;height:100%;min-height:0;padding:1.4% 2.5% 2.4%;overflow:hidden;background:#dff5cd url('/desafios-fundo-v1.webp') center/100% 100% no-repeat}
   .mobile-initial-header{display:grid;grid-template-columns:50px minmax(0,1fr) 50px;align-items:start;min-height:0}
   .mobile-initial-control{width:clamp(38px,5.6vw,49px);height:clamp(38px,5.6vw,49px);padding:0;border:0;background:transparent}
   .mobile-initial-control:last-child{justify-self:end}
@@ -765,7 +765,7 @@
   .northeast-arraia-screen .arraia-drag-ghost img{filter:drop-shadow(0 2px 2px #4f321b66)}
 }
 @media (max-width:900px) and (orientation:landscape){
-  .northeast-arraia-screen .northeast-arraia-card::before{content:"";position:absolute;left:5px;right:5px;top:5px;height:60%;background:url('/arraia-quebra-cabeca-silhuetas-v3.png') center/cover no-repeat;filter:blur(3px) saturate(.85);opacity:.48;pointer-events:none}
+  .northeast-arraia-screen .northeast-arraia-card::before{content:"";position:absolute;left:5px;right:5px;top:5px;height:60%;background:url('/arraia-quebra-cabeca-silhuetas-v3.webp') center/cover no-repeat;filter:blur(3px) saturate(.85);opacity:.48;pointer-events:none}
   .northeast-arraia-screen .arraia-scene,.northeast-arraia-screen .arraia-progress,.northeast-arraia-screen .arraia-options{position:relative;z-index:1}
 }
 

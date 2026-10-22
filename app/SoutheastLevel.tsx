@@ -75,10 +75,10 @@ export default function SoutheastLevel({ challenge, score, mistakes, feedback, s
   };
   return <section className={`screen southeast-screen ${challenge <= 6 ? "southeast-location-screen" : ""} ${challenge === 2 ? "southeast-detective-screen" : ""} ${challenge === 3 ? "southeast-coffee-screen" : ""} ${challenge === 4 ? "southeast-word-screen" : ""} ${challenge === 5 ? "southeast-passport-screen" : ""} ${challenge === 6 ? "southeast-river-screen" : ""}`} aria-label={`Desafio ${challenge} da Região Sudeste`}>
     <header className="southeast-header">
-      <button className="southeast-round" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.png" alt="" /></button>
+      <button className="southeast-round" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.webp" alt="" /></button>
       <div className="southeast-title"><h1>{titles[challenge]}</h1><p>{challenge === 1 ? "Toque na Região Sudeste no mapa do Brasil." : challenge === 2 ? "Descubra o estado pela pista da capital." : challenge === 3 ? "Cultive, colha e prepare o café." : challenge === 4 ? "Encontre palavras na horizontal e na vertical." : challenge === 5 ? "Colecione os carimbos dos pontos turísticos." : "Recolha os resíduos antes que a corrente os leve."}</p></div>
       <div className="southeast-status"><b>DESAFIO {challenge} DE 6</b><div aria-hidden="true">{Array.from({ length: 6 }, (_, i) => <span key={i} className={i < challenge ? "active" : ""}>★</span>)}</div><ScoreBadge score={score} compact /></div>
-      <button className={`southeast-round southeast-sound ${!sound ? "muted" : ""}`} onClick={onToggleSound} aria-label={sound ? "Desligar narração" : "Ligar narração"}><img src="/fases-som-v1.png" alt="" /></button>
+      <button className={`southeast-round southeast-sound ${!sound ? "muted" : ""}`} onClick={onToggleSound} aria-label={sound ? "Desligar narração" : "Ligar narração"}><img src="/fases-som-v1.webp" alt="" /></button>
     </header>
     <div className="southeast-speech">{speeches[challenge]}</div>
     <button className="southeast-listen" onClick={() => onListen(challenge === 2 ? `Minha capital é ${currentState.capital}. Qual é o estado?` : speeches[challenge])}>{challenge === 2 ? "🔊 OUVIR PERGUNTA" : "🔊 OUVIR INSTRUÇÕES"}</button>
