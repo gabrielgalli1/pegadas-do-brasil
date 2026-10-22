@@ -154,7 +154,7 @@ test("Keyboard selection and Enter/Space placement work without dragging", () =>
   }
 });
 
-test("Challenge 5 advances to puzzle, preserves scoring and completes the North journey", () => {
+test("Challenge 5 advances to puzzle, preserves scoring and prevents points on replay", () => {
   const h = createHarness("app/page.tsx");
   const source = fs.readFileSync("app/page.tsx", "utf8");
   const hookDeclarations = source.slice(source.indexOf("export default function Home() {"), source.indexOf("  useEffect(() => {", source.indexOf("export default function Home() {")));
@@ -179,10 +179,10 @@ test("Challenge 5 advances to puzzle, preserves scoring and completes the North 
   child().props.onFinish(); assert.equal(get("feedback"), "finished");
   assert.match(text(h.render()), /Região Norte concluída/);
   button("VOLTAR À JORNADA").props.onClick(); assert.equal(get("screen"), "journey");
-  // Fresh first-attempt completion earns 100, and finishing never lowers existing unlocks.
+  // Replaying a completed region awards no additional points and never lowers unlocks.
   seed("screen", "north"); seed("northChallenge", 6); seed("unlockedLevel", 4);
   const again = get("score"); child().props.onPlace("acre");
-  assert.equal(get("score"), again + 100); assert.equal(get("unlockedLevel"), 4);
+  assert.equal(get("score"), again); assert.equal(get("unlockedLevel"), 4);
 });
 
 test("Two wrong pieces restart the North region from its first challenge", () => {

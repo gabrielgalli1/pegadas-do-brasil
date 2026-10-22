@@ -9,13 +9,14 @@ const musicFiles = [
   "musica-regiao-nordeste.mp3",
   "musica-regiao-centro-oeste.mp3",
   "musica-regiao-sudeste.mp3",
+  "musica-regiao-sul.mp3",
 ];
 
 test("desktop and mobile share music state and the menu volume modal", () => {
   assert.match(pageSource, /screen !== "menu" && screen !== "journey"/);
   assert.match(pageSource, /MobileMenu[\s\S]*onSound=\{\(\) => setModal\("sound"\)\}/);
   assert.match(pageSource, /value=\{volume\}[\s\S]*setVolume\(Number\(e\.target\.value\)\)/);
-  assert.match(pageSource, /\[menuMusicRef, northMusicRef, northeastMusicRef, centerWestMusicRef, southeastMusicRef\]/);
+  assert.match(pageSource, /\[menuMusicRef, northMusicRef, northeastMusicRef, centerWestMusicRef, southeastMusicRef, southMusicRef\]/);
 });
 
 test("Southeast starts after the three-second intro on every loop", () => {
