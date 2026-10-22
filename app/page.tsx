@@ -18,6 +18,7 @@ import { tidyNickname, validateNickname } from "./nicknameValidation";
 import { isRemoteProgressNewer, normalizePlayerProgress, readCachedProgress, unlockedAchievementIds, type PlayerProgress } from "./progressPersistence";
 import { recordedNarrations } from "./narrationCatalog";
 import { audioVolume, backgroundMusicVolume } from "./audioVolume";
+import { countsAsFirstTry, regionChallengePoints } from "./regionScoring";
 import { PhaseEmblem, PhaseEmblemReward, phaseEmblems, type PhaseEmblemId } from "./phaseEmblems";
 
 const northPlantOptions = [
@@ -285,6 +286,7 @@ export default function Home() {
   const northeastMusicRef = useRef<HTMLAudioElement>(null);
   const centerWestMusicRef = useRef<HTMLAudioElement>(null);
   const southeastMusicRef = useRef<HTMLAudioElement>(null);
+  const southMusicRef = useRef<HTMLAudioElement>(null);
   const narrationActiveRef = useRef(false);
   const buttonClickRef = useRef<HTMLAudioElement>(null);
   const wrongAnswerRef = useRef<HTMLAudioElement>(null);
@@ -573,10 +575,27 @@ export default function Home() {
     };
   }, [screen, music, volume]);
   useEffect(() => {
+    const audio = southMusicRef.current;
+    if (!audio) return;
+    audio.volume = backgroundMusicVolume(volume, narrationActiveRef.current);
+    if (screen !== "south" || !music || volume === 0) {
+      audio.pause();
+      return;
+    }
+    const playSouthMusic = () => { void audio.play().catch(() => { /* aguarda a primeira interação exigida pelo navegador */ }); };
+    playSouthMusic();
+    window.addEventListener("pointerdown", playSouthMusic, { once: true });
+    window.addEventListener("keydown", playSouthMusic, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", playSouthMusic);
+      window.removeEventListener("keydown", playSouthMusic);
+    };
+  }, [screen, music, volume]);
+  useEffect(() => {
     const updateNarrationVolume = (event: Event) => {
       narrationActiveRef.current = (event as CustomEvent<boolean>).detail;
       const musicVolume = backgroundMusicVolume(volume, narrationActiveRef.current);
-      [menuMusicRef, northMusicRef, northeastMusicRef, centerWestMusicRef, southeastMusicRef].forEach((ref) => {
+      [menuMusicRef, northMusicRef, northeastMusicRef, centerWestMusicRef, southeastMusicRef, southMusicRef].forEach((ref) => {
         if (ref.current) ref.current.volume = musicVolume;
       });
     };
@@ -803,9 +822,9 @@ export default function Home() {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (region === "Norte") {
-      const earnedPoints = attempts === 0 ? 100 : 60;
+      const earnedPoints = regionChallengePoints(completedRegions, "norte", attempts);
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
-      if (attempts === 0) setFirstTryWins((value) => value + 1);
+      if (countsAsFirstTry(completedRegions, "norte", attempts)) setFirstTryWins((value) => value + 1);
       playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! Você encontrou a Região Norte!");
@@ -818,9 +837,9 @@ export default function Home() {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (count === 7) {
-      const earnedPoints = attempts === 0 ? 100 : 60;
+      const earnedPoints = regionChallengePoints(completedRegions, "norte", attempts);
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
-      if (attempts === 0) setFirstTryWins((value) => value + 1);
+      if (countsAsFirstTry(completedRegions, "norte", attempts)) setFirstTryWins((value) => value + 1);
       playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! A Região Norte possui sete estados: Acre, Amapá, Amazonas, Pará, Rondônia, Roraima e Tocantins.");
@@ -833,9 +852,9 @@ export default function Home() {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (state === "amazonas") {
-      const earnedPoints = attempts === 0 ? 100 : 60;
+      const earnedPoints = regionChallengePoints(completedRegions, "norte", attempts);
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
-      if (attempts === 0) setFirstTryWins((value) => value + 1);
+      if (countsAsFirstTry(completedRegions, "norte", attempts)) setFirstTryWins((value) => value + 1);
       playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! O Amazonas é o maior estado do Brasil em extensão territorial e fica na Região Norte!");
@@ -848,9 +867,9 @@ export default function Home() {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (habitat === "rio") {
-      const earnedPoints = attempts === 0 ? 100 : 60;
+      const earnedPoints = regionChallengePoints(completedRegions, "norte", attempts);
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
-      if (attempts === 0) setFirstTryWins((value) => value + 1);
+      if (countsAsFirstTry(completedRegions, "norte", attempts)) setFirstTryWins((value) => value + 1);
       playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! O boto-cor-de-rosa vive em água doce, nos rios da Amazônia!");
@@ -863,9 +882,9 @@ export default function Home() {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (plant === "vitoria-regia") {
-      const earnedPoints = attempts === 0 ? 100 : 60;
+      const earnedPoints = regionChallengePoints(completedRegions, "norte", attempts);
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
-      if (attempts === 0) setFirstTryWins((value) => value + 1);
+      if (countsAsFirstTry(completedRegions, "norte", attempts)) setFirstTryWins((value) => value + 1);
       playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! A vitória-régia é uma planta aquática e um símbolo da Amazônia!");
@@ -878,9 +897,9 @@ export default function Home() {
     if (northChallenge !== 6 || feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (piece === "acre") {
-      const earnedPoints = attempts === 0 ? 100 : 60;
+      const earnedPoints = regionChallengePoints(completedRegions, "norte", attempts);
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
-      if (attempts === 0) setFirstTryWins((value) => value + 1);
+      if (countsAsFirstTry(completedRegions, "norte", attempts)) setFirstTryWins((value) => value + 1);
       setUnlockedLevel((value) => Math.max(value, 2));
       if (!completedRegions.includes("norte")) setEarnedEmblem("norte");
       setCompletedRegions((regions) => regions.includes("norte") ? regions : [...regions, "norte"]);
@@ -897,13 +916,13 @@ export default function Home() {
       if (sound) speak("Quase! Observe a dica e tente novamente.");
       return;
     }
-    const earnedPoints = attempts === 0 ? 100 : 60;
+    const earnedPoints = regionChallengePoints(completedRegions, "nordeste", attempts);
     setScore((value) => {
       const nextScore = value + earnedPoints;
       setHighestScore((best) => Math.max(best, nextScore));
       return nextScore;
     });
-    if (attempts === 0) setFirstTryWins((value) => value + 1);
+    if (countsAsFirstTry(completedRegions, "nordeste", attempts)) setFirstTryWins((value) => value + 1);
     if (northeastChallenge === 6) {
       setUnlockedLevel((value) => Math.max(value, 3));
       if (!completedRegions.includes("nordeste")) setEarnedEmblem("nordeste");
@@ -916,9 +935,9 @@ export default function Home() {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (!correct) { registerMistake(); return; }
-    const earnedPoints = attempts === 0 ? 100 : 60;
+    const earnedPoints = regionChallengePoints(completedRegions, "centro-oeste", attempts);
     setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
-    if (attempts === 0) setFirstTryWins((value) => value + 1);
+    if (countsAsFirstTry(completedRegions, "centro-oeste", attempts)) setFirstTryWins((value) => value + 1);
     if (centerWestChallenge === 6) {
       setUnlockedLevel((value) => Math.max(value, 4));
       if (!completedRegions.includes("centro-oeste")) setEarnedEmblem("centro-oeste");
@@ -932,9 +951,9 @@ export default function Home() {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (!correct) { registerMistake(); return; }
-    const earnedPoints = attempts === 0 ? 100 : 60;
+    const earnedPoints = regionChallengePoints(completedRegions, "sudeste", attempts);
     setScore((value) => { const next = value + earnedPoints; setHighestScore((best) => Math.max(best, next)); return next; });
-    if (attempts === 0) setFirstTryWins((value) => value + 1);
+    if (countsAsFirstTry(completedRegions, "sudeste", attempts)) setFirstTryWins((value) => value + 1);
     if (southeastChallenge === 6) {
       setUnlockedLevel((value) => Math.max(value, 5));
       if (!completedRegions.includes("sudeste")) setEarnedEmblem("sudeste");
@@ -953,9 +972,9 @@ export default function Home() {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (!correct) { registerMistake(); return; }
-    const earnedPoints = attempts === 0 ? 100 : 60;
+    const earnedPoints = regionChallengePoints(completedRegions, "sul", attempts);
     setScore((value) => { const next = value + earnedPoints; setHighestScore((best) => Math.max(best, next)); return next; });
-    if (attempts === 0) setFirstTryWins((value) => value + 1);
+    if (countsAsFirstTry(completedRegions, "sul", attempts)) setFirstTryWins((value) => value + 1);
     if (southChallenge === 6) {
       if (!completedRegions.includes("sul")) setEarnedEmblem("sul");
       setCompletedRegions((regions) => regions.includes("sul") ? regions : [...regions, "sul"]);
@@ -996,14 +1015,14 @@ export default function Home() {
     regionStartScore.current = score;
     regionStartFirstTryWins.current = firstTryWins;
     if (index === 0) { setChallengeIndex(0); setInitialPhaseHadMistake(false); setScreen("game"); return; }
-    if (index === 1) { setNorthChallenge(1); setScreen("north"); return; }
-    if (index === 2) { setNortheastChallenge(1); setScreen("northeast"); return; }
-    if (index === 3) { setCenterWestChallenge(1); setScreen("centerwest"); return; }
-    if (index === 4) { setSoutheastChallenge(1); setScreen("southeast"); return; }
-    if (index === 5) { setSouthChallenge(1); setScreen("south"); return; }
+    if (index === 1) { if (completedRegions.includes("norte")) setNorthChallenge(1); setScreen("north"); return; }
+    if (index === 2) { if (completedRegions.includes("nordeste")) setNortheastChallenge(1); setScreen("northeast"); return; }
+    if (index === 3) { if (completedRegions.includes("centro-oeste")) setCenterWestChallenge(1); setScreen("centerwest"); return; }
+    if (index === 4) { if (completedRegions.includes("sudeste")) setSoutheastChallenge(1); setScreen("southeast"); return; }
+    if (index === 5) { if (completedRegions.includes("sul")) setSouthChallenge(1); setScreen("south"); return; }
   }
 
-  return <main className={`${highContrast ? "high-contrast" : ""} ${largeText ? "large-text" : ""} ${buttonHighlight ? "button-highlight" : ""}`}><div className="mobile-orientation-gate" role="status" aria-live="polite"><section className="orientation-card"><img className="orientation-logo" src="/pegadas-logo-v1.webp" alt="Pegadas do Brasil" /><div className="orientation-phone-stage" aria-hidden="true"><div className="orientation-phone"><i></i><span><em className="orientation-flag"></em></span></div><div className="orientation-turn-arrow">↻</div></div><h1>Vire o celular para jogar</h1><p>Use a tela na horizontal para ver o jogo completo e aproveitar melhor a aventura.</p><small><span aria-hidden="true">✓</span> A tela será ajustada automaticamente</small></section></div><div className="game-shell" ref={gameShellRef}>{accessVisible && <PlayerAccessScreen avatarId={avatarId} onContinue={() => setAccessVisible(false)} onAuthenticated={finishPlayerAccess} />}<audio ref={menuMusicRef} src="/musica-menu.mp3" loop preload="auto" aria-hidden="true" /><audio ref={northMusicRef} src="/musica-regiao-norte.mp3" loop preload="auto" aria-hidden="true" /><audio ref={northeastMusicRef} src="/musica-regiao-nordeste.mp3" loop preload="auto" aria-hidden="true" /><audio ref={centerWestMusicRef} src="/musica-regiao-centro-oeste.mp3" loop preload="auto" aria-hidden="true" /><audio ref={southeastMusicRef} src="/musica-regiao-sudeste.mp3" preload="auto" aria-hidden="true" /><audio ref={buttonClickRef} src="/som-clique-botao.wav" preload="auto" aria-hidden="true" /><audio ref={wrongAnswerRef} src="/som-erro.mp3" preload="auto" aria-hidden="true" /><audio ref={correctAnswerRef} src="/som-acerto.mp3" preload="auto" aria-hidden="true" />
+  return <main className={`${highContrast ? "high-contrast" : ""} ${largeText ? "large-text" : ""} ${buttonHighlight ? "button-highlight" : ""}`}><div className="mobile-orientation-gate" role="status" aria-live="polite"><section className="orientation-card"><img className="orientation-logo" src="/pegadas-logo-v1.webp" alt="Pegadas do Brasil" /><div className="orientation-phone-stage" aria-hidden="true"><div className="orientation-phone"><i></i><span><em className="orientation-flag"></em></span></div><div className="orientation-turn-arrow">↻</div></div><h1>Vire o celular para jogar</h1><p>Use a tela na horizontal para ver o jogo completo e aproveitar melhor a aventura.</p><small><span aria-hidden="true">✓</span> A tela será ajustada automaticamente</small></section></div><div className="game-shell" ref={gameShellRef}>{accessVisible && <PlayerAccessScreen avatarId={avatarId} onContinue={() => setAccessVisible(false)} onAuthenticated={finishPlayerAccess} />}<audio ref={menuMusicRef} src="/musica-menu.mp3" loop preload="auto" aria-hidden="true" /><audio ref={northMusicRef} src="/musica-regiao-norte.mp3" loop preload="auto" aria-hidden="true" /><audio ref={northeastMusicRef} src="/musica-regiao-nordeste.mp3" loop preload="auto" aria-hidden="true" /><audio ref={centerWestMusicRef} src="/musica-regiao-centro-oeste.mp3" loop preload="auto" aria-hidden="true" /><audio ref={southeastMusicRef} src="/musica-regiao-sudeste.mp3" preload="auto" aria-hidden="true" /><audio ref={southMusicRef} src="/musica-regiao-sul.mp3" loop preload="auto" aria-hidden="true" /><audio ref={buttonClickRef} src="/som-clique-botao.wav" preload="auto" aria-hidden="true" /><audio ref={wrongAnswerRef} src="/som-erro.mp3" preload="auto" aria-hidden="true" /><audio ref={correctAnswerRef} src="/som-acerto.mp3" preload="auto" aria-hidden="true" />
     {screen === "menu" && <><section className="screen menu-screen" aria-label="Menu principal">
       <nav className="menu-tools" aria-label="Opções do jogo">
         <button className={selectedAvatar ? "avatar-selected-tool" : ""} onClick={() => setModal("avatar")}><span className="menu-avatar" aria-hidden="true"><img src={selectedAvatar?.image ?? "/icone-avatar-v1.webp"} alt="" /></span>{selectedAvatar ? selectedAvatar.name : "Avatar"}</button><button onClick={() => setModal("achievements")}><img src="/icone-conquistas-v1.png" alt="" />Conquistas</button><button className={!sound ? "sound-muted" : ""} onClick={() => setModal("sound")}><img src="/icone-som-v1.png" alt="" />Som</button><button onClick={() => setModal("accessibility")}><img src="/icone-acessibilidade-v1.webp" alt="" />Acessibilidade</button><button onClick={() => setModal("help")}><img src="/icone-como-jogar-v1.webp" alt="" />Como jogar</button>
@@ -1106,7 +1125,7 @@ export default function Home() {
         <button className={`north-round-control north-sound ${!sound ? "muted" : ""}`} onClick={() => setSound(!sound)} aria-label={sound ? "Desligar som" : "Ligar som"}><img src="/fases-som-v1.webp" alt="" /></button>
       </header>
       <div className="north-guide">
-        <div className="north-tip">{northChallenge === 1 ? <>Olá, explorador! Eu sou a Nina.<br />Boas-vindas à Região Norte!<br />Procure a grande região verde na parte de cima do mapa.</> : northChallenge === 2 ? <>Conte cada parte colorida.<br />Os nomes ajudam a acompanhar!</> : northChallenge === 3 ? <>Observe o tamanho dos<br />estados destacados no mapa!</> : northChallenge === 4 ? <>Você já me conhece! Agora descubra onde eu vivo na natureza.</> : northChallenge === 5 ? <>Observe as folhas<br />e as flores de cada planta!</> : <>Falta uma peça!<br />Vamos completar o mapa?</>}</div>
+        <div className="north-tip">{northChallenge === 1 ? <>Olá, explorador! Eu sou o Zeca, o boto-cor-de-rosa, boas-vindas à Região Norte!<br /><br />Procure a grande região verde na parte de cima do mapa.</> : northChallenge === 2 ? <>Conte cada parte colorida.<br />Os nomes ajudam a acompanhar!</> : northChallenge === 3 ? <>Observe o tamanho dos<br />estados destacados no mapa!</> : northChallenge === 4 ? <>Você já me conhece! Agora descubra onde eu vivo na natureza.</> : northChallenge === 5 ? <>Observe as folhas<br />e as flores de cada planta!</> : <>Falta uma peça!<br />Vamos completar o mapa?</>}</div>
       </div>
       {northChallenge === 1 ? <><div className="north-map-card" role="group" aria-label="Mapa das regiões brasileiras">
         <svg className="north-map" viewBox={regionsMap.viewBox} preserveAspectRatio="xMidYMid meet" aria-label="Mapa do Brasil dividido em cinco regiões" aria-describedby="north-map-instruction">
@@ -1128,7 +1147,7 @@ export default function Home() {
       </div> : northChallenge === 5 ? <div className="north-habitat-options north-plant-options" role="group" aria-label="Escolha a planta que é um símbolo da Amazônia">
         {northPlantOptions.map((plant) => <button key={plant.id} className={`north-habitat-card north-plant-${plant.id}`} onClick={() => chooseNorthPlant(plant.id)} disabled={feedback !== "idle"}><img src={plant.image} alt="" /><strong>{plant.label}</strong></button>)}
       </div> : <NorthPuzzle key={regionRun} solved={feedback === "correct" || feedback === "finished"} onPlace={placeNorthPuzzle} onFinish={() => { setFeedback("finished"); if (sound) speak("Parabéns, explorador! Você concluiu os seis desafios da Região Norte!"); }} />}
-      <button className="north-listen" onClick={() => speak(northChallenge === 1 ? "Olá, explorador! Eu sou a Nina. Boas-vindas à Região Norte! Procure a grande região verde na parte de cima do mapa. Toque na Região Norte." : northChallenge === 2 ? "Quantos estados fazem parte da Região Norte? Conte cada parte colorida do mapa e escolha: cinco, seis, sete ou oito." : northChallenge === 3 ? "Qual é o maior estado do Brasil em extensão territorial? Compare os estados destacados no mapa e escolha: Amazonas, Pará, Mato Grosso ou Minas Gerais." : northChallenge === 4 ? "Qual é o habitat natural do boto-cor-de-rosa? Observe as imagens e escolha: rio da Amazônia, mar com recifes, praia ou lago nas montanhas nevadas." : northChallenge === 5 ? "Qual destas plantas é um símbolo da Amazônia? Observe as imagens e escolha: vitória-régia, girassol, cacto ou roseira." : "Falta uma peça no mapa da Região Norte! Arraste a peça que falta para o espaço pontilhado. Você também pode tocar em uma peça e depois no espaço vazio. Escolha entre Bahia, Acre, Paraná e Goiás.")}>🔊 {northChallenge === 1 || northChallenge === 6 ? "OUVIR INSTRUÇÕES" : "OUVIR PERGUNTA"}</button>
+      <button className="north-listen" onClick={() => speak(northChallenge === 1 ? "Bem-vindo, explorador! Toque na Região Norte no mapa do Brasil." : northChallenge === 2 ? "Quantos estados fazem parte da Região Norte? Conte cada parte colorida do mapa e escolha: cinco, seis, sete ou oito." : northChallenge === 3 ? "Qual é o maior estado do Brasil em extensão territorial? Compare os estados destacados no mapa e escolha: Amazonas, Pará, Mato Grosso ou Minas Gerais." : northChallenge === 4 ? "Qual é o habitat natural do boto-cor-de-rosa? Observe as imagens e escolha: rio da Amazônia, mar com recifes, praia ou lago nas montanhas nevadas." : northChallenge === 5 ? "Qual destas plantas é um símbolo da Amazônia? Observe as imagens e escolha: vitória-régia, girassol, cacto ou roseira." : "Falta uma peça no mapa da Região Norte! Arraste a peça que falta para o espaço pontilhado. Você também pode tocar em uma peça e depois no espaço vazio. Escolha entre Bahia, Acre, Paraná e Goiás.")}>🔊 {northChallenge === 1 || northChallenge === 6 ? "OUVIR INSTRUÇÕES" : "OUVIR PERGUNTA"}</button>
       {feedback !== "idle" && <div className={`feedback ${feedback}`} role="dialog" aria-live="assertive">
         {feedback === "wrong" ? <><span>🧭</span><h2>{mistakes >= 2 ? "Vamos recomeçar!" : "Quase lá!"}</h2><p>{northChallenge === 1 ? "Observe a parte superior do mapa e tente novamente." : northChallenge === 2 ? "Conte cada estado colorido e tente novamente." : northChallenge === 3 ? "Compare o tamanho dos quatro estados destacados e tente novamente." : northChallenge === 4 ? "Compare os ambientes e pense em onde o boto vive na natureza." : northChallenge === 5 ? "Procure a planta com grandes folhas redondas que flutuam na água." : "Compare o formato das peças com o espaço vazio do mapa."}{mistakes >= 2 && " Você voltará ao primeiro desafio da Região Norte."}</p><button onClick={continueAfterMistake}>{mistakes >= 2 ? "RECOMEÇAR REGIÃO" : "TENTAR NOVAMENTE"}</button></> : <>{northChallenge === 6 ? <PhaseEmblemReward id="norte" isNew={earnedEmblem === "norte"} /> : <span>⭐</span>}<h2>{northChallenge === 6 ? "Região Norte concluída!" : "Muito bem!"}</h2><p>{northChallenge === 1 ? "Você encontrou a Região Norte!" : northChallenge === 2 ? "A Região Norte possui 7 estados!" : northChallenge === 3 ? "O Amazonas é o maior estado do Brasil em extensão territorial e fica na Região Norte!" : northChallenge === 4 ? "O boto-cor-de-rosa vive em água doce, nos rios da Amazônia!" : northChallenge === 5 ? "A vitória-régia é uma planta aquática e um símbolo da Amazônia!" : "Você encaixou o Acre e concluiu os seis desafios da Região Norte!"}</p><button onClick={() => { setFeedback("idle"); setAttempts(0); setMistakes(0); if (northChallenge < 6) setNorthChallenge((value) => value + 1); else { setEarnedEmblem(null); setScreen("journey"); } }}>{northChallenge < 6 ? "PRÓXIMO DESAFIO" : "VOLTAR À JORNADA"}</button></>}
       </div>}

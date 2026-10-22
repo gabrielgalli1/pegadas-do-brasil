@@ -86,7 +86,8 @@ const REAL_NAME_SKELETONS = new Set([...REAL_NAMES].map(skeleton));
 function looksLikeRealName(word: string): boolean {
   if (!/\p{L}/u.test(word)) return false; // plain numbers like "10" are fine
   const readings = /1/.test(word) ? [word.replace(/1/g, "i"), word.replace(/1/g, "l")] : [word];
-  return readings.some((reading) => {
+  const candidates = [...readings, word.replace(/\d/g, "")];
+  return candidates.some((reading) => {
     const letters = reading.replace(/\d/g, (digit) => LEET[digit] ?? "");
     return REAL_NAMES.has(letters) || REAL_NAME_SKELETONS.has(skeleton(letters));
   });

@@ -40,6 +40,8 @@ test("allows safe avatar-related nicknames and ordinary words", () => {
 test("keeps existing real-name protection", () => {
   assert.match(validateNickname("Gabriel") ?? "", /nome de verdade/);
   assert.match(validateNickname("Maria Silva") ?? "", /nome de verdade/);
+  assert.match(validateNickname("Ana10") ?? "", /nome de verdade/);
+  assert.match(validateNickname("Pedro22") ?? "", /nome de verdade/);
 });
 
 test("normalizes whitespace before saving", () => {
