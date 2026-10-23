@@ -981,7 +981,15 @@ export default function Home() {
     }
     playCorrectAnswer();
     setFeedback(southChallenge === 6 ? "finished" : "correct");
-    if (sound) speak(southChallenge === 1 ? "Muito bem! Você encontrou a Região Sul!" : southChallenge === 6 ? "Parabéns! Você concluiu os seis desafios da Região Sul!" : "Muito bem! Desafio concluído!");
+    // No desafio 6 a narração (última resposta + conclusão da região) é disparada em SouthLevel.
+    const southCorrectLines: Record<number, string> = {
+      1: "Muito bem! Você encontrou a Região Sul!",
+      2: "Muito bem! Você montou as Cataratas do Iguaçu!",
+      3: "Muito bem! Você atravessou a serra e recolheu todos os pinhões!",
+      4: "Muito bem! Você completou o álbum e descobriu três tradições da Região Sul!",
+      5: "Muito bem! A colheita de uvas está completa!",
+    };
+    if (sound && southCorrectLines[southChallenge]) speak(southCorrectLines[southChallenge]);
   }
   function nextSouthChallenge() {
     setFeedback("idle"); setAttempts(0); setMistakes(0);

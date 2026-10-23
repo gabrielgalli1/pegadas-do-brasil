@@ -19,7 +19,19 @@ const climatePins = {pr:[312,395],sc:[316,432],rs:[281,471]} as const;
 
 function shuffle<T>(items: readonly T[]) { const copy = [...items]; for (let i = copy.length - 1; i > 0; i -= 1) { const j = Math.floor(Math.random() * (i + 1)); [copy[i], copy[j]] = [copy[j], copy[i]]; } return copy; }
 
-function SouthPuzzle({ canPlay, onComplete }: { canPlay: boolean; onComplete: () => void }) {
+// Evita que a fala de erro reinicie a cada toque ou tecla repetida.
+function useThrottledListen(onListen: (text: string) => void, gap = 4500) {
+  const last = useRef(0);
+  return (text: string) => {
+    const now = Date.now();
+    if (now - last.current < gap) return;
+    last.current = now;
+    onListen(text);
+  };
+}
+
+function SouthPuzzle({ canPlay, onComplete, onListen }: { canPlay: boolean; onComplete: () => void; onListen: (text: string) => void }) {
+  const listenWrong = useThrottledListen(onListen);
   const [tiles] = useState(() => shuffle([0, 1, 2, 3, 4, 5]));
   const [placed, setPlaced] = useState<number[]>([]);
   const [selected, setSelected] = useState(false);
@@ -40,6 +52,7 @@ function SouthPuzzle({ canPlay, onComplete }: { canPlay: boolean; onComplete: ()
     if (currentTile !== slot) {
       setWrongSlot(slot);
       window.setTimeout(()=>setWrongSlot(null),450);
+      listenWrong("Essa peça não encaixa aqui. Observe a paisagem e tente outro lugar.");
       return;
     }
     const next = [...placed, slot];
@@ -68,7 +81,8 @@ function SouthPuzzle({ canPlay, onComplete }: { canPlay: boolean; onComplete: ()
 
 const openCells = new Set(["0-0","1-0","2-0","4-0","5-0","6-0","7-0","8-0","0-1","2-1","3-1","4-1","6-1","8-1","0-2","1-2","2-2","4-2","5-2","6-2","7-2","8-2","2-3","3-3","4-3","6-3","7-3","8-3","0-4","1-4","2-4","4-4","5-4","6-4","7-4","8-4","0-5","2-5","3-5","4-5","8-5"]);
 const nuts = new Set(["0-2", "2-3", "0-5", "7-0"]);
-function SouthMaze({ canPlay, onComplete }: { canPlay: boolean; onComplete: () => void }) {
+function SouthMaze({ canPlay, onComplete, onListen }: { canPlay: boolean; onComplete: () => void; onListen: (text: string) => void }) {
+  const listenBlocked = useThrottledListen(onListen);
   const [position, setPosition] = useState<[number, number]>([0, 0]);
   const [facing, setFacing] = useState<1 | -1>(1);
   const [collected, setCollected] = useState<string[]>([]);
@@ -79,7 +93,7 @@ function SouthMaze({ canPlay, onComplete }: { canPlay: boolean; onComplete: () =
     if (!canPlay) return;
     const next: [number, number] = [position[0] + dx, position[1] + dy];
     const key = `${next[0]}-${next[1]}`;
-    if (!openCells.has(key)) { setBlocked(true);setMessage("Há mata fechada por aqui. Tente outro caminho!");window.setTimeout(()=>setBlocked(false),280);return; }
+    if (!openCells.has(key)) { setBlocked(true);setMessage("Há mata fechada por aqui. Tente outro caminho!");listenBlocked("Há mata fechada por aqui. Tente outro caminho!");window.setTimeout(()=>setBlocked(false),280);return; }
     if (dx !== 0) setFacing(dx > 0 ? 1 : -1);
     setPosition(next);
     setVisited(old=>old.includes(key)?old:[...old,key]);
@@ -241,7 +255,8 @@ function GrapeCluster({ ripe, mini=false }: { ripe:boolean;mini?:boolean }) {
   return <svg className={`south-grape-art ${ripe?"ripe":"green"} ${mini?"mini":""}`} viewBox="0 0 92 108" aria-hidden="true"><path className="stem" d="M47 32C48 18 40 12 34 6M45 23c12-9 24-9 32-3"/><path className="leaf" d="M43 24C24 26 13 17 10 6c13-2 26 1 35 13C52 7 67 3 79 8c-4 12-14 20-31 18Z"/>{berries.map(([cx,cy],index)=><g key={index}><circle className="berry" cx={cx} cy={cy} r="12"/><circle className="shine" cx={cx-4} cy={cy-4} r="3.3"/></g>)}</svg>;
 }
 
-function SouthHarvest({ canPlay, onComplete }: { canPlay:boolean;onComplete:()=>void }) {
+function SouthHarvest({ canPlay, onComplete, onListen }: { canPlay:boolean;onComplete:()=>void;onListen:(text:string)=>void }) {
+  const listenWrong=useThrottledListen(onListen);
   const basketRef=useRef<HTMLDivElement>(null);
   const [harvested,setHarvested]=useState<string[]>([]);
   const [wrong,setWrong]=useState<string|null>(null);
@@ -249,10 +264,12 @@ function SouthHarvest({ canPlay, onComplete }: { canPlay:boolean;onComplete:()=>
   const [message,setMessage]=useState("Toque nas uvas roxas e leve para a cesta.");
   function pick(grape:HarvestGrape,event:React.MouseEvent<HTMLButtonElement>){
     if(!canPlay||flying||harvested.includes(grape.id))return;
-    if(!grape.ripe){setWrong(grape.id);setMessage("Este cacho ainda está verde. Procure outro!");window.setTimeout(()=>{setWrong(null);setMessage("Procure um cacho roxo e maduro.");},900);return;}
+    if(!grape.ripe){setWrong(grape.id);setMessage("Observe melhor a cor das uvas. Escolha somente os cachos maduros.");listenWrong("Observe melhor a cor das uvas. Escolha somente os cachos maduros.");window.setTimeout(()=>{setWrong(null);setMessage("Procure um cacho roxo e maduro.");},900);return;}
     const source=event.currentTarget.getBoundingClientRect();const target=basketRef.current?.getBoundingClientRect();const slot=basketSlots[harvested.length];
     setFlying({id:grape.id,dx:target?target.left+target.width*slot.x/100-source.left-source.width/2:250,dy:target?target.top+target.height*slot.y/100-source.top-source.height/2:80});
     setMessage("Boa escolha! O cacho está indo para a cesta.");
+    // No quinto cacho a conclusão do desafio assume a narração.
+    if(harvested.length<4)onListen("Boa escolha! O cacho está indo para a cesta.");
     window.setTimeout(()=>{setHarvested(old=>{const next=[...old,grape.id];if(next.length===5){setMessage("Colheita completa! A cesta está cheia.");window.setTimeout(onComplete,1300);}else setMessage(`Muito bem! Faltam ${5-next.length} ${5-next.length===1?"cacho":"cachos"}.`);return next;});setFlying(null);},720);
   }
   return <div className="south-harvest" role="group" aria-label={`Colheita no parreiral, ${harvested.length} de 5 cachos maduros`}>
@@ -295,10 +312,10 @@ function ClimateSymbol({climate}:{climate:ClimateId}){
 const climateChoiceImages:Record<ClimateChoice,string>={watering:"/sul-clima-opcao-watering-v2.webp",scarf:"/sul-clima-opcao-scarf-v2.webp",ball:"/sul-clima-opcao-ball-v2.png",hat:"/sul-clima-opcao-hat-v2.webp",rake:"/sul-clima-opcao-rake-v2.png",cover:"/sul-clima-opcao-cover-v2.webp",coat:"/sul-clima-opcao-coat-v2.webp"};
 function SeasonChoiceArt({kind}:{kind:ClimateChoice}){return <img src={climateChoiceImages[kind]} alt=""/>;}
 
-function SouthClimate({canPlay,onComplete}:{canPlay:boolean;onComplete:()=>void}){
+function SouthClimate({canPlay,onComplete,onListen}:{canPlay:boolean;onComplete:()=>void;onListen:(text:string)=>void}){
   const [round,setRound]=useState(0);const [completed,setCompleted]=useState<ClimateId[]>([]);const [wrong,setWrong]=useState<ClimateChoice|null>(null);const [locked,setLocked]=useState(false);const [message,setMessage]=useState("Observe a previsão e escolha uma opção.");const current=climateRounds[round];
   const pin=climatePins[current.state];
-  function choose(choice:ClimateChoice){if(!canPlay||locked)return;if(choice!==current.answer){setWrong(choice);setMessage("Observe o clima mais uma vez e tente outra opção.");window.setTimeout(()=>{setWrong(null);setMessage("Qual objeto ajuda nesta previsão?");},850);return;}setLocked(true);const next=[...completed,current.id];setCompleted(next);setMessage(current.success);window.setTimeout(()=>{if(next.length===climateRounds.length){setMessage("Boletim completo! Você venceu o clima do Sul.");window.setTimeout(onComplete,700);}else{setRound(round+1);setLocked(false);setMessage("A previsão mudou! Observe a nova paisagem.");}},950);}
+  function choose(choice:ClimateChoice){if(!canPlay||locked)return;if(choice!==current.answer){setWrong(choice);setMessage("Observe o clima mais uma vez e tente outra opção.");window.setTimeout(()=>{setWrong(null);setMessage("Qual objeto ajuda nesta previsão?");},850);return;}setLocked(true);const next=[...completed,current.id];setCompleted(next);setMessage(current.success);onListen(next.length===climateRounds.length?`${current.success} Parabéns, explorador! Você concluiu os seis desafios da Região Sul!`:current.success);window.setTimeout(()=>{if(next.length===climateRounds.length){setMessage("Boletim completo! Você venceu o clima do Sul.");window.setTimeout(onComplete,700);}else{setRound(round+1);setLocked(false);setMessage("A previsão mudou! Observe a nova paisagem.");}},950);}
   return <div className={`south-seasons south-climate weather-${current.id} state-${current.state} ${locked?"answered":""}`} role="group" aria-label={`Missão Clima do Sul, ${completed.length} de 4 previsões concluídas`}>
     <div className="south-seasons-main">
       <section className="south-season-wheel-panel south-climate-map-panel" aria-label={`Mapa climático. Previsão atual: ${current.place}`}>
@@ -323,11 +340,11 @@ function SouthClimate({canPlay,onComplete}:{canPlay:boolean;onComplete:()=>void}
 }
 
 export default function SouthLevel({challenge,score,mistakes,feedback,sound,newEmblem,onAnswer,onNext,onRetry,onBack,onToggleSound,onListen}:Props){
-  const [hint,setHint]=useState("");const canPlay=feedback==="idle";function chooseRegion(id:string){if(!canPlay)return;if(id!=="sul")setHint("Dica: procure a região mais ao sul do mapa, formada por Paraná, Santa Catarina e Rio Grande do Sul.");onAnswer(id==="sul");}
-  const spokenInstruction=challenge===1?`${mascotIntro} ${speeches[challenge]}`:speeches[challenge];
+  const [hint,setHint]=useState("");const canPlay=feedback==="idle";function chooseRegion(id:string){if(!canPlay)return;if(id!=="sul"){setHint("Procure a região mais ao sul do mapa e tente novamente.");if(mistakes<1)onListen("Quase! Procure a região mais ao sul do mapa e tente novamente.");}onAnswer(id==="sul");}
+  const spokenInstruction=speeches[challenge];
   return <section className={`screen south-screen south-challenge-${challenge}`} aria-label={`Desafio ${challenge} da Região Sul`}><header className="south-header"><button className="south-round" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.webp" alt=""/></button><div className="south-title"><h1>{titles[challenge]}</h1><p>{subtitles[challenge]}</p></div><div className="south-status"><b>DESAFIO {challenge} DE 6</b><div>{Array.from({length:6},(_,i)=><span key={i} className={i<challenge?"active":""}>★</span>)}</div><ScoreBadge score={score} compact/></div><button className={`south-round south-sound ${!sound?"muted":""}`} onClick={onToggleSound} aria-label={sound?"Desligar narração":"Ligar narração"}><img src="/fases-som-v1.webp" alt=""/></button></header><div className="south-speech">{challenge===1&&<strong>{mascotIntro}</strong>}<span>{speeches[challenge]}</span></div><button className="south-listen" onClick={()=>onListen(spokenInstruction)}>🔊 OUVIR INSTRUÇÕES</button><div className={`south-board board-${challenge}`}>
   {challenge===1&&<svg className="south-map" viewBox="0 10 560 510" role="group" aria-label="Mapa interativo das cinco regiões do Brasil">{regionsMap.regions.map(region=><g key={region.id} role="button" tabIndex={canPlay?0:-1} onClick={()=>chooseRegion(region.id)} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();chooseRegion(region.id);}}} aria-label={`Região ${regionNames[region.id]}`}>{region.paths.map(path=><path key={path.id} d={path.d} fill={region.color}/>)}<text x={labels[region.id][0]} y={labels[region.id][1]}>{regionNames[region.id].toUpperCase()}</text></g>)}</svg>}
-  {challenge===2&&<SouthPuzzle canPlay={canPlay} onComplete={()=>onAnswer(true)}/>} {challenge===3&&<SouthMaze canPlay={canPlay} onComplete={()=>onAnswer(true)}/>} {challenge===4&&<SouthScratch onComplete={()=>onAnswer(true)}/>} {challenge===5&&<SouthHarvest canPlay={canPlay} onComplete={()=>onAnswer(true)}/>} {challenge===6&&<SouthClimate canPlay={canPlay} onComplete={()=>onAnswer(true)}/>}</div>
+  {challenge===2&&<SouthPuzzle canPlay={canPlay} onComplete={()=>onAnswer(true)} onListen={onListen}/>} {challenge===3&&<SouthMaze canPlay={canPlay} onComplete={()=>onAnswer(true)} onListen={onListen}/>} {challenge===4&&<SouthScratch onComplete={()=>onAnswer(true)}/>} {challenge===5&&<SouthHarvest canPlay={canPlay} onComplete={()=>onAnswer(true)} onListen={onListen}/>} {challenge===6&&<SouthClimate canPlay={canPlay} onComplete={()=>onAnswer(true)} onListen={onListen}/>}</div>
   {challenge===1&&<p className="south-map-instruction">Clique ou toque na Região Sul no mapa!</p>}
   {feedback!=="idle"&&<div className={`feedback ${feedback} south-feedback`} role="dialog" aria-modal="true" aria-live="assertive">{feedback==="finished"?<PhaseEmblemReward id="sul" isNew={newEmblem}/>:<span>{feedback==="wrong"?"🧭":"⭐"}</span>}<h2>{feedback==="wrong"?(mistakes>=2?"Vamos recomeçar!":"Quase lá!"):feedback==="finished"?"Região Sul concluída!":"Muito bem!"}</h2><p>{feedback==="wrong"?(mistakes>=2?"A Região Sul será reiniciada desde o primeiro desafio.":hint||"Observe a missão e tente novamente."):challenge===1?"Você encontrou a Região Sul!":challenge===2?"Você montou as Cataratas do Iguaçu!":challenge===3?"Você atravessou a serra e recolheu todos os pinhões!":challenge===4?"Você completou o álbum e descobriu três tradições da Região Sul!":challenge===5?"A colheita de uvas está completa!":"Você completou o boletim climático e concluiu a Região Sul!"}</p><button onClick={feedback==="wrong"?onRetry:onNext}>{feedback==="wrong"?(mistakes>=2?"RECOMEÇAR REGIÃO":"TENTAR NOVAMENTE"):feedback==="finished"?"VOLTAR À JORNADA":"PRÓXIMO DESAFIO"}</button></div>}</section>;
 }

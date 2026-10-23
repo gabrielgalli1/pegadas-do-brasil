@@ -177,9 +177,35 @@ const southeastNarrations: Record<string, RecordedNarration> = {
 
 };
 
+// Região Sul: lote 1 (20 gravações). Faltam ainda as falas do desafio 6
+// (instrução, quatro perguntas e erro do clima).
+const southNarrations: Record<string, RecordedNarration> = {
+  "Procure a menor região do Brasil, bem ao sul do mapa.": "/narracoes/sul-01-instrucao.mp3",
+  "Muito bem! Você encontrou a Região Sul!": "/narracoes/sul-01-acerto.mp3",
+  "Quase! Procure a região mais ao sul do mapa e tente novamente.": "/narracoes/sul-01-erro.mp3",
+  "Escolha uma peça das Cataratas e depois toque no lugar correto para encaixá-la.": "/narracoes/sul-02-instrucao.mp3",
+  "Muito bem! Você montou as Cataratas do Iguaçu!": "/narracoes/sul-02-acerto.mp3",
+  "Essa peça não encaixa aqui. Observe a paisagem e tente outro lugar.": "/narracoes/sul-02-erro.mp3",
+  "Ajude a Pipa a explorar a trilha. Recolha quatro pinhões das araucárias e chegue ao mirante.": "/narracoes/sul-03-instrucao.mp3",
+  "Muito bem! Você atravessou a serra e recolheu todos os pinhões!": "/narracoes/sul-03-acerto.mp3",
+  "Há mata fechada por aqui. Tente outro caminho!": "/narracoes/sul-03-bloqueado.mp3",
+  "Escolha um postal e raspe para descobrir um segredo do Sul!": "/narracoes/sul-04-instrucao.mp3",
+  "Muito bem! Você completou o álbum e descobriu três tradições da Região Sul!": "/narracoes/sul-04-acerto.mp3",
+  "Observe as folhas e colha somente as uvas maduras!": "/narracoes/sul-05-instrucao.mp3",
+  "Boa escolha! O cacho está indo para a cesta.": "/narracoes/sul-05-uva-correta.mp3",
+  "Observe melhor a cor das uvas. Escolha somente os cachos maduros.": "/narracoes/sul-05-uva-incorreta.mp3",
+  "Muito bem! A colheita de uvas está completa!": "/narracoes/sul-05-conclusao.mp3",
+  "Muito bem! A cobertura ajuda a proteger a muda da geada.": "/narracoes/sul-06-acerto-1.mp3",
+  "Acertou! O cachecol deixa a Pipa bem quentinha.": "/narracoes/sul-06-acerto-2.mp3",
+  "Boa escolha! O corta-vento protege nos campos abertos.": "/narracoes/sul-06-acerto-3.mp3",
+  // A última resposta do clima é seguida pela conclusão da região no mesmo áudio.
+  "Isso! O chapéu ajuda a proteger durante o verão no litoral. Parabéns, explorador! Você concluiu os seis desafios da Região Sul!": ["/narracoes/sul-06-acerto-4.mp3", "/narracoes/sul-06-conclusao.mp3"],
+};
+
 export const recordedNarrations: Record<string, RecordedNarration> = {
   ...baseRecordedNarrations,
   ...northeastNarrations,
   ...centerWestNarrations,
   ...southeastNarrations,
+  ...southNarrations,
 };

@@ -8,9 +8,9 @@ import { recordedNarrations } from "../app/narrationCatalog.ts";
 const sources = Object.values(recordedNarrations).flatMap((source) => typeof source === "string" ? [source] : [...source]);
 const uniqueSources = new Set(sources);
 
-test("all delivered recordings are mapped for menu through Southeast", () => {
-  assert.equal(Object.keys(recordedNarrations).length, 216);
-  assert.equal(uniqueSources.size, 153);
+test("all delivered recordings are mapped for menu through South (batch 1)", () => {
+  assert.equal(Object.keys(recordedNarrations).length, 235);
+  assert.equal(uniqueSources.size, 173);
 
   const expectedByPrefix = {
     "geral-": 4,
@@ -19,6 +19,7 @@ test("all delivered recordings are mapped for menu through Southeast", () => {
     "nordeste-": 34,
     "centro-oeste-": 32,
     "sudeste-": 49,
+    "sul-": 20,
   };
   for (const [prefix, expected] of Object.entries(expectedByPrefix)) {
     const actual = [...uniqueSources].filter((source) => path.basename(source).startsWith(prefix)).length;
@@ -36,6 +37,14 @@ test("dynamic regional narration sequences resolve to recordings", () => {
   assert.deepEqual(recordedNarrations["Mutirão concluído! Você ajudou a cuidar do Rio Tietê. A recuperação do rio também exige coleta e tratamento de esgoto. Parabéns, explorador! Você concluiu os seis desafios da Região Sudeste!"], [
     "/narracoes/sudeste-06-conclusao.mp3",
     "/narracoes/sudeste-conclusao-regiao.mp3",
+  ]);
+});
+
+test("South narration resolves, including the final climate answer plus region conclusion", () => {
+  assert.equal(recordedNarrations["Há mata fechada por aqui. Tente outro caminho!"], "/narracoes/sul-03-bloqueado.mp3");
+  assert.deepEqual(recordedNarrations["Isso! O chapéu ajuda a proteger durante o verão no litoral. Parabéns, explorador! Você concluiu os seis desafios da Região Sul!"], [
+    "/narracoes/sul-06-acerto-4.mp3",
+    "/narracoes/sul-06-conclusao.mp3",
   ]);
 });
 
