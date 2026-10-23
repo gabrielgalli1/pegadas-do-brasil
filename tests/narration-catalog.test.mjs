@@ -9,8 +9,8 @@ const sources = Object.values(recordedNarrations).flatMap((source) => typeof sou
 const uniqueSources = new Set(sources);
 
 test("all delivered recordings are mapped for menu through South (batch 1)", () => {
-  assert.equal(Object.keys(recordedNarrations).length, 235);
-  assert.equal(uniqueSources.size, 173);
+  assert.equal(Object.keys(recordedNarrations).length, 238);
+  assert.equal(uniqueSources.size, 179);
 
   const expectedByPrefix = {
     "geral-": 4,
@@ -19,7 +19,7 @@ test("all delivered recordings are mapped for menu through South (batch 1)", () 
     "nordeste-": 34,
     "centro-oeste-": 32,
     "sudeste-": 49,
-    "sul-": 20,
+    "sul-": 26,
   };
   for (const [prefix, expected] of Object.entries(expectedByPrefix)) {
     const actual = [...uniqueSources].filter((source) => path.basename(source).startsWith(prefix)).length;
@@ -46,6 +46,14 @@ test("South narration resolves, including the final climate answer plus region c
     "/narracoes/sul-06-acerto-4.mp3",
     "/narracoes/sul-06-conclusao.mp3",
   ]);
+});
+
+test("South climate answers chain into the next question", () => {
+  assert.deepEqual(recordedNarrations["Muito bem! A cobertura ajuda a proteger a muda da geada. O que aquece a Pipa?"], [
+    "/narracoes/sul-06-acerto-1.mp3",
+    "/narracoes/sul-06-pergunta-2.mp3",
+  ]);
+  assert.equal(recordedNarrations["Observe o clima mais uma vez e tente outra opção."], "/narracoes/sul-06-erro-climatico.mp3");
 });
 
 test("all narration files exist and contain MPEG audio", () => {

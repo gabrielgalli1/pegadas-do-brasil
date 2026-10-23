@@ -177,8 +177,7 @@ const southeastNarrations: Record<string, RecordedNarration> = {
 
 };
 
-// Região Sul: lote 1 (20 gravações). Faltam ainda as falas do desafio 6
-// (instrução, quatro perguntas e erro do clima).
+// Região Sul: 26 gravações (lotes 1 e 2).
 const southNarrations: Record<string, RecordedNarration> = {
   "Procure a menor região do Brasil, bem ao sul do mapa.": "/narracoes/sul-01-instrucao.mp3",
   "Muito bem! Você encontrou a Região Sul!": "/narracoes/sul-01-acerto.mp3",
@@ -195,9 +194,13 @@ const southNarrations: Record<string, RecordedNarration> = {
   "Boa escolha! O cacho está indo para a cesta.": "/narracoes/sul-05-uva-correta.mp3",
   "Observe melhor a cor das uvas. Escolha somente os cachos maduros.": "/narracoes/sul-05-uva-incorreta.mp3",
   "Muito bem! A colheita de uvas está completa!": "/narracoes/sul-05-conclusao.mp3",
-  "Muito bem! A cobertura ajuda a proteger a muda da geada.": "/narracoes/sul-06-acerto-1.mp3",
-  "Acertou! O cachecol deixa a Pipa bem quentinha.": "/narracoes/sul-06-acerto-2.mp3",
-  "Boa escolha! O corta-vento protege nos campos abertos.": "/narracoes/sul-06-acerto-3.mp3",
+  "A previsão está mudando nos três estados! Observe cada paisagem e escolha como preparar a Pipa para o clima do Sul.": "/narracoes/sul-06-instrucao.mp3",
+  "Como proteger esta pequena muda?": "/narracoes/sul-06-pergunta-1.mp3",
+  // Cada acerto é seguido pela pergunta da próxima previsão, no mesmo áudio.
+  "Muito bem! A cobertura ajuda a proteger a muda da geada. O que aquece a Pipa?": ["/narracoes/sul-06-acerto-1.mp3", "/narracoes/sul-06-pergunta-2.mp3"],
+  "Acertou! O cachecol deixa a Pipa bem quentinha. O que protege o corpo do vento?": ["/narracoes/sul-06-acerto-2.mp3", "/narracoes/sul-06-pergunta-3.mp3"],
+  "Boa escolha! O corta-vento protege nos campos abertos. O que protege do sol forte?": ["/narracoes/sul-06-acerto-3.mp3", "/narracoes/sul-06-pergunta-4.mp3"],
+  "Observe o clima mais uma vez e tente outra opção.": "/narracoes/sul-06-erro-climatico.mp3",
   // A última resposta do clima é seguida pela conclusão da região no mesmo áudio.
   "Isso! O chapéu ajuda a proteger durante o verão no litoral. Parabéns, explorador! Você concluiu os seis desafios da Região Sul!": ["/narracoes/sul-06-acerto-4.mp3", "/narracoes/sul-06-conclusao.mp3"],
 };
