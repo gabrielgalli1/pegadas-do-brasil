@@ -1079,7 +1079,7 @@ export default function Home() {
             <img className="country-shape" src={country.image} alt="" />
           </button>)}
         </div>
-        <button className="challenge-listen" onClick={() => speak("Olá, explorador! Eu sou a Ari. Vamos começar nossa aventura e conhecer o Brasil? Qual dessas silhuetas representa o Brasil?")}>🔊 OUVIR INSTRUÇÕES</button>
+        <button className="challenge-listen" onClick={() => speak("Qual dessas silhuetas representa o Brasil?")}>🔊 OUVIR INSTRUÇÕES</button>
       </div> : challengeIndex === 1 ? <div className="continent-challenge">
         <div className="challenge-title"><h1>ONDE FICA O BRASIL?</h1><p>Em qual continente o Brasil está localizado?</p></div>
         <div className="continent-guide"><div className="mascot-tip">Observe as cores e escolha o continente certo!</div><img className="continent-mascot" src="/arara-mascote-v1.webp" alt="Arara Ari apresentando o mapa-múndi" /></div>
