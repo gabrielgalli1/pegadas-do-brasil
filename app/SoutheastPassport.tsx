@@ -28,6 +28,15 @@ function shuffledAttractions(previousOrder = "") {
   }
   return [attractions[2], attractions[0], attractions[3], attractions[1]];
 }
+// Frases faladas precisam ser idênticas às chaves do narrationCatalog, senão o jogo
+// cai na voz robótica do navegador: "O Convento da Penha pertence ao Espírito Santo."
+function spokenAttraction(label: string) {
+  const name = label === "MASP" ? "Masp" : label;
+  return name === "Ouro Preto" ? name : `O ${name}`;
+}
+function spokenBelongsTo(stateName: string) {
+  return stateName === "Espírito Santo" || stateName === "Rio de Janeiro" ? `ao ${stateName}` : `a ${stateName}`;
+}
 const states: { id: StateId; name: string; color: string }[] = [
   { id: "mg", name: "Minas Gerais", color: "#c77645" },
   { id: "es", name: "Espírito Santo", color: "#38a0ad" },
@@ -75,7 +84,9 @@ export default function SoutheastPassport({ canPlay, onWrong, onComplete, onList
       const attraction = attractions.find((item) => item.state === source);
       const correctState = states.find((state) => state.id === source);
       setMessage("Esse ponto turístico pertence a outro estado. Observe a imagem e tente novamente!");
-      onWrong(`${attraction?.label ?? "Esse ponto turístico"} pertence a ${correctState?.name ?? "outro estado"}. Leve o cartão ao estado indicado no passaporte.`);
+      onWrong(attraction && correctState
+        ? `${spokenAttraction(attraction.label)} pertence ${spokenBelongsTo(correctState.name)}. Leve o cartão ao estado indicado no passaporte.`
+        : "Esse ponto turístico pertence a outro estado. Leve o cartão ao estado indicado no passaporte.");
       return;
     }
     const attraction = attractions.find((item) => item.state === source);
@@ -83,9 +94,7 @@ export default function SoutheastPassport({ canPlay, onWrong, onComplete, onList
     setPlaced(next);
     setSelected(null);
     setMessage(`Carimbo conquistado: ${attraction?.label ?? "ponto turístico"}!`);
-    const spokenLabel = attraction?.label === "MASP" ? "Masp" : attraction?.label ?? "Ponto turístico";
-    const article = spokenLabel === "Ouro Preto" ? "" : "O ";
-    onListen(`${article}${spokenLabel} pertence a ${states.find((item) => item.id === target)?.name}. Carimbo conquistado!`);
+    onListen(`${spokenAttraction(attraction?.label ?? "Ponto turístico")} pertence ${spokenBelongsTo(states.find((item) => item.id === target)?.name ?? "outro estado")}. Carimbo conquistado!`);
     if (next.length === attractions.length) completeTimer.current = window.setTimeout(onComplete, 650);
   }
 
