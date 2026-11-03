@@ -6,15 +6,22 @@ import regionsMap from "./brasil-cinco-regioes.json";
 import { bonusRegionIds, type BonusRegionId } from "./progressPersistence";
 
 const regions = [
-  { id: "norte", name: "Norte", x: 223, y: 149, size: 116, image: "/paisagem-amazonia-v1.webp", hint: "Procure a grande região verde na parte de cima do mapa." },
-  { id: "nordeste", name: "Nordeste", x: 448, y: 220, size: 103, image: "/paisagem-nordeste-caatinga-v2.webp", hint: "Procure a região laranja à direita do mapa." },
-  { id: "centro-oeste", name: "Centro-Oeste", x: 284, y: 310, size: 100, image: "/pantanal-fotografo-v1.webp", hint: "Procure a região amarela no centro do Brasil." },
-  { id: "sudeste", name: "Sudeste", x: 403, y: 367, size: 87, image: "/sudeste-turismo-cristo-v2.webp", hint: "Procure a região roxa, acima da Região Sul." },
-  { id: "sul", name: "Sul", x: 305, y: 452, size: 78, image: "/sul-cataratas-quebra-cabeca-v1.webp", hint: "Procure a região azul na parte de baixo do mapa." },
+  { id: "norte", name: "Norte", x: 223, y: 116, size: 116, image: "/bonus-paisagem-norte-v1.jpg", hint: "Procure a grande região verde na parte de cima do mapa." },
+  { id: "nordeste", name: "Nordeste", x: 448, y: 187, size: 103, image: "/bonus-paisagem-nordeste-v1.jpg", hint: "Procure a região laranja à direita do mapa." },
+  { id: "centro-oeste", name: "Centro-Oeste", x: 284, y: 277, size: 100, image: "/bonus-paisagem-centro-oeste-v1.jpg", hint: "Procure a região amarela no centro do Brasil." },
+  { id: "sudeste", name: "Sudeste", x: 388, y: 348, size: 87, image: "/bonus-paisagem-sudeste-v1.jpg", hint: "Procure a região roxa, acima da Região Sul." },
+  { id: "sul", name: "Sul", x: 305, y: 452, size: 78, image: "/bonus-paisagem-sul-v1.jpg", hint: "Procure a região azul na parte de baixo do mapa." },
 ] as const;
 
 export const bonusInstructions = "Vamos completar o mapa com seus emblemas! Arraste cada emblema até a sua região. Você também pode tocar no emblema e depois na silhueta. São cinco regiões para completar a nossa viagem pelo Brasil!";
 const landscapeBounds: Record<BonusRegionId, [number, number, number, number]> = { norte: [0, 0, 410, 300], nordeste: [365, 95, 245, 250], "centro-oeste": [170, 230, 230, 190], sudeste: [320, 310, 200, 150], sul: [235, 400, 150, 135] };
+const regionBorderColors: Record<BonusRegionId, string> = {
+  norte: "#2f7a32",
+  nordeste: "#f27a1a",
+  "centro-oeste": "#6f7f36",
+  sudeste: "#1974bd",
+  sul: "#7446a8",
+};
 const initialMessage = "Vamos completar o mapa com seus emblemas!";
 
 type Props = {
@@ -44,7 +51,12 @@ export default function BonusLevel({ initialPlaced, sound, onBack, onToggleSound
     titleRef.current?.focus();
     return () => { if (wrongTimer.current) clearTimeout(wrongTimer.current); };
   }, []);
-  useEffect(() => { if (celebrating) finishRef.current?.focus(); }, [celebrating]);
+  useEffect(() => {
+    if (!celebrating) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const timer = window.setTimeout(() => finishRef.current?.focus(), reduceMotion ? 0 : 2250);
+    return () => window.clearTimeout(timer);
+  }, [celebrating]);
 
   function choose(id: BonusRegionId) {
     if (placed.includes(id) || celebrating) return;
@@ -132,8 +144,8 @@ export default function BonusLevel({ initialPlaced, sound, onBack, onToggleSound
               <image href={region.image} x={landscapeBounds[region.id][0] - 40} y={landscapeBounds[region.id][1] - 40} width={landscapeBounds[region.id][2] + 80} height={landscapeBounds[region.id][3] + 80} preserveAspectRatio="xMidYMid slice" />
             </pattern>)}</defs>
             {regionsMap.regions.map((region) => <g key={region.id} className={`bonus-map-region bonus-map-region-${region.id}`}>
-              <g fill={region.color} stroke="#fffef0" strokeWidth="2" strokeLinejoin="round">{region.paths.map((path) => <path key={path.id} d={path.d} />)}</g>
-              <g fill={`url(#bonus-landscape-${region.id})`} opacity=".68" pointerEvents="none">{region.paths.map((path) => <path key={path.id} d={path.d} />)}</g>
+              <g fill={region.color} stroke={regionBorderColors[region.id as BonusRegionId]} strokeWidth="5" strokeLinejoin="round">{region.paths.map((path) => <path key={path.id} d={path.d} />)}</g>
+              <g fill={`url(#bonus-landscape-${region.id})`} stroke="#fffdf0" strokeWidth="1.15" strokeLinejoin="round" opacity=".9" pointerEvents="none">{region.paths.map((path) => <path key={path.id} d={path.d} />)}</g>
             </g>)}
           </svg>
           {regions.map((region) => {
@@ -143,7 +155,7 @@ export default function BonusLevel({ initialPlaced, sound, onBack, onToggleSound
               style={{ left: `${region.x / 613.11 * 100}%`, top: `${region.y / 533.07 * 100}%`, width: `${region.size / 613.11 * 100}%`, "--emblem-mask": `url('/emblema-${region.id}-v2.webp')` } as CSSProperties}
               aria-label={filled ? `Região ${region.name}, emblema encaixado` : `Encaixar emblema na Região ${region.name}`} aria-disabled={filled}>
               {filled ? <img src={`/emblema-${region.id}-v2.webp`} alt="" draggable={false} /> : <span className="bonus-silhouette" aria-hidden="true" />}
-              <span className="bonus-region-label">{region.name.toUpperCase()}{filled && <b aria-hidden="true"> ✓</b>}</span>
+              {filled && <span className="bonus-region-label">{region.name.toUpperCase()}<b aria-hidden="true"> ✓</b></span>}
             </button>;
           })}
         </div>
@@ -165,7 +177,7 @@ export default function BonusLevel({ initialPlaced, sound, onBack, onToggleSound
     </div>
     <footer className="bonus-footer" inert={celebrating}>
       <div className="bonus-help-bar"><div className="bonus-instruction"><svg className="bonus-touch-icon" viewBox="0 0 64 52" fill="none" aria-hidden="true"><path d="M17 22V12a4 4 0 0 1 8 0v17l3-5a4 4 0 0 1 6 0l2 3a4 4 0 0 1 6 2l2 4c2 5-2 14-5 17H23L11 36c-4-5 1-9 5-5l5 5" fill="currentColor"/><path d="M11 17a10 10 0 1 1 19-2M7 21a15 15 0 1 1 28-4M39 19c9-12 20-6 20 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="3 4"/><path d="m54 23 5 5 4-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg><p>Arraste o emblema ou toque nele e depois na região.</p></div>
-      <div className="bonus-progress" role="status" aria-live="polite" aria-label={`${placed.length} de 5 emblemas encaixados`}><strong>{placed.length} DE 5 ENCAIXADOS</strong><div aria-hidden="true">{regions.map((region) => <span key={region.id} className={placed.includes(region.id) ? "is-earned" : ""}>★</span>)}</div></div></div>
+      <div className="bonus-progress" role="status" aria-live="polite" aria-label={`${placed.length} de 5 emblemas encaixados`}><strong>{placed.length} DE 5 ENCAIXADOS</strong><div aria-hidden="true">{regions.map((region, index) => <span key={region.id} className={index < placed.length ? "is-earned" : ""}>★</span>)}</div></div></div>
       <button className="bonus-blue-button bonus-listen" onClick={() => onListen(bonusInstructions)}>🔊 OUVIR INSTRUÇÕES</button>
     </footer>
     <p className="bonus-live-message" aria-live="polite">{message}</p>
@@ -178,6 +190,7 @@ export default function BonusLevel({ initialPlaced, sound, onBack, onToggleSound
         else if (!event.shiftKey && document.activeElement === buttons[buttons.length - 1]) { event.preventDefault(); buttons[0]?.focus(); }
       }
     }}><div className="bonus-completion-card">
+      <div className="bonus-completion-sparkles" aria-hidden="true">{Array.from({ length: 14 }, (_, index) => <span key={index}>★</span>)}</div>
       <span className="bonus-completion-ribbon">VIAGEM COMPLETA!</span>
       <div className="bonus-completion-emblems" aria-label="Cinco emblemas regionais reunidos">{regions.map((region) => <img key={region.id} src={`/emblema-${region.id}-v2.webp`} alt={`Região ${region.name}`} />)}</div>
       <h2 id="bonus-finished-title">Você deixou suas pegadas<br />por todo o Brasil!</h2>
