@@ -1,6 +1,7 @@
 "use client";
 
 import ScoreBadge from "./ScoreBadge";
+import BonusJourneyCard from "./BonusJourneyCard";
 
 type Level = { id: string; title: string; image: string; phases: number };
 
@@ -17,13 +18,16 @@ type Props = {
   onBack: () => void;
   onToggleSound: () => void;
   onCloseNotice: () => void;
+  bonusUnlocked: boolean;
+  bonusCompleted: boolean;
+  onBonus: () => void;
 };
 
 export default function MobileJourney({
   levels, unlockedLevel, completedPhase, completedRegions, completedCount, score, sound, notice,
-  onOpen, onBack, onToggleSound, onCloseNotice,
+  onOpen, onBack, onToggleSound, onCloseNotice, bonusUnlocked, bonusCompleted, onBonus,
 }: Props) {
-  return <section className="screen mobile-journey-screen" aria-label="Escolha sua aventura no celular">
+  return <section className="screen mobile-journey-screen mobile-journey-with-bonus" aria-label="Escolha sua aventura no celular">
     <header className="mobile-journey-header">
       <button onClick={onBack} aria-label="Voltar ao menu"><img src="/fases-voltar-v1.webp" alt="" /></button>
       <div><h1><span aria-hidden="true">◆</span> ESCOLHA SUA AVENTURA <span aria-hidden="true">◆</span></h1><p>Aprenda, explore e descubra o Brasil passo a passo!</p></div>
@@ -51,7 +55,8 @@ export default function MobileJourney({
         </div>
       </div>
     </div>
-    <p className="mobile-journey-footer"><span aria-hidden="true">●</span> Deslize para ver todas as regiões e complete as fases na ordem! <span aria-hidden="true">●</span></p>
+    <p className="mobile-journey-footer"><span aria-hidden="true">●</span> {bonusUnlocked ? "Todas as regiões concluídas! Sua fase bônus está liberada." : "Deslize para ver todas as regiões e complete as fases na ordem!"} <span aria-hidden="true">●</span></p>
+    <BonusJourneyCard unlocked={bonusUnlocked} completed={bonusCompleted} onOpen={onBonus} />
     {notice && <div className="mobile-journey-notice" role="status">{notice}<button onClick={onCloseNotice} aria-label="Fechar aviso">×</button></div>}
   </section>;
 }

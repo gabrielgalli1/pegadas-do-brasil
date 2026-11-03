@@ -24,6 +24,7 @@ function createHarness(entry) {
     } }).outputText;
     vm.runInNewContext(code, { exports, require(name) {
       if (name === "react") return react;
+      if (name === "react-dom") return { createPortal: (children) => children };
       if (name === "./supabaseClient") return { syncJogador: async () => ({ error: null }) };
       if (name === "react/jsx-runtime") return { jsx: (type, props) => ({ type, props }), jsxs: (type, props) => ({ type, props }), Fragment: "fragment" };
       let local = path.resolve(path.dirname(file), name);

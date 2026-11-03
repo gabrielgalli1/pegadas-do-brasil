@@ -1,3 +1,14 @@
+export const bonusRegionIds = ["norte", "nordeste", "centro-oeste", "sudeste", "sul"] as const;
+export type BonusRegionId = (typeof bonusRegionIds)[number];
+
+export function isBonusUnlocked(completedPhase: boolean, completedRegions: readonly string[]): boolean {
+  return completedPhase && bonusRegionIds.every((id) => completedRegions.includes(id));
+}
+
+function normalizeBonusRegions(value: unknown): BonusRegionId[] {
+  return Array.isArray(value) ? bonusRegionIds.filter((id) => value.includes(id)) : [];
+}
+
 export type PlayerProgress = {
   score: number;
   challengeIndex: number;
@@ -14,6 +25,8 @@ export type PlayerProgress = {
   centerWestChallenge: number;
   southeastChallenge: number;
   southChallenge: number;
+  bonusPlacedRegions: BonusRegionId[];
+  bonusCompleted: boolean;
 };
 
 export type CachedPlayerProgress = PlayerProgress & { updatedAt: string };
@@ -34,6 +47,8 @@ export const EMPTY_PROGRESS: PlayerProgress = {
   centerWestChallenge: 1,
   southeastChallenge: 1,
   southChallenge: 1,
+  bonusPlacedRegions: [],
+  bonusCompleted: false,
 };
 
 const REGION_IDS = new Set(["norte", "nordeste", "centro-oeste", "sudeste", "sul"]);
@@ -49,6 +64,9 @@ export function normalizePlayerProgress(value: unknown): PlayerProgress {
   const completedPhase = Boolean(data.completedPhase);
   const completedRegions = Array.isArray(data.completedRegions)
     ? [...new Set(data.completedRegions.filter((region): region is string => typeof region === "string" && REGION_IDS.has(region)))]
+    : [];
+  const bonusPlacedRegions = isBonusUnlocked(completedPhase, completedRegions)
+    ? normalizeBonusRegions(data.bonusPlacedRegions)
     : [];
 
   return {
@@ -67,6 +85,8 @@ export function normalizePlayerProgress(value: unknown): PlayerProgress {
     centerWestChallenge: boundedInteger(data.centerWestChallenge, 1, 6, 1),
     southeastChallenge: boundedInteger(data.southeastChallenge, 1, 6, 1),
     southChallenge: boundedInteger(data.southChallenge, 1, 6, 1),
+    bonusPlacedRegions,
+    bonusCompleted: bonusPlacedRegions.length === 5,
   };
 }
 

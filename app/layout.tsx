@@ -7,6 +7,7 @@ import "./southeast-wordsearch.css";
 import "./southeast-passport.css";
 import "./southeast-river.css";
 import "./south.css";
+import "./bonus.css";
 
 export const metadata: Metadata = {
   title: "Pegadas do Brasil — Jogo de Geografia",
