@@ -85,6 +85,34 @@
   .southeast-river-controls button{width:38px}
   .southeast-river-controls button.collect{width:47px}
 }
+
+/* Identidade visual regional: azul do Sudeste com filete verde. */
+.southeast-screen .southeast-title,
+.southeast-screen .southeast-speech,
+.southeast-screen .southeast-board,
+.southeast-screen .southeast-location-instruction{
+  border-color:#1974bd!important;
+  outline:2px solid #58a83f!important;
+  outline-offset:0;
+}
+.southeast-screen .southeast-speech::after{
+  border-right-color:#1974bd!important;
+  border-bottom-color:#1974bd!important;
+  box-shadow:2px 2px 0 #58a83f;
+}
+@media(max-width:900px){
+  .southeast-screen .southeast-title,
+  .southeast-screen .southeast-speech,
+  .southeast-screen .southeast-board,
+  .southeast-screen .southeast-location-instruction{outline-width:1px!important}
+}
+.high-contrast .southeast-screen .southeast-title,
+.high-contrast .southeast-screen .southeast-speech,
+.high-contrast .southeast-screen .southeast-board,
+.high-contrast .southeast-screen .southeast-location-instruction{
+  border-color:#000!important;
+  outline-color:#000!important;
+}
 @media(max-width:620px){
   .southeast-river-screen .southeast-speech{font-size:11px}
   .southeast-cleanup-score strong{font-size:7px}

@@ -81,6 +81,21 @@
   .mobile-menu-screen button:focus-visible,.mobile-journey-screen button:focus-visible,.mobile-silhouette button:focus-visible{outline:4px solid #ffdf1b;outline-offset:2px}
 }
 
+@media(min-width:621px) and (max-width:900px){
+  .game-shell:has(.north-challenge-screen.northeast-challenge-screen){
+    border:5px solid #d66518!important;
+    border-radius:10px!important;
+    background:transparent!important;
+    box-shadow:0 7px 18px #71300d55!important;
+  }
+  .north-challenge-screen.northeast-challenge-screen::before{
+    border:1px solid #3f8f3b!important;
+    border-radius:5px!important;
+    box-shadow:none!important;
+    background:none!important;
+  }
+}
+
 @media (max-width:900px){
   .avatar-access-confirm{max-width:none!important;margin:5px auto 0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
   .avatar-access-confirm div{gap:8px!important}
@@ -412,12 +427,12 @@
   .mobile-initial-step-5 .mobile-initial-header-title{left:clamp(42px,7.5vw,54px)}
 }
 @media (max-width:900px) and (orientation:landscape){
-  .challenge-screen:has(.mobile-initial-challenge)>.feedback.finished{width:min(78%,390px);max-height:calc(100dvh - 36px);padding:9px 12px;border-width:5px;border-radius:27px}
+  .challenge-screen:has(.mobile-initial-challenge)>.feedback.finished{width:min(78%,390px);max-height:calc(100dvh - 36px);padding:38px 12px 9px;border-width:5px;border-radius:27px}
   .challenge-screen:has(.mobile-initial-challenge)>.feedback.finished>span{display:block;font-size:clamp(38px,6vw,50px);line-height:1}
   .challenge-screen:has(.mobile-initial-challenge)>.feedback.finished h2{margin:3px 0;font-size:clamp(21px,3.2vw,27px);line-height:1.08}
   .challenge-screen:has(.mobile-initial-challenge)>.feedback.finished p{margin:5px 0 8px;font-size:clamp(12px,1.75vw,15px);line-height:1.18}
   .challenge-screen:has(.mobile-initial-challenge)>.feedback.finished button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;margin:4px;padding:5px 9px;border-width:3px;border-radius:13px;font-size:clamp(11px,1.5vw,14px);line-height:1.05}
-  .feedback.finished .phase-emblem-reward{width:min(330px,100%);min-height:82px;gap:8px;margin-bottom:3px;padding:4px 10px 4px 5px;border-width:3px;border-radius:18px;box-shadow:inset 0 0 0 2px #fff,0 3px 0 #b86e00}
+  .feedback.finished .phase-emblem-reward{width:min(330px,100%);min-height:82px;gap:8px;margin-bottom:8px;padding:4px 10px 4px 5px;border-width:3px;border-radius:18px;box-shadow:inset 0 0 0 2px #fff,0 3px 0 var(--reward-dark)}
   .feedback.finished .phase-emblem-reward .phase-emblem{width:72px}
   .feedback.finished .phase-emblem-reward-copy strong{font-size:clamp(12px,1.75vw,15px)}
   .feedback.finished .phase-emblem-reward-copy span{margin-top:3px;font-size:clamp(14px,2vw,18px)}
@@ -637,6 +652,18 @@
 @media (max-width:900px) and (orientation:landscape){
   .game-shell:has(.northeast-challenge-screen){border:0!important;border-radius:0!important;box-shadow:none}
   .northeast-challenge-screen{background-size:100% 100%!important}
+
+  .game-shell:has(.northeast-challenge-screen){
+    border:5px solid #d66518!important;
+    border-radius:10px!important;
+    background:transparent!important;
+    box-shadow:0 7px 18px #71300d55!important;
+  }
+  .northeast-challenge-screen::before{
+    border:1px solid #3f8f3b;
+    border-radius:5px;
+    box-shadow:none;
+  }
   .northeast-challenge-screen .north-heading,.northeast-challenge-screen:not(.north-count-screen) .north-heading{left:28%;top:27%;width:43%;padding:4px 7px;border:2px solid #f1d6ac;outline:0;border-radius:15px;background:#fffdf2ed;box-shadow:0 3px 0 #123c5a30}
   .northeast-challenge-screen .north-heading h1,.northeast-challenge-screen:not(.north-count-screen) .north-heading h1{font-size:clamp(15px,2.5vw,22px);line-height:1.05;white-space:nowrap;letter-spacing:0}
   .northeast-challenge-screen .north-heading p{display:none}
@@ -1042,4 +1069,59 @@
   :is(.challenge-screen,.north-challenge-screen,.northeast-challenge-screen,.centerwest-screen)>.feedback button{min-width:0;min-height:37px;margin:4px;padding:6px 12px;font-size:clamp(11px,1.55vw,14px);border-width:3px;border-radius:13px}
   :is(.challenge-screen,.north-challenge-screen,.northeast-challenge-screen,.centerwest-screen)>.feedback.finished{width:min(500px,82%)!important;padding-top:38px!important}
   :is(.challenge-screen,.north-challenge-screen,.northeast-challenge-screen,.centerwest-screen)>.feedback.finished::before{font-size:clamp(14px,2.25vw,20px)}
+}
+
+/* Molduras regionais compactas no celular horizontal. */
+@media(min-width:621px) and (max-width:900px){
+  .game-shell:has(.challenge-screen){border:6px solid #2f8b2c!important}
+  .game-shell:has(.north-challenge-screen){border:5px solid #237a31!important}
+  .game-shell:has(.centerwest-screen){border:5px solid #68772b!important}
+  :is(.game-shell:has(.challenge-screen),.game-shell:has(.north-challenge-screen),.game-shell:has(.centerwest-screen)){
+    border-radius:12px!important;
+    background:#062e5d!important;
+    box-shadow:0 0 0 3px #062e5d,0 7px 18px #001a3866!important;
+  }
+  .game-shell:has(.centerwest-screen){
+    border-radius:10px!important;
+    background:transparent!important;
+    box-shadow:0 7px 18px #26300f55!important;
+  }
+  :is(.challenge-screen,.north-challenge-screen,.centerwest-screen)::before{
+    border-width:3px;
+    border-radius:6px;
+    box-shadow:inset 0 0 0 1.5px #f3c64e;
+  }
+  .centerwest-screen::before{
+    border:1px solid #ffd23f;
+    border-radius:5px;
+    box-shadow:none;
+  }
+  .game-shell:has(.north-challenge-screen:not(.northeast-challenge-screen):not(.centerwest-screen)){
+    border:5px solid #237a31!important;
+    border-radius:10px!important;
+    background:transparent!important;
+    box-shadow:0 7px 18px #0b341a55!important;
+  }
+  .north-challenge-screen:not(.northeast-challenge-screen):not(.centerwest-screen)::before{
+    border:1px solid #168fd2!important;
+    border-radius:5px!important;
+    box-shadow:none!important;
+    background:none!important;
+  }
+  .north-challenge-screen:not(.northeast-challenge-screen):not(.centerwest-screen) :is(.north-heading,.north-tip,.north-map-card,.north-count-card,.north-habitat-card,.north-puzzle-board,.north-map-instruction,.north-puzzle-message){outline-width:1px!important}
+}
+
+@media(min-width:621px) and (max-width:900px){
+  .game-shell:has(.challenge-screen){
+    border:5px solid #2f8b2c!important;
+    border-radius:10px!important;
+    background:transparent!important;
+    box-shadow:0 7px 18px #0b341a55!important;
+  }
+  .challenge-screen::before{
+    border:1px solid #168fd2!important;
+    border-radius:5px!important;
+    background:none!important;
+    box-shadow:inset 0 0 0 1px #ffd23f!important;
+  }
 }

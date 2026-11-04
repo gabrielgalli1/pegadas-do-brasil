@@ -82,6 +82,37 @@
   .southeast-feedback.finished{width:min(500px,82%)!important;padding-top:38px!important}
 }
 
+/* Moldura regional do Sudeste. */
+.game-shell:has(.southeast-screen){
+  border:7px solid #1974bd;
+  border-radius:16px;
+  background:transparent;
+  box-shadow:0 18px 48px #001a3870;
+}
+.southeast-screen::before{
+  content:"";
+  display:block;
+  position:absolute;
+  z-index:60;
+  inset:0;
+  box-sizing:border-box;
+  pointer-events:none;
+  opacity:1;
+  border:2px solid #58a83f;
+  border-radius:9px;
+  box-shadow:none;
+  background:none;
+}
+@media(min-width:621px) and (max-width:900px){
+  .game-shell:has(.southeast-screen){
+    border:5px solid #1974bd!important;
+    border-radius:10px!important;
+    background:transparent!important;
+    box-shadow:0 7px 18px #001a3855!important;
+  }
+  .southeast-screen::before{border-width:1px;border-radius:5px;box-shadow:none}
+}
+
 @media(hover:hover){.southeast-detective-screen .southeast-state-choices button:not(:disabled):hover{transform:translateY(-8px) rotate(-1deg);box-shadow:0 10px 0 #5d8c4e,0 12px 15px #07305455;filter:brightness(1.06)}.southeast-detective-screen .southeast-state-choices button:not(:disabled):nth-child(even):hover{transform:translateY(-8px) rotate(1deg)}}
 .southeast-detective-screen .southeast-state-choices button:not(:disabled):active{transform:translateY(2px) scale(.97);box-shadow:0 1px 0 #5d8c4e}
 .southeast-detective-screen .southeast-state-choices button:focus-visible{outline:4px solid #ffda00;outline-offset:2px;transform:translateY(-3px)}
@@ -102,8 +133,10 @@
 
 /* Desafio 1 — mantém o mapa inteiro dentro do card na versão desktop. */
 @media(min-width:901px){
-  .southeast-location-screen .southeast-board-1{top:19.5%;height:57.5%}
-  .southeast-board-1 .southeast-brazil-map{display:block;width:94%;height:92%;margin:2% auto}
+  .southeast-location-screen .southeast-board-1{top:19%;height:61%;background:repeating-radial-gradient(ellipse at 58% 45%,transparent 0 34px,#238cc10b 35px 37px),radial-gradient(circle at 78% 20%,#fff7c9 0 4%,transparent 5%),linear-gradient(145deg,#fffef4 0%,#f4fbe7 55%,#eef4d8 100%)}
+  .southeast-board-1 .southeast-brazil-map{display:block;width:88%;height:88%;margin:0 auto;transform:translateY(8%)}
+  .southeast-location-instruction{top:82%}
+  .southeast-location-screen .southeast-listen{bottom:2.5%}
 }
 
 /* Desafio 2 — aproxima discretamente o título do card no desktop. */

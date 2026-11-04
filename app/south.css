@@ -15,14 +15,39 @@
  .south-challenge-1 .south-status>div{gap:3px}
  .south-challenge-1 .south-status span{font-size:clamp(17px,1.7vw,27px);color:#fff;text-shadow:0 2px #777}
  .south-challenge-1 .south-status span.active{color:#ffc928;text-shadow:0 2px #a35e00}
- .south-challenge-1 .south-speech{left:5%;top:39%;width:23%;min-height:0;padding:12px 10px;border-radius:24px;font-size:clamp(14px,1.15vw,18px);line-height:1.25;box-shadow:0 5px 0 #1f5f2444}
+ .south-challenge-1 .south-speech{left:5%;top:34%;width:23%;min-height:0;padding:12px 10px;border-radius:24px;font-size:clamp(14px,1.15vw,18px);line-height:1.25;box-shadow:0 5px 0 #1f5f2444}
  .south-challenge-1 .south-speech:after{content:"";position:absolute;left:43%;bottom:-12px;width:18px;height:18px;background:#fffdf2;border-right:3px solid #46923d;border-bottom:3px solid #46923d;transform:rotate(45deg)}
- .south-challenge-1 .south-board.board-1{left:30%;top:22%;width:49%;height:54%;padding:0;border-width:5px;outline:3px solid #fff;border-radius:32px;background:linear-gradient(145deg,#fffef3f5,#edf9dff2);box-shadow:0 8px 0 #163f3466,0 12px 24px #082e5b30}
+ .south-challenge-1 .south-board.board-1{left:30%;top:19%;width:49%;height:61%;padding:0;border-width:5px;outline:3px solid #fff;border-radius:32px;background:linear-gradient(145deg,#fffef3f5,#edf9dff2);box-shadow:0 8px 0 #163f3466,0 12px 24px #082e5b30}
  .south-challenge-1 .south-map{width:calc(100% - 28px);height:calc(100% - 28px);filter:drop-shadow(0 3px 2px #173b4f33)}
- .south-challenge-1 .south-map-instruction{position:absolute;display:block;left:30%;top:78%;width:49%;box-sizing:border-box;margin:0;padding:8px 12px;border:2px solid #4b8a24;border-radius:16px;background:#fffdf1;color:#082e5b;text-align:center;font-size:clamp(16px,1.4vw,22px);font-weight:900;line-height:1.3}
- .south-challenge-1 .south-listen{left:54.5%;bottom:5.5%;width:auto;min-width:0;padding:10px 24px;transform:translateX(-50%);border-radius:22px;font-size:clamp(14px,1.3vw,20px);box-shadow:0 5px 0 #07598d}
+ .south-challenge-1 .south-map-instruction{position:absolute;display:block;left:30%;top:82%;width:49%;box-sizing:border-box;margin:0;padding:8px 12px;border:2px solid #4b8a24;border-radius:16px;background:#fffdf1;color:#082e5b;text-align:center;font-size:clamp(16px,1.4vw,22px);font-weight:900;line-height:1.3}
+ .south-challenge-1 .south-board.board-1{border-color:#8d43c7;background:repeating-radial-gradient(ellipse at 58% 45%,transparent 0 34px,#8d43c70b 35px 37px),radial-gradient(circle at 86% 18%,#fff7c9 0 4.5%,transparent 5.5%),linear-gradient(145deg,#fffef4 0%,#f4fbe7 55%,#eef4d8 100%);box-shadow:inset 0 0 0 2px #ffd45a,0 5px 0 #57247e,0 12px 24px #3120412b}
+ .south-challenge-1 .south-map{position:relative;z-index:1;width:84%;height:82%;overflow:visible;transform:translateY(-4%);filter:drop-shadow(0 8px 5px #12395a35)}
+ .south-challenge-1 .south-map>.journey-map-region{stroke-width:3}
+ .south-challenge-1 .south-listen{left:54.5%;bottom:2.5%;width:auto;min-width:0;padding:10px 24px;transform:translateX(-50%);border-radius:22px;font-size:clamp(14px,1.3vw,20px);box-shadow:0 5px 0 #07598d}
 }
 
+/* Moldura regional do Sul: roxo contínuo com detalhes amarelos pontuais. */
+.game-shell:has(.south-screen){
+ border:7px solid #7446a8;
+ border-radius:16px;
+ background:transparent;
+ box-shadow:0 18px 48px #00152c70;
+}
+.south-screen::before{
+ content:"";
+ display:block;
+ position:absolute;
+ z-index:60;
+ inset:0;
+ box-sizing:border-box;
+ pointer-events:none;
+ opacity:1;
+ border:2px solid #ffd23f;
+ border-radius:9px;
+ box-shadow:none;
+ background:none;
+ filter:none;
+}
 /* Feedback compacto de acerto e erro em todos os desafios no celular */
 @media(max-width:1024px) and (orientation:landscape){
  .south-screen .south-feedback:not(.finished){width:min(410px,68%);max-height:88dvh;padding:44px 18px 14px!important;border-width:5px;border-radius:27px;overflow:visible}
@@ -556,4 +581,65 @@
  .south-challenge-6 .south-climate-choice-copy{gap:2px;padding-left:4px}
  .south-challenge-6 .south-climate-choice-copy small{padding:2px 4px;font-size:clamp(6px,.85vw,8px)}
  .south-challenge-6 .south-climate-choice-copy strong{font-size:clamp(8px,1.15vw,10px);line-height:1.03}
+}
+
+@media(max-width:900px) and (orientation:landscape){
+ .game-shell:has(.south-screen){
+  border:5px solid #7446a8!important;
+  border-radius:10px!important;
+  background:transparent!important;
+  box-shadow:0 7px 18px #00152c55!important;
+ }
+ .south-screen::before{
+  border-width:1px;
+  border-radius:5px;
+ }
+}
+
+/* Identidade visual interna da Região Sul. */
+:is(
+ .south-title,
+ .south-speech,
+ .south-challenge-1 .south-board.board-1,
+ .south-challenge-2 .south-puzzle-grid,
+ .south-challenge-2 .south-puzzle-piece-stage,
+ .south-challenge-3 .south-board.board-3,
+ .south-challenge-4 .south-suitcase,
+ .south-challenge-5 .south-harvest,
+ .south-challenge-6 .south-seasons,
+ .south-map-instruction,
+ .south-puzzle-instruction,
+ .south-seasons-footer,
+ .south-climate-question
+){
+ border-color:#7446a8!important;
+ outline:2px solid #ffd23f!important;
+ outline-offset:0;
+}
+.south-speech::after{
+ border-color:#7446a8!important;
+ box-shadow:2px 2px 0 #ffd23f;
+}
+@media(max-width:900px) and (orientation:landscape){
+ :is(
+  .south-title,
+  .south-speech,
+  .south-challenge-1 .south-board.board-1,
+  .south-challenge-2 .south-puzzle-grid,
+  .south-challenge-2 .south-puzzle-piece-stage,
+  .south-challenge-3 .south-board.board-3,
+  .south-challenge-4 .south-suitcase,
+  .south-challenge-5 .south-harvest,
+  .south-challenge-6 .south-seasons,
+  .south-map-instruction,
+  .south-puzzle-instruction,
+  .south-seasons-footer,
+  .south-climate-question
+ ){
+  outline-width:1px!important;
+ }
+}
+.high-contrast :is(.south-title,.south-speech,.south-board,.south-suitcase,.south-harvest,.south-seasons,.south-map-instruction,.south-puzzle-instruction){
+ border-color:#000!important;
+ outline-color:#000!important;
 }

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import regionsMap from "./brasil-cinco-regioes.json";
 import ScoreBadge from "./ScoreBadge";
+import JourneyRegionsMap from "./JourneyRegionsMap";
 import CenterWestConveyor from "./CenterWestConveyor";
 import CenterWestBrasilia from "./CenterWestBrasilia";
 import CenterWestPhotographer from "./CenterWestPhotographer";
@@ -12,10 +13,6 @@ type Feedback = "idle" | "correct" | "wrong" | "finished";
 type Props = { mistakes: number; challenge: number; score: number; feedback: Feedback; sound: boolean; newEmblem: boolean; onAnswer: (correct: boolean) => void; onNext: () => void; onRetry: () => void; onBack: () => void; onToggleSound: () => void; onListen: (text: string) => void };
 type AnimalId = "onca" | "lobo" | "tuiuiu" | "capivara";
 type StateId = "mt" | "go" | "ms" | "df";
-const names: Record<string, string> = { norte: "NORTE", nordeste: "NORDESTE", "centro-oeste": "CENTRO-OESTE", sudeste: "SUDESTE", sul: "SUL" };
-const labels: Record<string, [number, number]> = { norte: [215, 145], nordeste: [445, 225], "centro-oeste": [265, 305], sudeste: [395, 365], sul: [290, 440] };
-const possibleSlots = ["norte", "centro-oeste", "sul"] as const;
-const slotLabels: Record<string, string> = { norte: "encaixe superior", "centro-oeste": "encaixe central", sul: "encaixe inferior" };
 const animalNames: Record<AnimalId, string> = { onca: "Onça-pintada", lobo: "Lobo-guará", tuiuiu: "Tuiuiú", capivara: "Capivara" };
 const baseMemoryDeck: AnimalId[] = ["onca", "capivara", "lobo", "tuiuiu", "capivara", "onca", "tuiuiu", "lobo"];
 function shuffleMemoryDeck() {
@@ -43,10 +40,6 @@ export default function CenterWestLevel({ mistakes, challenge, score, feedback, 
   const isConveyor = challenge === 4;
   const isBrasilia = challenge === 5;
   const isPhotographer = challenge === 6;
-  const [selected, setSelected] = useState(false);
-  const [ghost, setGhost] = useState<{ x: number; y: number } | null>(null);
-  const drag = useRef<{ pointerId: number; moved: boolean } | null>(null);
-  const dropRefs = useRef<Record<string, SVGGElement | null>>({});
   const [openCards, setOpenCards] = useState<number[]>([]);
   const [matched, setMatched] = useState<AnimalId[]>([]);
   const [memoryBusy, setMemoryBusy] = useState(false);
@@ -55,9 +48,7 @@ export default function CenterWestLevel({ mistakes, challenge, score, feedback, 
   const [selectedState, setSelectedState] = useState<StateId | null>(null);
   const [stateGhost, setStateGhost] = useState<{ id: StateId; x: number; y: number } | null>(null);
   const stateDrag = useRef<{ id: StateId; pointerId: number; moved: boolean } | null>(null);
-  const centerWest = regionsMap.regions.find((region) => region.id === "centro-oeste")!;
   const canAnswer = feedback === "idle";
-  const solved = feedback === "correct" || feedback === "finished";
 
   useEffect(() => {
     if (!isMemory) return;
@@ -70,15 +61,7 @@ export default function CenterWestLevel({ mistakes, challenge, score, feedback, 
     return () => window.clearTimeout(shuffleTimer);
   }, [isMemory]);
 
-  function chooseSlot(regionId: string) { if (canAnswer) { setSelected(false); setGhost(null); onAnswer(regionId === "centro-oeste"); } }
-  function startDrag(event: ReactPointerEvent<HTMLButtonElement>) { if (!canAnswer) return; drag.current = { pointerId: event.pointerId, moved: false }; event.currentTarget.setPointerCapture(event.pointerId); setSelected(true); setGhost({ x: event.clientX, y: event.clientY }); }
-  function moveDrag(event: ReactPointerEvent<HTMLButtonElement>) { if (!drag.current || drag.current.pointerId !== event.pointerId) return; drag.current.moved = true; setGhost({ x: event.clientX, y: event.clientY }); }
-  function endDrag(event: ReactPointerEvent<HTMLButtonElement>) {
-    const active = drag.current; drag.current = null; setGhost(null);
-    if (!active?.moved) { setSelected(true); return; }
-    const slot = possibleSlots.find((id) => { const box = dropRefs.current[id]?.getBoundingClientRect(); return box && event.clientX >= box.left && event.clientX <= box.right && event.clientY >= box.top && event.clientY <= box.bottom; });
-    if (slot) chooseSlot(slot);
-  }
+  function chooseSlot(regionId: string) { if (canAnswer) onAnswer(regionId === "centro-oeste"); }
   function flipCard(index: number) {
     if (!canAnswer || memoryBusy || openCards.includes(index) || matched.includes(memoryDeck[index])) return;
     const next = [...openCards, index];
@@ -139,7 +122,7 @@ export default function CenterWestLevel({ mistakes, challenge, score, feedback, 
       <div className="north-status"><b>DESAFIO {challenge} DE 6</b><div aria-label={`Desafio ${challenge} de 6`}>{Array.from({ length: 6 }, (_, index) => <span key={index} className={index < challenge ? "active" : ""}>★</span>)}</div><ScoreBadge score={score} compact /></div>
       <button className={`north-round-control north-sound ${!sound ? "muted" : ""}`} onClick={onToggleSound} aria-label={sound ? "Desligar som" : "Ligar som"}><img src="/fases-som-v1.webp" alt="" /></button>
     </header>
-    <div className="centerwest-guide">{isPhotographer ? <>Nossa missão:<br />fotografar a fauna!<br />Procure e enquadre cada animal.</> : isBrasilia ? <>Observe a referência<br />e monte o monumento!</> : isConveyor ? <>Observe com atenção!<br />Escolha o que pertence<br />ao Centro-Oeste.</> : isPuzzle ? <>Observe as formas<br />e complete o mapa!</> : isMemory ? <>Vamos conhecer os animais!<br />Vire duas cartas por vez.<br />Onde está cada par?</> : <>Olá, explorador!<br />Eu sou o Téo.<br />Bem-vindo ao Centro-Oeste!<br />Encaixe a região no lugar certo.</>}</div>
+    <div className="centerwest-guide">{isPhotographer ? <>Nossa missão:<br />fotografar a fauna!<br />Procure e enquadre cada animal.</> : isBrasilia ? <>Observe a referência<br />e monte o monumento!</> : isConveyor ? <>Observe com atenção!<br />Escolha o que pertence<br />ao Centro-Oeste.</> : isPuzzle ? <>Observe as formas<br />e complete o mapa!</> : isMemory ? <>Vamos conhecer os animais!<br />Vire duas cartas por vez.<br />Onde está cada par?</> : <>Olá, explorador!<br />Eu sou o Téo.<br />Bem-vindo ao Centro-Oeste!<br />Toque na região central do mapa.</>}</div>
 
     {isPhotographer ? <CenterWestPhotographer canAnswer={canAnswer} onMistake={() => onAnswer(false)} onComplete={() => onAnswer(true)} onListen={onListen} /> : isBrasilia ? <CenterWestBrasilia canAnswer={canAnswer} onMistake={() => onAnswer(false)} onComplete={() => onAnswer(true)} onListen={onListen} /> : isConveyor ? <CenterWestConveyor canAnswer={canAnswer} onMistake={() => onAnswer(false)} onComplete={() => onAnswer(true)} onListen={onListen} /> : isMemory ? <div className="centerwest-memory-board">
       <div className="memory-grid" role="grid" aria-label="Jogo da memória com oito cartas">
@@ -157,12 +140,9 @@ export default function CenterWestLevel({ mistakes, challenge, score, feedback, 
       </svg>
       <div className="centerwest-state-tray" aria-label="Peças embaralhadas do mapa">{puzzleOrder.map((id) => { const state = centerWestStates.find((item) => item.id === id)!; return <button key={id} className={`centerwest-state-piece piece-${id} ${selectedState === id ? "selected" : ""}`} disabled={!canAnswer || placedStates.includes(id)} onPointerDown={(event) => beginStateDrag(id, event)} onPointerMove={moveStateDrag} onPointerUp={endStateDrag} onPointerCancel={() => { stateDrag.current = null; setStateGhost(null); }} aria-label={`Peça ${state.name}`}><svg viewBox={state.pieceViewBox} preserveAspectRatio="xMidYMid meet" aria-hidden="true"><path d={state.path} fill={state.color} /></svg><span className="centerwest-piece-code">{state.id.toUpperCase()}</span><strong>{state.name}</strong></button>; })}</div>
       <div className="centerwest-puzzle-progress">{placedStates.length} DE 4 PEÇAS ENCAIXADAS</div>
-    </div> : <div className="centerwest-board"><div className="centerwest-piece-area">{!solved && <button className={`centerwest-piece ${selected ? "selected" : ""}`} onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={endDrag} onPointerCancel={() => { drag.current = null; setGhost(null); }} aria-pressed={selected} aria-label="Peça da Região Centro-Oeste. Arraste até um espaço no mapa ou pressione para selecionar."><svg viewBox="135 190 245 225" aria-hidden="true">{centerWest.paths.map((path) => <path key={path.id} d={path.d} />)}<text x="266" y="306">CENTRO-</text><text x="266" y="326">OESTE</text></svg></button>}{!solved && <span className="centerwest-drag-hint" aria-hidden="true">➜</span>}</div>
-      <svg className="centerwest-map" viewBox={regionsMap.viewBox} role="img" aria-label="Mapa do Brasil com três possíveis espaços de encaixe">{regionsMap.regions.map((region) => { const isCandidate = possibleSlots.includes(region.id as typeof possibleSlots[number]); const isCorrect = region.id === "centro-oeste"; const filled = isCorrect && solved; const [x, y] = labels[region.id]; return <g key={region.id} ref={isCandidate ? (node) => { dropRefs.current[region.id] = node; } : undefined} className={`${isCandidate ? "centerwest-slot" : "centerwest-map-region"} ${filled ? "filled" : ""}`} role={isCandidate ? "button" : undefined} tabIndex={isCandidate ? 0 : undefined} aria-label={isCandidate ? slotLabels[region.id] : undefined} onClick={isCandidate && selected ? () => chooseSlot(region.id) : undefined} onKeyDown={isCandidate ? (event) => { if (selected && (event.key === "Enter" || event.key === " ")) { event.preventDefault(); chooseSlot(region.id); } } : undefined}>{region.paths.map((path) => <path key={path.id} d={path.d} fill={isCandidate && !filled ? "#fffdf1" : region.color} />)}{(!isCandidate || filled) && <text x={x} y={y}>{names[region.id]}</text>}</g>; })}</svg>
-    </div>}
+    </div> : <><div className="centerwest-board centerwest-location-board"><JourneyRegionsMap className="centerwest-map" canPlay={canAnswer} describedBy="centerwest-map-instruction" onSelect={chooseSlot} /></div><p id="centerwest-map-instruction" className="centerwest-map-instruction">Clique ou toque na Região Centro-Oeste no mapa!</p></>}
 
-    <button className="centerwest-listen" onClick={() => onListen(isPhotographer ? "Encontre o animal indicado na missão. Mova a moldura com o mouse, toque ou use as setas do teclado. Quando o animal estiver enquadrado, pressione Fotografar. Registre o tuiuiú, a capivara e o jacaré." : isBrasilia ? "Observe a referência do Congresso Nacional. Arraste a plataforma, as torres, a concha, a cúpula e o espelho de água até as silhuetas correspondentes. Você também pode tocar na peça e depois no espaço correto." : isConveyor ? "Observe os cartões na esteira. Toque em milho, gado, Pantanal, Cerrado, Brasília e pequi. Use o botão pausar quando precisar de mais tempo." : isPuzzle ? "Observe o formato das quatro peças. Arraste Mato Grosso, Goiás, Mato Grosso do Sul e Distrito Federal até os espaços corretos para completar o mapa do Centro-Oeste." : isMemory ? "Vire duas cartas por vez e encontre os quatro pares de animais do Centro-Oeste: onça-pintada, lobo-guará, tuiuiú e capivara." : "Olá, explorador! Eu sou o Téo. Bem-vindo ao Centro-Oeste! Arraste a peça da região até um dos três espaços vazios no mapa. Observe a posição das regiões para escolher o encaixe correto. Você também pode tocar na peça e depois no espaço.")}>🔊 OUVIR INSTRUÇÕES</button>
-    {!isMemory && !isPuzzle && ghost && <div className="centerwest-ghost" style={{ left: ghost.x, top: ghost.y }} aria-hidden="true"><svg viewBox="135 190 245 225">{centerWest.paths.map((path) => <path key={path.id} d={path.d} />)}</svg></div>}
+    <button className="centerwest-listen" onClick={() => onListen(isPhotographer ? "Encontre o animal indicado na missão. Mova a moldura com o mouse, toque ou use as setas do teclado. Quando o animal estiver enquadrado, pressione Fotografar. Registre o tuiuiú, a capivara e o jacaré." : isBrasilia ? "Observe a referência do Congresso Nacional. Arraste a plataforma, as torres, a concha, a cúpula e o espelho de água até as silhuetas correspondentes. Você também pode tocar na peça e depois no espaço correto." : isConveyor ? "Observe os cartões na esteira. Toque em milho, gado, Pantanal, Cerrado, Brasília e pequi. Use o botão pausar quando precisar de mais tempo." : isPuzzle ? "Observe o formato das quatro peças. Arraste Mato Grosso, Goiás, Mato Grosso do Sul e Distrito Federal até os espaços corretos para completar o mapa do Centro-Oeste." : isMemory ? "Vire duas cartas por vez e encontre os quatro pares de animais do Centro-Oeste: onça-pintada, lobo-guará, tuiuiú e capivara." : "Olá, explorador! Eu sou o Téo. Bem-vindo ao Centro-Oeste! Observe o mapa do Brasil e toque na região que fica no centro do país.")}>🔊 OUVIR INSTRUÇÕES</button>
     {stateGhost && <div className={`centerwest-state-ghost ghost-${stateGhost.id}`} style={{ left: stateGhost.x, top: stateGhost.y }} aria-hidden="true">{(() => { const state = centerWestStates.find((item) => item.id === stateGhost.id)!; return <svg viewBox={state.pieceViewBox}><path d={state.path} fill={state.color} /></svg>; })()}</div>}
     {feedback !== "idle" && <div className={`feedback ${feedback}`} role="dialog" aria-live="assertive">{feedback === "wrong" ? <><span>🧭</span><h2>{mistakes >= 2 ? "Vamos recomeçar!" : "Quase lá!"}</h2><p>{mistakes >= 2 ? "Você voltará ao primeiro desafio do Centro-Oeste." : isMemory ? "Observe os animais nas cartas que você acabou de virar." : isPuzzle ? "Compare o formato da peça com o espaço vazio." : isConveyor ? "Pense se esse elemento é característico do Centro-Oeste." : isBrasilia ? "Compare a peça com a imagem de referência do Congresso." : isPhotographer ? "Mova a câmera até que o animal fique inteiro na moldura." : "Observe a posição central da região no mapa do Brasil."}</p><button onClick={onRetry}>{mistakes >= 2 ? "RECOMEÇAR REGIÃO" : "TENTAR NOVAMENTE"}</button></> : <>{feedback === "finished" ? <PhaseEmblemReward id="centro-oeste" isNew={newEmblem} /> : <span>⭐</span>}<h2>{feedback === "finished" ? "Região Centro-Oeste concluída!" : "Muito bem!"}</h2><p>{isPhotographer ? "Missão completa! Você registrou a fauna do Pantanal e finalizou a Região Centro-Oeste!" : isBrasilia ? "Você chegou a Brasília, a capital do Brasil!" : isConveyor ? "Você reconheceu os elementos que pertencem ao Centro-Oeste!" : isPuzzle ? "Você montou o mapa com os quatro componentes do Centro-Oeste!" : isMemory ? "Você encontrou os quatro pares de animais do Centro-Oeste!" : "Você encontrou a Região Centro-Oeste, o coração do Brasil!"}</p><button onClick={challenge < 6 ? onNext : onBack}>{challenge < 6 ? "PRÓXIMO DESAFIO" : "VOLTAR À JORNADA"}</button></>}</div>}
   </section>;

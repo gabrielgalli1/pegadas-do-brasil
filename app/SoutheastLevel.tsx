@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import regionsMap from "./brasil-cinco-regioes.json";
 import ScoreBadge from "./ScoreBadge";
+import JourneyRegionsMap from "./JourneyRegionsMap";
 import SoutheastCoffee from "./SoutheastCoffee";
 import SoutheastWordSearch from "./SoutheastWordSearch";
 import SoutheastPassport from "./SoutheastPassport";
@@ -26,8 +26,6 @@ const shuffleStates = () => {
   }
   return choices;
 };
-const regionNames: Record<string, string> = { norte: "Norte", nordeste: "Nordeste", "centro-oeste": "Centro-Oeste", sudeste: "Sudeste", sul: "Sul" };
-const regionLabels: Record<string, [number, number]> = { norte: [216, 170], nordeste: [458, 232], "centro-oeste": [286, 312], sudeste: [397, 374], sul: [314, 452] };
 const titles = ["", "ONDE FICA O SUDESTE?", "DETETIVE DOS ESTADOS", "DO PÉ AO CAFÉ", "PALAVRAS DA VIAGEM", "PASSAPORTE DO SUDESTE", "GUARDIÕES DO RIO TIETÊ"];
 const speeches = ["", "Olá, explorador! Eu sou o Nico. Boas-vindas à Região Sudeste! Procure a região roxa na parte inferior direita do mapa.", "Descubra os quatro estados do Sudeste pela capital indicada. Observe a pista e escolha entre Minas Gerais, Espírito Santo, Rio de Janeiro e São Paulo.", "Vamos cultivar café! Escolha a muda e toque na terra para plantar. Depois, regue o cafeeiro três vezes, colha os três frutos vermelhos e toque três vezes para preparar uma xícara.", "Encontre as sete palavras escondidas na grade: mata, serra, praia, mico, café, cidade e Cristo. Escolha a primeira e a última letra de cada palavra. Elas aparecem na horizontal ou na vertical.", "Leve cada cartão turístico ao seu estado. Arraste o cartão até o passaporte ou toque no cartão e depois no estado correspondente.", "Nossa missão é recolher os resíduos antes que a corrente os leve. No computador, use as setas para mover o barco e a barra de espaço para lançar a rede. No celular, arraste o barco e toque no botão Rede. Lance a rede quando o resíduo estiver próximo."];
 export default function SoutheastLevel({ challenge, score, mistakes, feedback, sound, newEmblem, onAnswer, onNext, onRetry, onBack, onToggleSound, onListen }: Props) {
@@ -83,7 +81,7 @@ export default function SoutheastLevel({ challenge, score, mistakes, feedback, s
     <div className="southeast-speech">{speeches[challenge]}</div>
     <button className="southeast-listen" onClick={() => onListen(challenge === 1 ? "Bem-vindo, explorador! Encontre a Região Sudeste no mapa do Brasil. Toque na região formada por Minas Gerais, Espírito Santo, Rio de Janeiro e São Paulo." : challenge === 2 ? `Minha capital é ${currentState.capital}. Qual é o estado?` : speeches[challenge])}>{challenge === 2 ? "🔊 OUVIR PERGUNTA" : "🔊 OUVIR INSTRUÇÕES"}</button>
     <div className={`southeast-board southeast-board-${challenge}`}>
-      {challenge === 1 && <svg className="southeast-brazil-map" viewBox="0 10 560 510" role="group" aria-label="Mapa interativo das cinco regiões do Brasil">{regionsMap.regions.map(region => <g key={region.id} role="button" tabIndex={canPlay ? 0 : -1} aria-label={`Região ${regionNames[region.id]}`} aria-disabled={!canPlay} onClick={() => chooseRegion(region.id)} onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); chooseRegion(region.id); } }}>{region.paths.map(path => <path key={path.id} d={path.d} fill={region.color} />)}<text x={regionLabels[region.id][0]} y={regionLabels[region.id][1]}>{regionNames[region.id].toUpperCase()}</text></g>)}</svg>}
+      {challenge === 1 && <JourneyRegionsMap className="southeast-brazil-map" canPlay={canPlay} onSelect={chooseRegion} />}
       {challenge === 2 && <><div key={clue} className={`southeast-detective-clue ${changingClue ? "leaving" : ""}`} aria-live="polite"><span aria-hidden="true">🔎</span><div><small>PISTA {clue + 1} DE 4</small><strong>Minha capital é {currentState.capital}. Qual é o estado?</strong></div></div><div className="southeast-detective-map-frame"><img className="southeast-static-map" src="/sudeste-estados-ilustrado-v1.svg" alt="Mapa da Região Sudeste com Minas Gerais em amarelo, Espírito Santo em roxo, Rio de Janeiro em azul e São Paulo em verde." /><span>Escolha uma das quatro alternativas abaixo</span></div><div className="southeast-state-choices" role="group" aria-label="Escolha o estado da capital indicada">{stateChoices.map(state => <button key={state.id} className={`${solvedState === state.id ? "solved " : ""}state-${state.id}`} disabled={!canPlay} onClick={() => chooseState(state.id)} aria-label={solvedState === state.id ? `${state.name}, correto` : state.name}><span aria-hidden="true">{state.id.toUpperCase()}</span><strong>{state.name}</strong></button>)}</div><span className="southeast-sr-only" role="status">{solvedState ? `Correto! ${states[clue].name}.` : ""}</span></>}
       {challenge === 3 && <SoutheastCoffee canPlay={canPlay} onComplete={() => onAnswer(true)} onListen={onListen} />}
       {challenge === 4 && <SoutheastWordSearch canPlay={canPlay} onComplete={() => onAnswer(true)} onListen={onListen} />}

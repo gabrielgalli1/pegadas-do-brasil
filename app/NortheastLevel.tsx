@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
-import regionsMap from "./brasil-cinco-regioes.json";
 import ScoreBadge from "./ScoreBadge";
+import JourneyRegionsMap from "./JourneyRegionsMap";
 import { PhaseEmblemReward } from "./phaseEmblems";
 
 type Feedback = "idle" | "correct" | "wrong" | "finished";
@@ -13,8 +13,6 @@ type LandscapeId = "litoral" | "manguezal" | "serra" | "caatinga";
 type ArraiaId = "bandeirinhas" | "sanfona" | "milho" | "frevo" | "chimarrao" | "neve";
 type ArraiaDrag = { id: ArraiaId; pointerId: number; startX: number; startY: number; moved: boolean };
 
-const regionNames: Record<string, string> = { norte: "Norte", nordeste: "Nordeste", "centro-oeste": "Centro-Oeste", sudeste: "Sudeste", sul: "Sul" };
-const regionLabels: Record<string, [number, number]> = { norte: [215, 145], nordeste: [445, 225], "centro-oeste": [265, 305], sudeste: [395, 365], sul: [290, 440] };
 const northeastStates: readonly NortheastState[] = [
   { id: "ma", name: "Maranhão", short: "MA", path: "M40 80 160 50 205 120 175 205 90 220 35 160Z", label: [112, 137], color: "#62b936" },
   { id: "pi", name: "Piauí", short: "PI", path: "M160 50 250 70 270 170 220 245 175 205 205 120Z", label: [220, 145], color: "#f6c93c" },
@@ -177,7 +175,7 @@ export default function NortheastLevel({ mistakes, challenge, score, feedback, s
     if (isLandscapeAlbum) { setSelectedLandscape(null); setPlacedLandscapes([]); }
     onRetry();
   }
-  return <section className={`screen north-challenge-screen northeast-challenge-screen ${isMap ? "" : "north-count-screen"} ${isStateDiscovery ? "northeast-state-screen" : ""} ${isClimate ? "northeast-climate-screen" : ""} ${isAnimalSearch ? "northeast-animal-screen" : ""} ${isLandscapeAlbum ? "northeast-landscape-screen" : ""} ${isArraia ? "northeast-arraia-screen" : ""}`} aria-label={`Desafio ${challenge} da Região Nordeste`}>
+  return <section className={`screen north-challenge-screen northeast-challenge-screen ${isMap ? "northeast-location-screen" : "north-count-screen"} ${isStateDiscovery ? "northeast-state-screen" : ""} ${isClimate ? "northeast-climate-screen" : ""} ${isAnimalSearch ? "northeast-animal-screen" : ""} ${isLandscapeAlbum ? "northeast-landscape-screen" : ""} ${isArraia ? "northeast-arraia-screen" : ""}`} aria-label={`Desafio ${challenge} da Região Nordeste`}>
     <header className="north-challenge-header">
       <button className="north-round-control" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.webp" alt="" /></button>
       <div className="north-heading"><h1>{current.title}</h1><p>{current.question}</p></div>
@@ -186,7 +184,7 @@ export default function NortheastLevel({ mistakes, challenge, score, feedback, s
     </header>
     <div className="north-guide"><div className="north-tip">{current.tip.split("\n").map((line, index) => <span key={line}>{line}{index === 0 && <br />}</span>)}</div></div>
     {isMap ? <><div className="north-map-card northeast-map-card" role="group" aria-label="Mapa do Brasil dividido em cinco regiões">
-      <svg className="north-map northeast-map" viewBox={regionsMap.viewBox} preserveAspectRatio="xMidYMid meet" aria-label="Clique na Região Nordeste no mapa do Brasil">{regionsMap.regions.map((region) => <g key={region.id} className="north-region" role="button" tabIndex={canAnswer ? 0 : -1} aria-label={`Região ${regionNames[region.id]}`} aria-disabled={!canAnswer} fill={region.color} onClick={() => chooseRegion(region.id)} onKeyDown={(event) => { if (canAnswer && (event.key === "Enter" || event.key === " ")) { event.preventDefault(); chooseRegion(region.id); } }}><title>{`Região ${regionNames[region.id]}`}</title>{region.paths.map((part) => <path key={part.id} d={part.d} />)}<text x={regionLabels[region.id][0]} y={regionLabels[region.id][1]}>{regionNames[region.id].toUpperCase()}</text></g>)}</svg>
+      <JourneyRegionsMap className="north-map northeast-map" canPlay={canAnswer} onSelect={chooseRegion} />
     </div><p className="north-map-instruction">Clique ou toque na Região Nordeste no mapa!</p></> : isStateDiscovery ? <div className="northeast-discovery-card">
       <svg className="northeast-states-map" viewBox="0 0 520 500" role="group" aria-label="Mapa interativo dos nove estados da Região Nordeste">{northeastStates.map((state) => { const revealed = discovered.includes(state.id); return <g key={state.id} className={revealed ? "revealed" : ""} role="button" tabIndex={canAnswer && !revealed ? 0 : -1} aria-label={`${state.name}${revealed ? ", descoberto" : ", toque para descobrir"}`} onClick={() => discoverState(state)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); discoverState(state); } }}><path d={state.path} style={{ "--state-color": state.color } as React.CSSProperties} /><text x={state.label[0]} y={state.label[1]}>{revealed ? state.name : state.short}</text>{revealed && <text className="state-check" x={northeastStateChecks[state.id][0]} y={northeastStateChecks[state.id][1]}>✓</text>}</g>})}</svg>
       <div className="northeast-discovery-progress"><strong>{discovered.length} DE 9 ESTADOS DESCOBERTOS</strong><div>{northeastStates.map((state, index) => <span key={state.id} className={index < discovered.length ? "found" : ""} aria-hidden="true" />)}</div></div>

@@ -169,7 +169,7 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 /* Base reutilizável dos desafios do Nível Inicial */
 .game-shell:has(.challenge-screen){border:0;border-radius:0;background:transparent;box-shadow:none}
 .game-shell:has(.challenge-screen):before,.game-shell:has(.challenge-screen):after{display:none}
-.challenge-screen{background:#eaffcf url('/desafios-fundo-v1.webp') center/100% 100% no-repeat!important;overflow:hidden;font-family:"Arial Rounded MT Bold","Trebuchet MS",Arial,sans-serif}
+.challenge-screen{background:#eaffcf url('/desafios-fundo-sem-moldura-v1.png') center/100% 100% no-repeat!important;overflow:hidden;font-family:"Arial Rounded MT Bold","Trebuchet MS",Arial,sans-serif}
 .challenge-screen:after{display:none}
 .challenge-header{position:absolute;z-index:6;left:2.2%;right:2.2%;top:2.5%;height:14%;display:flex;align-items:flex-start;justify-content:space-between}
 .challenge-control{justify-self:center;width:clamp(58px,6vw,92px);aspect-ratio:1;border:0;outline:0;background:transparent;padding:0;box-shadow:none;display:grid;place-items:center}.challenge-control img{display:block;width:100%;height:100%;object-fit:contain}
@@ -326,7 +326,7 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 /* Fase 1 - Regiao Norte: Desafio 1 */
 .game-shell:has(.north-challenge-screen){border:0;border-radius:0;background:transparent;box-shadow:none}
 .game-shell:has(.north-challenge-screen):before,.game-shell:has(.north-challenge-screen):after{display:none}
-.north-challenge-screen{background:#c8f4d2 url('/regiao-norte-fundo-v3.webp') center/100% 100% no-repeat!important;overflow:hidden;font-family:"Arial Rounded MT Bold","Trebuchet MS",Arial,sans-serif}
+.north-challenge-screen{background:#c8f4d2 url('/regiao-norte-fundo-sem-moldura-v1.png') center/100% 100% no-repeat!important;overflow:hidden;font-family:"Arial Rounded MT Bold","Trebuchet MS",Arial,sans-serif}
 .north-challenge-screen:after{display:none}
 .north-challenge-header{position:absolute;z-index:5;inset:2.5% 2.5% auto;height:18%}
 .north-round-control{position:absolute;left:0;top:0;width:clamp(60px,6vw,92px);aspect-ratio:1;padding:0;background:transparent}.north-round-control img{width:100%;height:100%;object-fit:contain}.north-round-control.muted{filter:grayscale(1);opacity:.65}.north-sound{left:auto;right:0}
@@ -339,6 +339,15 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .north-region:hover,.north-region:focus-visible{filter:brightness(1.12);outline:none;stroke:#082e5b;stroke-width:3}
 .north-region text{fill:#082e5b;stroke:#fff;stroke-width:3;paint-order:stroke;pointer-events:none;text-anchor:middle;font-size:18px;font-weight:900;font-family:Arial,sans-serif}
 .north-map-instruction{position:absolute;left:30%;top:78%;width:49%;margin:0;padding:8px 12px;border:2px solid #4b8a24;border-radius:16px;background:#fffdf1;color:#082e5b;text-align:center;font-size:clamp(16px,1.4vw,22px);font-weight:900;line-height:1.3}
+.journey-regions-map{display:block;overflow:visible;filter:drop-shadow(0 8px 5px #12395a35)}
+.journey-regions-map>.journey-map-region{cursor:pointer;stroke:#fffdf4;stroke-width:3;stroke-linejoin:round;transform-box:fill-box;transform-origin:center;transition:transform .18s ease,filter .18s ease}
+.journey-regions-map>.journey-map-region path{vector-effect:non-scaling-stroke;transition:filter .18s ease}
+.journey-regions-map>.journey-map-region:hover{transform:translateY(-3px) scale(1.015);filter:brightness(1.08) drop-shadow(0 6px 4px #173b4f4d)}
+.journey-regions-map>.journey-map-region:focus{outline:none}
+.journey-regions-map>.journey-map-region:focus-visible path{stroke:#ffd42a;stroke-width:5;filter:brightness(1.08)}
+.journey-regions-map .journey-map-label{cursor:inherit;stroke:none;filter:drop-shadow(0 2px 1px #173b4f35);pointer-events:none}
+.journey-regions-map .journey-map-label rect{fill:#fffdf2f2;stroke:#0a426b;stroke-width:1.4}
+.journey-regions-map .journey-map-label text{fill:#073054;stroke:none;font-size:11px;font-weight:1000;letter-spacing:.015em;paint-order:normal;text-anchor:middle}
 .north-listen{position:absolute;z-index:3;left:57%;bottom:5.5%;transform:translateX(-50%);padding:10px 24px;border:4px solid #fff;outline:3px solid #075d98;border-radius:22px;background:linear-gradient(#2cb9f7,#0785cf);color:#fff;font-size:clamp(14px,1.3vw,20px);font-weight:1000;text-shadow:0 2px #07598d;box-shadow:0 5px 0 #07598d}
 .north-location-screen .north-heading{left:30%;top:12%;width:49%}
 .north-location-screen .north-status{right:0;top:62%;width:18%}
@@ -552,6 +561,67 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .northeast-challenge-screen .north-status{right:1%;top:80%;width:17%}
 .northeast-challenge-screen .north-listen{left:54.5%}
 @media(max-width:900px){.game-shell:has(.northeast-challenge-screen){border-width:5px;border-radius:0}.northeast-challenge-screen .north-guide{left:auto;top:auto;width:230px}.northeast-challenge-screen .north-status{right:2%;top:112px;width:150px}.northeast-challenge-screen .north-listen{left:auto}}
+
+/* Moldura regional do Nordeste: laranja da região com filete verde. */
+.game-shell:has(.north-challenge-screen.northeast-challenge-screen){
+  border:7px solid #d66518;
+  border-radius:16px;
+  background:transparent;
+  box-shadow:0 18px 48px #71300d70;
+}
+.northeast-challenge-screen::before{
+  content:"";
+  display:block;
+  position:absolute;
+  z-index:60;
+  inset:0;
+  box-sizing:border-box;
+  pointer-events:none;
+  opacity:1;
+  border:2px solid #3f8f3b;
+  border-radius:9px;
+  box-shadow:none;
+  background:none;
+}
+
+/* Molduras das demais etapas seguem as cores dos cartões da jornada. */
+.game-shell:has(.challenge-screen){
+  border:9px solid #2f8b2c;
+  border-radius:24px;
+  background:#062e5d;
+  box-shadow:0 0 0 4px #062e5d,0 18px 48px #001a3890;
+}
+.game-shell:has(.north-challenge-screen){
+  border:7px solid #237a31;
+  border-radius:16px;
+  background:transparent;
+  box-shadow:0 18px 48px #0b341a70;
+}
+.game-shell:has(.centerwest-screen){
+  border:7px solid #68772b;
+  border-radius:16px;
+  background:transparent;
+  box-shadow:0 18px 48px #26300f70;
+}
+:is(.challenge-screen,.north-challenge-screen,.centerwest-screen)::before{
+  content:"";
+  display:block;
+  position:absolute;
+  z-index:60;
+  inset:0;
+  box-sizing:border-box;
+  pointer-events:none;
+  opacity:1;
+  border:4px solid #062e5d;
+  border-radius:15px;
+  box-shadow:inset 0 0 0 2px #f3c64e;
+}
+.centerwest-screen::before{
+  border:2px solid #ffd23f;
+  border-radius:9px;
+  box-shadow:none;
+  background:none;
+}
 
 /* Desafio 2: descoberta dos nove estados da Região Nordeste. */
 .northeast-state-screen .north-heading{left:18%;width:60%}
@@ -958,6 +1028,37 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 @media(max-width:900px){.score-inline{grid-template-columns:27px 1fr!important;margin-top:5px!important;padding-top:5px!important}.score-inline img{width:25px;height:25px;border-radius:7px}.score-inline small{font-size:7px}.score-inline strong{font-size:17px}}
 
 /* Região Centro-Oeste — desafio 1 */
+/* Identidade visual regional: laranja do Nordeste com filete verde. */
+.northeast-challenge-screen .north-heading,
+.northeast-challenge-screen .north-tip,
+.northeast-challenge-screen .northeast-map-card,
+.northeast-challenge-screen .northeast-discovery-card,
+.northeast-challenge-screen .northeast-climate-card,
+.northeast-challenge-screen .northeast-animal-card,
+.northeast-challenge-screen .northeast-landscape-card,
+.northeast-challenge-screen .northeast-arraia-card,
+.northeast-challenge-screen .north-map-instruction,
+.northeast-challenge-screen .landscape-album-instruction,
+.northeast-challenge-screen .arraia-progress,
+.northeast-challenge-screen .animal-hint{
+  border-color:#d66518!important;
+  outline:2px solid #3f8f3b!important;
+  outline-offset:0;
+}
+.northeast-challenge-screen .north-tip::before{background:#d66518!important}
+.northeast-challenge-screen .north-tip::after{
+  border-right-color:#d66518!important;
+  border-bottom-color:#d66518!important;
+  filter:drop-shadow(2px 2px 0 #3f8f3b);
+}
+@media(max-width:900px){
+  .northeast-challenge-screen :is(.north-heading,.north-tip,.northeast-map-card,.northeast-discovery-card,.northeast-climate-card,.northeast-animal-card,.northeast-landscape-card,.northeast-arraia-card,.north-map-instruction,.landscape-album-instruction,.arraia-progress,.animal-hint){outline-width:1px!important}
+}
+.high-contrast .northeast-challenge-screen :is(.north-heading,.north-tip,.northeast-map-card,.northeast-discovery-card,.northeast-climate-card,.northeast-animal-card,.northeast-landscape-card,.northeast-arraia-card,.north-map-instruction,.landscape-album-instruction,.arraia-progress,.animal-hint){
+  border-color:#000!important;
+  outline-color:#000!important;
+}
+
 .centerwest-screen{height:100%;min-height:100%;background:#dff3c5 url('/fundo-centro-oeste-teo-v3.webp') center/100% 100% no-repeat!important;overflow:hidden}
 .centerwest-screen:after{display:none}
 .centerwest-back,.centerwest-sound{position:absolute;z-index:8;top:3.6%;width:6.2%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:clamp(25px,3.1vw,48px);background:linear-gradient(#ffac21,#ed7700);border:5px solid #fff;outline:3px solid #c86800;box-shadow:0 5px 0 #703c00}
@@ -1045,6 +1146,14 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .brasilia-tray{grid-column:1/-1;min-height:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.brasilia-piece{min-width:0;min-height:0;padding:4px 5px;display:grid;grid-template-rows:minmax(0,1fr) auto;border:3px solid #fff;outline:2px solid #348532;border-radius:13px;background:linear-gradient(#f4ffec,#e2f7d6);box-shadow:0 4px 0 #1f6727;touch-action:none;cursor:grab}.brasilia-piece:hover:not(:disabled),.brasilia-piece.selected{transform:translateY(-3px);outline-color:#ffb000}.brasilia-piece:active{cursor:grabbing}.brasilia-piece:disabled{opacity:.25;cursor:default}.brasilia-piece svg{width:100%;height:100%;min-height:0;overflow:visible}.brasilia-piece path{stroke:#fff;stroke-width:3;vector-effect:non-scaling-stroke;filter:drop-shadow(0 3px 2px #193c5055)}.brasilia-piece strong{font-size:clamp(8px,.68vw,11px);line-height:1.05;text-align:center;color:#12395f}
 .brasilia-progress{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:13px;min-height:28px;padding:4px 10px;border:2px solid #d3aa5b;border-radius:14px;background:#fff5c9;color:#082e5b}.brasilia-progress strong{font-size:clamp(10px,.9vw,14px)}.brasilia-progress span{display:flex;gap:3px}.brasilia-progress i{font-style:normal;color:#b7ad99;font-size:clamp(13px,1.2vw,19px)}.brasilia-progress i.found{color:#ffb000;text-shadow:0 1px #8e5a00}
 .brasilia-ghost{position:fixed;z-index:40;width:170px;height:110px;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 8px 4px #0006)}.brasilia-ghost svg{width:100%;height:100%;overflow:visible}.brasilia-ghost path{stroke:#fff;stroke-width:4;vector-effect:non-scaling-stroke}
+
+/* Mantém a moldura do Centro-Oeste acima das regras históricas da fase. */
+.game-shell:has(.centerwest-screen){
+  border:7px solid #68772b;
+  border-radius:16px;
+  background:transparent;
+  box-shadow:0 18px 48px #26300f70;
+}
 .centerwest-brasilia-screen .centerwest-guide{top:31.5%;left:4.2%}.centerwest-brasilia-screen .centerwest-listen{bottom:4%}
 @media(max-width:900px){.centerwest-brasilia-board{position:relative;left:auto;top:auto;width:min(680px,96%);height:590px;margin:90px auto 70px}.centerwest-brasilia-screen .centerwest-guide{top:20%}}
 @media(max-width:620px){.centerwest-brasilia-board{height:720px;margin-top:180px;grid-template-columns:1fr;grid-template-rows:23% 32% 35% auto}.brasilia-reference,.brasilia-assembly{grid-column:1}.brasilia-tray{grid-template-columns:repeat(3,minmax(0,1fr))}.centerwest-brasilia-screen .centerwest-guide{top:18%}}
@@ -1065,6 +1174,46 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .photo-scene{position:relative;grid-column:1/-1;min-height:0;overflow:hidden;border:4px solid #fff;outline:3px solid #2d762b;border-radius:17px;background:url('/pantanal-fotografo-v1.webp') center/cover no-repeat;cursor:crosshair;box-shadow:0 4px 0 #1c5327;touch-action:none;user-select:none}.photo-scene:focus-visible{outline:5px solid #ffb000}
 .photo-viewfinder{position:absolute;width:23%;aspect-ratio:1.35;transform:translate(-50%,-50%);border:3px solid #fff;border-radius:5px;filter:drop-shadow(0 2px 2px #0008);pointer-events:none}.photo-viewfinder.tuiuiu{width:18%;aspect-ratio:.7}.photo-viewfinder.capivara{width:31%;aspect-ratio:1.45}.photo-viewfinder:before{content:"";position:absolute;left:50%;top:50%;width:10px;height:10px;transform:translate(-50%,-50%);border:2px solid #fff;border-radius:50%}.photo-viewfinder i{position:absolute;width:25%;height:25%;border-color:#fff}.photo-viewfinder i:nth-child(1){left:-7px;top:-7px;border-left:7px solid;border-top:7px solid}.photo-viewfinder i:nth-child(2){right:-7px;top:-7px;border-right:7px solid;border-top:7px solid}.photo-viewfinder i:nth-child(3){left:-7px;bottom:-7px;border-left:7px solid;border-bottom:7px solid}.photo-viewfinder i:nth-child(4){right:-7px;bottom:-7px;border-right:7px solid;border-bottom:7px solid}
 .photo-feedback{grid-column:1/-1;min-height:27px;padding:4px 12px;border:2px solid #d3aa5b;border-radius:12px;background:#fff4c8;color:#173652;text-align:center;font-size:clamp(10px,.9vw,14px);font-weight:900}
+
+/* Identidade visual regional: verde-oliva do Centro-Oeste com filete amarelo. */
+.centerwest-screen .north-heading,
+.centerwest-screen .centerwest-guide,
+.centerwest-screen .centerwest-board,
+.centerwest-screen .centerwest-memory-board,
+.centerwest-screen .centerwest-puzzle-board,
+.centerwest-screen .centerwest-conveyor-board,
+.centerwest-screen .centerwest-brasilia-board,
+.centerwest-screen .centerwest-photo-board,
+.centerwest-screen .centerwest-puzzle-progress,
+.centerwest-screen .conveyor-message,
+.centerwest-screen .brasilia-progress,
+.centerwest-screen .photo-feedback{
+  border-color:#68772b!important;
+  outline:2px solid #ffd23f!important;
+  outline-offset:0;
+}
+.centerwest-screen .centerwest-guide::after{
+  border-top-color:#68772b!important;
+  filter:drop-shadow(2px 2px 0 #ffd23f);
+}
+@media(max-width:900px){
+  .centerwest-screen .north-heading,
+  .centerwest-screen .centerwest-guide,
+  .centerwest-screen .centerwest-board,
+  .centerwest-screen .centerwest-memory-board,
+  .centerwest-screen .centerwest-puzzle-board,
+  .centerwest-screen .centerwest-conveyor-board,
+  .centerwest-screen .centerwest-brasilia-board,
+  .centerwest-screen .centerwest-photo-board,
+  .centerwest-screen .centerwest-puzzle-progress,
+  .centerwest-screen .conveyor-message,
+  .centerwest-screen .brasilia-progress,
+  .centerwest-screen .photo-feedback{outline-width:1px!important}
+}
+.high-contrast .centerwest-screen :is(.north-heading,.centerwest-guide,.centerwest-board,.centerwest-memory-board,.centerwest-puzzle-board,.centerwest-conveyor-board,.centerwest-brasilia-board,.centerwest-photo-board,.centerwest-puzzle-progress,.conveyor-message,.brasilia-progress,.photo-feedback){
+  border-color:#000!important;
+  outline-color:#000!important;
+}
 .photo-album{min-width:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.photo-album>div{min-width:0;display:grid;grid-template-rows:1fr auto;overflow:hidden;border:3px dashed #b5a78e;border-radius:12px;background:#f5efe3;color:#90836d}.photo-album>div.captured{border:3px solid #52a846;background:#eaffdd;box-shadow:0 3px 0 #27752b}.photo-album span{display:block;min-height:0;background-image:url('/pantanal-fotografo-v1.webp');background-size:350%;background-repeat:no-repeat}.photo-album b{display:grid;place-items:center;font-size:clamp(18px,2vw,31px);filter:grayscale(1);opacity:.45}.photo-album strong{padding:3px;background:#0d477b;color:#fff;font-size:clamp(8px,.65vw,10px);line-height:1;text-align:center}
 .photo-capture{align-self:center;min-width:155px;margin-left:9px;padding:13px 16px;border:4px solid #fff;outline:3px solid #b94d0d;border-radius:18px;background:linear-gradient(#ff9a31,#ef5c12);color:#fff;font-size:clamp(12px,1.05vw,16px);font-weight:1000;text-shadow:0 2px #a63d08;box-shadow:0 4px 0 #8e350c}.photo-capture:hover:not(:disabled),.photo-capture:focus-visible{transform:translateY(-2px);filter:brightness(1.08)}.photo-capture:disabled{opacity:.5}
 .centerwest-photo-screen .centerwest-guide{top:30%;left:4.2%}.centerwest-photo-screen .centerwest-listen{bottom:3.2%}
@@ -1092,7 +1241,74 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .large-text :is(.north-habitat-card strong,.north-puzzle-piece strong,.northeast-options button,.climate-options button,.landscape-album button>strong,.landscape-cards button span,.arraia-options button strong,.centerwest-state-piece strong,.brasilia-piece strong,.conveyor-card strong,.photo-album strong){font-size:clamp(15px,1.3vw,21px)!important;line-height:1.15!important}
 .large-text .feedback h2{font-size:clamp(35px,3vw,49px)!important}.large-text .feedback p{font-size:clamp(22px,1.9vw,29px)!important;line-height:1.25!important}
 .high-contrast :is(.north-board,.northeast-discovery-card,.northeast-climate-board,.landscape-album,.centerwest-board,.centerwest-memory-board,.centerwest-puzzle-board,.centerwest-conveyor-board,.centerwest-brasilia-board,.centerwest-photo-board,.north-guide,.north-tip,.centerwest-guide,.feedback,.north-heading,.centerwest-heading,.north-map-instruction,.north-puzzle-message,.mobile-initial-intro,.mobile-initial-guide p){background:#fff!important;color:#000!important;border-color:#000!important;text-shadow:none!important}
+
+/* Desafio 1 regional: o mesmo mapa de exploração nas cinco jornadas. */
+@media(min-width:901px){
+  .north-location-screen .north-heading{top:4%}
+  .northeast-challenge-screen.northeast-location-screen .north-heading{top:-5%!important}
+  .north-location-screen .north-map-card,
+  .northeast-location-screen .northeast-map-card{top:19%;height:61%;background:repeating-radial-gradient(ellipse at 58% 45%,transparent 0 34px,#547f310b 35px 37px),radial-gradient(circle at 78% 20%,#fff7c9 0 4%,transparent 5%),linear-gradient(145deg,#fffef4 0%,#f4fbe7 55%,#eef4d8 100%)}
+  .northeast-challenge-screen.northeast-location-screen .northeast-map-card{background:repeating-radial-gradient(ellipse at 58% 45%,transparent 0 34px,#d665180b 35px 37px),radial-gradient(circle at 86% 18%,#fff7c9 0 4.5%,transparent 5.5%),linear-gradient(145deg,#fffef4 0%,#f4fbe7 55%,#eef4d8 100%)!important}
+  .north-location-screen .north-map,
+  .northeast-location-screen .northeast-map{inset:auto!important;left:8%!important;top:1%!important;width:84%!important;height:84%!important;max-width:none!important;max-height:none!important;transform:translateY(-1%);overflow:visible}
+  .north-location-screen .north-map{left:5%!important;top:4%!important;width:90%!important;height:90%!important;transform:none}
+  .northeast-location-screen .northeast-map{left:5%!important;top:4%!important;width:90%!important;height:90%!important;transform:none}
+  .north-location-screen .north-map-instruction,
+  .northeast-location-screen .north-map-instruction{top:82%}
+  .north-location-screen .north-listen,
+  .northeast-location-screen .north-listen{bottom:2.5%}
+
+  .centerwest-location-screen .north-heading{left:30%;top:2%!important;width:49%}
+  .centerwest-location-screen .centerwest-guide{left:5%;top:28%;width:23%}
+  .centerwest-location-screen .centerwest-board.centerwest-location-board{left:30%;top:19%;width:49%;height:61%;display:grid;grid-template-columns:1fr;padding:0;background:repeating-radial-gradient(ellipse at 58% 45%,transparent 0 34px,#78852d0b 35px 37px),radial-gradient(circle at 78% 20%,#fff7c9 0 4%,transparent 5%),linear-gradient(145deg,#fffef4 0%,#f4fbe7 55%,#eef4d8 100%)}
+  .centerwest-location-screen .centerwest-map{width:82%;height:82%;overflow:visible;transform:translateY(-6%)}
+  .centerwest-location-screen .centerwest-map-instruction{position:absolute;z-index:4;left:30%;top:82%;width:49%;box-sizing:border-box;margin:0;padding:8px 12px;border:3px solid #737d26;outline:2px solid #f5c928;border-radius:16px;background:#fffdf1;color:#082e5b;text-align:center;font-size:clamp(16px,1.4vw,22px);font-weight:900;line-height:1.3}
+  .centerwest-location-screen .centerwest-listen{left:54.5%;bottom:2.5%}
+}
 .high-contrast :is(.challenge-title h1,.north-heading h1,.centerwest-heading h1,.north-status,.centerwest-status,.challenge-status,.north-tip,.centerwest-guide){color:#000!important;text-shadow:none!important}
+
+/* Identidade visual da Região Norte: verde da região com filete azul. */
+.game-shell:has(.north-challenge-screen:not(.northeast-challenge-screen):not(.centerwest-screen)){
+  border:7px solid #237a31!important;
+  border-radius:16px!important;
+  background:transparent!important;
+  box-shadow:0 18px 48px #0b341a70!important;
+}
+.north-challenge-screen:not(.northeast-challenge-screen):not(.centerwest-screen)::before{
+  border:2px solid #168fd2!important;
+  border-radius:9px!important;
+  box-shadow:none!important;
+  background:none!important;
+}
+.north-challenge-screen:not(.northeast-challenge-screen):not(.centerwest-screen) :is(.north-heading,.north-tip,.north-map-card,.north-count-card,.north-habitat-card,.north-puzzle-board,.north-map-instruction,.north-puzzle-message){
+  border-color:#237a31!important;
+  outline:2px solid #168fd2!important;
+  outline-offset:0;
+}
+.north-challenge-screen:not(.northeast-challenge-screen):not(.centerwest-screen) .north-tip::after{
+  border-right-color:#237a31!important;
+  border-bottom-color:#237a31!important;
+  filter:drop-shadow(2px 2px 0 #168fd2);
+}
+.high-contrast .north-challenge-screen:not(.northeast-challenge-screen):not(.centerwest-screen) :is(.north-heading,.north-tip,.north-map-card,.north-count-card,.north-habitat-card,.north-puzzle-board,.north-map-instruction,.north-puzzle-message){
+  border-color:#000!important;
+  outline-color:#000!important;
+}
+
+/* O Nordeste também reutiliza classes da Região Norte; estas regras finais
+   impedem que a moldura verde histórica sobrescreva a identidade laranja. */
+.game-shell:has(.north-challenge-screen.northeast-challenge-screen){
+  border:7px solid #d66518!important;
+  border-radius:16px!important;
+  background:transparent!important;
+  box-shadow:0 18px 48px #71300d70!important;
+}
+.north-challenge-screen.northeast-challenge-screen::before{
+  border:2px solid #3f8f3b!important;
+  border-radius:9px!important;
+  box-shadow:none!important;
+  background:none!important;
+}
 .high-contrast .screen :is(button:not(:disabled),[role="button"]){outline-color:#000!important}
 .high-contrast .screen button:not(:disabled):focus-visible{outline:4px solid #ffd400!important;outline-offset:2px!important}
 .high-contrast :is(.north-region,.northeast-states-map g[role="button"],.centerwest-state-slot):focus-visible{outline:4px solid #ffd400;outline-offset:2px}
@@ -1121,7 +1337,7 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .achievement-grid h3{margin-top:2px}.achievement-lock{z-index:2}
 .feedback.finished{width:min(570px,88%);padding-top:20px}
 .phase-emblem-reward{--reward:#2e8d3d;--reward-dark:#17632d;--reward-soft:#e2ffd7;position:relative;display:flex;align-items:center;justify-content:center;gap:18px;width:min(430px,100%);min-height:142px;margin:0 auto 8px;padding:9px 22px 9px 12px;border:4px solid var(--reward);border-radius:30px;background:radial-gradient(circle at 15% 22%,#fff 0 12%,transparent 38%),linear-gradient(135deg,#fafff4 0 46%,var(--reward-soft) 100%);box-shadow:inset 0 0 0 4px #fff,0 6px 0 var(--reward-dark),0 10px 22px #082c5930;overflow:visible;animation:emblem-reward-card .45s cubic-bezier(.2,.9,.25,1.25) both}
-.phase-emblem-reward-brasil{--reward:#d99c00;--reward-dark:#946300;--reward-soft:#fff3ae}.phase-emblem-reward-norte{--reward:#168b4a;--reward-dark:#08602f;--reward-soft:#d8ffd9}.phase-emblem-reward-nordeste{--reward:#f17a11;--reward-dark:#a94700;--reward-soft:#fff0bd}.phase-emblem-reward-centro-oeste{--reward:#769a13;--reward-dark:#496800;--reward-soft:#eefac2}.phase-emblem-reward-sudeste{--reward:#168fd4;--reward-dark:#075c9a;--reward-soft:#d9f4ff}.phase-emblem-reward-sul{--reward:#8d43c7;--reward-dark:#57247e;--reward-soft:#f0ddff}
+.phase-emblem-reward-brasil{--reward:#2f8b2c;--reward-dark:#17632d;--reward-soft:#e2ffd7}.phase-emblem-reward-norte{--reward:#168b4a;--reward-dark:#08602f;--reward-soft:#d8ffd9}.phase-emblem-reward-nordeste{--reward:#f17a11;--reward-dark:#a94700;--reward-soft:#fff0bd}.phase-emblem-reward-centro-oeste{--reward:#769a13;--reward-dark:#496800;--reward-soft:#eefac2}.phase-emblem-reward-sudeste{--reward:#168fd4;--reward-dark:#075c9a;--reward-soft:#d9f4ff}.phase-emblem-reward-sul{--reward:#8d43c7;--reward-dark:#57247e;--reward-soft:#f0ddff}
 .phase-emblem-reward .phase-emblem{z-index:2;width:118px;flex:0 0 auto;filter:drop-shadow(0 0 9px #ffd733) drop-shadow(0 5px 3px #65430055);animation:emblem-reward-reveal .9s cubic-bezier(.18,.9,.26,1.25) .12s both}
 .phase-emblem-reward-copy{z-index:2;display:flex;flex-direction:column;align-items:center;line-height:1.05;text-align:center}
 .phase-emblem-reward-copy strong{color:var(--reward-dark);font-size:21px}.phase-emblem-reward-copy span{margin-top:8px;color:#153b2a;font-size:23px;font-weight:1000}
@@ -1171,6 +1387,35 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .feedback.wrong::before{content:"QUASE LÁ!";background:linear-gradient(#ffad35,#f07d0b);text-shadow:0 3px 0 #a95008}
 .feedback.finished{--feedback-accent:#d9a313;--feedback-dark:#8d6500;--feedback-soft:#fff7cf;width:min(620px,90%);padding-top:52px}
 .feedback.finished::before{content:"CONQUISTA DESBLOQUEADA!";background:linear-gradient(#f4bd2d,#d89508);text-shadow:0 3px 0 #8d6500}
+.feedback.finished:has(.phase-emblem-reward-brasil){--feedback-accent:#2f8b2c;--feedback-dark:#17632d;--feedback-soft:#e2ffd7;top:47%;padding-top:68px}
+.feedback.finished:has(.phase-emblem-reward-brasil)::before{top:-34px;background:linear-gradient(#55b83f,#2f8b2c);text-shadow:0 3px 0 #17632d}
+.feedback.finished .phase-emblem-reward-brasil{width:min(390px,94%);min-height:124px;gap:14px;margin-bottom:14px;padding:7px 18px 7px 10px}
+.feedback.finished .phase-emblem-reward-brasil .phase-emblem{width:104px}
+.feedback.finished .phase-emblem-reward-brasil .phase-emblem-reward-copy strong{font-size:19px}
+.feedback.finished .phase-emblem-reward-brasil .phase-emblem-reward-copy span{margin-top:6px;font-size:21px}
+.feedback.finished:has(.phase-emblem-reward-norte){--feedback-accent:#168b4a;--feedback-dark:#08602f;--feedback-soft:#d8ffd9;top:47%;padding-top:68px}
+.feedback.finished:has(.phase-emblem-reward-norte)::before{top:-34px;background:linear-gradient(#42b96c,#168b4a);text-shadow:0 3px 0 #08602f}
+.feedback.finished .phase-emblem-reward-norte{width:min(390px,94%);min-height:124px;gap:14px;margin-bottom:14px;padding:7px 18px 7px 10px}
+.feedback.finished .phase-emblem-reward-norte .phase-emblem{width:104px}
+.feedback.finished .phase-emblem-reward-norte .phase-emblem-reward-copy strong{font-size:19px}
+.feedback.finished .phase-emblem-reward-norte .phase-emblem-reward-copy span{margin-top:6px;font-size:21px}
+.feedback.finished:has(.phase-emblem-reward){top:47%;padding-top:68px;border-color:var(--feedback-accent)!important}
+.feedback.finished:has(.phase-emblem-reward)::before{top:-34px}
+.feedback.finished .phase-emblem-reward{width:min(390px,94%);min-height:124px;gap:14px;margin-bottom:14px;padding:7px 18px 7px 10px}
+.feedback.finished .phase-emblem-reward .phase-emblem{width:104px}
+.feedback.finished .phase-emblem-reward .phase-emblem-reward-copy strong{font-size:19px}
+.feedback.finished .phase-emblem-reward .phase-emblem-reward-copy span{margin-top:6px;font-size:21px}
+.feedback.finished:has(.phase-emblem-reward.is-new)::before{content:"CONQUISTA DESBLOQUEADA!"}
+.feedback.finished:has(.phase-emblem-reward.is-owned)::before{content:"REGIÃO CONCLUÍDA!"}
+.feedback.finished:has(.phase-emblem-reward-brasil.is-owned)::before{content:"FASE CONCLUÍDA!"}
+.feedback.finished:has(.phase-emblem-reward-nordeste){--feedback-accent:#f17a11;--feedback-dark:#a94700;--feedback-soft:#fff0bd}
+.feedback.finished:has(.phase-emblem-reward-nordeste)::before{background:linear-gradient(#ff9d3e,#f17a11);text-shadow:0 3px 0 #a94700}
+.feedback.finished:has(.phase-emblem-reward-centro-oeste){--feedback-accent:#769a13;--feedback-dark:#496800;--feedback-soft:#eefac2}
+.feedback.finished:has(.phase-emblem-reward-centro-oeste)::before{background:linear-gradient(#9fbd35,#769a13);text-shadow:0 3px 0 #496800}
+.feedback.finished:has(.phase-emblem-reward-sudeste){--feedback-accent:#168fd4;--feedback-dark:#075c9a;--feedback-soft:#d9f4ff}
+.feedback.finished:has(.phase-emblem-reward-sudeste)::before{background:linear-gradient(#37afe8,#168fd4);text-shadow:0 3px 0 #075c9a}
+.feedback.finished:has(.phase-emblem-reward-sul){--feedback-accent:#8d43c7;--feedback-dark:#57247e;--feedback-soft:#f0ddff}
+.feedback.finished:has(.phase-emblem-reward-sul)::before{background:linear-gradient(#ae69dc,#8d43c7);text-shadow:0 3px 0 #57247e}
 .feedback>span:not(.phase-emblem-sparkles){position:relative;display:block;width:170px;height:145px;margin:-24px auto 2px;overflow:visible;background:url('/feedback-star-v1.webp') center/contain no-repeat;font-size:0!important;color:transparent;filter:drop-shadow(0 0 13px #ffd32e) drop-shadow(0 6px 3px #8b5e0038);line-height:0;animation:feedback-icon-pop .55s cubic-bezier(.2,.9,.25,1.35) .12s both}
 .feedback.wrong>span:not(.phase-emblem-sparkles){width:165px;height:150px;background-image:url('/feedback-compass-v1.webp');filter:drop-shadow(0 6px 3px #a9500838)}
 .feedback>span:not(.phase-emblem-sparkles)::before,.feedback>span:not(.phase-emblem-sparkles)::after{content:"★";position:absolute;top:40%;color:#ffb514;font-size:31px;text-shadow:0 2px 0 #e58300;animation:feedback-twinkle 1.2s ease-in-out infinite alternate}
@@ -1264,4 +1509,18 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
   .player-access-welcome>img{display:none}
   .player-access-welcome{justify-content:center;text-align:center}
   .player-access-benefits i{display:none}
+}
+
+/* Fase inicial: verde principal com filetes azul e amarelo. */
+.game-shell:has(.challenge-screen){
+  border:7px solid #2f8b2c!important;
+  border-radius:16px!important;
+  background:transparent!important;
+  box-shadow:0 18px 48px #0b341a70!important;
+}
+.challenge-screen::before{
+  border:2px solid #168fd2!important;
+  border-radius:9px!important;
+  background:none!important;
+  box-shadow:inset 0 0 0 1px #ffd23f!important;
 }
