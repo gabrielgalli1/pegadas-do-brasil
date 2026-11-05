@@ -286,6 +286,7 @@ export default function Home() {
   const modalPreviouslyFocusedRef = useRef<HTMLElement | null>(null);
   const signOutPromptRef = useRef(false);
   const menuMusicRef = useRef<HTMLAudioElement>(null);
+  const initialMusicRef = useRef<HTMLAudioElement>(null);
   const northMusicRef = useRef<HTMLAudioElement>(null);
   const northeastMusicRef = useRef<HTMLAudioElement>(null);
   const centerWestMusicRef = useRef<HTMLAudioElement>(null);
@@ -517,6 +518,23 @@ export default function Home() {
     };
   }, [screen, music, volume]);
   useEffect(() => {
+    const audio = initialMusicRef.current;
+    if (!audio) return;
+    audio.volume = backgroundMusicVolume(volume, narrationActiveRef.current);
+    if (screen !== "game" || !music || volume === 0) {
+      audio.pause();
+      return;
+    }
+    const playInitialMusic = () => { void audio.play().catch(() => { /* aguarda a primeira interação exigida pelo navegador */ }); };
+    playInitialMusic();
+    window.addEventListener("pointerdown", playInitialMusic, { once: true });
+    window.addEventListener("keydown", playInitialMusic, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", playInitialMusic);
+      window.removeEventListener("keydown", playInitialMusic);
+    };
+  }, [screen, music, volume]);
+  useEffect(() => {
     const audio = northMusicRef.current;
     if (!audio) return;
     audio.volume = backgroundMusicVolume(volume, narrationActiveRef.current);
@@ -616,7 +634,7 @@ export default function Home() {
     const updateNarrationVolume = (event: Event) => {
       narrationActiveRef.current = (event as CustomEvent<boolean>).detail;
       const musicVolume = backgroundMusicVolume(volume, narrationActiveRef.current);
-      [menuMusicRef, northMusicRef, northeastMusicRef, centerWestMusicRef, southeastMusicRef, southMusicRef].forEach((ref) => {
+      [menuMusicRef, initialMusicRef, northMusicRef, northeastMusicRef, centerWestMusicRef, southeastMusicRef, southMusicRef].forEach((ref) => {
         if (ref.current) ref.current.volume = musicVolume;
       });
     };
@@ -1080,7 +1098,7 @@ export default function Home() {
     if (placed.length === bonusRegionIds.length) setBonusCompleted(true);
   }
 
-  return <main className={`${highContrast ? "high-contrast" : ""} ${largeText ? "large-text" : ""} ${buttonHighlight ? "button-highlight" : ""}`}><div className="mobile-orientation-gate" role="status" aria-live="polite"><section className="orientation-card"><img className="orientation-logo" src="/pegadas-logo-v1.webp" alt="Pegadas do Brasil" /><div className="orientation-phone-stage" aria-hidden="true"><div className="orientation-phone"><i></i><span><em className="orientation-flag"></em></span></div><div className="orientation-turn-arrow">↻</div></div><h1>Vire o celular para jogar</h1><p>Use a tela na horizontal para ver o jogo completo e aproveitar melhor a aventura.</p><small><span aria-hidden="true">✓</span> A tela será ajustada automaticamente</small></section></div><div className="game-shell" ref={gameShellRef}>{accessVisible && <PlayerAccessScreen avatarId={avatarId} onContinue={() => setAccessVisible(false)} onAuthenticated={finishPlayerAccess} />}<audio ref={menuMusicRef} src="/musica-menu.mp3" loop preload="none" aria-hidden="true" /><audio ref={northMusicRef} src="/musica-regiao-norte.mp3" loop preload="none" aria-hidden="true" /><audio ref={northeastMusicRef} src="/musica-regiao-nordeste.mp3" loop preload="none" aria-hidden="true" /><audio ref={centerWestMusicRef} src="/musica-regiao-centro-oeste.mp3" loop preload="none" aria-hidden="true" /><audio ref={southeastMusicRef} src="/musica-regiao-sudeste.mp3" preload="none" aria-hidden="true" /><audio ref={southMusicRef} src="/musica-regiao-sul.mp3" loop preload="none" aria-hidden="true" /><audio ref={buttonClickRef} src="/som-clique-botao.wav" preload="none" aria-hidden="true" /><audio ref={wrongAnswerRef} src="/som-erro.mp3" preload="none" aria-hidden="true" /><audio ref={correctAnswerRef} src="/som-acerto.mp3" preload="none" aria-hidden="true" />
+  return <main className={`${highContrast ? "high-contrast" : ""} ${largeText ? "large-text" : ""} ${buttonHighlight ? "button-highlight" : ""}`}><div className="mobile-orientation-gate" role="status" aria-live="polite"><section className="orientation-card"><img className="orientation-logo" src="/pegadas-logo-v1.webp" alt="Pegadas do Brasil" /><div className="orientation-phone-stage" aria-hidden="true"><div className="orientation-phone"><i></i><span><em className="orientation-flag"></em></span></div><div className="orientation-turn-arrow">↻</div></div><h1>Vire o celular para jogar</h1><p>Use a tela na horizontal para ver o jogo completo e aproveitar melhor a aventura.</p><small><span aria-hidden="true">✓</span> A tela será ajustada automaticamente</small></section></div><div className="game-shell" ref={gameShellRef}>{accessVisible && <PlayerAccessScreen avatarId={avatarId} onContinue={() => setAccessVisible(false)} onAuthenticated={finishPlayerAccess} />}<audio ref={menuMusicRef} src="/musica-menu.mp3" loop preload="none" aria-hidden="true" /><audio ref={initialMusicRef} src="/musica-fase-inicial.mp3" loop preload="none" aria-hidden="true" /><audio ref={northMusicRef} src="/musica-regiao-norte.mp3" loop preload="none" aria-hidden="true" /><audio ref={northeastMusicRef} src="/musica-regiao-nordeste.mp3" loop preload="none" aria-hidden="true" /><audio ref={centerWestMusicRef} src="/musica-regiao-centro-oeste.mp3" loop preload="none" aria-hidden="true" /><audio ref={southeastMusicRef} src="/musica-regiao-sudeste.mp3" preload="none" aria-hidden="true" /><audio ref={southMusicRef} src="/musica-regiao-sul.mp3" loop preload="none" aria-hidden="true" /><audio ref={buttonClickRef} src="/som-clique-botao.wav" preload="none" aria-hidden="true" /><audio ref={wrongAnswerRef} src="/som-erro.mp3" preload="none" aria-hidden="true" /><audio ref={correctAnswerRef} src="/som-acerto.mp3" preload="none" aria-hidden="true" />
     {screen === "menu" && <><section className="screen menu-screen" aria-label="Menu principal">
       <nav className="menu-tools" aria-label="Opções do jogo">
         <button className={selectedAvatar ? "avatar-selected-tool" : ""} onClick={() => setModal("avatar")}><span className="menu-avatar" aria-hidden="true"><img src={selectedAvatar?.image ?? "/icone-avatar-v1.webp"} alt="" /></span>{selectedAvatar ? selectedAvatar.name : "Avatar"}</button><button onClick={() => setModal("achievements")}><img src="/icone-conquistas-v1.png" alt="" />Conquistas</button><button className={!sound ? "sound-muted" : ""} onClick={() => setModal("sound")}><img src="/icone-som-v1.png" alt="" />Som</button><button onClick={() => setModal("accessibility")}><img src="/icone-acessibilidade-v1.webp" alt="" />Acessibilidade</button><button onClick={() => setModal("help")}><img src="/icone-como-jogar-v1.webp" alt="" />Como jogar</button>

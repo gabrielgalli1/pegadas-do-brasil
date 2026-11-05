@@ -8,9 +8,9 @@ import { recordedNarrations } from "../app/narrationCatalog.ts";
 const sources = Object.values(recordedNarrations).flatMap((source) => typeof source === "string" ? [source] : [...source]);
 const uniqueSources = new Set(sources);
 
-test("all delivered recordings are mapped for menu through South (batch 1)", () => {
-  assert.equal(Object.keys(recordedNarrations).length, 238);
-  assert.equal(uniqueSources.size, 179);
+test("all delivered recordings are mapped from the menu through the bonus phase", () => {
+  assert.equal(Object.keys(recordedNarrations).length, 256);
+  assert.equal(uniqueSources.size, 198);
 
   const expectedByPrefix = {
     "geral-": 4,
@@ -20,11 +20,21 @@ test("all delivered recordings are mapped for menu through South (batch 1)", () 
     "centro-oeste-": 32,
     "sudeste-": 49,
     "sul-": 26,
+    "bonus-": 19,
   };
   for (const [prefix, expected] of Object.entries(expectedByPrefix)) {
     const actual = [...uniqueSources].filter((source) => path.basename(source).startsWith(prefix)).length;
     assert.equal(actual, expected, `${prefix} deveria ter ${expected} arquivos, mas tem ${actual}`);
   }
+});
+
+test("bonus narration uses the recorded selection sequence and every regional response", () => {
+  assert.deepEqual(recordedNarrations["Emblema da Região Centro-Oeste selecionado. Toque na sua região no mapa."], [
+    "/narracoes/bonus-selecionado-centro-oeste.mp3",
+    "/narracoes/bonus-toque-silhueta.mp3",
+  ]);
+  assert.equal(recordedNarrations["Vamos tentar outro lugar! Procure a menor região, na parte de baixo do mapa."], "/narracoes/bonus-erro-sul.mp3");
+  assert.equal(recordedNarrations["Você deixou suas pegadas por todo o Brasil! Parabéns, explorador!"], "/narracoes/bonus-conclusao.mp3");
 });
 
 test("dynamic regional narration sequences resolve to recordings", () => {

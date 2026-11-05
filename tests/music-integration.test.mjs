@@ -5,6 +5,7 @@ import test from "node:test";
 const pageSource = fs.readFileSync("app/page.tsx", "utf8");
 const musicFiles = [
   "musica-menu.mp3",
+  "musica-fase-inicial.mp3",
   "musica-regiao-norte.mp3",
   "musica-regiao-nordeste.mp3",
   "musica-regiao-centro-oeste.mp3",
@@ -16,7 +17,12 @@ test("desktop and mobile share music state and the menu volume modal", () => {
   assert.match(pageSource, /screen !== "menu" && screen !== "journey" && screen !== "bonus"/);
   assert.match(pageSource, /MobileMenu[\s\S]*onSound=\{\(\) => setModal\("sound"\)\}/);
   assert.match(pageSource, /value=\{volume\}[\s\S]*setVolume\(Number\(e\.target\.value\)\)/);
-  assert.match(pageSource, /\[menuMusicRef, northMusicRef, northeastMusicRef, centerWestMusicRef, southeastMusicRef, southMusicRef\]/);
+  assert.match(pageSource, /\[menuMusicRef, initialMusicRef, northMusicRef, northeastMusicRef, centerWestMusicRef, southeastMusicRef, southMusicRef\]/);
+});
+
+test("initial phase has its own background music", () => {
+  assert.match(pageSource, /<audio ref=\{initialMusicRef\} src="\/musica-fase-inicial\.mp3" loop/);
+  assert.match(pageSource, /screen !== "game"/);
 });
 
 test("bonus phase reuses the menu background music", () => {

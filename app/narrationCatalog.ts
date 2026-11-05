@@ -205,10 +205,36 @@ const southNarrations: Record<string, RecordedNarration> = {
   "Isso! O chapéu ajuda a proteger durante o verão no litoral. Parabéns, explorador! Você concluiu os seis desafios da Região Sul!": ["/narracoes/sul-06-acerto-4.mp3", "/narracoes/sul-06-conclusao.mp3"],
 };
 
+// Fase bônus: pacote completo de instruções, seleção, retorno e conclusão.
+const bonusNarrations: Record<string, RecordedNarration> = {
+  "Vamos completar o mapa com seus emblemas! Arraste cada emblema até a sua região. Você também pode tocar no emblema e depois na silhueta. São cinco regiões para completar a nossa viagem pelo Brasil!": "/narracoes/bonus-instrucoes.mp3",
+  "Primeiro, escolha um emblema ao lado do mapa.": "/narracoes/bonus-escolha-primeiro.mp3",
+
+  "Emblema da Região Norte selecionado. Toque na sua região no mapa.": ["/narracoes/bonus-selecionado-norte.mp3", "/narracoes/bonus-toque-silhueta.mp3"],
+  "Emblema da Região Nordeste selecionado. Toque na sua região no mapa.": ["/narracoes/bonus-selecionado-nordeste.mp3", "/narracoes/bonus-toque-silhueta.mp3"],
+  "Emblema da Região Centro-Oeste selecionado. Toque na sua região no mapa.": ["/narracoes/bonus-selecionado-centro-oeste.mp3", "/narracoes/bonus-toque-silhueta.mp3"],
+  "Emblema da Região Sudeste selecionado. Toque na sua região no mapa.": ["/narracoes/bonus-selecionado-sudeste.mp3", "/narracoes/bonus-toque-silhueta.mp3"],
+  "Emblema da Região Sul selecionado. Toque na sua região no mapa.": ["/narracoes/bonus-selecionado-sul.mp3", "/narracoes/bonus-toque-silhueta.mp3"],
+
+  "Vamos tentar outro lugar! Procure a grande região verde na parte de cima do mapa.": "/narracoes/bonus-erro-norte.mp3",
+  "Vamos tentar outro lugar! Procure a região laranja à direita do mapa.": "/narracoes/bonus-erro-nordeste.mp3",
+  "Vamos tentar outro lugar! Procure a região no centro do mapa do Brasil.": "/narracoes/bonus-erro-centro-oeste.mp3",
+  "Vamos tentar outro lugar! Procure a região à direita do Centro-Oeste, acima da Região Sul.": "/narracoes/bonus-erro-sudeste.mp3",
+  "Vamos tentar outro lugar! Procure a menor região, na parte de baixo do mapa.": "/narracoes/bonus-erro-sul.mp3",
+
+  "Muito bem! Emblema da Região Norte encaixado!": "/narracoes/bonus-acerto-norte.mp3",
+  "Muito bem! Emblema da Região Nordeste encaixado!": "/narracoes/bonus-acerto-nordeste.mp3",
+  "Muito bem! Emblema da Região Centro-Oeste encaixado!": "/narracoes/bonus-acerto-centro-oeste.mp3",
+  "Muito bem! Emblema da Região Sudeste encaixado!": "/narracoes/bonus-acerto-sudeste.mp3",
+  "Muito bem! Emblema da Região Sul encaixado!": "/narracoes/bonus-acerto-sul.mp3",
+  "Você deixou suas pegadas por todo o Brasil! Parabéns, explorador!": "/narracoes/bonus-conclusao.mp3",
+};
+
 export const recordedNarrations: Record<string, RecordedNarration> = {
   ...baseRecordedNarrations,
   ...northeastNarrations,
   ...centerWestNarrations,
   ...southeastNarrations,
   ...southNarrations,
+  ...bonusNarrations,
 };

@@ -70,7 +70,9 @@ export default function BonusLevel({ initialPlaced, sound, onBack, onToggleSound
   function fit(target: BonusRegionId, piece = selected) {
     if (placed.includes(target) || celebrating) return;
     if (!piece) {
-      setMessage("Primeiro, escolha um emblema ao lado do mapa.");
+      const line = "Primeiro, escolha um emblema ao lado do mapa.";
+      setMessage(line);
+      if (sound) onListen(line);
       return;
     }
     if (piece !== target) {
