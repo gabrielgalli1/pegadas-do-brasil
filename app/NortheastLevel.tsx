@@ -43,11 +43,11 @@ const arraiaItems: readonly { id: ArraiaId; name: string; image: string; optionI
 ];
 const challenges: readonly Challenge[] = [
   { title: "ONDE FICA O NORDESTE?", question: "Clique na Região Nordeste no mapa do Brasil.", tip: "Olá, explorador! Eu sou o Tuca.\nBoas-vindas à Região Nordeste!\nProcure a região laranja no lado direito do mapa.", correct: "Você encontrou a Região Nordeste!" },
-  { title: "QUANTOS ESTADOS TEM O NORDESTE?", question: "Toque em cada estado para descobrir e contar.", tip: "Cada toque revela um estado.\nVamos contar juntos?", correct: "Muito bem! O Nordeste possui 9 estados!" },
-  { title: "COMO É O CLIMA DO SERTÃO?", question: "Complete o painel com as características do clima.", tip: "Observe a paisagem!\nComo são o calor e as chuvas no Sertão?", correct: "Muito bem! No Sertão faz calor e chove pouco durante boa parte do ano!" },
+  { title: "QUANTOS ESTADOS TEM O NORDESTE?", question: "Toque em cada estado para descobrir e contar.", tip: "Cada toque revela um estado.\nVamos contar juntos?", correct: "O Nordeste possui 9 estados!" },
+  { title: "COMO É O CLIMA DO SERTÃO?", question: "Complete o painel com as características do clima.", tip: "Observe a paisagem!\nComo são o calor e as chuvas no Sertão?", correct: "No Sertão faz calor e chove pouco durante boa parte do ano!" },
   { title: "ENCONTRE O TATU-BOLA", question: "Observe a Caatinga e encontre o animal.", tip: "Tenho uma carapaça e posso me enrolar como uma bola.\nOnde estou?", correct: "Você encontrou o tatu-bola escondido na Caatinga!" },
-  { title: "AS PAISAGENS DO NORDESTE", question: "Monte o álbum com os diferentes ambientes da região.", tip: "Escolha uma paisagem e depois toque no nome correto.\nVamos completar o álbum?", correct: "Muito bem! O Nordeste possui muitos ambientes e paisagens diferentes!" },
-  { title: "COMPLETE A FESTA NORDESTINA", question: "Arraste as peças até as silhuetas da imagem.", tip: "Arraste cada figura até a sombra com o mesmo formato.\nVamos completar a festa!", correct: "Muito bem! A cultura nordestina tem festas, músicas, danças e sabores muito especiais!" },
+  { title: "AS PAISAGENS DO NORDESTE", question: "Monte o álbum com os diferentes ambientes da região.", tip: "Escolha uma paisagem e depois toque no nome correto.\nVamos completar o álbum?", correct: "O Nordeste possui muitos ambientes e paisagens diferentes!" },
+  { title: "COMPLETE A FESTA NORDESTINA", question: "Arraste as peças até as silhuetas da imagem.", tip: "Arraste cada figura até a sombra com o mesmo formato.\nVamos completar a festa!", correct: "A cultura nordestina tem festas, músicas, danças e sabores muito especiais!" },
 ] as const;
 
 export default function NortheastLevel({ mistakes, challenge, score, feedback, sound, newEmblem, onAnswer, onNext, onRetry, onBack, onToggleSound, onListen }: Props) {
@@ -180,7 +180,7 @@ export default function NortheastLevel({ mistakes, challenge, score, feedback, s
       <button className="north-round-control" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.webp" alt="" /></button>
       <div className="north-heading"><h1>{current.title}</h1><p>{current.question}</p></div>
       <div className="north-status"><b>DESAFIO {challenge} DE 6</b><div aria-label={`Desafio ${challenge} de 6`}>{Array.from({ length: 6 }, (_, index) => <span key={index} className={index < challenge ? "active" : ""}>★</span>)}</div><ScoreBadge score={score} compact /></div>
-      <button className={`north-round-control north-sound ${!sound ? "muted" : ""}`} onClick={onToggleSound} aria-label={sound ? "Desligar som" : "Ligar som"}><img src="/fases-som-v1.webp" alt="" /></button>
+      <button className={`north-round-control north-sound ${!sound ? "muted" : ""}`} onClick={onToggleSound} aria-label={sound ? "Desligar narração" : "Ligar narração"}><img src="/fases-som-v1.webp" alt="" /></button>
     </header>
     <div className="north-guide"><div className="north-tip">{current.tip.split("\n").map((line, index) => <span key={line}>{line}{index === 0 && <br />}</span>)}</div></div>
     {isMap ? <><div className="north-map-card northeast-map-card" role="group" aria-label="Mapa do Brasil dividido em cinco regiões">

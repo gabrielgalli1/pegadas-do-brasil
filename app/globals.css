@@ -863,6 +863,12 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
 .northeast-arraia-screen .north-listen{bottom:.5%}
 .arraia-slot.placed img{object-fit:fill!important}
 
+/* O desenho visual continua pequeno, mas toda silhueta ganha area de toque minima. */
+@media(max-width:700px) and (orientation:landscape){
+  .arraia-slot::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
+  .arraia-options button{min-height:44px}
+}
+
 /* Posições medidas na arte 1672 x 941; peças v3 usam o mesmo molde das sombras. */
 .slot-bandeirinhas{left:25.60%;right:auto;top:7.76%;width:47.37%;height:16.05%}
 .slot-frevo{left:4.55%;top:28.27%;width:14.47%;height:19.87%}
@@ -1524,3 +1530,8 @@ img.macaw{display:block;width:min(100%,330px);height:auto;object-fit:contain;fon
   background:none!important;
   box-shadow:inset 0 0 0 1px #ffd23f!important;
 }
+
+/* Confirmação de saída: aviso real no DOM e opção de salvar antes de sair. */
+.avatar-modal:has(.avatar-access-confirm) .avatar-access-confirm>p{max-width:410px;margin:0 auto 18px;color:#6a3b08;font-size:clamp(13px,1.15vw,17px);font-weight:900;line-height:1.35}
+.avatar-modal:has(.avatar-access-confirm) .avatar-access-confirm>div{flex-wrap:wrap}
+.avatar-modal:has(.avatar-access-confirm) .avatar-nickname-edit{margin:0;background:linear-gradient(#39b83a,#238d28);outline-color:#176d22}

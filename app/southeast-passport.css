@@ -74,3 +74,22 @@
   .southeast-passport-screen .southeast-tourist-gallery button img{object-fit:contain;background:#eaf4dc}
   .southeast-passport-screen .southeast-tourist-gallery button>span{min-height:27%;height:27%}
 }
+
+/* Telefones pequenos em paisagem: preserva nomes e fotos sem sobreposicao. */
+@media(max-width:700px) and (orientation:landscape){
+  .southeast-passport-screen .southeast-board-5{left:28%;top:18%;width:69%;height:76%}
+  .southeast-passport-game{gap:1%}
+  .southeast-passport-toolbar{height:17%;grid-template-columns:32% minmax(0,1fr);padding:.5% 1%}
+  .southeast-passport-layout{grid-template-columns:39% minmax(0,1fr);gap:1%}
+  .southeast-passport-stamps{gap:2%}
+  .southeast-passport-stamp{padding:1%}
+  .southeast-passport-stamp strong{font-size:7.5px;line-height:1}
+  .southeast-passport-stamp small{font-size:6px;line-height:1}
+  .southeast-tourist-gallery button{grid-template-rows:minmax(0,1fr) 31%;padding:2px}
+  .southeast-tourist-gallery button img{min-height:0;object-fit:contain}
+  .southeast-tourist-gallery button>span{height:auto;min-height:0;padding:1px 2px}
+  .southeast-tourist-gallery button strong{font-size:7.5px;line-height:1}
+  .southeast-tourist-gallery button small{font-size:6px;line-height:1}
+  .southeast-passport-screen .southeast-status{right:10%;width:17%;overflow:hidden}
+  .southeast-passport-screen .southeast-status .score-inline{font-size:9px;white-space:nowrap}
+}

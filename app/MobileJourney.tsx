@@ -36,7 +36,7 @@ export default function MobileJourney({
         <div aria-hidden="true">{levels.map((level, index) => <span key={level.id} className={index < completedCount ? "active" : ""}>★</span>)}</div>
         <ScoreBadge score={score} compact />
       </div>
-      <button onClick={onToggleSound} aria-label={sound ? "Desligar som" : "Ligar som"} aria-pressed={sound}><img src="/fases-som-v1.webp" alt="" /></button>
+      <button onClick={onToggleSound} aria-label={sound ? "Desligar narração" : "Ligar narração"} aria-pressed={sound}><img src="/fases-som-v1.webp" alt="" /></button>
     </header>
     <div className="mobile-journey-content">
       <aside className="mobile-journey-guide" aria-label="Mensagem da arara Ari">

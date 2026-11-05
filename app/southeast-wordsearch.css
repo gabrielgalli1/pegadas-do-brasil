@@ -60,3 +60,16 @@
   .southeast-word-screen .southeast-word-list>small{position:absolute;left:56%;bottom:7%;width:15%;box-sizing:border-box;padding:4px 2px;border:1px solid #dcb35e;border-radius:7px;background:#fff8d8;font-size:7px;line-height:1.15;white-space:normal;text-align:center}
   .southeast-word-screen .southeast-word-list>small br{display:block}
 }
+
+/* Mantem letras tocaveis e a legenda fora da ultima coluna em 667 x 375. */
+@media(max-width:700px) and (orientation:landscape){
+  .southeast-word-screen .southeast-board-4{left:28%;top:18%;width:69%;height:76%}
+  .southeast-word-toolbar{height:18%}
+  .southeast-word-screen .southeast-word-layout{height:81%;grid-template-columns:minmax(0,1fr) 27%;overflow:visible}
+  .southeast-word-screen .southeast-word-grid{width:min(100%,55vh);gap:2px;padding:3px}
+  .southeast-word-screen .southeast-word-grid button{font-size:12px;min-width:18px;min-height:18px}
+  .southeast-word-screen .southeast-word-list{position:relative;overflow:hidden}
+  .southeast-word-screen .southeast-word-list>small{position:static;width:auto;margin-top:2px;padding:2px;font-size:6.5px;line-height:1.05}
+  .southeast-word-screen .southeast-status{right:10%;width:17%;overflow:hidden}
+  .southeast-word-screen .southeast-status .score-inline{font-size:9px;white-space:nowrap}
+}

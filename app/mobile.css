@@ -129,6 +129,21 @@
 }
 
 @media (prefers-reduced-motion:reduce){.orientation-phone{--orientation-angle:90deg;animation:none!important}}
+
+/* "Aparelho" tambem contempla tablets em modo retrato. */
+@media (max-width:900px) and (orientation:portrait){
+  .orientation-card h1{font-size:0}
+  .orientation-card h1::after{content:"Vire o aparelho para jogar";font-size:clamp(25px,7.2vw,34px)}
+}
+
+/* Evita que a estrela cubra o numero de fases e que o aviso final seja cortado. */
+@media (min-width:701px) and (max-width:850px) and (orientation:landscape){
+  .mobile-journey-screen{grid-template-rows:clamp(58px,18%,70px) minmax(0,1fr) clamp(34px,11%,43px)}
+  .mobile-journey-level{height:calc(100% - 19px)}
+  .mobile-journey-level img{height:calc(100% - 27px)}
+  .mobile-journey-level-state{bottom:-5px;width:30px;height:30px;font-size:15px}
+  .mobile-journey-footer{margin-bottom:3px;padding:4px 12px;line-height:1.12}
+}
 @media (max-width:900px) and (orientation:landscape) and (max-height:350px){
   .mobile-menu-screen{grid-template-rows:20% minmax(0,1fr) 9%}
   .mobile-menu-logo{max-height:190px}

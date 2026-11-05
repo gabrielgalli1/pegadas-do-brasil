@@ -15,7 +15,7 @@ const missions: Mission[] = [
 export default function CenterWestPhotographer({ canAnswer, onMistake, onComplete, onListen }: Props) {
   const [missionIndex, setMissionIndex] = useState(0);
   const [photos, setPhotos] = useState<AnimalId[]>([]);
-  const [frame, setFrame] = useState({ x: 50, y: 50 });
+  const [frame, setFrame] = useState({ x: 25, y: 25 });
   const [message, setMessage] = useState("Mova a câmera e enquadre o animal da missão.");
   const current = missions[missionIndex] ?? missions[missions.length - 1];
 

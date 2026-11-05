@@ -284,6 +284,7 @@ export default function Home() {
   const gameShellRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLElement>(null);
   const modalPreviouslyFocusedRef = useRef<HTMLElement | null>(null);
+  const signOutPromptRef = useRef(false);
   const menuMusicRef = useRef<HTMLAudioElement>(null);
   const northMusicRef = useRef<HTMLAudioElement>(null);
   const northeastMusicRef = useRef<HTMLAudioElement>(null);
@@ -296,6 +297,7 @@ export default function Home() {
   const correctAnswerRef = useRef<HTMLAudioElement>(null);
   const regionStartScore = useRef(0);
   const regionStartFirstTryWins = useRef(0);
+  const regionCheckpoint = useRef<{ id: string; score: number; firstTryWins: number } | null>(null);
   const [completedChallenges, setCompletedChallenges] = useState(0);
   const [firstTryWins, setFirstTryWins] = useState(0);
   const [highestScore, setHighestScore] = useState(0);
@@ -388,6 +390,7 @@ export default function Home() {
     let cancelled = false;
     const cachedProgress = readCachedProgress(window.localStorage.getItem("pegadas-progress"));
     if (cachedProgress) applyProgress(cachedProgress);
+    if (window.localStorage.getItem("pegadas-guest-confirmed") === "1") setAccessVisible(false);
     const savedAvatarId = window.localStorage.getItem("pegadas-avatar");
     setAvatarId(savedAvatarId);
     const savedNickname = window.localStorage.getItem("pegadas-nickname");
@@ -410,33 +413,33 @@ export default function Home() {
       setProgressReady(true);
       return () => { cancelled = true; };
     }
-    if (new URLSearchParams(window.location.search).get("preview") === "jornada") setScreen("journey");
-    if (new URLSearchParams(window.location.search).get("preview") === "inicial") {
+    if (process.env.NODE_ENV === "development" && new URLSearchParams(window.location.search).get("preview") === "jornada") setScreen("journey");
+    if (process.env.NODE_ENV === "development" && new URLSearchParams(window.location.search).get("preview") === "inicial") {
       const previewChallenge = Number(new URLSearchParams(window.location.search).get("desafio"));
       setChallengeIndex(previewChallenge >= 1 && previewChallenge <= 5 ? previewChallenge - 1 : 0);
       setScreen("game");
     }
-    if (new URLSearchParams(window.location.search).get("preview") === "norte") {
+    if (process.env.NODE_ENV === "development" && new URLSearchParams(window.location.search).get("preview") === "norte") {
       const previewChallenge = Number(new URLSearchParams(window.location.search).get("desafio"));
       setNorthChallenge(previewChallenge >= 1 && previewChallenge <= 6 ? previewChallenge : 1);
       setScreen("north");
     }
-    if (new URLSearchParams(window.location.search).get("preview") === "nordeste") {
+    if (process.env.NODE_ENV === "development" && new URLSearchParams(window.location.search).get("preview") === "nordeste") {
       const previewChallenge = Number(new URLSearchParams(window.location.search).get("desafio"));
       setNortheastChallenge(previewChallenge >= 1 && previewChallenge <= 6 ? previewChallenge : 1);
       setScreen("northeast");
     }
-    if (new URLSearchParams(window.location.search).get("preview") === "centro-oeste") {
+    if (process.env.NODE_ENV === "development" && new URLSearchParams(window.location.search).get("preview") === "centro-oeste") {
       const previewChallenge = Number(new URLSearchParams(window.location.search).get("desafio"));
       setCenterWestChallenge(previewChallenge >= 1 && previewChallenge <= 6 ? previewChallenge : 1);
       setScreen("centerwest");
     }
-    if (new URLSearchParams(window.location.search).get("preview") === "sudeste") {
+    if (process.env.NODE_ENV === "development" && new URLSearchParams(window.location.search).get("preview") === "sudeste") {
       const previewChallenge = Number(new URLSearchParams(window.location.search).get("desafio"));
       setSoutheastChallenge(previewChallenge >= 1 && previewChallenge <= 6 ? previewChallenge : 1);
       setScreen("southeast");
     }
-    if (new URLSearchParams(window.location.search).get("preview") === "sul") {
+    if (process.env.NODE_ENV === "development" && new URLSearchParams(window.location.search).get("preview") === "sul") {
       const previewChallenge = Number(new URLSearchParams(window.location.search).get("desafio"));
       setSouthChallenge(previewChallenge >= 1 && previewChallenge <= 6 ? previewChallenge : 1);
       setScreen("south");
@@ -642,9 +645,17 @@ export default function Home() {
   const unlockedAchievements = achievements.filter((achievement) => achievement.unlocked).length;
 
   const closeModal = useCallback(() => {
+    signOutPromptRef.current = false;
     setAccessExitConfirm(false);
     setModal(null);
   }, []);
+
+  useEffect(() => {
+    if (!accessExitConfirm && modal === "avatar" && signOutPromptRef.current) {
+      signOutPromptRef.current = false;
+      setModal(null);
+    }
+  }, [accessExitConfirm, modal]);
 
 
   const leaveProtectedPlayer = useCallback(async () => {
@@ -653,6 +664,7 @@ export default function Home() {
   }, []);
 
   const requestPlayerSignOut = useCallback(() => {
+    signOutPromptRef.current = true;
     setAccessExitConfirm(true);
     setModal("avatar");
   }, []);
@@ -752,10 +764,10 @@ export default function Home() {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (country === "brasil") {
-      const earnedPoints = attempts === 0 ? 100 : 60;
+      const earnedPoints = completedPhase ? 0 : attempts === 0 ? 100 : 60;
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
       setCompletedChallenges((value) => Math.max(value, 1));
-      if (attempts === 0) setFirstTryWins((value) => value + 1);
+      if (!completedPhase && attempts === 0) setFirstTryWins((value) => value + 1);
       playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! Essa é a silhueta do Brasil!");
@@ -769,10 +781,10 @@ export default function Home() {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (continent === "América do Sul") {
-      const earnedPoints = attempts === 0 ? 100 : 60;
+      const earnedPoints = completedPhase ? 0 : attempts === 0 ? 100 : 60;
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
       setCompletedChallenges((value) => Math.max(value, 2));
-      if (attempts === 0) setFirstTryWins((value) => value + 1);
+      if (!completedPhase && attempts === 0) setFirstTryWins((value) => value + 1);
       playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! O Brasil está localizado na América do Sul!");
@@ -786,10 +798,10 @@ export default function Home() {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (ocean === "atlantico") {
-      const earnedPoints = attempts === 0 ? 100 : 60;
+      const earnedPoints = completedPhase ? 0 : attempts === 0 ? 100 : 60;
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
       setCompletedChallenges((value) => Math.max(value, 3));
-      if (attempts === 0) setFirstTryWins((value) => value + 1);
+      if (!completedPhase && attempts === 0) setFirstTryWins((value) => value + 1);
       playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! O Oceano Atlântico banha o litoral do Brasil!");
@@ -803,10 +815,10 @@ export default function Home() {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (count === 27) {
-      const earnedPoints = attempts === 0 ? 100 : 60;
+      const earnedPoints = completedPhase ? 0 : attempts === 0 ? 100 : 60;
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
       setCompletedChallenges((value) => Math.max(value, 4));
-      if (attempts === 0) setFirstTryWins((value) => value + 1);
+      if (!completedPhase && attempts === 0) setFirstTryWins((value) => value + 1);
       playCorrectAnswer();
       setFeedback("correct");
       if (sound) speak("Muito bem! O Brasil possui 26 estados e o Distrito Federal, formando 27 unidades federativas!");
@@ -820,10 +832,10 @@ export default function Home() {
     if (feedback !== "idle") return;
     setAttempts((value) => value + 1);
     if (landscape === "amazonia") {
-      const earnedPoints = attempts === 0 ? 100 : 60;
+      const earnedPoints = completedPhase ? 0 : attempts === 0 ? 100 : 60;
       setScore((value) => { const nextScore = value + earnedPoints; setHighestScore((best) => Math.max(best, nextScore)); return nextScore; });
       setCompletedChallenges(5);
-      if (attempts === 0) setFirstTryWins((value) => value + 1);
+      if (!completedPhase && attempts === 0) setFirstTryWins((value) => value + 1);
       setInitialPhasePerfect(!initialPhaseHadMistake && attempts === 0);
       if (!completedPhase) setEarnedEmblem("brasil");
       setCompletedPhase(true);
@@ -1039,8 +1051,11 @@ export default function Home() {
     setFeedback("idle");
     setAttempts(0);
     setMistakes(0);
-    regionStartScore.current = score;
-    regionStartFirstTryWins.current = firstTryWins;
+    const regionId = index > 0 ? bonusRegionIds[index - 1] : "brasil";
+    const shouldCreateCheckpoint = index === 0 || completedRegions.includes(regionId) || regionCheckpoint.current?.id !== regionId;
+    if (shouldCreateCheckpoint) regionCheckpoint.current = { id: regionId, score, firstTryWins };
+    regionStartScore.current = regionCheckpoint.current?.score ?? score;
+    regionStartFirstTryWins.current = regionCheckpoint.current?.firstTryWins ?? firstTryWins;
     if (index === 0) { setChallengeIndex(0); setInitialPhaseHadMistake(false); setScreen("game"); return; }
     if (index === 1) { if (completedRegions.includes("norte")) setNorthChallenge(1); setScreen("north"); return; }
     if (index === 2) { if (completedRegions.includes("nordeste")) setNortheastChallenge(1); setScreen("northeast"); return; }
@@ -1065,7 +1080,7 @@ export default function Home() {
     if (placed.length === bonusRegionIds.length) setBonusCompleted(true);
   }
 
-  return <main className={`${highContrast ? "high-contrast" : ""} ${largeText ? "large-text" : ""} ${buttonHighlight ? "button-highlight" : ""}`}><div className="mobile-orientation-gate" role="status" aria-live="polite"><section className="orientation-card"><img className="orientation-logo" src="/pegadas-logo-v1.webp" alt="Pegadas do Brasil" /><div className="orientation-phone-stage" aria-hidden="true"><div className="orientation-phone"><i></i><span><em className="orientation-flag"></em></span></div><div className="orientation-turn-arrow">↻</div></div><h1>Vire o celular para jogar</h1><p>Use a tela na horizontal para ver o jogo completo e aproveitar melhor a aventura.</p><small><span aria-hidden="true">✓</span> A tela será ajustada automaticamente</small></section></div><div className="game-shell" ref={gameShellRef}>{accessVisible && <PlayerAccessScreen avatarId={avatarId} onContinue={() => setAccessVisible(false)} onAuthenticated={finishPlayerAccess} />}<audio ref={menuMusicRef} src="/musica-menu.mp3" loop preload="auto" aria-hidden="true" /><audio ref={northMusicRef} src="/musica-regiao-norte.mp3" loop preload="auto" aria-hidden="true" /><audio ref={northeastMusicRef} src="/musica-regiao-nordeste.mp3" loop preload="auto" aria-hidden="true" /><audio ref={centerWestMusicRef} src="/musica-regiao-centro-oeste.mp3" loop preload="auto" aria-hidden="true" /><audio ref={southeastMusicRef} src="/musica-regiao-sudeste.mp3" preload="auto" aria-hidden="true" /><audio ref={southMusicRef} src="/musica-regiao-sul.mp3" loop preload="auto" aria-hidden="true" /><audio ref={buttonClickRef} src="/som-clique-botao.wav" preload="auto" aria-hidden="true" /><audio ref={wrongAnswerRef} src="/som-erro.mp3" preload="auto" aria-hidden="true" /><audio ref={correctAnswerRef} src="/som-acerto.mp3" preload="auto" aria-hidden="true" />
+  return <main className={`${highContrast ? "high-contrast" : ""} ${largeText ? "large-text" : ""} ${buttonHighlight ? "button-highlight" : ""}`}><div className="mobile-orientation-gate" role="status" aria-live="polite"><section className="orientation-card"><img className="orientation-logo" src="/pegadas-logo-v1.webp" alt="Pegadas do Brasil" /><div className="orientation-phone-stage" aria-hidden="true"><div className="orientation-phone"><i></i><span><em className="orientation-flag"></em></span></div><div className="orientation-turn-arrow">↻</div></div><h1>Vire o celular para jogar</h1><p>Use a tela na horizontal para ver o jogo completo e aproveitar melhor a aventura.</p><small><span aria-hidden="true">✓</span> A tela será ajustada automaticamente</small></section></div><div className="game-shell" ref={gameShellRef}>{accessVisible && <PlayerAccessScreen avatarId={avatarId} onContinue={() => setAccessVisible(false)} onAuthenticated={finishPlayerAccess} />}<audio ref={menuMusicRef} src="/musica-menu.mp3" loop preload="none" aria-hidden="true" /><audio ref={northMusicRef} src="/musica-regiao-norte.mp3" loop preload="none" aria-hidden="true" /><audio ref={northeastMusicRef} src="/musica-regiao-nordeste.mp3" loop preload="none" aria-hidden="true" /><audio ref={centerWestMusicRef} src="/musica-regiao-centro-oeste.mp3" loop preload="none" aria-hidden="true" /><audio ref={southeastMusicRef} src="/musica-regiao-sudeste.mp3" preload="none" aria-hidden="true" /><audio ref={southMusicRef} src="/musica-regiao-sul.mp3" loop preload="none" aria-hidden="true" /><audio ref={buttonClickRef} src="/som-clique-botao.wav" preload="none" aria-hidden="true" /><audio ref={wrongAnswerRef} src="/som-erro.mp3" preload="none" aria-hidden="true" /><audio ref={correctAnswerRef} src="/som-acerto.mp3" preload="none" aria-hidden="true" />
     {screen === "menu" && <><section className="screen menu-screen" aria-label="Menu principal">
       <nav className="menu-tools" aria-label="Opções do jogo">
         <button className={selectedAvatar ? "avatar-selected-tool" : ""} onClick={() => setModal("avatar")}><span className="menu-avatar" aria-hidden="true"><img src={selectedAvatar?.image ?? "/icone-avatar-v1.webp"} alt="" /></span>{selectedAvatar ? selectedAvatar.name : "Avatar"}</button><button onClick={() => setModal("achievements")}><img src="/icone-conquistas-v1.png" alt="" />Conquistas</button><button className={!sound ? "sound-muted" : ""} onClick={() => setModal("sound")}><img src="/icone-som-v1.png" alt="" />Som</button><button onClick={() => setModal("accessibility")}><img src="/icone-acessibilidade-v1.webp" alt="" />Acessibilidade</button><button onClick={() => setModal("help")}><img src="/icone-como-jogar-v1.webp" alt="" />Como jogar</button>
@@ -1082,7 +1097,7 @@ export default function Home() {
         <b>FASES {(completedPhase ? 1 : 0) + completedRegions.length} DE {journeyLevels.length}</b>
         <div aria-hidden="true">{journeyLevels.map((level, index) => <span key={level.id} className={index < (completedPhase ? 1 : 0) + completedRegions.length ? "active" : ""}>★</span>)}</div>
         <ScoreBadge score={score} compact />
-      </div>      <button className={`journey-art-button journey-sound ${!sound ? "muted" : ""}`} onClick={() => setSound(!sound)} aria-label={sound ? "Desligar som" : "Ligar som"} aria-pressed={sound}><img src="/fases-som-v1.webp" alt="" /></button>
+      </div>      <button className={`journey-art-button journey-sound ${!sound ? "muted" : ""}`} onClick={() => setSound(!sound)} aria-label={sound ? "Desligar narração" : "Ligar narração"} aria-pressed={sound}><img src="/fases-som-v1.webp" alt="" /></button>
       <img className="journey-mascot-art" src="/fases-mascote-v2.png" alt="Arara Ari convidando você para explorar o Brasil" />
       <div className="journey-levels">
         {journeyLevels.map((level, index) => {
@@ -1106,7 +1121,7 @@ export default function Home() {
       <header className="challenge-header">
         <button className="challenge-control back" onClick={() => setScreen("journey")} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.webp" alt="" /></button>
         <div className="challenge-status"><b>DESAFIO {challengeIndex + 1} DE 5</b><div aria-label={`${challengeIndex + 1} de 5 desafios`}>{Array.from({ length: plannedChallengeCount }, (_, index) => <span key={index} className={index <= challengeIndex ? "active" : ""}>★</span>)}</div><ScoreBadge score={score} compact /></div>
-        <button className={`challenge-control sound ${!sound ? "muted" : ""}`} onClick={() => setSound(!sound)} aria-label={sound ? "Desligar som" : "Ligar som"}><img src="/fases-som-v1.webp" alt="" /></button>
+        <button className={`challenge-control sound ${!sound ? "muted" : ""}`} onClick={() => setSound(!sound)} aria-label={sound ? "Desligar narração" : "Ligar narração"}><img src="/fases-som-v1.webp" alt="" /></button>
       </header>
       {challengeIndex === 0 ? <div className="silhouette-challenge">
         <div className="challenge-title"><h1>RECONHEÇA O BRASIL</h1><p>Qual dessas silhuetas representa o Brasil?</p></div>
@@ -1168,7 +1183,7 @@ export default function Home() {
         <button className="north-round-control" onClick={() => { setFeedback("idle"); setMistakes(0); setScreen("journey"); }} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.webp" alt="" /></button>
         <div className="north-heading"><h1>{northChallenge === 1 ? "ONDE FICA A REGIÃO NORTE?" : northChallenge === 2 ? "QUANTOS ESTADOS?" : northChallenge === 3 ? "MAIOR ESTADO BRASILEIRO" : northChallenge === 4 ? "ONDE VIVE O BOTO?" : northChallenge === 5 ? "PLANTA SÍMBOLO DA REGIÃO" : "COMPLETE O MAPA DO NORTE"}</h1><p>{northChallenge === 1 ? "Toque na Região Norte no mapa do Brasil." : northChallenge === 2 ? "Quantos estados fazem parte da Região Norte?" : northChallenge === 3 ? "Qual é o maior estado do Brasil em extensão territorial?" : northChallenge === 4 ? "Qual é o habitat natural do boto-cor-de-rosa?" : northChallenge === 5 ? "Qual destas plantas é um símbolo da Amazônia?" : "Arraste a peça que falta para o lugar correto."}</p></div>
         <div className="north-status"><b>DESAFIO {northChallenge} DE 6</b><div aria-label={`Desafio ${northChallenge} de 6`}>{Array.from({ length: 6 }, (_, index) => <span key={index} className={index < northChallenge ? "active" : ""}>★</span>)}</div><ScoreBadge score={score} compact /></div>
-        <button className={`north-round-control north-sound ${!sound ? "muted" : ""}`} onClick={() => setSound(!sound)} aria-label={sound ? "Desligar som" : "Ligar som"}><img src="/fases-som-v1.webp" alt="" /></button>
+        <button className={`north-round-control north-sound ${!sound ? "muted" : ""}`} onClick={() => setSound(!sound)} aria-label={sound ? "Desligar narração" : "Ligar narração"}><img src="/fases-som-v1.webp" alt="" /></button>
       </header>
       <div className="north-guide">
         <div className="north-tip">{northChallenge === 1 ? <>Olá, explorador! Eu sou o Zeca, o boto-cor-de-rosa, boas-vindas à Região Norte!<br /><br />Procure a grande região verde na parte de cima do mapa.</> : northChallenge === 2 ? <>Conte cada parte colorida.<br />Os nomes ajudam a acompanhar!</> : northChallenge === 3 ? <>Observe o tamanho dos<br />estados destacados no mapa!</> : northChallenge === 4 ? <>Você já me conhece! Agora descubra onde eu vivo na natureza.</> : northChallenge === 5 ? <>Observe as folhas<br />e as flores de cada planta!</> : <>Falta uma peça!<br />Vamos completar o mapa?</>}</div>
@@ -1201,7 +1216,7 @@ export default function Home() {
 
     {screen === "south" && <SouthLevel key={`${regionRun}-${southChallenge}`} mistakes={mistakes} challenge={southChallenge} score={score} feedback={feedback} sound={sound} newEmblem={earnedEmblem === "sul"} onAnswer={answerSouth} onNext={nextSouthChallenge} onBonus={bonusUnlocked ? openBonus : undefined} onRetry={continueAfterMistake} onBack={() => { setFeedback("idle"); setAttempts(0); setMistakes(0); setEarnedEmblem(null); setScreen("journey"); }} onToggleSound={() => setSound(!sound)} onListen={(text) => { if (sound) speak(text); }} />}
 
-    {modal && <div className={`modal-backdrop${modal === "nickname" ? " nickname-backdrop" : ""}`} role="presentation"><section ref={modalRef} tabIndex={-1} className={`modal ${modal === "avatar" ? "avatar-modal" : modal === "achievements" ? "achievements-modal" : modal === "sound" ? "sound-modal" : modal === "accessibility" ? "accessibility-modal" : modal === "help" ? "help-modal" : modal === "credits" ? "credits-modal" : modal === "nickname" ? "nickname-modal" : ""}`} role="dialog" aria-modal="true" aria-labelledby="modal-title"><button className="modal-close" onClick={closeModal} aria-label="Fechar">×</button>{modal === "avatar" && (accessExitConfirm ? <><h2 id="modal-title">Voltar para a tela de login?</h2><div className="avatar-access-confirm"><div><button type="button" className="avatar-access-cancel" onClick={() => setAccessExitConfirm(false)}>CANCELAR</button><button type="button" className="avatar-access-leave" onClick={leaveProtectedPlayer}>SAIR</button></div></div></> : <><h2 id="modal-title">Escolha seu avatar</h2>{avatarReminder && <p className="avatar-alert" role="alert">Escolha um personagem para liberar a aventura!</p>}<div className="avatar-grid">{avatars.map((avatar) => <button key={avatar.id} className={avatar.id === avatarId ? "selected" : ""} onClick={() => chooseAvatar(avatar.id)} aria-pressed={avatar.id === avatarId} aria-label={`Escolher ${avatar.description}`}><img src={avatar.image} alt="" /><strong>{avatar.name}</strong><small>{avatar.description}</small>{avatar.id === avatarId && <b>✓ Escolhido</b>}</button>)}</div><p className="avatar-safety">Você pode trocar de avatar quando quiser.</p>{avatarId && !protectedPlayer && <button type="button" className="avatar-nickname-edit" onClick={() => { setNicknameInput(nickname ?? ""); setNicknameError(null); setModal("nickname"); }}><span aria-hidden="true">✏️</span> {nickname ? `EDITAR APELIDO (${nickname})` : "CRIAR APELIDO"}</button>}</>)}{modal === "nickname" && <form className="nickname-form" onSubmit={submitNickname}><h2 id="modal-title">Como podemos te chamar?</h2><p>Escolha um apelido para o seu explorador. Não use seu nome verdadeiro!</p><label className="nickname-label" htmlFor="nickname-input">Apelido<input id="nickname-input" type="text" maxLength={15} value={nicknameInput} onChange={(e) => { setNicknameInput(e.target.value); setNicknameError(null); }} placeholder="Ex: Onça Veloz" aria-describedby={nicknameError ? "nickname-error" : undefined} /></label>{nicknameError && <p id="nickname-error" className="nickname-error" role="alert">{nicknameError}</p>}<div className="nickname-actions"><button type="submit" className="nickname-submit" disabled={nicknameSaving}>{nicknameSaving ? "SALVANDO..." : "CONFIRMAR"}</button><button type="button" className="nickname-skip" onClick={closeModal}>Pular por agora</button></div></form>}{modal === "achievements" && <><header className="achievements-heading"><img src="/icone-conquistas-v1.png" alt="" /><div><h2 id="modal-title">MEUS EMBLEMAS</h2><p><strong>{unlockedAchievements} de 6</strong> conquistados</p></div></header><div className="achievement-progress" aria-label={`${unlockedAchievements} de 6 emblemas conquistados`}><span style={{ width: `${(unlockedAchievements / 6) * 100}%` }}></span>{achievements.map((achievement) => <i key={achievement.id} className={achievement.unlocked ? "earned" : ""} aria-hidden="true">&#9733;</i>)}</div><div className="achievement-grid">{achievements.map((achievement) => <article key={achievement.id} className={`${achievement.unlocked ? "unlocked" : "locked"} achievement-${achievement.id}`}><PhaseEmblem id={achievement.id} label={`Emblema ${achievement.title}${achievement.unlocked ? " conquistado" : " bloqueado"}`} />{!achievement.unlocked && <span className="achievement-lock" aria-hidden="true">&#128274;</span>}<h3>{achievement.title}</h3><p>{achievement.description}</p><small>{achievement.unlocked ? "CONQUISTADO" : "BLOQUEADO"}</small></article>)}</div><footer className="achievements-footer">Complete cada fase para reunir todos os emblemas!</footer></>}{modal === "sound" && <><header className="sound-heading"><img src="/icone-som-v1.png" alt="" /><h2 id="modal-title">SOM E NARRAÇÃO</h2></header><div className="volume-control"><strong>VOLUME GERAL</strong><div><span aria-hidden="true">🔈</span><input type="range" min="0" max="100" value={volume} onChange={(e) => setVolume(Number(e.target.value))} aria-label="Volume geral" style={{ background: `linear-gradient(90deg, #13aef0 0%, #13aef0 ${volume}%, #66bd38 ${volume}%, #66bd38 100%)` }} /><span aria-hidden="true">🔊</span></div></div><div className="sound-options"><article className="music-option"><img className="sound-option-icon" src="/som-musica-v1.webp" alt="" /><div><h3>MÚSICA</h3><p>Música de fundo do jogo</p></div><button className={music ? "toggle on" : "toggle"} onClick={() => setMusic(!music)} role="switch" aria-checked={music} aria-label="Música">{music ? "LIGADO" : "DESLIGADO"}<i></i></button></article><article className="effects-option"><img className="sound-option-icon" src="/som-efeitos-v1.webp" alt="" /><div><h3>EFEITOS SONOROS</h3><p>Botões, acertos e recompensas</p></div><button className={effects ? "toggle on" : "toggle"} onClick={() => setEffects(!effects)} role="switch" aria-checked={effects} aria-label="Efeitos sonoros">{effects ? "LIGADO" : "DESLIGADO"}<i></i></button></article><article className="narration-option"><img className="sound-option-icon" src="/som-narracao-v2.webp" alt="" /><div><h3>NARRAÇÃO</h3><p>Instruções e perguntas faladas</p></div><button className={sound ? "toggle on" : "toggle"} onClick={() => setSound(!sound)} role="switch" aria-checked={sound} aria-label="Narração">{sound ? "LIGADO" : "DESLIGADO"}<i></i></button></article></div></>}{modal === "accessibility" && <><header className="accessibility-heading"><img src="/icone-acessibilidade-v1.webp" alt="" /><h2 id="modal-title">ACESSIBILIDADE</h2></header><div className="accessibility-options"><article className="contrast-option"><span className="accessibility-icon contrast-icon" aria-hidden="true"></span><div><h3>ALTO CONTRASTE</h3><p>Aumenta a diferença entre as cores</p></div><button className={highContrast ? "toggle on" : "toggle"} onClick={() => setHighContrast(!highContrast)} role="switch" aria-checked={highContrast} aria-label="Alto contraste">{highContrast ? "LIGADO" : "DESLIGADO"}<i></i></button></article><article className="text-option"><span className="accessibility-icon text-icon" aria-hidden="true">AA</span><div><h3>TEXTO AMPLIADO</h3><p>Aumenta o tamanho das letras</p></div><div className="text-size-control" role="group" aria-label="Tamanho do texto"><button className={!largeText ? "selected" : ""} onClick={() => setLargeText(false)} aria-pressed={!largeText}>NORMAL</button><button className={largeText ? "selected" : ""} onClick={() => setLargeText(true)} aria-pressed={largeText}>GRANDE</button></div></article><article className="highlight-option"><span className="accessibility-icon highlight-icon" aria-hidden="true">☝</span><div><h3>DESTAQUE DOS BOTÕES</h3><p>Realça os botões interativos</p></div><button className={buttonHighlight ? "toggle on" : "toggle"} onClick={() => setButtonHighlight(!buttonHighlight)} role="switch" aria-checked={buttonHighlight} aria-label="Destaque visual dos botões">{buttonHighlight ? "LIGADO" : "DESLIGADO"}<i></i></button></article></div><div className="accessibility-footprints" aria-hidden="true">👣　👣</div></>}{modal === "help" && <HowToPlay />}{modal === "credits" && <Credits onClose={closeModal} />}</section></div>}
+    {modal && <div className={`modal-backdrop${modal === "nickname" ? " nickname-backdrop" : ""}`} role="presentation"><section ref={modalRef} tabIndex={-1} className={`modal ${modal === "avatar" ? "avatar-modal" : modal === "achievements" ? "achievements-modal" : modal === "sound" ? "sound-modal" : modal === "accessibility" ? "accessibility-modal" : modal === "help" ? "help-modal" : modal === "credits" ? "credits-modal" : modal === "nickname" ? "nickname-modal" : ""}`} role="dialog" aria-modal="true" aria-labelledby="modal-title"><button className="modal-close" onClick={closeModal} aria-label="Fechar">×</button>{modal === "avatar" && (accessExitConfirm ? <><h2 id="modal-title">Deseja sair do jogo?</h2><div className="avatar-access-confirm"><p>Atenção: ao jogar sem conta, sair apaga todo o progresso salvo neste navegador e não será possível recuperá-lo.</p><div><button type="button" className="avatar-nickname-edit" onClick={() => { setAccessExitConfirm(false); setNicknameInput(nickname ?? ""); setNicknameError(null); setModal("nickname"); }}>CRIAR APELIDO E SALVAR</button><button type="button" className="avatar-access-cancel" onClick={() => setAccessExitConfirm(false)}>CANCELAR</button><button type="button" className="avatar-access-leave" onClick={leaveProtectedPlayer}>SAIR</button></div></div></> : <><h2 id="modal-title">Escolha seu avatar</h2>{avatarReminder && <p className="avatar-alert" role="alert">Escolha um personagem para liberar a aventura!</p>}<div className="avatar-grid">{avatars.map((avatar) => <button key={avatar.id} className={avatar.id === avatarId ? "selected" : ""} onClick={() => chooseAvatar(avatar.id)} aria-pressed={avatar.id === avatarId} aria-label={`Escolher ${avatar.description}`}><img src={avatar.image} alt="" /><strong>{avatar.name}</strong><small>{avatar.description}</small>{avatar.id === avatarId && <b>✓ Escolhido</b>}</button>)}</div><p className="avatar-safety">Você pode trocar de avatar quando quiser.</p>{avatarId && !protectedPlayer && <button type="button" className="avatar-nickname-edit" onClick={() => { setNicknameInput(nickname ?? ""); setNicknameError(null); setModal("nickname"); }}><span aria-hidden="true">✏️</span> {nickname ? `EDITAR APELIDO (${nickname})` : "CRIAR APELIDO"}</button>}</>)}{modal === "nickname" && <form className="nickname-form" onSubmit={submitNickname}><h2 id="modal-title">Como podemos te chamar?</h2><p>Escolha um apelido para o seu explorador. Não use seu nome verdadeiro!</p><label className="nickname-label" htmlFor="nickname-input">Apelido<input id="nickname-input" type="text" maxLength={15} value={nicknameInput} onChange={(e) => { setNicknameInput(e.target.value); setNicknameError(null); }} placeholder="Ex: Onça Veloz" aria-describedby={nicknameError ? "nickname-error" : undefined} /></label>{nicknameError && <p id="nickname-error" className="nickname-error" role="alert">{nicknameError}</p>}<div className="nickname-actions"><button type="submit" className="nickname-submit" disabled={nicknameSaving}>{nicknameSaving ? "SALVANDO..." : "CONFIRMAR"}</button><button type="button" className="nickname-skip" onClick={closeModal}>Pular por agora</button></div></form>}{modal === "achievements" && <><header className="achievements-heading"><img src="/icone-conquistas-v1.png" alt="" /><div><h2 id="modal-title">MEUS EMBLEMAS</h2><p><strong>{unlockedAchievements} de 6</strong> conquistados</p></div></header><div className="achievement-progress" aria-label={`${unlockedAchievements} de 6 emblemas conquistados`}><span style={{ width: `${(unlockedAchievements / 6) * 100}%` }}></span>{achievements.map((achievement) => <i key={achievement.id} className={achievement.unlocked ? "earned" : ""} aria-hidden="true">&#9733;</i>)}</div><div className="achievement-grid">{achievements.map((achievement) => <article key={achievement.id} className={`${achievement.unlocked ? "unlocked" : "locked"} achievement-${achievement.id}`}><PhaseEmblem id={achievement.id} label={`Emblema ${achievement.title}${achievement.unlocked ? " conquistado" : " bloqueado"}`} />{!achievement.unlocked && <span className="achievement-lock" aria-hidden="true">&#128274;</span>}<h3>{achievement.title}</h3><p>{achievement.description}</p><small>{achievement.unlocked ? "CONQUISTADO" : "BLOQUEADO"}</small></article>)}</div><footer className="achievements-footer">Complete cada fase para reunir todos os emblemas!</footer></>}{modal === "sound" && <><header className="sound-heading"><img src="/icone-som-v1.png" alt="" /><h2 id="modal-title">SOM E NARRAÇÃO</h2></header><div className="volume-control"><strong>VOLUME GERAL</strong><div><span aria-hidden="true">🔈</span><input type="range" min="0" max="100" value={volume} onChange={(e) => setVolume(Number(e.target.value))} aria-label="Volume geral" style={{ background: `linear-gradient(90deg, #13aef0 0%, #13aef0 ${volume}%, #66bd38 ${volume}%, #66bd38 100%)` }} /><span aria-hidden="true">🔊</span></div></div><div className="sound-options"><article className="music-option"><img className="sound-option-icon" src="/som-musica-v1.webp" alt="" /><div><h3>MÚSICA</h3><p>Música de fundo do jogo</p></div><button className={music ? "toggle on" : "toggle"} onClick={() => setMusic(!music)} role="switch" aria-checked={music} aria-label="Música">{music ? "LIGADO" : "DESLIGADO"}<i></i></button></article><article className="effects-option"><img className="sound-option-icon" src="/som-efeitos-v1.webp" alt="" /><div><h3>EFEITOS SONOROS</h3><p>Botões, acertos e recompensas</p></div><button className={effects ? "toggle on" : "toggle"} onClick={() => setEffects(!effects)} role="switch" aria-checked={effects} aria-label="Efeitos sonoros">{effects ? "LIGADO" : "DESLIGADO"}<i></i></button></article><article className="narration-option"><img className="sound-option-icon" src="/som-narracao-v2.webp" alt="" /><div><h3>NARRAÇÃO</h3><p>Instruções e perguntas faladas</p></div><button className={sound ? "toggle on" : "toggle"} onClick={() => setSound(!sound)} role="switch" aria-checked={sound} aria-label="Narração">{sound ? "LIGADO" : "DESLIGADO"}<i></i></button></article></div></>}{modal === "accessibility" && <><header className="accessibility-heading"><img src="/icone-acessibilidade-v1.webp" alt="" /><h2 id="modal-title">ACESSIBILIDADE</h2></header><div className="accessibility-options"><article className="contrast-option"><span className="accessibility-icon contrast-icon" aria-hidden="true"></span><div><h3>ALTO CONTRASTE</h3><p>Aumenta a diferença entre as cores</p></div><button className={highContrast ? "toggle on" : "toggle"} onClick={() => setHighContrast(!highContrast)} role="switch" aria-checked={highContrast} aria-label="Alto contraste">{highContrast ? "LIGADO" : "DESLIGADO"}<i></i></button></article><article className="text-option"><span className="accessibility-icon text-icon" aria-hidden="true">AA</span><div><h3>TEXTO AMPLIADO</h3><p>Aumenta o tamanho das letras</p></div><div className="text-size-control" role="group" aria-label="Tamanho do texto"><button className={!largeText ? "selected" : ""} onClick={() => setLargeText(false)} aria-pressed={!largeText}>NORMAL</button><button className={largeText ? "selected" : ""} onClick={() => setLargeText(true)} aria-pressed={largeText}>GRANDE</button></div></article><article className="highlight-option"><span className="accessibility-icon highlight-icon" aria-hidden="true">☝</span><div><h3>DESTAQUE DOS BOTÕES</h3><p>Realça os botões interativos</p></div><button className={buttonHighlight ? "toggle on" : "toggle"} onClick={() => setButtonHighlight(!buttonHighlight)} role="switch" aria-checked={buttonHighlight} aria-label="Destaque visual dos botões">{buttonHighlight ? "LIGADO" : "DESLIGADO"}<i></i></button></article></div><div className="accessibility-footprints" aria-hidden="true">👣　👣</div></>}{modal === "help" && <HowToPlay />}{modal === "credits" && <Credits onClose={closeModal} />}</section></div>}
 
   </div></main>;
 }

@@ -133,7 +133,7 @@ export default function SoutheastRiverCleanup({ canPlay, onComplete, onListen }:
         setMessage("Mutirão concluído! Cuidar do rio é um trabalho contínuo de toda a cidade.");
         rememberTimer(window.setTimeout(onComplete, reducedMotion ? 450 : 1100));
       } else {
-        setMessage(`${target.label.charAt(0).toUpperCase() + target.label.slice(1)} recolhida! Continue acompanhando a corrente.`);
+        setMessage(`Resíduo recolhido: ${target.label}. Continue acompanhando a corrente.`);
       }
       return next;
     });

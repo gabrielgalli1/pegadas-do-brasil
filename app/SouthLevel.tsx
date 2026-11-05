@@ -8,7 +8,7 @@ import { PhaseEmblemReward } from "./phaseEmblems";
 
 type Feedback = "idle" | "correct" | "wrong" | "finished";
 type Props = { challenge: number; score: number; mistakes: number; feedback: Feedback; sound: boolean; newEmblem: boolean; onAnswer: (correct: boolean) => void; onNext: () => void; onBonus?: () => void; onRetry: () => void; onBack: () => void; onToggleSound: () => void; onListen: (text: string) => void };
-const titles = ["", "ONDE FICA O SUL?", "CENÁRIO EM PEDAÇOS", "TRILHA DAS ARAUCÁRIAS", "SEGREDOS DO SUL", "COLHEITA NO PARRERAL", "MISSÃO: CLIMA DO SUL"];
+const titles = ["", "ONDE FICA O SUL?", "CENÁRIO EM PEDAÇOS", "TRILHA DAS ARAUCÁRIAS", "SEGREDOS DO SUL", "COLHEITA NO PARREIRAL", "MISSÃO: CLIMA DO SUL"];
 const subtitles = ["", "Encontre a Região Sul no mapa.", "Monte as Cataratas do Iguaçu.", "Recolha os pinhões e encontre o mirante.", "Raspe e descubra a cultura da Região Sul.", "Encontre os cachos maduros.", "Observe a previsão e prepare a Pipa."];
 const mascotIntro = "Olá, explorador! Eu sou a Pipa, a quero-quero da Região Sul!";
 const speeches = ["", "Procure a menor região do Brasil, bem ao sul do mapa.", "Escolha uma peça das Cataratas e depois toque no lugar correto para encaixá-la.", "Ajude a Pipa a explorar a trilha. Recolha quatro pinhões das araucárias e chegue ao mirante.", "Escolha um postal e raspe para descobrir um segredo do Sul!", "Observe as folhas e colha somente as uvas maduras!", "A previsão está mudando nos três estados! Observe cada paisagem e escolha como preparar a Pipa para o clima do Sul."];
@@ -218,7 +218,7 @@ function SouthScratch({ onComplete }: { onComplete: () => void }) {
   const [activeId,setActiveId]=useState(southSecrets[0].id);
   const [revealed,setRevealed]=useState<string[]>([]);
   const active=southSecrets.find(secret=>secret.id===activeId)!;
-  function reveal(id:string){setRevealed(old=>{if(old.includes(id))return old;const next=[...old,id];if(next.length===southSecrets.length)window.setTimeout(onComplete,3200);else{const following=southSecrets.find(secret=>!next.includes(secret.id));if(following)window.setTimeout(()=>setActiveId(following.id),2800);}return next;});}
+  function reveal(id:string){setRevealed(old=>{if(old.includes(id))return old;const next=[...old,id];if(next.length===southSecrets.length)window.setTimeout(onComplete,3200);return next;});}
   return <div className="south-secrets-game" role="group" aria-label={`Mala de descobertas, ${revealed.length} de 3 postais revelados`}>
     <div className="south-suitcase-handle" aria-hidden="true"/>
     <section className="south-suitcase">
@@ -269,7 +269,7 @@ function SouthHarvest({ canPlay, onComplete, onListen }: { canPlay:boolean;onCom
     setMessage("Boa escolha! O cacho está indo para a cesta.");
     // No quinto cacho a conclusão do desafio assume a narração.
     if(harvested.length<4)onListen("Boa escolha! O cacho está indo para a cesta.");
-    window.setTimeout(()=>{setHarvested(old=>{const next=[...old,grape.id];if(next.length===5){setMessage("Colheita completa! A cesta está cheia.");window.setTimeout(onComplete,1300);}else setMessage(`Muito bem! Faltam ${5-next.length} ${5-next.length===1?"cacho":"cachos"}.`);return next;});setFlying(null);},720);
+    window.setTimeout(()=>{setHarvested(old=>{const next=[...old,grape.id];if(next.length===5){setMessage("Colheita completa! A cesta está cheia.");window.setTimeout(onComplete,1300);}else setMessage(`Muito bem! ${5-next.length===1?"Falta":"Faltam"} ${5-next.length} ${5-next.length===1?"cacho":"cachos"}.`);return next;});setFlying(null);},720);
   }
   return <div className="south-harvest" role="group" aria-label={`Colheita no parreiral, ${harvested.length} de 5 cachos maduros`}>
     <section className="south-vineyard" aria-label="Parreiral com cachos maduros e verdes">

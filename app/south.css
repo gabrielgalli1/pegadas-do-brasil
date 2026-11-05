@@ -489,6 +489,12 @@
  .south-challenge-3 .south-maze-controls-block{width:100%;display:grid;grid-template-columns:1fr;grid-template-rows:auto auto auto;justify-items:center;gap:2px;padding:3px 2px;box-sizing:border-box;border-radius:9px}
  .south-challenge-3 .south-maze-controls-block>b{grid-column:auto;font-size:7px;writing-mode:horizontal-tb;transform:none}
  .south-challenge-3 .south-maze-dpad button{width:29px;height:25px;margin:1px;padding:0;border-width:2px;border-radius:7px;font-size:14px;outline-width:1px;box-shadow:0 2px 0 #075487,inset 0 1px 0 #91e5ff}
+
+/* Alvos de toque confortaveis no labirinto em celulares pequenos. */
+@media(max-width:700px) and (orientation:landscape){
+  .south-challenge-3 .south-maze-dpad button{width:38px;height:34px;margin:2px;font-size:19px;border-radius:9px}
+  .south-challenge-3 .south-maze-controls{gap:3px;padding:4px}
+}
  .south-challenge-3 .south-maze-controls-block>small{font-size:6px;line-height:1.08;text-align:center}
  .south-challenge-3 .south-maze-guidance{width:100%;height:auto;min-height:0}
  .south-challenge-3 .south-maze-guidance>p{width:100%;height:auto;min-height:30px;margin:0;padding:4px;box-sizing:border-box;border-width:1px;border-radius:8px;font-size:clamp(7px,1vw,9px);line-height:1.08}
@@ -642,4 +648,13 @@
 .high-contrast :is(.south-title,.south-speech,.south-board,.south-suitcase,.south-harvest,.south-seasons,.south-map-instruction,.south-puzzle-instruction){
  border-color:#000!important;
  outline-color:#000!important;
+}
+
+/* Tablet 4:3: instrução abaixo do mapa e botão de áudio completamente visível. */
+@media (min-width:901px) and (max-width:1100px) and (orientation:landscape) and (max-aspect-ratio:4/3){
+ .south-challenge-1 .south-title{top:8%;}
+ .south-challenge-1 .south-board.board-1{top:25%;height:51%;}
+ .south-challenge-1 .south-map{width:84%;height:90%;transform:translateY(-2%);}
+ .south-challenge-1 .south-map-instruction{top:78%;bottom:auto;min-height:32px;}
+ .south-challenge-1 .south-listen{left:3.5%;bottom:3%;transform:none;}
 }

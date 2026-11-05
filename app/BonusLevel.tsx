@@ -8,9 +8,9 @@ import { bonusRegionIds, type BonusRegionId } from "./progressPersistence";
 const regions = [
   { id: "norte", name: "Norte", x: 223, y: 116, size: 116, image: "/bonus-paisagem-norte-v1.jpg", hint: "Procure a grande região verde na parte de cima do mapa." },
   { id: "nordeste", name: "Nordeste", x: 448, y: 187, size: 103, image: "/bonus-paisagem-nordeste-v1.jpg", hint: "Procure a região laranja à direita do mapa." },
-  { id: "centro-oeste", name: "Centro-Oeste", x: 284, y: 277, size: 100, image: "/bonus-paisagem-centro-oeste-v1.jpg", hint: "Procure a região amarela no centro do Brasil." },
-  { id: "sudeste", name: "Sudeste", x: 388, y: 348, size: 87, image: "/bonus-paisagem-sudeste-v1.jpg", hint: "Procure a região roxa, acima da Região Sul." },
-  { id: "sul", name: "Sul", x: 305, y: 452, size: 78, image: "/bonus-paisagem-sul-v1.jpg", hint: "Procure a região azul na parte de baixo do mapa." },
+  { id: "centro-oeste", name: "Centro-Oeste", x: 284, y: 277, size: 100, image: "/bonus-paisagem-centro-oeste-v1.jpg", hint: "Procure a região no centro do mapa do Brasil." },
+  { id: "sudeste", name: "Sudeste", x: 388, y: 348, size: 87, image: "/bonus-paisagem-sudeste-v1.jpg", hint: "Procure a região à direita do Centro-Oeste, acima da Região Sul." },
+  { id: "sul", name: "Sul", x: 305, y: 452, size: 78, image: "/bonus-paisagem-sul-v1.jpg", hint: "Procure a menor região, na parte de baixo do mapa." },
 ] as const;
 
 export const bonusInstructions = "Vamos completar o mapa com seus emblemas! Arraste cada emblema até a sua região. Você também pode tocar no emblema e depois na silhueta. São cinco regiões para completar a nossa viagem pelo Brasil!";
@@ -143,7 +143,7 @@ export default function BonusLevel({ initialPlaced, sound, onBack, onToggleSound
             <defs>{regions.map((region) => <pattern id={`bonus-landscape-${region.id}`} key={region.id} patternUnits="userSpaceOnUse" width="613.11" height="533.07" viewBox="0 0 613.11 533.07">
               <image href={region.image} x={landscapeBounds[region.id][0] - 40} y={landscapeBounds[region.id][1] - 40} width={landscapeBounds[region.id][2] + 80} height={landscapeBounds[region.id][3] + 80} preserveAspectRatio="xMidYMid slice" />
             </pattern>)}</defs>
-            {regionsMap.regions.map((region) => <g key={region.id} className={`bonus-map-region bonus-map-region-${region.id}`}>
+            {regionsMap.regions.map((region) => <g key={region.id} data-bonus-region={region.id} className={`bonus-map-region bonus-map-region-${region.id}`}>
               <g fill={region.color} stroke={regionBorderColors[region.id as BonusRegionId]} strokeWidth="5" strokeLinejoin="round">{region.paths.map((path) => <path key={path.id} d={path.d} />)}</g>
               <g fill={`url(#bonus-landscape-${region.id})`} stroke="#fffdf0" strokeWidth="1.15" strokeLinejoin="round" opacity=".9" pointerEvents="none">{region.paths.map((path) => <path key={path.id} d={path.d} />)}</g>
             </g>)}

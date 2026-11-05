@@ -52,7 +52,7 @@ export type CurrentPlayerIdentity = {
 export async function signOutPlayer(): Promise<void> {
   if (supabase) await supabase.auth.signOut();
   if (typeof window === "undefined") return;
-  ["pegadas-progress", "pegadas-avatar", "pegadas-nickname"].forEach((key) => window.localStorage.removeItem(key));
+  ["pegadas-progress", "pegadas-avatar", "pegadas-nickname", "pegadas-guest-confirmed"].forEach((key) => window.localStorage.removeItem(key));
 }
 
 /** Restores the player attached to the current browser session. */

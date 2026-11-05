@@ -107,7 +107,7 @@ export default function PlayerAccessScreen({ onContinue, onAuthenticated, avatar
         <p id="guest-confirm-description">Seu progresso ficará salvo somente neste aparelho. Se você trocar de celular, computador ou limpar os dados do navegador, poderá perder sua aventura.</p>
         <div className="player-access-guest-actions">
           <button className="guest-create" type="button" onClick={() => changeMode("create")}>VOLTAR E CRIAR APELIDO</button>
-          <button className="guest-continue" type="button" onClick={onContinue}>JOGAR SEM CONTA</button>
+          <button className="guest-continue" type="button" onClick={() => { window.localStorage.setItem("pegadas-guest-confirmed", "1"); onContinue(); }}>JOGAR SEM CONTA</button>
         </div>
       </div>}
 

@@ -44,7 +44,7 @@ export default function MobileInitialChallenge({
       <button className="mobile-initial-control" onClick={onBack} aria-label="Voltar à jornada"><img src="/fases-voltar-v1.webp" alt="" /></button>
       <h1 className="mobile-initial-header-title">{prompt.title}</h1>
       <div className="mobile-initial-status"><b>DESAFIO {index + 1} DE 5</b><div aria-label={`${index + 1} de 5 desafios`}>{Array.from({ length: 5 }, (_, star) => <span key={star} className={star <= index ? "active" : ""}>★</span>)}</div><small>⭐ {score} PONTOS</small></div>
-      <button className="mobile-initial-control" onClick={onToggleSound} aria-label={sound ? "Desligar som" : "Ligar som"} aria-pressed={sound}><img src="/fases-som-v1.webp" alt="" /></button>
+      <button className="mobile-initial-control" onClick={onToggleSound} aria-label={sound ? "Desligar narração" : "Ligar narração"} aria-pressed={sound}><img src="/fases-som-v1.webp" alt="" /></button>
     </header>
     <div className="mobile-initial-body">
       <aside className="mobile-initial-intro">

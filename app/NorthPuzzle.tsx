@@ -78,8 +78,8 @@ export default function NorthPuzzle({ solved, onPlace, onFinish }: Props) {
       <svg className="north-puzzle-map" viewBox="-10 -6 406 280" preserveAspectRatio="xMidYMid meet" aria-label="Mapa da Região Norte com uma peça para encaixar">
         {northPuzzleStates.map((state) => <g key={state.id}>
           {state.paths.map((d, index) => <path key={index} d={d} fill={state.color} className="north-puzzle-state" />)}
-          <text className="north-puzzle-label" x={state.x} y={state.y}>{state.name}</text>
         </g>)}
+        {northPuzzleStates.map((state) => <text key={`${state.id}-label`} className="north-puzzle-label" x={state.x} y={state.y}>{state.name}</text>)}
         <g className={"north-puzzle-slot " + (overSlot ? "drop-ready " : "") + (solved ? "is-solved" : "")} role="button" tabIndex={solved ? -1 : 0}
           aria-label={solved ? "Acre encaixado" : "Espaço vazio: encaixar a peça selecionada"} aria-disabled={solved} aria-describedby="north-puzzle-message"
           onClick={() => place(selected)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); place(selected); } }}>
