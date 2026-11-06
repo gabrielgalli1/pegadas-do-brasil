@@ -94,7 +94,7 @@ const northeastNarrations: Record<string, RecordedNarration> = {
 };
 
 const centerWestNarrations: Record<string, RecordedNarration> = {
-  "Olá, explorador! Eu sou o Téo. Bem-vindo ao Centro-Oeste! Arraste a peça da região até um dos três espaços vazios no mapa. Observe a posição das regiões para escolher o encaixe correto. Você também pode tocar na peça e depois no espaço.": "/narracoes/centro-oeste-01-instrucao.mp3",
+  "Observe o mapa do Brasil e toque na região que fica no centro do país.": "/narracoes/centro-oeste-01-instrucao.mp3",
   "Vire duas cartas por vez e encontre os quatro pares de animais do Centro-Oeste: onça-pintada, lobo-guará, tuiuiú e capivara.": "/narracoes/centro-oeste-02-instrucao.mp3",
   "Observe o formato das quatro peças. Arraste Mato Grosso, Goiás, Mato Grosso do Sul e Distrito Federal até os espaços corretos para completar o mapa do Centro-Oeste.": "/narracoes/centro-oeste-03-instrucao.mp3",
   "Observe os cartões na esteira. Toque em milho, gado, Pantanal, Cerrado, Brasília e pequi. Use o botão pausar quando precisar de mais tempo.": "/narracoes/centro-oeste-04-instrucao.mp3",
