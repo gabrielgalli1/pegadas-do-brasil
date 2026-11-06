@@ -165,6 +165,29 @@ function speak(text: string) {
   playNext();
 }
 
+// Fala o texto assim que a narração em andamento terminar (ex.: o "Nove de nove estados
+// descobertos" do último toque), em vez de cortá-la. Se nada estiver tocando, fala na hora.
+function speakAfterCurrent(text: string) {
+  if (typeof window === "undefined") return;
+  const synth = window.speechSynthesis;
+  if (!recordedNarration && !synth?.speaking && !synth?.pending) {
+    speak(text);
+    return;
+  }
+  const request = narrationRequest;
+  let done = false;
+  const run = () => {
+    if (done) return;
+    done = true;
+    window.removeEventListener(narrationVolumeEvent, onNarrationChange);
+    window.clearTimeout(timer);
+    if (request === narrationRequest) speak(text);
+  };
+  const onNarrationChange = (event: Event) => { if (!(event as CustomEvent<boolean>).detail) run(); };
+  const timer = window.setTimeout(run, 8000);
+  window.addEventListener(narrationVolumeEvent, onNarrationChange);
+}
+
 function Logo({ compact = false }: { compact?: boolean }) {
   return <img className={`logo ${compact ? "logo-compact" : ""}`} src="/pegadas-logo-v1.webp" alt="Pegadas do Brasil — jogo de Geografia" />;
 }
@@ -979,6 +1002,16 @@ export default function Home() {
     }
     playCorrectAnswer();
     setFeedback(northeastChallenge === 6 ? "finished" : "correct");
+    const northeastCorrectLines: Record<number, string> = {
+      1: "Muito bem! Você encontrou a Região Nordeste!",
+      2: "Muito bem! O Nordeste possui nove estados!",
+      3: "Muito bem! No Sertão faz calor e chove pouco durante boa parte do ano!",
+      4: "Muito bem! Você encontrou o tatu-bola escondido na Caatinga!",
+      5: "Muito bem! O Nordeste possui muitos ambientes e paisagens diferentes!",
+      6: "A cultura nordestina tem festas, músicas, danças e sabores muito especiais! Parabéns, explorador! Você concluiu os seis desafios da Região Nordeste!",
+    };
+    // Nos desafios 2, 5 e 6 o último toque já narra o próprio item; espera terminar para não cortar.
+    if (sound) speakAfterCurrent(northeastCorrectLines[northeastChallenge]);
   }
   function answerCenterWest(correct: boolean) {
     if (feedback !== "idle") return;

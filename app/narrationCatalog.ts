@@ -84,6 +84,12 @@ const northeastNarrations: Record<string, RecordedNarration> = {
   "SANFONA. Peça encaixada corretamente!": "/narracoes/nordeste-peca-sanfona.mp3",
   "MILHO. Peça encaixada corretamente!": "/narracoes/nordeste-peca-milho.mp3",
   "FREVO. Peça encaixada corretamente!": "/narracoes/nordeste-peca-frevo.mp3",
+  "Muito bem! Você encontrou a Região Nordeste!": "/narracoes/nordeste-01-acerto.mp3",
+  "Muito bem! O Nordeste possui nove estados!": "/narracoes/nordeste-02-acerto.mp3",
+  "Muito bem! No Sertão faz calor e chove pouco durante boa parte do ano!": "/narracoes/nordeste-03-acerto.mp3",
+  "Muito bem! Você encontrou o tatu-bola escondido na Caatinga!": "/narracoes/nordeste-04-acerto.mp3",
+  "Muito bem! O Nordeste possui muitos ambientes e paisagens diferentes!": "/narracoes/nordeste-05-acerto.mp3",
+  "A cultura nordestina tem festas, músicas, danças e sabores muito especiais! Parabéns, explorador! Você concluiu os seis desafios da Região Nordeste!": "/narracoes/nordeste-06-conclusao.mp3",
   ...northeastStateNarrations,
 };
 
